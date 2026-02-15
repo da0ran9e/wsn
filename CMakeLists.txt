@@ -1,0 +1,62 @@
+build_lib(
+  LIBNAME wsn
+  SOURCE_FILES
+    helper/wsn-energy-model-helper.cc
+    model/ini-parser.cc
+    model/mobility/wsn-mobility-model.cc
+    model/objects/resource-manager.cc
+    model/objects/sensor-network.cc
+    model/objects/wireless-channel.cc
+    model/objects/wsn-app.cc
+    model/objects/wsn-mac.cc
+    model/objects/wsn-mobility.cc
+    model/objects/wsn-node.cc
+    model/objects/wsn-object-factory.cc
+    model/objects/wsn-object-registry.cc
+    model/objects/wsn-object.cc
+    model/objects/wsn-radio.cc
+    model/objects/wsn-routing.cc
+    model/resource/wsn-energy-model.cc
+    model/routing/bypass-routing/bypass-routing-protocol.cc
+    model/routing/pecee-routing/pecee-routing-protocol.cc
+    model/routing/pecee-routing/pecee-header.cc
+    model/routing/wsn-forwarder.cc
+    model/routing/wsn-routing-header.cc
+    model/routing/wsn-routing-protocol.cc
+    model/wsn-scenario.cc
+    model/wsn-trace.cc
+    
+  HEADER_FILES
+    helper/wsn-energy-model-helper.h
+    model/ini-parser.h
+    model/mobility/wsn-mobility-model.h
+    model/objects/resource-manager.h
+    model/objects/sensor-network.h
+    model/objects/wireless-channel.h
+    model/objects/wsn-app.h
+    model/objects/wsn-mac.h
+    model/objects/wsn-mobility.h
+    model/objects/wsn-node.h
+    model/objects/wsn-object-factory.h
+    model/objects/wsn-object-registry.h
+    model/objects/wsn-object.h
+    model/objects/wsn-radio.h
+    model/objects/wsn-routing.h
+    model/resource/wsn-energy-model.h
+    model/routing/bypass-routing/bypass-routing-protocol.h
+    model/routing/pecee-routing/pecee-routing-protocol.h
+    model/routing/pecee-routing/pecee-header.h
+    model/routing/wsn-forwarder.h
+    model/routing/wsn-routing-header.h
+    model/routing/wsn-routing-protocol.h
+    model/wsn-scenario.h
+    model/wsn-trace.h
+
+  LIBRARIES_TO_LINK
+    ${libcore}
+    ${libnetwork}
+    ${libmobility}
+    ${libspectrum}
+    ${libenergy}
+    ${liblr-wpan}
+)
