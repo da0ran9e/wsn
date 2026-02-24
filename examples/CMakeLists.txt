@@ -17,3 +17,28 @@ build_lib_example(
     ${liblr-wpan}
     ${libwsn}
 )
+
+build_lib_example(
+  NAME cc2420-example
+  SOURCE_FILES cc2420-example.cc
+  LIBRARIES_TO_LINK
+    ${libcore}
+    ${libnetwork}
+    ${libmobility}
+    ${libspectrum}
+    ${libantenna}
+    ${libpropagation}
+    ${libwsn}
+)
+build_lib_example(
+  NAME example1
+  SOURCE_FILES example1.cc
+  LIBRARIES_TO_LINK
+    ${libcore}
+    ${libnetwork}
+    ${libmobility}
+    ${libspectrum}
+    ${libantenna}
+    ${libpropagation}
+    ${libwsn}
+)

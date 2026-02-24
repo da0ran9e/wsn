@@ -24,7 +24,7 @@
 
 namespace ns3
 {
-namespace cc2420
+namespace wsn
 {
 
 /**

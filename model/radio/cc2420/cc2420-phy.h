@@ -31,7 +31,7 @@ class SpectrumChannel;
 class AntennaModel;
 class NetDevice;
 
-namespace cc2420
+namespace wsn
 {
 
 /**

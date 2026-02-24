@@ -12,7 +12,7 @@
 
 namespace ns3
 {
-namespace cc2420
+namespace wsn
 {
 
 NS_LOG_COMPONENT_DEFINE("Cc2420NetDevice");
