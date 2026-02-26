@@ -42,3 +42,16 @@ build_lib_example(
     ${libpropagation}
     ${libwsn}
 )
+
+build_lib_example(
+  NAME uav-example
+  SOURCE_FILES uav-example.cc
+  LIBRARIES_TO_LINK
+    ${libcore}
+    ${libnetwork}
+    ${libmobility}
+    ${libspectrum}
+    ${libantenna}
+    ${libpropagation}
+    ${libwsn}
+)

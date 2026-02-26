@@ -3,6 +3,8 @@ build_lib(
   SOURCE_FILES
     helper/wsn-energy-model-helper.cc
     model/ini-parser.cc
+    model/uav/uav-mac.cc
+    model/uav/ground-node-mac.cc
     model/mobility/wsn-mobility-model.cc
     model/objects/resource-manager.cc
     model/objects/sensor-network.cc
@@ -29,6 +31,9 @@ build_lib(
   HEADER_FILES
     helper/wsn-energy-model-helper.h
     model/ini-parser.h
+    model/uav/fragment.h
+    model/uav/uav-mac.h
+    model/uav/ground-node-mac.h
     model/mobility/wsn-mobility-model.h
     model/objects/resource-manager.h
     model/objects/sensor-network.h
