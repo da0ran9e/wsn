@@ -5,6 +5,7 @@ build_lib(
     model/ini-parser.cc
     model/uav/uav-mac.cc
     model/uav/ground-node-mac.cc
+    model/uav/cell-forming.cc
     model/mobility/wsn-mobility-model.cc
     model/objects/resource-manager.cc
     model/objects/sensor-network.cc
@@ -34,6 +35,8 @@ build_lib(
     model/uav/fragment.h
     model/uav/uav-mac.h
     model/uav/ground-node-mac.h
+    model/uav/cell-forming-packet.h
+    model/uav/cell-forming.h
     model/mobility/wsn-mobility-model.h
     model/objects/resource-manager.h
     model/objects/sensor-network.h

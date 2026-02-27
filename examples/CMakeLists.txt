@@ -55,3 +55,16 @@ build_lib_example(
     ${libpropagation}
     ${libwsn}
 )
+
+build_lib_example(
+  NAME cell-forming-example
+  SOURCE_FILES cell-forming-example.cc
+  LIBRARIES_TO_LINK
+    ${libcore}
+    ${libnetwork}
+    ${libmobility}
+    ${libspectrum}
+    ${libantenna}
+    ${libpropagation}
+    ${libwsn}
+)
