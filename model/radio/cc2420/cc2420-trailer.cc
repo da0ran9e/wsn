@@ -33,7 +33,7 @@ Cc2420Trailer::~Cc2420Trailer()
 TypeId
 Cc2420Trailer::GetTypeId()
 {
-    static TypeId tid = TypeId("ns3::cc2420::Cc2420Trailer")
+    static TypeId tid = TypeId("ns3::wsn::Cc2420Trailer")
         .SetParent<Trailer>()
         .SetGroupName("Cc2420")
         .AddConstructor<Cc2420Trailer>();

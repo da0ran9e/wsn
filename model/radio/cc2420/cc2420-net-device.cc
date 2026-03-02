@@ -9,6 +9,7 @@
 #include "ns3/log.h"
 #include "ns3/simulator.h"
 #include "ns3/spectrum-channel.h"
+#include "ns3/node.h"
 
 namespace ns3
 {
@@ -25,7 +26,7 @@ NS_OBJECT_ENSURE_REGISTERED(Cc2420NetDevice);
 TypeId
 Cc2420NetDevice::GetTypeId()
 {
-    static TypeId tid = TypeId("ns3::cc2420::Cc2420NetDevice")
+    static TypeId tid = TypeId("ns3::wsn::Cc2420NetDevice")
         .SetParent<NetDevice>()
         .SetGroupName("Cc2420")
         .AddConstructor<Cc2420NetDevice>();
@@ -61,6 +62,8 @@ Cc2420NetDevice::SetMac(Ptr<Cc2420Mac> mac)
             MakeCallback(&Cc2420NetDevice::ReceiveFrameFromMac, this));
         m_mac->SetMcpsDataConfirmCallback(
             MakeCallback(&Cc2420NetDevice::TxCompleteFromMac, this));
+        m_mac->SetDebugPacketTraceCallback(
+            MakeCallback(&Cc2420NetDevice::OnMacDebugTrace, this));
     }
 }
 
@@ -77,6 +80,8 @@ Cc2420NetDevice::SetPhy(Ptr<Cc2420Phy> phy)
     if (m_phy)
     {
         m_phy->SetDevice(this);
+        m_phy->SetDebugPacketTraceCallback(
+            MakeCallback(&Cc2420NetDevice::OnPhyDebugTrace, this));
     }
 }
 
@@ -136,10 +141,11 @@ Cc2420NetDevice::GetMtu() const
     return m_mtu;
 }
 
-void
+bool
 Cc2420NetDevice::SetMtu(const uint16_t mtu)
 {
     m_mtu = mtu;
+    return true;
 }
 
 bool
@@ -191,9 +197,35 @@ Cc2420NetDevice::IsPointToPoint() const
 }
 
 bool
+Cc2420NetDevice::IsBridge() const
+{
+    return false;
+}
+
+Ptr<Node>
+Cc2420NetDevice::GetNode() const
+{
+    return m_node;
+}
+
+void
+Cc2420NetDevice::SetNode(Ptr<Node> node)
+{
+    m_node = node;
+    m_linkUp = (node != nullptr);
+}
+
+bool
+Cc2420NetDevice::NeedsArp() const
+{
+    return false;
+}
+
+bool
 Cc2420NetDevice::Send(Ptr<Packet> packet, const Address& dest, uint16_t protocolNumber)
 {
     NS_LOG_FUNCTION(this << packet << dest << protocolNumber);
+    EmitDebugTrace("NetDevice::Send", packet);
 
     if (!m_mac)
     {
@@ -222,7 +254,7 @@ Cc2420NetDevice::SetReceiveCallback(NetDevice::ReceiveCallback cb)
 }
 
 void
-Cc2420NetDevice::SetPromiscuousReceiveCallback(NetDevice::PromiscuousReceiveCallback cb)
+Cc2420NetDevice::SetPromiscReceiveCallback(NetDevice::PromiscReceiveCallback cb)
 {
     m_promiscuousReceiveCallback = cb;
 }
@@ -253,6 +285,7 @@ void
 Cc2420NetDevice::ReceiveFrameFromMac(Ptr<Packet> packet, Mac16Address source, double rssi)
 {
     NS_LOG_FUNCTION(this << packet << source << rssi);
+    EmitDebugTrace("NetDevice::ReceiveFrameFromMac", packet);
 
     if (!m_receiveCallback.IsNull())
     {
@@ -267,5 +300,32 @@ Cc2420NetDevice::TxCompleteFromMac(int status)
     // TODO: Handle TX completion if needed
 }
 
-} // namespace cc2420
+void
+Cc2420NetDevice::SetDebugPacketTraceCallback(DebugPacketTraceCallback callback)
+{
+    m_debugPacketTraceCallback = callback;
+}
+
+void
+Cc2420NetDevice::OnMacDebugTrace(std::string eventName, Ptr<const Packet> packet)
+{
+    EmitDebugTrace("MAC::" + eventName, packet);
+}
+
+void
+Cc2420NetDevice::OnPhyDebugTrace(std::string eventName, Ptr<const Packet> packet)
+{
+    EmitDebugTrace("PHY::" + eventName, packet);
+}
+
+void
+Cc2420NetDevice::EmitDebugTrace(const std::string& eventName, Ptr<const Packet> packet) const
+{
+    if (!m_debugPacketTraceCallback.IsNull())
+    {
+        m_debugPacketTraceCallback(eventName, packet);
+    }
+}
+
+} // namespace wsn
 } // namespace ns3

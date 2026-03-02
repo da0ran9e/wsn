@@ -148,7 +148,7 @@ class Cc2420Header : public Header
     Mac16Address m_sourceAddress;
 };
 
-} // namespace cc2420
+} // namespace wsn
 } // namespace ns3
 
 #endif // CC2420_HEADER_H

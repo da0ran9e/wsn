@@ -10,10 +10,13 @@
 #include "ns3/node.h"
 #include "ns3/mobility-model.h"
 #include "ns3/antenna-model.h"
+#include "ns3/single-model-spectrum-channel.h"
+#include "ns3/propagation-loss-model.h"
+#include "ns3/propagation-delay-model.h"
 
 namespace ns3
 {
-namespace cc2420
+namespace wsn
 {
 
 NS_LOG_COMPONENT_DEFINE("Cc2420Helper");
@@ -27,9 +30,9 @@ Cc2420Helper::Cc2420Helper()
     NS_LOG_FUNCTION(this);
 
     // Set default factories
-    m_macFactory.SetTypeId("ns3::cc2420::Cc2420Mac");
-    m_phyFactory.SetTypeId("ns3::cc2420::Cc2420Phy");
-    m_energyFactory.SetTypeId("ns3::cc2420::Cc2420EnergyModel");
+    m_macFactory.SetTypeId("ns3::wsn::Cc2420Mac");
+    m_phyFactory.SetTypeId("ns3::wsn::Cc2420Phy");
+    m_energyFactory.SetTypeId("ns3::wsn::Cc2420EnergyModel");
 }
 
 Cc2420Helper::~Cc2420Helper()
@@ -41,6 +44,26 @@ void
 Cc2420Helper::SetChannel(Ptr<SpectrumChannel> channel)
 {
     m_channel = channel;
+}
+
+Ptr<SingleModelSpectrumChannel>
+Cc2420Helper::CreateChannel() const
+{
+    NS_LOG_FUNCTION(this);
+
+    Ptr<SingleModelSpectrumChannel> channel = CreateObject<SingleModelSpectrumChannel>();
+
+    // CC2420 standard propagation model (2.4 GHz ISM band)
+    Ptr<LogDistancePropagationLossModel> loss = CreateObject<LogDistancePropagationLossModel>();
+    loss->SetAttribute("Exponent", DoubleValue(3.0));              // indoor/urban
+    loss->SetAttribute("ReferenceDistance", DoubleValue(1.0));     // 1 meter reference
+    loss->SetAttribute("ReferenceLoss", DoubleValue(46.6776));     // FSPL @ 2.4GHz, 1m
+    channel->AddPropagationLossModel(loss);
+
+    Ptr<ConstantSpeedPropagationDelayModel> delay = CreateObject<ConstantSpeedPropagationDelayModel>();
+    channel->SetPropagationDelayModel(delay);
+
+    return channel;
 }
 
 void
@@ -102,10 +125,14 @@ Cc2420Helper::CreateDevice(Ptr<Node> node) const
     // Setup energy model
     energyModel->SetPhy(phy);
 
-    // Setup PHY with node's mobility
+    // Setup PHY with node's mobility and channel
     if (node->GetObject<MobilityModel>())
     {
         phy->SetMobility(node->GetObject<MobilityModel>());
+    }
+    if (m_channel)
+    {
+        phy->SetChannel(m_channel);
     }
 
     // Attach device to node
@@ -114,10 +141,12 @@ Cc2420Helper::CreateDevice(Ptr<Node> node) const
     // Setup address
     Mac16Address addr = Mac16Address::Allocate();
     dev->SetAddress(addr);
-    mac->GetMacConfig().shortAddress = addr;
+    MacConfig cfg = mac->GetMacConfig();
+    cfg.shortAddress = addr;
+    mac->SetMacConfig(cfg);
 
     return dev;
 }
 
-} // namespace cc2420
+} // namespace wsn
 } // namespace ns3

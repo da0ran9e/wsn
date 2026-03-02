@@ -2,10 +2,21 @@ build_lib(
   LIBNAME wsn
   SOURCE_FILES
     helper/wsn-energy-model-helper.cc
+    helper/cc2420-helper.cc
     model/ini-parser.cc
     model/uav/uav-mac.cc
     model/uav/ground-node-mac.cc
     model/uav/cell-forming.cc
+    model/uav/cell-forming-mac.cc
+    model/uav/uav-mac-cc2420.cc
+    model/uav/mac-frame.cc
+    model/uav/wsn-radio-mac.cc
+    model/radio/cc2420/cc2420-header.cc
+    model/radio/cc2420/cc2420-trailer.cc
+    model/radio/cc2420/cc2420-phy.cc
+    model/radio/cc2420/cc2420-mac.cc
+    model/radio/cc2420/cc2420-net-device.cc
+    model/radio/cc2420/cc2420-energy-model.cc
     model/mobility/wsn-mobility-model.cc
     model/objects/resource-manager.cc
     model/objects/sensor-network.cc
@@ -23,6 +34,10 @@ build_lib(
     model/routing/bypass-routing/bypass-routing-protocol.cc
     model/routing/pecee-routing/pecee-routing-protocol.cc
     model/routing/pecee-routing/pecee-header.cc
+    model/routing/scenario1/node-routing.cc
+    model/routing/scenario1/ground-node-routing.cc
+    model/routing/scenario1/uav-node-routing.cc
+    model/routing/scenario1/fragment.cc
     model/routing/wsn-forwarder.cc
     model/routing/wsn-routing-header.cc
     model/routing/wsn-routing-protocol.cc
@@ -31,12 +46,23 @@ build_lib(
     
   HEADER_FILES
     helper/wsn-energy-model-helper.h
+    helper/cc2420-helper.h
     model/ini-parser.h
     model/uav/fragment.h
     model/uav/uav-mac.h
     model/uav/ground-node-mac.h
     model/uav/cell-forming-packet.h
     model/uav/cell-forming.h
+    model/uav/cell-forming-mac.h
+    model/uav/uav-mac-cc2420.h
+    model/uav/mac-frame.h
+    model/uav/wsn-radio-mac.h
+    model/radio/cc2420/cc2420-header.h
+    model/radio/cc2420/cc2420-trailer.h
+    model/radio/cc2420/cc2420-phy.h
+    model/radio/cc2420/cc2420-mac.h
+    model/radio/cc2420/cc2420-net-device.h
+    model/radio/cc2420/cc2420-energy-model.h
     model/mobility/wsn-mobility-model.h
     model/objects/resource-manager.h
     model/objects/sensor-network.h
@@ -54,6 +80,10 @@ build_lib(
     model/routing/bypass-routing/bypass-routing-protocol.h
     model/routing/pecee-routing/pecee-routing-protocol.h
     model/routing/pecee-routing/pecee-header.h
+    model/routing/scenario1/node-routing.h
+    model/routing/scenario1/ground-node-routing.h
+    model/routing/scenario1/uav-node-routing.h
+    model/routing/scenario1/fragment.h
     model/routing/wsn-forwarder.h
     model/routing/wsn-routing-header.h
     model/routing/wsn-routing-protocol.h

@@ -22,6 +22,7 @@
 
 #include <queue>
 #include <cstdint>
+#include <string>
 
 namespace ns3
 {
@@ -197,6 +198,12 @@ class Cc2420Mac : public Object
     typedef Callback<void, int> McpsDataConfirmCallback;
 
     /**
+     * Callback for packet path debugging in MAC layer
+     * Arguments: event name, packet
+     */
+    typedef Callback<void, std::string, Ptr<const Packet>> DebugPacketTraceCallback;
+
+    /**
      * Set RX indication callback (for upper layer)
      */
     void SetMcpsDataIndicationCallback(McpsDataIndicationCallback callback);
@@ -205,6 +212,11 @@ class Cc2420Mac : public Object
      * Set TX confirm callback (for upper layer)
      */
     void SetMcpsDataConfirmCallback(McpsDataConfirmCallback callback);
+
+    /**
+     * Set debug callback for MAC packet path tracing
+     */
+    void SetDebugPacketTraceCallback(DebugPacketTraceCallback callback);
 
   private:
     // =============================================================================
@@ -263,6 +275,9 @@ class Cc2420Mac : public Object
     // Callbacks
     McpsDataIndicationCallback m_mcpsDataIndicationCallback;
     McpsDataConfirmCallback m_mcpsDataConfirmCallback;
+    DebugPacketTraceCallback m_debugPacketTraceCallback;
+
+    void EmitDebugTrace(const std::string& eventName, Ptr<const Packet> packet) const;
 
     // Statistics / Energy tracking
     uint32_t m_txCount;
@@ -270,7 +285,7 @@ class Cc2420Mac : public Object
     uint32_t m_txFailureCount;
 };
 
-} // namespace cc2420
+} // namespace wsn
 } // namespace ns3
 
 #endif // CC2420_MAC_H

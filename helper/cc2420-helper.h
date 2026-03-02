@@ -12,19 +12,20 @@
 #ifndef CC2420_HELPER_H
 #define CC2420_HELPER_H
 
-#include "cc2420-net-device.h"
-#include "cc2420-mac.h"
-#include "cc2420-phy.h"
-#include "cc2420-energy-model.h"
+#include "../model/radio/cc2420/cc2420-net-device.h"
+#include "../model/radio/cc2420/cc2420-mac.h"
+#include "../model/radio/cc2420/cc2420-phy.h"
+#include "../model/radio/cc2420/cc2420-energy-model.h"
 
 #include "ns3/node-container.h"
 #include "ns3/net-device-container.h"
 #include "ns3/spectrum-channel.h"
+#include "ns3/single-model-spectrum-channel.h"
 #include "ns3/object-factory.h"
 
 namespace ns3
 {
-namespace cc2420
+namespace wsn
 {
 
 /**
@@ -49,10 +50,16 @@ class Cc2420Helper
     virtual ~Cc2420Helper();
 
     /**
-     * @brief Set the spectrum channel
+     * @brief Set the spectrum channel with default propagation model
      * @param channel the SpectrumChannel
      */
     void SetChannel(Ptr<SpectrumChannel> channel);
+
+    /**
+     * @brief Create and configure a spectrum channel with propagation models
+     * @return configured SpectrumChannel
+     */
+    Ptr<SingleModelSpectrumChannel> CreateChannel() const;
 
     /**
      * @brief Set MAC attribute
@@ -101,7 +108,7 @@ class Cc2420Helper
     ObjectFactory m_energyFactory;
 };
 
-} // namespace cc2420
+} // namespace wsn
 } // namespace ns3
 
 #endif // CC2420_HELPER_H

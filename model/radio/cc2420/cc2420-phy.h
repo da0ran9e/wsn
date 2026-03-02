@@ -22,6 +22,7 @@
 
 #include <vector>
 #include <map>
+#include <string>
 
 namespace ns3
 {
@@ -105,7 +106,7 @@ class Cc2420Phy : public SpectrumPhy
     /**
      * Set the antenna model
      */
-    void SetAntenna(Ptr<AntennaModel> a) override;
+    void SetAntenna(Ptr<AntennaModel> a);
 
     /**
      * Set the channel
@@ -115,7 +116,7 @@ class Cc2420Phy : public SpectrumPhy
     /**
      * Start reception of a spectrum signal
      */
-    int StartRx(Ptr<SpectrumSignalParameters> params) override;
+    void StartRx(Ptr<SpectrumSignalParameters> params) override;
 
     /**
      * Get the device
@@ -133,9 +134,14 @@ class Cc2420Phy : public SpectrumPhy
     Ptr<const SpectrumModel> GetRxSpectrumModel() const override;
 
     /**
+     * Get antenna object required by SpectrumPhy interface
+     */
+    Ptr<Object> GetAntenna() const override;
+
+    /**
      * Add RX antenna model
      */
-    void AddRxAntenna(Ptr<AntennaModel> a) override;
+    void AddRxAntenna(Ptr<AntennaModel> a);
 
     // =============================================================================
     // CC2420-Specific Interface
@@ -204,6 +210,19 @@ class Cc2420Phy : public SpectrumPhy
      */
     double GetRxSensitivity() const;
 
+    /**
+     * @brief Evaluate whether this PHY can receive from a TX PHY
+     *
+     * This helper provides temporary PHY-side propagation estimation while
+     * full Spectrum-based RX processing is still under development.
+     *
+     * @param txPhy transmitter PHY
+     * @param rssiDbm output RSSI in dBm at this receiver
+     * @param lqi output LQI [0..255]
+     * @return true if frame is receivable (RSSI above sensitivity)
+     */
+    bool EvaluateReceptionFrom(Ptr<Cc2420Phy> txPhy, double& rssiDbm, uint8_t& lqi) const;
+
     // =============================================================================
     // Callback Types
     // =============================================================================
@@ -233,6 +252,12 @@ class Cc2420Phy : public SpectrumPhy
     typedef Callback<void, PhyState, PhyState> StateChangeCallback;
 
     /**
+     * Callback for packet path debugging in PHY layer
+     * Arguments: event name, packet
+     */
+    typedef Callback<void, std::string, Ptr<const Packet>> DebugPacketTraceCallback;
+
+    /**
      * Set RX indication callback
      */
     void SetPdDataIndicationCallback(PdDataIndicationCallback callback);
@@ -251,6 +276,11 @@ class Cc2420Phy : public SpectrumPhy
      * Set state change callback (for energy model notification)
      */
     void SetStateChangeCallback(StateChangeCallback callback);
+
+    /**
+     * Set debug callback for PHY packet path tracing
+     */
+    void SetDebugPacketTraceCallback(DebugPacketTraceCallback callback);
 
   private:
     // =============================================================================
@@ -334,13 +364,16 @@ class Cc2420Phy : public SpectrumPhy
     PdDataConfirmCallback m_pdDataConfirmCallback;
     PlmeCcaConfirmCallback m_plmeCcaConfirmCallback;
     StateChangeCallback m_stateChangeCallback;
+    DebugPacketTraceCallback m_debugPacketTraceCallback;
 
     // Energy tracking
     Time m_stateStartTime;
     PhyState m_previousState;
+
+    void EmitDebugTrace(const std::string& eventName, Ptr<const Packet> packet) const;
 };
 
-} // namespace cc2420
+} // namespace wsn
 } // namespace ns3
 
 #endif // CC2420_PHY_H

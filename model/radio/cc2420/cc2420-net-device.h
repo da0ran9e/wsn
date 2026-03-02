@@ -18,6 +18,8 @@
 #include "ns3/channel.h"
 #include "ns3/traced-callback.h"
 
+#include <string>
+
 namespace ns3
 {
 namespace wsn
@@ -115,7 +117,7 @@ class Cc2420NetDevice : public NetDevice
     /**
      * Set the MTU
      */
-    void SetMtu(const uint16_t mtu) override;
+    bool SetMtu(const uint16_t mtu) override;
 
     /**
      * Is link up?
@@ -158,6 +160,26 @@ class Cc2420NetDevice : public NetDevice
     bool IsPointToPoint() const override;
 
     /**
+     * Is bridge?
+     */
+    bool IsBridge() const override;
+
+    /**
+     * Get attached node
+     */
+    Ptr<Node> GetNode() const override;
+
+    /**
+     * Set attached node
+     */
+    void SetNode(Ptr<Node> node) override;
+
+    /**
+     * Whether this device needs ARP
+     */
+    bool NeedsArp() const override;
+
+    /**
      * Send packet
      */
     bool Send(Ptr<Packet> packet, const Address& dest, uint16_t protocolNumber) override;
@@ -178,7 +200,7 @@ class Cc2420NetDevice : public NetDevice
     /**
      * Set promiscuous receive callback
      */
-    void SetPromiscuousReceiveCallback(NetDevice::PromiscuousReceiveCallback cb) override;
+    void SetPromiscReceiveCallback(NetDevice::PromiscReceiveCallback cb) override;
 
     /**
      * Supports sending and receiving with addresses
@@ -188,12 +210,23 @@ class Cc2420NetDevice : public NetDevice
     /**
      * Get device name
      */
-    std::string GetName() const override;
+    std::string GetName() const;
 
     /**
      * Set device name
      */
-    void SetName(const std::string& name) override;
+    void SetName(const std::string& name);
+
+    /**
+     * Callback for packet path debugging in NetDevice layer
+     * Arguments: event name, packet
+     */
+    typedef Callback<void, std::string, Ptr<const Packet>> DebugPacketTraceCallback;
+
+    /**
+     * Set debug callback for NetDevice packet path tracing
+     */
+    void SetDebugPacketTraceCallback(DebugPacketTraceCallback callback);
 
   private:
     // =============================================================================
@@ -210,6 +243,10 @@ class Cc2420NetDevice : public NetDevice
      */
     void TxCompleteFromMac(int status);
 
+    void OnMacDebugTrace(std::string eventName, Ptr<const Packet> packet);
+    void OnPhyDebugTrace(std::string eventName, Ptr<const Packet> packet);
+    void EmitDebugTrace(const std::string& eventName, Ptr<const Packet> packet) const;
+
     // =============================================================================
     // Member Variables
     // =============================================================================
@@ -217,6 +254,7 @@ class Cc2420NetDevice : public NetDevice
     Ptr<Cc2420Mac> m_mac;
     Ptr<Cc2420Phy> m_phy;
     Ptr<SpectrumChannel> m_channel;
+    Ptr<Node> m_node;
 
     uint32_t m_ifIndex;
     std::string m_name;
@@ -225,11 +263,12 @@ class Cc2420NetDevice : public NetDevice
     bool m_linkUp;
 
     NetDevice::ReceiveCallback m_receiveCallback;
-    NetDevice::PromiscuousReceiveCallback m_promiscuousReceiveCallback;
+    NetDevice::PromiscReceiveCallback m_promiscuousReceiveCallback;
     Callback<void> m_linkChangeCallback;
+    DebugPacketTraceCallback m_debugPacketTraceCallback;
 };
 
-} // namespace cc2420
+} // namespace wsn
 } // namespace ns3
 
 #endif // CC2420_NET_DEVICE_H

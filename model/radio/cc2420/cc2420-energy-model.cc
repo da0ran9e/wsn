@@ -53,30 +53,10 @@ PowerConfig::PowerConfig()
 TypeId
 Cc2420EnergyModel::GetTypeId()
 {
-    static TypeId tid = TypeId("ns3::cc2420::Cc2420EnergyModel")
-        .SetParent<DeviceEnergyModel>()
+    static TypeId tid = TypeId("ns3::wsn::Cc2420EnergyModel")
+        .SetParent<energy::DeviceEnergyModel>()
         .SetGroupName("Energy")
-        .AddConstructor<Cc2420EnergyModel>()
-        .AddAttribute("SleepPower",
-                      "Sleep mode power consumption (mW)",
-                      DoubleValue(1.4),
-                      MakeDoubleAccessor(&Cc2420EnergyModel::m_powerConfig.sleepPowerMw),
-                      MakeDoubleChecker<double>())
-        .AddAttribute("IdlePower",
-                      "Idle/RX listening power consumption (mW)",
-                      DoubleValue(62.0),
-                      MakeDoubleAccessor(&Cc2420EnergyModel::m_powerConfig.idlePowerMw),
-                      MakeDoubleChecker<double>())
-        .AddAttribute("RxPower",
-                      "RX power consumption (mW)",
-                      DoubleValue(62.0),
-                      MakeDoubleAccessor(&Cc2420EnergyModel::m_powerConfig.rxPowerMw),
-                      MakeDoubleChecker<double>())
-        .AddAttribute("CcaPower",
-                      "CCA power consumption (mW)",
-                      DoubleValue(62.0),
-                      MakeDoubleAccessor(&Cc2420EnergyModel::m_powerConfig.ccaPowerMw),
-                      MakeDoubleChecker<double>());
+        .AddConstructor<Cc2420EnergyModel>();
     return tid;
 }
 
@@ -100,12 +80,12 @@ Cc2420EnergyModel::~Cc2420EnergyModel()
 // =============================================================================
 
 void
-Cc2420EnergyModel::SetEnergySource(Ptr<EnergySource> source)
+Cc2420EnergyModel::SetEnergySource(Ptr<energy::EnergySource> source)
 {
     m_energySource = source;
 }
 
-Ptr<EnergySource>
+Ptr<energy::EnergySource>
 Cc2420EnergyModel::GetEnergySource() const
 {
     return m_energySource;
@@ -149,6 +129,8 @@ void
 Cc2420EnergyModel::HandlePhyStateChange(PhyState oldState, PhyState newState)
 {
     NS_LOG_FUNCTION(this << GetStateName(oldState) << GetStateName(newState));
+    EmitDebugTrace("HandlePhyStateChange:" + GetStateName(oldState) + "->" + GetStateName(newState),
+                   nullptr);
     
     // Update energy consumption for the previous state
     UpdateEnergyConsumption();
@@ -174,6 +156,7 @@ Cc2420EnergyModel::HandleEnergyDepletion()
 {
     NS_LOG_WARN("Energy depleted at " << Simulator::Now().GetSeconds() << "s");
     m_energyDepleted = true;
+    EmitDebugTrace("HandleEnergyDepletion", nullptr);
 }
 
 void
@@ -181,6 +164,7 @@ Cc2420EnergyModel::HandleEnergyRecharged()
 {
     NS_LOG_INFO("Energy recharged at " << Simulator::Now().GetSeconds() << "s");
     m_energyDepleted = false;
+    EmitDebugTrace("HandleEnergyRecharged", nullptr);
 }
 
 void
@@ -246,6 +230,21 @@ std::string
 Cc2420EnergyModel::GetStateName(PhyState state) const
 {
     return Cc2420Phy::GetStateName(state);
+}
+
+void
+Cc2420EnergyModel::SetDebugPacketTraceCallback(DebugPacketTraceCallback callback)
+{
+    m_debugPacketTraceCallback = callback;
+}
+
+void
+Cc2420EnergyModel::EmitDebugTrace(const std::string& eventName, Ptr<const Packet> packet) const
+{
+    if (!m_debugPacketTraceCallback.IsNull())
+    {
+        m_debugPacketTraceCallback(eventName, packet);
+    }
 }
 
 } // namespace cc2420

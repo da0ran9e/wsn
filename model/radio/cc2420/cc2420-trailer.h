@@ -15,7 +15,7 @@
 
 namespace ns3
 {
-namespace cc2420
+namespace wsn
 {
 
 /**
@@ -102,7 +102,7 @@ class Cc2420Trailer : public Trailer
     uint8_t m_lqi;
 };
 
-} // namespace cc2420
+} // namespace wsn
 } // namespace ns3
 
 #endif // CC2420_TRAILER_H

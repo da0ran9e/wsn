@@ -44,8 +44,10 @@ build_lib_example(
 )
 
 build_lib_example(
-  NAME uav-example
-  SOURCE_FILES uav-example.cc
+  NAME example2
+  SOURCE_FILES 
+    example2.cc
+    scenarios/scenario1.cc
   LIBRARIES_TO_LINK
     ${libcore}
     ${libnetwork}
@@ -56,15 +58,28 @@ build_lib_example(
     ${libwsn}
 )
 
-build_lib_example(
-  NAME cell-forming-example
-  SOURCE_FILES cell-forming-example.cc
-  LIBRARIES_TO_LINK
-    ${libcore}
-    ${libnetwork}
-    ${libmobility}
-    ${libspectrum}
-    ${libantenna}
-    ${libpropagation}
-    ${libwsn}
-)
+#build_lib_example(
+#  NAME uav-example
+#  SOURCE_FILES uav-example.cc
+#  LIBRARIES_TO_LINK
+#    ${libcore}
+#    ${libnetwork}
+#    ${libmobility}
+#    ${libspectrum}
+#    ${libantenna}
+#    ${libpropagation}
+#    ${libwsn}
+#)
+
+#build_lib_example(
+#  NAME cell-forming-example
+#  SOURCE_FILES cell-forming-example.cc
+#  LIBRARIES_TO_LINK
+#    ${libcore}
+#    ${libnetwork}
+#    ${libmobility}
+#    ${libspectrum}
+#    ${libantenna}
+#    ${libpropagation}
+#    ${libwsn}
+#)

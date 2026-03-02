@@ -21,6 +21,7 @@
 #include "ns3/traced-value.h"
 
 #include <map>
+#include <string>
 
 namespace ns3
 {
@@ -68,9 +69,15 @@ struct PowerConfig
  * - Power consumption per state and TX level
  * - Energy depletion detection
  */
-class Cc2420EnergyModel : public DeviceEnergyModel
+class Cc2420EnergyModel : public energy::DeviceEnergyModel
 {
   public:
+    /**
+     * Callback for packet path/state debugging in Energy layer
+     * Arguments: event name, packet (nullable)
+     */
+    typedef Callback<void, std::string, Ptr<const Packet>> DebugPacketTraceCallback;
+
     /**
      * @brief Get the TypeId
      * @return the TypeId
@@ -88,13 +95,13 @@ class Cc2420EnergyModel : public DeviceEnergyModel
      * @brief Set the energy source
      * @param source the EnergySource
      */
-    void SetEnergySource(Ptr<EnergySource> source) override;
+    void SetEnergySource(Ptr<energy::EnergySource> source) override;
 
     /**
      * @brief Get the energy source
      * @return the EnergySource
      */
-    Ptr<EnergySource> GetEnergySource() const;
+    Ptr<energy::EnergySource> GetEnergySource() const;
 
     /**
      * @brief Set the PHY layer
@@ -155,6 +162,11 @@ class Cc2420EnergyModel : public DeviceEnergyModel
      */
     void HandleEnergyChanged() override;
 
+    /**
+     * Set debug callback for Energy layer tracing
+     */
+    void SetDebugPacketTraceCallback(DebugPacketTraceCallback callback);
+
   private:
     // =============================================================================
     // Helper Methods
@@ -180,7 +192,7 @@ class Cc2420EnergyModel : public DeviceEnergyModel
     // =============================================================================
 
     // Energy source and tracking
-    Ptr<EnergySource> m_energySource;
+    Ptr<energy::EnergySource> m_energySource;
     double m_totalEnergyJ;          // Total energy consumed (Joules)
     TracedValue<double> m_totalEnergyTrace;
 
@@ -197,9 +209,12 @@ class Cc2420EnergyModel : public DeviceEnergyModel
 
     // Monitoring
     bool m_energyDepleted;
+    DebugPacketTraceCallback m_debugPacketTraceCallback;
+
+    void EmitDebugTrace(const std::string& eventName, Ptr<const Packet> packet) const;
 };
 
-} // namespace cc2420
+} // namespace wsn
 } // namespace ns3
 
 #endif // CC2420_ENERGY_MODEL_H

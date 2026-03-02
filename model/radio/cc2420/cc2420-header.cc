@@ -37,7 +37,7 @@ Cc2420Header::~Cc2420Header()
 TypeId
 Cc2420Header::GetTypeId()
 {
-    static TypeId tid = TypeId("ns3::cc2420::Cc2420Header")
+    static TypeId tid = TypeId("ns3::wsn::Cc2420Header")
         .SetParent<Header>()
         .SetGroupName("Cc2420")
         .AddConstructor<Cc2420Header>();

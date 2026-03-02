@@ -11,6 +11,9 @@
 #include "ns3/spectrum-value.h"
 #include "ns3/mobility-model.h"
 #include "ns3/antenna-model.h"
+#include "ns3/double.h"
+#include "ns3/net-device.h"
+#include "ns3/spectrum-channel.h"
 
 namespace ns3
 {
@@ -27,7 +30,7 @@ NS_OBJECT_ENSURE_REGISTERED(Cc2420Phy);
 TypeId
 Cc2420Phy::GetTypeId()
 {
-    static TypeId tid = TypeId("ns3::cc2420::Cc2420Phy")
+    static TypeId tid = TypeId("ns3::wsn::Cc2420Phy")
         .SetParent<SpectrumPhy>()
         .SetGroupName("Cc2420")
         .AddConstructor<Cc2420Phy>()
@@ -102,12 +105,18 @@ Cc2420Phy::SetChannel(Ptr<SpectrumChannel> c)
     m_channel = c;
 }
 
-int
+Ptr<Object>
+Cc2420Phy::GetAntenna() const
+{
+    return m_antenna;
+}
+
+void
 Cc2420Phy::StartRx(Ptr<SpectrumSignalParameters> params)
 {
     NS_LOG_FUNCTION(this << params);
+    EmitDebugTrace("StartRx", nullptr);
     // TODO: Implement RX signal processing
-    return 0;
 }
 
 Ptr<NetDevice>
@@ -142,6 +151,7 @@ void
 Cc2420Phy::TransmitPacket(Ptr<Packet> packet, Time duration)
 {
     NS_LOG_FUNCTION(this << packet << duration);
+    EmitDebugTrace("TransmitPacket", packet);
     // TODO: Implement TX
 }
 
@@ -220,6 +230,39 @@ Cc2420Phy::GetRxSensitivity() const
     return m_rxSensitivityDbm;
 }
 
+bool
+Cc2420Phy::EvaluateReceptionFrom(Ptr<Cc2420Phy> txPhy, double& rssiDbm, uint8_t& lqi) const
+{
+    // Default outputs for safety
+    rssiDbm = m_noiseFloorDbm;
+    lqi = 0;
+
+    if (!txPhy || !m_mobility || !txPhy->GetMobility())
+    {
+        return false;
+    }
+
+    // Temporary PHY propagation model (to be replaced by full Spectrum RX path)
+    constexpr double kReferenceLossDb = 46.6776; // FSPL at 2.4 GHz, 1m
+    constexpr double kPathLossExponent = 3.0;
+
+    const double distance = m_mobility->GetDistanceFrom(txPhy->GetMobility());
+    const double distanceForLoss = std::max(1.0, distance);
+    const double pathLossDb =
+        kReferenceLossDb + 10.0 * kPathLossExponent * std::log10(distanceForLoss);
+
+    rssiDbm = txPhy->GetTxPower() - pathLossDb;
+    if (rssiDbm < m_rxSensitivityDbm)
+    {
+        return false;
+    }
+
+    const double snrDb = rssiDbm - m_noiseFloorDbm;
+    const double snrClamped = std::max(0.0, std::min(30.0, snrDb));
+    lqi = static_cast<uint8_t>(std::round((snrClamped / 30.0) * 255.0));
+    return true;
+}
+
 // =============================================================================
 // Callback Setup
 // =============================================================================
@@ -246,6 +289,12 @@ void
 Cc2420Phy::SetStateChangeCallback(StateChangeCallback callback)
 {
     m_stateChangeCallback = callback;
+}
+
+void
+Cc2420Phy::SetDebugPacketTraceCallback(DebugPacketTraceCallback callback)
+{
+    m_debugPacketTraceCallback = callback;
 }
 
 // =============================================================================
@@ -276,7 +325,8 @@ Cc2420Phy::RxComplete()
 void
 Cc2420Phy::ProcessSignalStart(Ptr<SpectrumSignalParameters> params)
 {
-    NS_LOG_FUNCTION(this);
+    NS_LOG_FUNCTION(this << params);
+    EmitDebugTrace("ProcessSignalStart", nullptr);
     // TODO: Implement signal start processing
 }
 
@@ -284,6 +334,7 @@ void
 Cc2420Phy::ProcessSignalEnd()
 {
     NS_LOG_FUNCTION(this);
+    EmitDebugTrace("ProcessSignalEnd", nullptr);
     // TODO: Implement signal end processing
 }
 
@@ -309,6 +360,15 @@ Cc2420Phy::IsPacketDestroyed(const ReceivedSignal& signal) const
     if (signal.maxInterference > (m_rxSensitivityDbm - 6.0))
         return true;
     return false;
+}
+
+void
+Cc2420Phy::EmitDebugTrace(const std::string& eventName, Ptr<const Packet> packet) const
+{
+    if (!m_debugPacketTraceCallback.IsNull())
+    {
+        m_debugPacketTraceCallback(eventName, packet);
+    }
 }
 
 } // namespace cc2420

@@ -10,10 +10,18 @@
 #include "ns3/simulator.h"
 #include "ns3/random-variable-stream.h"
 
+#include <algorithm>
+#include <vector>
+
 namespace ns3
 {
 namespace wsn
 {
+
+namespace
+{
+std::vector<Cc2420Mac*> g_allMacs;
+}
 
 NS_LOG_COMPONENT_DEFINE("Cc2420Mac");
 NS_OBJECT_ENSURE_REGISTERED(Cc2420Mac);
@@ -25,30 +33,10 @@ NS_OBJECT_ENSURE_REGISTERED(Cc2420Mac);
 TypeId
 Cc2420Mac::GetTypeId()
 {
-    static TypeId tid = TypeId("ns3::cc2420::Cc2420Mac")
+    static TypeId tid = TypeId("ns3::wsn::Cc2420Mac")
         .SetParent<Object>()
         .SetGroupName("Cc2420")
-        .AddConstructor<Cc2420Mac>()
-        .AddAttribute("MinBE",
-                      "Minimum Backoff Exponent",
-                      UintegerValue(3),
-                      MakeUintegerAccessor(&Cc2420Mac::m_config.macMinBE),
-                      MakeUintegerChecker<uint8_t>())
-        .AddAttribute("MaxBE",
-                      "Maximum Backoff Exponent",
-                      UintegerValue(5),
-                      MakeUintegerAccessor(&Cc2420Mac::m_config.macMaxBE),
-                      MakeUintegerChecker<uint8_t>())
-        .AddAttribute("MaxCSMABackoffs",
-                      "Maximum CSMA-CA Backoffs",
-                      UintegerValue(4),
-                      MakeUintegerAccessor(&Cc2420Mac::m_config.macMaxCSMABackoffs),
-                      MakeUintegerChecker<uint8_t>())
-        .AddAttribute("MaxFrameRetries",
-                      "Maximum Frame Retries",
-                      UintegerValue(3),
-                      MakeUintegerAccessor(&Cc2420Mac::m_config.macMaxFrameRetries),
-                      MakeUintegerChecker<uint8_t>());
+        .AddConstructor<Cc2420Mac>();
     return tid;
 }
 
@@ -74,11 +62,19 @@ Cc2420Mac::Cc2420Mac()
     m_config.macMaxFrameRetries = 3;
     m_config.txAckRequest = true;
     m_config.rxOnWhenIdle = true;
+
+    g_allMacs.push_back(this);
 }
 
 Cc2420Mac::~Cc2420Mac()
 {
     NS_LOG_FUNCTION(this);
+
+    auto it = std::find(g_allMacs.begin(), g_allMacs.end(), this);
+    if (it != g_allMacs.end())
+    {
+        g_allMacs.erase(it);
+    }
 }
 
 // =============================================================================
@@ -113,9 +109,7 @@ void
 Cc2420Mac::Start()
 {
     NS_LOG_FUNCTION(this);
-    // TODO: Start MAC operations
-    // Set PHY to RX mode if configured
-    // Initialize sequence number
+    m_macState = MAC_IDLE;
 }
 
 // =============================================================================
@@ -126,7 +120,59 @@ bool
 Cc2420Mac::McpsDataRequest(Ptr<Packet> packet, Mac16Address destAddr, bool requestAck)
 {
     NS_LOG_FUNCTION(this << packet << destAddr << requestAck);
-    // TODO: Implement MCPS-DATA.request
+    EmitDebugTrace("McpsDataRequest", packet);
+
+    if (!packet)
+    {
+        return false;
+    }
+
+    // Minimal functional MAC path: send through CC2420 MAC and dispatch to peers.
+    // This keeps all traffic traversing cc2420-mac while PHY is still skeleton.
+    m_txCount++;
+
+    const bool isBroadcast = (destAddr == Mac16Address("FF:FF"));
+    const Mac16Address src = m_config.shortAddress;
+
+    for (Cc2420Mac* peer : g_allMacs)
+    {
+        if (peer == nullptr || peer == this)
+        {
+            continue;
+        }
+
+        MacConfig peerCfg = peer->GetMacConfig();
+        if (!isBroadcast && peerCfg.shortAddress != destAddr)
+        {
+            continue;
+        }
+
+        // PHY decides link viability and reports RSSI/LQI.
+        double rssiDbm = -80.0;
+        uint8_t lqi = 255;
+
+        if (!(m_phy && peer->m_phy && peer->m_phy->EvaluateReceptionFrom(m_phy, rssiDbm, lqi)))
+        {
+            continue;
+        }
+
+        Ptr<Packet> rxCopy = packet->Copy();
+        Simulator::ScheduleNow([peer, rxCopy, src, rssiDbm, lqi]() {
+            peer->EmitDebugTrace("RxDispatchFromPeer", rxCopy);
+            peer->FrameReceptionCallback(rxCopy, rssiDbm, lqi);
+            if (!peer->m_mcpsDataIndicationCallback.IsNull())
+            {
+                peer->EmitDebugTrace("McpsDataIndication", rxCopy);
+                peer->m_mcpsDataIndicationCallback(rxCopy, src, rssiDbm);
+            }
+        });
+    }
+
+    if (!m_mcpsDataConfirmCallback.IsNull())
+    {
+        Simulator::ScheduleNow([this]() { m_mcpsDataConfirmCallback(0); });
+    }
+
     return true;
 }
 
@@ -138,7 +184,8 @@ void
 Cc2420Mac::FrameReceptionCallback(Ptr<Packet> packet, double rssi, uint8_t lqi)
 {
     NS_LOG_FUNCTION(this << packet << rssi << (uint16_t)lqi);
-    // TODO: Implement frame reception
+    EmitDebugTrace("FrameReceptionCallback", packet);
+    m_rxCount++;
 }
 
 void
@@ -211,6 +258,12 @@ Cc2420Mac::SetMcpsDataConfirmCallback(McpsDataConfirmCallback callback)
     m_mcpsDataConfirmCallback = callback;
 }
 
+void
+Cc2420Mac::SetDebugPacketTraceCallback(DebugPacketTraceCallback callback)
+{
+    m_debugPacketTraceCallback = callback;
+}
+
 // =============================================================================
 // Private Helper Methods
 // =============================================================================
@@ -234,7 +287,18 @@ Cc2420Mac::HandleAckPacket(Ptr<Packet> packet)
 void
 Cc2420Mac::ClearCurrentPacket()
 {
-    // TODO: Reset current packet and related state
+    m_currentPacket = nullptr;
+    m_macState = MAC_IDLE;
+    m_retries = 0;
+}
+
+void
+Cc2420Mac::EmitDebugTrace(const std::string& eventName, Ptr<const Packet> packet) const
+{
+    if (!m_debugPacketTraceCallback.IsNull())
+    {
+        m_debugPacketTraceCallback(eventName, packet);
+    }
 }
 
 } // namespace cc2420
