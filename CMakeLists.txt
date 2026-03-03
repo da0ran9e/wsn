@@ -38,6 +38,12 @@ build_lib(
     model/routing/scenario1/ground-node-routing.cc
     model/routing/scenario1/uav-node-routing.cc
     model/routing/scenario1/fragment.cc
+    model/routing/scenario3/node-routing.cc
+    model/routing/scenario3/ground-node-routing.cc
+    model/routing/scenario3/ground-node-routing/global-startup-phase.cc
+    model/routing/scenario3/uav-node-routing.cc
+    model/routing/scenario3/fragment.cc
+    model/routing/scenario3/packet-header.cc
     model/routing/wsn-forwarder.cc
     model/routing/wsn-routing-header.cc
     model/routing/wsn-routing-protocol.cc
@@ -84,6 +90,12 @@ build_lib(
     model/routing/scenario1/ground-node-routing.h
     model/routing/scenario1/uav-node-routing.h
     model/routing/scenario1/fragment.h
+    model/routing/scenario3/node-routing.h
+    model/routing/scenario3/ground-node-routing.h
+    model/routing/scenario3/ground-node-routing/global-startup-phase.h
+    model/routing/scenario3/uav-node-routing.h
+    model/routing/scenario3/fragment.h
+    model/routing/scenario3/packet-header.h
     model/routing/wsn-forwarder.h
     model/routing/wsn-routing-header.h
     model/routing/wsn-routing-protocol.h
