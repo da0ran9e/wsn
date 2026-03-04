@@ -88,9 +88,9 @@ OnGroundNodeReceivePacket(uint32_t nodeId, Ptr<Packet> packet, Mac16Address src,
         if (mainHeader.GetMessageType() == MSG_TYPE_GLOBAL_SETUP_PHASE)
         {
             uint32_t sourceNodeId = mainHeader.GetSourceNodeId();
-            NS_LOG_INFO("t=" << Simulator::Now().GetSeconds() << "s Ground Node " << nodeId
-                        << " received GLOBAL SETUP PHASE packet from node " << sourceNodeId
-                        << " (size=" << packet->GetSize() << " bytes)");
+            // NS_LOG_INFO("t=" << Simulator::Now().GetSeconds() << "s Ground Node " << nodeId
+            //             << " received GLOBAL SETUP PHASE packet from node " << sourceNodeId
+            //             << " (size=" << packet->GetSize() << " bytes)");
 
             // Delegate to Global Setup Phase handler
             HandleGlobalStartupPhasePacket(nodeId, packet, sourceNodeId, rssiDbm);
@@ -119,11 +119,11 @@ OnGroundNodeReceivePacket(uint32_t nodeId, Ptr<Packet> packet, Mac16Address src,
             double delta = EvaluateConfidenceFromFragment(fragData.baseConfidence, rssiDbm);
             state.confidence = std::min(1.0, state.confidence + delta);
             
-            NS_LOG_DEBUG("Ground Node " << nodeId << " processed fragment #" << fragData.fragmentId
-                         << " from UAV " << fragData.uavSourceId
-                         << " (type=" << fragData.sensorType << ", conf=" << fragData.baseConfidence
-                         << ") | Total confidence: " << state.confidence
-                         << " | Fragments: " << state.fragmentsProcessed);
+            // NS_LOG_DEBUG("Ground Node " << nodeId << " processed fragment #" << fragData.fragmentId
+            //              << " from UAV " << fragData.uavSourceId
+            //              << " (type=" << fragData.sensorType << ", conf=" << fragData.baseConfidence
+            //              << ") | Total confidence: " << state.confidence
+            //              << " | Fragments: " << state.fragmentsProcessed);
             
             // Check alert condition
             if (!state.alerted && state.confidence >= state.confidenceThreshold)
@@ -142,9 +142,9 @@ OnGroundNodeReceivePacket(uint32_t nodeId, Ptr<Packet> packet, Mac16Address src,
         }
     }
 
-    NS_LOG_INFO("t=" << Simulator::Now().GetSeconds() << "s Ground Node " << nodeId 
-                     << " RX from " << src << " size=" << packet->GetSize()
-                     << " RSSI=" << rssiDbm << " dBm");
+    // NS_LOG_INFO("t=" << Simulator::Now().GetSeconds() << "s Ground Node " << nodeId 
+    //                  << " RX from " << src << " size=" << packet->GetSize()
+    //                  << " RSSI=" << rssiDbm << " dBm");
 }
 
 /**
@@ -200,7 +200,7 @@ InitializeGroundNodeRouting(NetDeviceContainer devices, uint32_t packetSize)
         AttachGroundRxCallback(devices.Get(i), i);
     }
 
-    NS_LOG_INFO("Ground node routing initialized for " << devices.GetN() << " devices");
+    //NS_LOG_INFO("Ground node routing initialized for " << devices.GetN() << " devices");
 }
 
 void
@@ -278,9 +278,9 @@ ProcessGroundLogicFragment(uint32_t nodeId,
     if (!state.alerted && state.confidence >= state.confidenceThreshold)
     {
         state.alerted = true;
-        NS_LOG_INFO("t=" << Simulator::Now().GetSeconds() << "s Ground Node " << nodeId
-                          << " ALERT confidence=" << state.confidence
-                          << " fragments=" << state.fragmentsProcessed);
+        // NS_LOG_INFO("t=" << Simulator::Now().GetSeconds() << "s Ground Node " << nodeId
+        //                   << " ALERT confidence=" << state.confidence
+        //                   << " fragments=" << state.fragmentsProcessed);
     }
 }
 

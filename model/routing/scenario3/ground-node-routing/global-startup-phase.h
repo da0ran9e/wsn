@@ -51,6 +51,65 @@ namespace scenario3
  * @see ScheduleScenario3GlobalStartupPhase in scenario3.cc
  */
 
+// Global topology parameters computed during EnsureGlobalHexTopology
+// These represent the network's global knowledge about hex-cell partitioning
+extern double g_hexCellRadius;          ///< Radius of hex cells in meters
+extern double g_logicalNeighborRadius;  ///< Radius for logical neighbor discovery
+extern int32_t g_hexGridOffset;         ///< Offset for computing hex cell IDs
+
+/**
+ * @brief Global network node topology information
+ *
+ * This structure stores per-node topology information computed during the global setup phase.
+ * It provides global network knowledge that can be accessed by scenario-level code.
+ */
+struct GlobalNodeInfo
+{
+    uint32_t nodeId = 0;               ///< Node ID
+    int32_t cellId = -1;               ///< Hex cell ID this node belongs to
+    int32_t q = 0;                     ///< Hex cell q coordinate (axial)
+    int32_t r = 0;                     ///< Hex cell r coordinate (axial)
+    uint32_t cellColor = 0;            ///< 3-coloring of the hex cell (0, 1, or 2)
+    uint32_t cellLeaderId = 0;         ///< Cell leader node ID
+    int32_t intraCellParentId = -1;    ///< Parent in intra-cell tree
+    uint32_t intraCellDepth = 0;       ///< Depth in intra-cell tree
+    std::set<uint32_t> logicalNeighbors; ///< Logical neighbor nodes (within range)
+    
+    // Extended topology information
+    double posX = 0.0;                 ///< Node X coordinate
+    double posY = 0.0;                 ///< Node Y coordinate
+    std::map<int32_t, int32_t> parentByGatewayCell; ///< Routing: targetCellId -> parent node for that gateway tree
+    std::map<int32_t, uint32_t> depthByGatewayCell; ///< Routing: targetCellId -> depth to gateway in that tree
+    std::set<int32_t> neighborCellIds; ///< IDs of neighboring cells (for gateway routing)
+};
+
+// Global network topology: maps nodeId -> topology info
+// Populated after global setup phase completes
+extern std::unordered_map<uint32_t, GlobalNodeInfo> g_globalNodeTopology;
+
+/**
+ * @brief Get nodes in a specific hex cell
+ *
+ * @param cellId The hex cell ID
+ * @return Vector of node IDs in the specified cell
+ */
+std::vector<uint32_t> GetNodesInCell(int32_t cellId);
+
+/**
+ * @brief Get all unique cell IDs in the network
+ *
+ * @return Set of all cell IDs
+ */
+std::set<int32_t> GetAllCellIds();
+
+/**
+ * @brief Get node information by node ID
+ *
+ * @param nodeId The node ID to query
+ * @return Pointer to GlobalNodeInfo, or nullptr if not found
+ */
+const GlobalNodeInfo* GetNodeInfo(uint32_t nodeId);
+
 /**
  * @brief Start the Global Setup Phase for a single node
  *

@@ -109,26 +109,32 @@ void ScheduleScenario3GlobalStartupPhase(NodeContainer nodes,
  * @brief Schedule Global Setup Phase completion for all ground nodes (Network-level)
  *
  * Coordinates the completion signal for all ground nodes after the startup phase ends.
+ * Also selects a random signal source location within the grid for future use.
  * Calls HandleGlobalSetupPhaseCompletion() for each node with the final state snapshot.
  *
- * **This is a network-level function** that schedules per-node completion handlers.
+ * **This is a network-level function** that schedules per-node completion handlers
+ * and signal source location selection.
  * Per-node handlers are in ground-node-routing/global-startup-phase.cc.
  *
  * @param nodes NodeContainer with all ground nodes
  * @param gridSize Size of the ground node grid
  * @param completionTime Time (in seconds) when completion signal is sent
  * @param totalActivatedNodes Total number of nodes that were activated during startup
+ * @param spacing Grid node spacing in meters (used to compute grid boundaries)
  *
  * @example
  * ```cpp
  * NodeContainer groundNodes;
- * ScheduleScenario3GlobalSetupPhaseCompletion(groundNodes, 10, 6.0, 100);
+ * ScheduleScenario3GlobalSetupPhaseCompletion(groundNodes, 10, 6.0, 100, 20.0);
+ * // After this, signal source location can be retrieved via:
+ * // scenario3::SignalSourceLocation::GetLocation()
  * ```
  */
 void ScheduleScenario3GlobalSetupPhaseCompletion(NodeContainer nodes,
                                                  uint32_t gridSize,
                                                  double completionTime,
-                                                 uint32_t totalActivatedNodes);
+                                                 uint32_t totalActivatedNodes,
+                                                 double spacing);
 
 /**
  * @brief Schedule ground traffic pattern (Network-level)

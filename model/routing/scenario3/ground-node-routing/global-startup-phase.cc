@@ -18,6 +18,7 @@
  */
 
 #include "global-startup-phase.h"
+#include "global-startup-phase-parameters.h"
 #include "../packet-header.h"
 
 #include "ns3/cc2420-net-device.h"
@@ -109,15 +110,12 @@ struct CellLogicalTopology
     std::map<int32_t, uint32_t> gateways; ///< neighborCellId -> CGW node id in this cell
 };
 
-// Per-node state tracking
+// Per-node state tracking (internal to this module)
 std::map<uint32_t, GlobalSetupPhaseState> g_setupPhaseStatePerNode;
 std::unordered_map<uint32_t, NodeLogicalTopology> g_nodeLogicalTopology;
 std::unordered_map<int32_t, CellLogicalTopology> g_cellLogicalTopology;
 bool g_globalTopologyComputed = false;
 uint32_t g_globalTopologyNodeCount = 0;
-double g_hexCellRadius = 0.0;
-double g_logicalNeighborRadius = 0.0;
-int32_t g_hexGridOffset = 0;
 bool g_printedDiscoveryTableHeader = false;
 bool g_printedCompletionTableHeader = false;
 bool g_printedLogicDiscoveryTableHeader = false;
@@ -218,14 +216,17 @@ EnsureGlobalHexTopology(NodeContainer nodes, uint32_t gridSize)
 
     if (minPositiveDistance == std::numeric_limits<double>::max())
     {
-        minPositiveDistance = 50.0;
+        minPositiveDistance = GlobalSetupParams::FALLBACK_MIN_DISTANCE;
     }
 
     // Increase logical connection range to get denser neighbor graph
     // and avoid sparse intra-cell trees.
-    g_hexCellRadius = std::max(1.0, minPositiveDistance * 1.60);
-    g_logicalNeighborRadius = std::max(1.0, minPositiveDistance * 1.90);
-    g_hexGridOffset = static_cast<int32_t>(std::max<uint32_t>(32, gridSize * 8 + 8));
+    g_hexCellRadius = std::max(GlobalSetupParams::MIN_HEX_CELL_RADIUS, 
+                                minPositiveDistance * GlobalSetupParams::HEX_CELL_RADIUS_MULTIPLIER);
+    g_logicalNeighborRadius = std::max(GlobalSetupParams::MIN_LOGICAL_NEIGHBOR_RADIUS,
+                                        minPositiveDistance * GlobalSetupParams::LOGICAL_NEIGHBOR_RADIUS_MULTIPLIER);
+    g_hexGridOffset = static_cast<int32_t>(std::max(GlobalSetupParams::GRID_OFFSET_BASE, 
+                                                      gridSize * GlobalSetupParams::GRID_OFFSET_MULTIPLIER + GlobalSetupParams::GRID_OFFSET_EXTRA));
 
     for (uint32_t i = 0; i < totalNodes; ++i)
     {
@@ -264,11 +265,10 @@ EnsureGlobalHexTopology(NodeContainer nodes, uint32_t gridSize)
         }
     }
 
-    static const int kHexDirs[6][2] = {{1, 0}, {1, -1}, {0, -1}, {-1, 0}, {-1, 1}, {0, 1}};
     for (auto& kv : g_cellLogicalTopology)
     {
         CellLogicalTopology& cell = kv.second;
-        for (const auto& d : kHexDirs)
+        for (const auto& d : GlobalSetupParams::HEX_DIRECTIONS)
         {
             const int32_t nq = cell.q + d[0];
             const int32_t nr = cell.r + d[1];
@@ -460,8 +460,102 @@ EnsureGlobalHexTopology(NodeContainer nodes, uint32_t gridSize)
 
     g_globalTopologyComputed = true;
     g_globalTopologyNodeCount = totalNodes;
+
+    // Populate global node topology for external access
+    g_globalNodeTopology.clear();
+    for (const auto& entry : g_nodeLogicalTopology)
+    {
+        const NodeLogicalTopology& topo = entry.second;
+        GlobalNodeInfo info;
+        info.nodeId = topo.nodeId;
+        info.cellId = topo.cellId;
+        info.q = topo.q;
+        info.r = topo.r;
+        info.cellColor = topo.cellColor;
+        info.cellLeaderId = topo.cellLeaderId;
+        info.intraCellParentId = topo.intraCellParentId;
+        info.intraCellDepth = topo.intraCellDepth;
+        info.logicalNeighbors = topo.logicalNeighbors;
+        
+        // Copy extended topology information
+        info.parentByGatewayCell = topo.parentByGatewayCell;
+        info.depthByGatewayCell = topo.depthByGatewayCell;
+        
+        // Get node coordinates from mobility model
+        if (topo.nodeId < nodes.GetN())
+        {
+            Ptr<Node> node = nodes.Get(topo.nodeId);
+            Ptr<MobilityModel> mobility = node ? node->GetObject<MobilityModel>() : nullptr;
+            if (mobility)
+            {
+                Vector pos = mobility->GetPosition();
+                info.posX = pos.x;
+                info.posY = pos.y;
+            }
+        }
+        
+        // Get neighboring cell IDs from cell topology
+        auto cellIt = g_cellLogicalTopology.find(topo.cellId);
+        if (cellIt != g_cellLogicalTopology.end())
+        {
+            info.neighborCellIds = cellIt->second.neighbors;
+        }
+        
+        g_globalNodeTopology[topo.nodeId] = info;
+    }
 }
 } // anonymous namespace
+
+// Global topology parameters - accessible from scenario3.cc and other modules
+// These are computed during EnsureGlobalHexTopology() and represent the network's
+// global knowledge about hex-cell partitioning.
+double g_hexCellRadius = 0.0;
+double g_logicalNeighborRadius = 0.0;
+int32_t g_hexGridOffset = 0;
+
+// Global network node topology - accessible from scenario3.cc
+// Maps nodeId -> GlobalNodeInfo with cell, neighbors, and tree info
+std::unordered_map<uint32_t, GlobalNodeInfo> g_globalNodeTopology;
+
+//
+// HELPER FUNCTIONS FOR ACCESSING GLOBAL NODE TOPOLOGY
+//
+
+std::vector<uint32_t>
+GetNodesInCell(int32_t cellId)
+{
+    std::vector<uint32_t> nodes;
+    for (const auto& entry : g_globalNodeTopology)
+    {
+        if (entry.second.cellId == cellId)
+        {
+            nodes.push_back(entry.first);
+        }
+    }
+    return nodes;
+}
+
+std::set<int32_t>
+GetAllCellIds()
+{
+    std::set<int32_t> cellIds;
+    for (const auto& entry : g_globalNodeTopology)
+    {
+        cellIds.insert(entry.second.cellId);
+    }
+    return cellIds;
+}
+
+const GlobalNodeInfo*
+GetNodeInfo(uint32_t nodeId)
+{
+    auto it = g_globalNodeTopology.find(nodeId);
+    if (it != g_globalNodeTopology.end())
+    {
+        return &(it->second);
+    }
+    return nullptr;
+}
 
 //
 // GLOBAL SETUP PHASE ACTIVATION AND DISCOVERY (PER-NODE LOGIC)
@@ -517,8 +611,8 @@ StartGlobalSetupPhase(uint32_t nodeId,
         state.parentVariants = static_cast<uint32_t>(topo.parentByGatewayCell.size());
     }
 
-    NS_LOG_WARN("*** Node " << nodeId << " STARTING GLOBAL SETUP PHASE at t="
-                << Simulator::Now().GetSeconds() << "s ***");
+    // NS_LOG_WARN("*** Node " << nodeId << " STARTING GLOBAL SETUP PHASE at t="
+    //             << Simulator::Now().GetSeconds() << "s ***");
 
     if (!g_printedLogicDiscoveryTableHeader)
     {
@@ -544,8 +638,8 @@ StartGlobalSetupPhase(uint32_t nodeId,
     random->SetAttribute("Max", DoubleValue(0.05)); // 50ms max delay
     double randomDelay = random->GetValue();
 
-    NS_LOG_INFO("Node " << nodeId << " will broadcast discovery in "
-                << (randomDelay * 1000.0) << " ms");
+    // NS_LOG_INFO("Node " << nodeId << " will broadcast discovery in "
+    //             << (randomDelay * 1000.0) << " ms");
 
     // Schedule the discovery broadcast
     Simulator::Schedule(Seconds(randomDelay),
@@ -608,10 +702,10 @@ GlobalSetupPhaseDiscovery(uint32_t nodeId,
         return;
     }
     
-    NS_LOG_INFO("t=" << Simulator::Now().GetSeconds() << "s Node " << nodeId
-                << " broadcasting DISCOVERY packet"
-                << " (position: [" << row << "," << col 
-                << "], size: " << packetSize << " bytes)");
+    // NS_LOG_INFO("t=" << Simulator::Now().GetSeconds() << "s Node " << nodeId
+    //             << " broadcasting DISCOVERY packet"
+    //             << " (position: [" << row << "," << col 
+    //             << "], size: " << packetSize << " bytes)");
 
     if (!dev->Send(discoveryPacket, Mac16Address("FF:FF"), 0))
     {
@@ -678,7 +772,7 @@ HandleGlobalStartupPhasePacket(uint32_t nodeId,
 
     if (!g_printedDiscoveryTableHeader)
     {
-        NS_LOG_INFO("[DISCOVERY_RX]   t(s) | node | src | total_rx | neighbors |   RSSI(dBm) | new");
+        //NS_LOG_INFO("[DISCOVERY_RX]   t(s) | node | src | total_rx | neighbors |   RSSI(dBm) | new");
         g_printedDiscoveryTableHeader = true;
     }
 
@@ -693,7 +787,7 @@ HandleGlobalStartupPhasePacket(uint32_t nodeId,
              << " | " << std::setw(11) << rssiDbm
              << " | " << (isNewNeighbor ? "YES" : "NO");
 
-    NS_LOG_INFO(tableLog.str());
+    //NS_LOG_INFO(tableLog.str());
 
     HandleGlobalSetupPhaseDiscovery(nodeId,
                                     headerSourceNodeId,

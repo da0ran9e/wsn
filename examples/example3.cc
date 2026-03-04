@@ -78,7 +78,8 @@ main(int argc, char* argv[])
     ScheduleScenario3GlobalSetupPhaseCompletion(nodes,
                                                 groundConfig.gridSize,
                                                 completionTime,
-                                                totalActivatedNodes);
+                                                totalActivatedNodes,
+                                                groundConfig.spacing);
     
     NS_LOG_INFO("Global Setup Phase Completion scheduled at t=" << completionTime << "s");
 

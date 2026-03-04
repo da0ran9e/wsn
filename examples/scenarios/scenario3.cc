@@ -5,6 +5,7 @@
  */
 
 #include "scenario3.h"
+#include "parameters.h"
 #include "../../model/routing/scenario3/ground-node-routing.h"
 #include "../../model/routing/scenario3/uav-node-routing.h"
 #include "../../model/routing/scenario3/ground-node-routing/global-startup-phase.h"
@@ -44,9 +45,9 @@ NS_LOG_COMPONENT_DEFINE("Scenario3");
 static void
 OnGlobalStartupPhaseActivation(uint32_t nodeId, uint32_t gridSize)
 {
-    NS_LOG_INFO("t=" << Simulator::Now().GetSeconds() << "s Global Startup Phase: "
-                << "Node " << nodeId << " activated (grid position: row=" 
-                << (nodeId / gridSize) << ", col=" << (nodeId % gridSize) << ")");
+    // NS_LOG_INFO("t=" << Simulator::Now().GetSeconds() << "s Global Startup Phase: "
+    //             << "Node " << nodeId << " activated (grid position: row=" 
+    //             << (nodeId / gridSize) << ", col=" << (nodeId % gridSize) << ")");
 }
 
 /**
@@ -63,6 +64,217 @@ OnGlobalStartupPhaseCompletion(uint32_t totalNodes)
     NS_LOG_WARN("*** GLOBAL STARTUP PHASE COMPLETE *** "
                 << "All " << totalNodes << " ground nodes initialized at t=" 
                 << Simulator::Now().GetSeconds() << "s");
+}
+
+/**
+ * @brief Demonstrate accessing global network topology after setup phase
+ *
+ * This callback demonstrates that the entire network topology is observable
+ * after the global setup phase. It shows cell structure, node distribution,
+ * routing trees, and gateway information.
+ *
+ * @param totalNodes Total number of nodes in the network
+ */
+static void
+OnDemonstrateGlobalTopology(uint32_t totalNodes)
+{
+    NS_LOG_INFO("=== GLOBAL TOPOLOGY DEMONSTRATION at t=" << Simulator::Now().GetSeconds() << "s ===");
+    
+    // Show overall network statistics
+    std::set<int32_t> allCells = scenario3::GetAllCellIds();
+    NS_LOG_INFO("[NETWORK STATS] Total Nodes: " << scenario3::g_globalNodeTopology.size() 
+                << " | Total Cells: " << allCells.size()
+                << " | Hex Cell Radius: " << scenario3::g_hexCellRadius << " meters");
+    
+    // Show cell distribution statistics
+    std::map<int32_t, uint32_t> cellSizes;
+    for (const auto& entry : scenario3::g_globalNodeTopology)
+    {
+        cellSizes[entry.second.cellId]++;
+    }
+    
+    NS_LOG_INFO("[CELL DISTRIBUTION]");
+    for (const auto& entry : cellSizes)
+    {
+        NS_LOG_INFO("  Cell " << entry.first << ": " << entry.second << " nodes");
+    }
+    
+    // // Demonstrate accessing detailed node information
+    // NS_LOG_INFO("[SAMPLE NODE DETAILS]");
+    // uint32_t sampleCount = 0;
+    // for (const auto& entry : scenario3::g_globalNodeTopology)
+    // {
+    //     if (sampleCount >= 3) break; // Show first 3 nodes as samples
+        
+    //     const scenario3::GlobalNodeInfo* info = scenario3::GetNodeInfo(entry.first);
+    //     if (info)
+    //     {
+    //         NS_LOG_INFO("  Node " << info->nodeId 
+    //                     << " | Cell: " << info->cellId << " (q=" << info->q << ", r=" << info->r << ")"
+    //                     << " | Pos: (" << info->posX << ", " << info->posY << ")"
+    //                     << " | Leader: " << info->cellLeaderId
+    //                     << " | Neighbors: " << info->logicalNeighbors.size()
+    //                     << " | Color: " << info->cellColor
+    //                     << " | Tree Depth: " << info->intraCellDepth
+    //                     << " | Gateway Trees: " << info->parentByGatewayCell.size());
+    //     }
+    //     sampleCount++;
+    // }
+    
+    // NS_LOG_INFO("=== END GLOBAL TOPOLOGY DEMONSTRATION ===");
+}
+
+/**
+ * @brief Internal callback invoked after global setup phase to select signal source location
+ *
+ * After the network topology is fully discovered and configured, this callback:
+ * 1. Observes the entire grid network
+ * 2. Selects a random coordinate point within the grid area
+ * 3. Determines which hex cell contains this point
+ * 4. Stores this location and cell information for future signal source node placement
+ *
+ * This callback reads g_hexCellRadius and g_hexGridOffset DYNAMICALLY (at execution time)
+ * to ensure the globals have been computed by EnsureGlobalHexTopology()
+ *
+ * @param gridSize Size of the ground node grid (gridSize x gridSize)
+ * @param spacing Grid node spacing in meters
+ */
+static void
+OnSelectSignalSourceLocation(uint32_t gridSize, double spacing)
+{
+    // Read global topology parameters WHEN CALLBACK EXECUTES (not when scheduled)
+    // This ensures EnsureGlobalHexTopology() has already computed these values
+    double hexCellRadius = scenario3::g_hexCellRadius;
+    int32_t hexGridOffset = scenario3::g_hexGridOffset;
+    
+    NS_LOG_INFO("[DEBUG] OnSelectSignalSourceLocation at t=" << Simulator::Now().GetSeconds() 
+                << "s: hexCellRadius=" << hexCellRadius 
+                << ", hexGridOffset=" << hexGridOffset);
+    
+    // Calculate grid boundaries
+    double gridWidth = scenario3::ParameterCalculators::CalculateGridDimension(gridSize, spacing);
+    double gridHeight = scenario3::ParameterCalculators::CalculateGridDimension(gridSize, spacing);
+
+    // Select random location within grid and determine containing cell
+    scenario3::SignalSourceLocationData selectedData = 
+        scenario3::SignalSourceLocation::SelectRandomLocation(
+            gridWidth, gridHeight, 
+            hexCellRadius, 
+            hexGridOffset);
+
+    NS_LOG_WARN("[SIGNAL SOURCE LOCATION SELECTED] "
+                << "at t=" << Simulator::Now().GetSeconds() << "s | "
+                << "Location: (" << selectedData.location.x << ", " 
+                << selectedData.location.y << ") "
+                << "| Cell ID: " << selectedData.cellId 
+                << " (q=" << selectedData.cellQ << ", r=" << selectedData.cellR << ") "
+                << "| Grid bounds: [0," << gridWidth << "] x [0," << gridHeight << "]");
+
+    // Expand suspicious region around the selected signal source cell
+    // The selected cell becomes the initial suspicious region
+    std::set<int32_t> suspiciousRegion; // Set of cell IDs in suspicious region
+    std::set<uint32_t> suspiciousNodes; // Set of node IDs in suspicious region
+    
+    // Initialize with the selected cell
+    suspiciousRegion.insert(selectedData.cellId);
+    
+    // Target: 30% of total nodes in the network
+    const uint32_t totalNodes = scenario3::g_globalNodeTopology.size();
+    const uint32_t targetNodeCount = static_cast<uint32_t>(totalNodes * 0.3); // 30% target
+    
+    // NS_LOG_INFO("[SUSPICIOUS REGION INIT] Starting cell: " << selectedData.cellId 
+    //             << " | Target nodes: " << targetNodeCount << " (" << (100*0.3) << "% of " << totalNodes << ")");
+    
+    // Iteratively expand the suspicious region
+    uint32_t iteration = 0;
+    while (suspiciousNodes.size() < targetNodeCount && iteration < 100) // Safety limit
+    {
+        iteration++;
+        
+        // (1) Find all nodes in current suspicious region
+        suspiciousNodes.clear();
+        for (const auto& entry : scenario3::g_globalNodeTopology)
+        {
+            const scenario3::GlobalNodeInfo& nodeInfo = entry.second;
+            if (suspiciousRegion.find(nodeInfo.cellId) != suspiciousRegion.end())
+            {
+                suspiciousNodes.insert(nodeInfo.nodeId);
+            }
+        }
+        
+        // Check if we've reached target
+        if (suspiciousNodes.size() >= targetNodeCount)
+        {
+            break;
+        }
+        
+        // (2) Find candidate neighbors outside suspicious region
+        std::vector<uint32_t> candidateNeighbors;
+        for (uint32_t nodeId : suspiciousNodes)
+        {
+            const scenario3::GlobalNodeInfo* nodeInfo = scenario3::GetNodeInfo(nodeId);
+            if (nodeInfo)
+            {
+                for (uint32_t neighborId : nodeInfo->logicalNeighbors)
+                {
+                    // Check if neighbor is outside suspicious region
+                    const scenario3::GlobalNodeInfo* neighborInfo = scenario3::GetNodeInfo(neighborId);
+                    if (neighborInfo && suspiciousRegion.find(neighborInfo->cellId) == suspiciousRegion.end())
+                    {
+                        candidateNeighbors.push_back(neighborId);
+                    }
+                }
+            }
+        }
+        
+        // If no candidates found, stop expansion
+        if (candidateNeighbors.empty())
+        {
+            NS_LOG_INFO("[SUSPICIOUS REGION] No more neighbors to expand at iteration " << iteration);
+            break;
+        }
+        
+        // Randomly select one neighbor and add its cell to suspicious region
+        uint32_t randomIndex = rand() % candidateNeighbors.size();
+        uint32_t selectedNeighbor = candidateNeighbors[randomIndex];
+        const scenario3::GlobalNodeInfo* selectedNeighborInfo = scenario3::GetNodeInfo(selectedNeighbor);
+        
+        if (selectedNeighborInfo)
+        {
+            suspiciousRegion.insert(selectedNeighborInfo->cellId);
+            // NS_LOG_INFO("[SUSPICIOUS REGION EXPAND] Iteration " << iteration 
+            //             << " | Added cell " << selectedNeighborInfo->cellId 
+            //             << " via node " << selectedNeighbor
+            //             << " | Region cells: " << suspiciousRegion.size()
+            //             << " | Region nodes: " << suspiciousNodes.size() + 1);
+        }
+    }
+    
+    // Final update of suspicious nodes
+    suspiciousNodes.clear();
+    for (const auto& entry : scenario3::g_globalNodeTopology)
+    {
+        const scenario3::GlobalNodeInfo& nodeInfo = entry.second;
+        if (suspiciousRegion.find(nodeInfo.cellId) != suspiciousRegion.end())
+        {
+            suspiciousNodes.insert(nodeInfo.nodeId);
+        }
+    }
+    
+    // NS_LOG_WARN("[SUSPICIOUS REGION FINAL] "
+    //             << "Cells: " << suspiciousRegion.size() 
+    //             << " | Nodes: " << suspiciousNodes.size() 
+    //             << " (" << (100.0 * suspiciousNodes.size() / totalNodes) << "% of network)"
+    //             << " | Iterations: " << iteration
+    //             << " | Target reached: " << (suspiciousNodes.size() >= targetNodeCount ? "YES" : "NO"));
+    
+    // Log cell IDs in suspicious region
+    NS_LOG_INFO("[SUSPICIOUS REGION CELLS]");
+    for (int32_t cellId : suspiciousRegion)
+    {
+        std::vector<uint32_t> cellNodes = scenario3::GetNodesInCell(cellId);
+        NS_LOG_INFO("  Cell " << cellId << ": " << cellNodes.size() << " nodes");
+    }
 }
 
 void
@@ -139,9 +351,10 @@ void
 ScheduleScenario3GlobalSetupPhaseCompletion(NodeContainer nodes,
                                             uint32_t gridSize,
                                             double completionTime,
-                                            uint32_t totalActivatedNodes)
+                                            uint32_t totalActivatedNodes,
+                                            double spacing)
 {
-    NS_LOG_FUNCTION(gridSize << completionTime << totalActivatedNodes);
+    NS_LOG_FUNCTION(gridSize << completionTime << totalActivatedNodes << spacing);
 
     const uint32_t totalNodes = nodes.GetN();
     uint32_t completionNodeId = 0;  // Sink/coordinator node initiating completion
@@ -163,6 +376,23 @@ ScheduleScenario3GlobalSetupPhaseCompletion(NodeContainer nodes,
                           totalActivatedNodes,
                           (uint32_t)completionTime);
     }
+
+    // Demonstrate accessing global node topology information
+    // This shows that the network is fully observable at this point
+    Simulator::Schedule(Seconds(completionTime + 0.05),
+                       &OnDemonstrateGlobalTopology,
+                       totalNodes);
+
+    // Schedule signal source location selection after all nodes have completed setup
+    // This allows the network to be fully observable before selecting the location.
+    // Use the global network knowledge computed by EnsureGlobalHexTopology:
+    // - g_hexCellRadius: actual hex cell radius used in topology
+    // - g_hexGridOffset: actual grid offset used for cell ID computation
+    // Add delay to allow time for topology to be computed by first node
+    Simulator::Schedule(Seconds(completionTime + 0.1),
+                       &OnSelectSignalSourceLocation,
+                       gridSize,
+                       spacing);
 
     NS_LOG_INFO("Global Setup Phase Completion scheduled for " << totalNodes 
                 << " nodes at t=" << completionTime << "s, total activated=" 
@@ -316,45 +546,20 @@ ScheduleScenario3UavTraffic(const Scenario3Config& groundConfig,
     double gridHeight = scenario3::ParameterCalculators::CalculateGridDimension(
         groundConfig.gridSize, groundConfig.spacing);
 
-    // Multi-UAV trajectories: each UAV follows different path
-    // UAV 0: West to East (along center line)
-    // UAV 1: North to South (along center line)
-    // UAV 2 and beyond: Diagonal patterns
-    
-    double centerX = gridWidth / 2.0;
-    double centerY = gridHeight / 2.0;
-    double startX, startY, endX, endY;
-    
-    if (uavIndex == 0)
-    {
-        // Horizontal: West to East
-        startX = -scenario3::UAVParams::APPROACH_DISTANCE;
-        startY = centerY;
-        endX = gridWidth + scenario3::UAVParams::APPROACH_DISTANCE;
-        endY = centerY;
-    }
-    else if (uavIndex == 1)
-    {
-        // Vertical: North to South
-        startX = centerX;
-        startY = gridHeight + scenario3::UAVParams::APPROACH_DISTANCE;
-        endX = centerX;
-        endY = -scenario3::UAVParams::APPROACH_DISTANCE;
-    }
-    else
-    {
-        // Diagonal pattern for additional UAVs
-        double angleOffset = (uavIndex - 2) * M_PI / 4.0;  // Every 45 degrees
-        double radius = std::sqrt(gridWidth * gridWidth + gridHeight * gridHeight) / 2.0 + 
-                       scenario3::UAVParams::APPROACH_DISTANCE;
-        startX = centerX + radius * std::cos(angleOffset);
-        startY = centerY + radius * std::sin(angleOffset);
-        endX = centerX - radius * std::cos(angleOffset);
-        endY = centerY - radius * std::sin(angleOffset);
-    }
+    // Compute waypoint trajectory from centralized scenario parameters.
+    const scenario3::WaypointEndpoints trajectory = scenario3::WaypointTrajectoryCalculator::Calculate(
+        uavIndex,
+        gridWidth,
+        gridHeight,
+        scenario3::UAVParams::APPROACH_DISTANCE);
+
+    const double startX = trajectory.startX;
+    const double startY = trajectory.startY;
+    const double endX = trajectory.endX;
+    const double endY = trajectory.endY;
 
     // Initial position
-    uavMobility->AddWaypoint(Waypoint(Seconds(0.0), 
+    uavMobility->AddWaypoint(Waypoint(Seconds(scenario3::WaypointTrajectoryParams::START_TIME_SECONDS), 
                                      Vector(startX, startY, uavConfig.uavAltitude)));
 
     // Calculate flight path distance and time
