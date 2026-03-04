@@ -20,6 +20,8 @@
 #include <vector>
 #include <algorithm>
 #include <cmath>
+#include <fstream>
+#include <sstream>
 
 namespace ns3
 {
@@ -29,9 +31,117 @@ namespace wsn
 NS_LOG_COMPONENT_DEFINE("Scenario3");
 
 //
-// NETWORK-LEVEL SCHEDULING FUNCTIONS
-// (Moved from routing layer for proper architectural separation)
+// VISUALIZATION LOGGING (for TXT format debug visualizer)
 //
+
+class NetworkVisualLogger
+{
+public:
+    NetworkVisualLogger(const std::string& filename = "network_log.txt")
+        : m_filename(filename), m_file(nullptr)
+    {
+    }
+
+    void Open()
+    {
+        m_file = std::make_shared<std::ofstream>(m_filename);
+        if (!m_file->is_open())
+        {
+            NS_LOG_ERROR("Cannot open log file: " << m_filename);
+            return;
+        }
+        NS_LOG_INFO("[VISUALIZER] Opened log file: " << m_filename);
+    }
+
+    void Close()
+    {
+        if (m_file && m_file->is_open())
+        {
+            m_file->close();
+        }
+    }
+
+    void LogMeta(const std::string& key, const std::string& value)
+    {
+        if (!m_file || !m_file->is_open())
+            return;
+        *m_file << "META " << key << "=" << value << "\n";
+        m_file->flush();
+    }
+
+    void LogNode(uint32_t id, double x, double y, int32_t cell, uint32_t leader, uint32_t color = 0)
+    {
+        if (!m_file || !m_file->is_open())
+            return;
+        std::ostringstream oss;
+        oss << "NODE id=" << id << " x=" << x << " y=" << y << " cell=" << cell
+            << " leader=" << leader << " color=" << color << "\n";
+        *m_file << oss.str();
+    }
+
+    void LogLink(uint32_t a, uint32_t b, const std::string& kind = "logical")
+    {
+        if (!m_file || !m_file->is_open())
+            return;
+        *m_file << "LINK a=" << a << " b=" << b << " kind=" << kind << "\n";
+    }
+
+    void StartStep(double t)
+    {
+        if (!m_file || !m_file->is_open())
+            return;
+        m_currentStep << "STEP t=" << t;
+    }
+
+    void AddSuspiciousCells(const std::set<int32_t>& cells)
+    {
+        if (cells.empty())
+            return;
+        m_currentStep << " suspiciousCells=";
+        bool first = true;
+        for (int32_t cell : cells)
+        {
+            if (!first) m_currentStep << ",";
+            m_currentStep << cell;
+            first = false;
+        }
+    }
+
+    void AddSuspiciousNodes(const std::set<uint32_t>& nodes)
+    {
+        if (nodes.empty())
+            return;
+        m_currentStep << " suspiciousNodes=";
+        bool first = true;
+        for (uint32_t node : nodes)
+        {
+            if (!first) m_currentStep << ",";
+            m_currentStep << node;
+            first = false;
+        }
+    }
+
+    void EndStep()
+    {
+        if (!m_file || !m_file->is_open())
+            return;
+        m_currentStep << "\n";
+        *m_file << m_currentStep.str();
+        *m_file << "ENDSTEP\n";
+        m_currentStep.str("");
+        m_file->flush();
+    }
+
+private:
+    std::string m_filename;
+    std::shared_ptr<std::ofstream> m_file;
+    std::ostringstream m_currentStep;
+};
+
+// Global logger instance
+static NetworkVisualLogger g_visualLogger;
+
+
 
 /**
  * @brief Internal callback invoked when a node is activated during startup phase
@@ -122,6 +232,60 @@ OnDemonstrateGlobalTopology(uint32_t totalNodes)
     // }
     
     // NS_LOG_INFO("=== END GLOBAL TOPOLOGY DEMONSTRATION ===");
+}
+
+/**
+ * @brief Log network data to visualizer TXT format
+ *
+ * Outputs nodes, links, and metadata to the TXT log file for visualization.
+ * This should be called after global topology is fully computed.
+ *
+ * @param gridSize Size of the grid
+ * @param spacing Spacing between nodes
+ */
+static void
+OnLogNetworkForVisualization(uint32_t gridSize, double spacing)
+{
+    NS_LOG_INFO("[VISUALIZER] Logging network data...");
+    
+    // Log metadata
+    std::ostringstream metaValue;
+    metaValue << "scenario3_grid" << gridSize << "_spacing" << (int)spacing;
+    g_visualLogger.LogMeta("scenario", "scenario3");
+    g_visualLogger.LogMeta("gridSize", std::to_string(gridSize));
+    g_visualLogger.LogMeta("spacing", std::to_string((int)spacing));
+    g_visualLogger.LogMeta("totalNodes", std::to_string(scenario3::g_globalNodeTopology.size()));
+    g_visualLogger.LogMeta("hexCellRadius", std::to_string((int)scenario3::g_hexCellRadius));
+    
+    // Log all nodes
+    for (const auto& entry : scenario3::g_globalNodeTopology)
+    {
+        const scenario3::GlobalNodeInfo& info = entry.second;
+        g_visualLogger.LogNode(
+            info.nodeId,
+            info.posX,
+            info.posY,
+            info.cellId,
+            info.cellLeaderId,
+            info.cellColor
+        );
+    }
+    
+    // Log logical neighbor links
+    for (const auto& entry : scenario3::g_globalNodeTopology)
+    {
+        const scenario3::GlobalNodeInfo& info = entry.second;
+        // Only log each link once (from lower ID to higher ID)
+        for (uint32_t neighborId : info.logicalNeighbors)
+        {
+            if (info.nodeId < neighborId)
+            {
+                g_visualLogger.LogLink(info.nodeId, neighborId, "logical");
+            }
+        }
+    }
+    
+    NS_LOG_INFO("[VISUALIZER] Network data logged successfully");
 }
 
 /**
@@ -275,6 +439,12 @@ OnSelectSignalSourceLocation(uint32_t gridSize, double spacing)
         std::vector<uint32_t> cellNodes = scenario3::GetNodesInCell(cellId);
         NS_LOG_INFO("  Cell " << cellId << ": " << cellNodes.size() << " nodes");
     }
+
+    // Log suspicious region to visualizer TXT format
+    g_visualLogger.StartStep(Simulator::Now().GetSeconds());
+    g_visualLogger.AddSuspiciousCells(suspiciousRegion);
+    g_visualLogger.AddSuspiciousNodes(suspiciousNodes);
+    g_visualLogger.EndStep();
 }
 
 void
@@ -382,6 +552,12 @@ ScheduleScenario3GlobalSetupPhaseCompletion(NodeContainer nodes,
     Simulator::Schedule(Seconds(completionTime + 0.05),
                        &OnDemonstrateGlobalTopology,
                        totalNodes);
+
+    // Log network data for visualizer
+    Simulator::Schedule(Seconds(completionTime + 0.075),
+                       &OnLogNetworkForVisualization,
+                       gridSize,
+                       spacing);
 
     // Schedule signal source location selection after all nodes have completed setup
     // This allows the network to be fully observable before selecting the location.
@@ -650,6 +826,295 @@ bool
 GetScenario3NetworkNodeAlerted(uint32_t nodeId)
 {
     return scenario3::HasGroundNodeNetworkAlerted(nodeId);
+}
+
+void
+InitializeScenario3Visualizer(const std::string& filename)
+{
+    g_visualLogger.Open();
+    NS_LOG_INFO("Scenario3 visualizer initialized with filename: " << filename);
+}
+
+void
+CloseScenario3Visualizer()
+{
+    g_visualLogger.Close();
+    NS_LOG_INFO("Scenario3 visualizer closed");
+}
+
+/**
+ * @brief Calculate effective communication range between UAV and ground node
+ *
+ * This function computes the 3D distance, path loss, received power, and link quality
+ * between a UAV at altitude and a ground node. It uses the Free Space Path Loss model
+ * suitable for line-of-sight air-to-ground communications.
+ *
+ * FSPL (dB) = 20*log10(distance) + 20*log10(frequency) + 20*log10(4π/c)
+ * For 2.4 GHz (CC2420): FSPL ≈ 40.2 + 20*log10(distance_in_meters)
+ *
+ * @param uavX UAV X coordinate (meters)
+ * @param uavY UAV Y coordinate (meters)
+ * @param uavZ UAV altitude/Z coordinate (meters)
+ * @param groundX Ground node X coordinate (meters)
+ * @param groundY Ground node Y coordinate (meters)
+ * @param txPowerDbm Transmit power in dBm
+ * @param rxSensitivityDbm Receiver sensitivity in dBm
+ * @return UavGroundCommRange structure with distance, path loss, and link quality metrics
+ */
+UavGroundCommRange
+CalculateUavGroundCommRange(double uavX, double uavY, double uavZ,
+                           double groundX, double groundY,
+                           double txPowerDbm, double rxSensitivityDbm)
+{
+    UavGroundCommRange result;
+    
+    // Calculate 3D Euclidean distance
+    double dx = uavX - groundX;
+    double dy = uavY - groundY;
+    double dz = uavZ - 0.0; // Ground nodes at z=0
+    result.distance3D = std::sqrt(dx*dx + dy*dy + dz*dz);
+    
+    if (result.distance3D < 1.0)
+    {
+        // Avoid log10(0) or very small distances
+        result.distance3D = 1.0;
+    }
+    
+    // Air-to-Ground Path Loss Model for 2.4 GHz
+    // More realistic than free space due to:
+    // - Path loss exponent > 2.0 (typically 2.5-3.0 for A2G)
+    // - Additional losses (fading, shadowing, ground reflection)
+    //
+    // Model: PL(dB) = PL0 + 10*n*log10(d/d0) + X_sigma
+    // Where:
+    //   PL0 = 40.2 dB (path loss at reference distance d0=1m for 2.4 GHz)
+    //   n = 2.5 (path loss exponent for air-to-ground suburban/rural)
+    //   d = distance in meters
+    //   X_sigma = 4 dB (shadow fading margin, moderate for open areas)
+    
+    const double FSPL_CONSTANT_2_4GHZ = 40.2;  // dB at 1m for 2.4 GHz
+    const double PATH_LOSS_EXPONENT = 2.5;     // Air-to-ground exponent (moderate)
+    const double SHADOW_FADING_MARGIN = 4.0;   // Moderate margin for outdoor conditions
+    
+    // Calculate path loss with air-to-ground model
+    result.pathLossDb = FSPL_CONSTANT_2_4GHZ 
+                       + 10.0 * PATH_LOSS_EXPONENT * std::log10(result.distance3D)
+                       + SHADOW_FADING_MARGIN;
+    
+    // Calculate received power: Rx = Tx - PathLoss
+    result.receivedPowerDbm = txPowerDbm - result.pathLossDb;
+    
+    // Determine if communication is possible
+    result.isInRange = (result.receivedPowerDbm >= rxSensitivityDbm);
+    
+    // Calculate link margin (positive = good, negative = no link)
+    result.linkMarginDb = result.receivedPowerDbm - rxSensitivityDbm;
+    
+    return result;
+}
+
+/**
+ * @brief Find all ground nodes within effective communication range of UAV
+ *
+ * Iterates through all ground nodes in the global topology and determines
+ * which nodes are within communication range of the UAV at its current position.
+ *
+ * @param uavX UAV X coordinate (meters)
+ * @param uavY UAV Y coordinate (meters)
+ * @param uavZ UAV altitude (meters)
+ * @param txPowerDbm Transmit power in dBm
+ * @param rxSensitivityDbm Receiver sensitivity in dBm
+ * @return Vector of node IDs that are within communication range
+ */
+std::vector<uint32_t>
+GetGroundNodesInUavRange(double uavX, double uavY, double uavZ,
+                        double txPowerDbm, double rxSensitivityDbm)
+{
+    std::vector<uint32_t> nodesInRange;
+    
+    // Iterate through all nodes in global topology
+    for (const auto& entry : scenario3::g_globalNodeTopology)
+    {
+        const scenario3::GlobalNodeInfo& nodeInfo = entry.second;
+        
+        // Calculate communication range
+        UavGroundCommRange range = CalculateUavGroundCommRange(
+            uavX, uavY, uavZ,
+            nodeInfo.posX, nodeInfo.posY,
+            txPowerDbm, rxSensitivityDbm);
+        
+        if (range.isInRange)
+        {
+            nodesInRange.push_back(nodeInfo.nodeId);
+        }
+    }
+    
+    return nodesInRange;
+}
+
+/**
+ * @brief Calculate maximum communication range for UAV at given altitude
+ *
+ * Computes the theoretical maximum horizontal distance at which a ground node
+ * can communicate with a UAV at the specified altitude, given the radio parameters.
+ *
+ * @param altitude UAV altitude (meters)
+ * @param txPowerDbm Transmit power in dBm
+ * @param rxSensitivityDbm Receiver sensitivity in dBm
+ * @return Maximum horizontal communication range in meters
+ */
+double
+CalculateMaxUavCommRange(double altitude, double txPowerDbm, double rxSensitivityDbm)
+{
+    // Maximum path loss budget: TxPower - RxSensitivity
+    double maxPathLossDb = txPowerDbm - rxSensitivityDbm;
+    
+    // Air-to-Ground Path Loss Model (same as CalculateUavGroundCommRange)
+    // PL(dB) = PL0 + 10*n*log10(d) + X_sigma
+    // Solve for max distance:
+    // maxPL = 40.2 + 10*2.5*log10(d) + 4.0
+    // maxPL - 40.2 - 4.0 = 25*log10(d)
+    // d = 10^((maxPL - 44.2) / 25)
+    
+    const double FSPL_CONSTANT_2_4GHZ = 40.2;
+    const double PATH_LOSS_EXPONENT = 2.5;
+    const double SHADOW_FADING_MARGIN = 4.0;
+    const double PL_COEFFICIENT = 10.0 * PATH_LOSS_EXPONENT;  // 25.0
+    
+    // Subtract constant and margin from path loss budget
+    double adjustedPathLoss = maxPathLossDb - FSPL_CONSTANT_2_4GHZ - SHADOW_FADING_MARGIN;
+    
+    // Solve for max 3D distance
+    double max3DDistance = std::pow(10.0, adjustedPathLoss / PL_COEFFICIENT);
+    
+    // Calculate maximum horizontal range using Pythagorean theorem
+    // max3DDistance^2 = horizontalRange^2 + altitude^2
+    // horizontalRange = sqrt(max3DDistance^2 - altitude^2)
+    
+    if (max3DDistance <= altitude)
+    {
+        // UAV is too high, no ground coverage
+        return 0.0;
+    }
+    
+    double maxHorizontalRange = std::sqrt(max3DDistance * max3DDistance - altitude * altitude);
+    
+    return maxHorizontalRange;
+}
+
+/**
+ * @brief Callback to calculate and log UAV communication range after global setup phase
+ *
+ * This function demonstrates UAV coverage calculation using the global node topology
+ * after the setup phase is complete. It calculates theoretical max range and checks
+ * coverage for sample UAV positions.
+ *
+ * @param uavAltitude UAV altitude in meters
+ * @param txPowerDbm UAV transmit power in dBm
+ * @param rxSensitivityDbm Ground node receiver sensitivity in dBm
+ * @param gridSize Grid size for analysis
+ * @param spacing Grid spacing
+ */
+static void
+OnCalculateUavRange(double uavAltitude, double txPowerDbm, double rxSensitivityDbm,
+                    uint32_t gridSize, double spacing)
+{
+    NS_LOG_INFO("=== UAV COMMUNICATION RANGE CALCULATION at t=" 
+                << Simulator::Now().GetSeconds() << "s ===");
+    
+    // Calculate maximum theoretical range
+    double maxHorizontalRange = CalculateMaxUavCommRange(uavAltitude, txPowerDbm, rxSensitivityDbm);
+    double coverageArea = 3.14159 * maxHorizontalRange * maxHorizontalRange;
+    
+    NS_LOG_INFO("[UAV RANGE THEORY] Altitude: " << uavAltitude << "m | "
+                << "Max horizontal range: " << maxHorizontalRange << "m | "
+                << "Coverage area: " << (coverageArea / 1000000.0) << " km²");
+    
+    // // Get grid dimensions
+    // double gridWidth = scenario3::ParameterCalculators::CalculateGridDimension(gridSize, spacing);
+    // double gridHeight = scenario3::ParameterCalculators::CalculateGridDimension(gridSize, spacing);
+    
+    // // Test UAV at different positions and count reachable nodes
+    // NS_LOG_INFO("[UAV COVERAGE TEST] Testing " << gridSize << "x" << gridSize 
+    //             << " grid (" << scenario3::g_globalNodeTopology.size() << " nodes)");
+    
+    // struct UavTestPosition {
+    //     double x, y;
+    //     std::string name;
+    // };
+    
+    // std::vector<UavTestPosition> testPositions = {
+    //     {gridWidth / 2, gridHeight / 2, "grid center"},
+    //     {0, 0, "top-left corner"},
+    //     {gridWidth, 0, "top-right corner"},
+    //     {0, gridHeight, "bottom-left corner"},
+    //     {gridWidth, gridHeight, "bottom-right corner"},
+    //     {gridWidth / 4, gridHeight / 4, "first quadrant center"},
+    //     {3 * gridWidth / 4, 3 * gridHeight / 4, "fourth quadrant center"}
+    // };
+    
+    // uint32_t totalPositions = testPositions.size();
+    // uint32_t totalNodesCovered = 0;
+    // double avgCoveragePercent = 0.0;
+    
+    // for (const auto& testPos : testPositions)
+    // {
+    //     // Get nodes in range at this position
+    //     std::vector<uint32_t> nodesInRange = GetGroundNodesInUavRange(
+    //         testPos.x, testPos.y, uavAltitude,
+    //         txPowerDbm, rxSensitivityDbm);
+        
+    //     uint32_t nodesCount = nodesInRange.size();
+    //     uint32_t totalNodes = scenario3::g_globalNodeTopology.size();
+    //     double coveragePercent = (totalNodes > 0) ? (100.0 * nodesCount / totalNodes) : 0.0;
+        
+    //     totalNodesCovered += nodesCount;
+    //     avgCoveragePercent += coveragePercent;
+        
+    //     NS_LOG_INFO("[UAV@(" << testPos.x << "," << testPos.y << "," << uavAltitude << ")] "
+    //                 << testPos.name << ": " << nodesCount << "/" << totalNodes 
+    //                 << " nodes (" << std::fixed << std::setprecision(1) << coveragePercent << "%)");
+    // }
+    
+    // avgCoveragePercent /= totalPositions;
+    
+    // NS_LOG_WARN("[UAV RANGE SUMMARY] "
+    //             << "Altitude: " << uavAltitude << "m | "
+    //             << "Max range: " << maxHorizontalRange << "m | "
+    //             << "Avg coverage: " << std::fixed << std::setprecision(1) << avgCoveragePercent << "% | "
+    //             << "Nodes per position (avg): " << (totalNodesCovered / totalPositions));
+    
+    // NS_LOG_INFO("=== END UAV RANGE CALCULATION ===");
+}
+
+/**
+ * @brief Schedule UAV communication range calculation after global setup phase
+ *
+ * @param uavAltitude UAV altitude in meters
+ * @param txPowerDbm UAV transmit power in dBm
+ * @param rxSensitivityDbm Ground node receiver sensitivity in dBm
+ * @param gridSize Grid size for analysis
+ * @param spacing Grid spacing
+ * @param delaySeconds Delay in seconds after global setup phase completes
+ */
+void
+ScheduleUavRangeCalculation(double uavAltitude, double txPowerDbm, 
+                           double rxSensitivityDbm, uint32_t gridSize, 
+                           double spacing, double delaySeconds)
+{
+    // Get completion time (6.0s startup + completion delay)
+    // This is roughly when the setup phase ends + some margin
+    double setupCompletionTime = 6.0 + delaySeconds;
+    
+    Simulator::Schedule(Seconds(setupCompletionTime),
+                       &OnCalculateUavRange,
+                       uavAltitude,
+                       txPowerDbm,
+                       rxSensitivityDbm,
+                       gridSize,
+                       spacing);
+    
+    NS_LOG_INFO("UAV range calculation scheduled for t=" << setupCompletionTime << "s");
 }
 
 } // namespace wsn

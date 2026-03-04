@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scenario3 Network Visual Debug</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Scenario3 Visual Debug</h1>
+    <p>Simple HTML + JS debug viewer using TXT log format.</p>
+  </header>
+
+  <section class="toolbar">
+    <label>
+      Log file:
+      <input id="logFile" value="sample_network_log.txt" />
+    </label>
+    <button id="loadBtn">Load</button>
+    <button id="prevBtn">Prev Step</button>
+    <button id="nextBtn">Next Step</button>
+    <span id="stepInfo">Step: -</span>
+  </section>
+
+  <main>
+    <canvas id="canvas" width="1000" height="650"></canvas>
+    <aside>
+      <h3>Summary</h3>
+      <pre id="summary"></pre>
+      <h3>Expected TXT tags</h3>
+      <pre>
+META key=value
+NODE id=0 x=0 y=0 cell=0 leader=0
+LINK a=0 b=1 kind=logical
+STEP t=6.10 suspiciousCells=0,48 suspiciousNodes=0,1,2
+ENDSTEP
+      </pre>
+    </aside>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

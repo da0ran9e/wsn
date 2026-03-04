@@ -232,6 +232,85 @@ uint32_t GetScenario3NetworkNodeFragments(uint32_t nodeId);
  */
 bool GetScenario3NetworkNodeAlerted(uint32_t nodeId);
 
+/**
+ * @brief Initialize visualizer logger for network debugging
+ * @param filename Output file for TXT log (default: "network_log.txt")
+ */
+void InitializeScenario3Visualizer(const std::string& filename = "network_log.txt");
+
+/**
+ * @brief Close visualizer logger
+ */
+void CloseScenario3Visualizer();
+
+/**
+ * @brief UAV-to-Ground communication range calculation result
+ */
+struct UavGroundCommRange
+{
+    double distance3D;           ///< 3D Euclidean distance (meters)
+    double pathLossDb;          ///< Path loss in dB
+    double receivedPowerDbm;    ///< Received power in dBm
+    bool isInRange;             ///< Whether communication is possible
+    double linkMarginDb;        ///< Link margin (rxPower - rxSensitivity)
+};
+
+/**
+ * @brief Calculate effective communication range between UAV and ground node
+ *
+ * Computes 3D distance, path loss (Free Space Path Loss at 2.4 GHz),
+ * received power, and determines if communication is possible.
+ *
+ * @param uavX UAV X coordinate (meters)
+ * @param uavY UAV Y coordinate (meters)
+ * @param uavZ UAV altitude (meters)
+ * @param groundX Ground node X coordinate (meters)
+ * @param groundY Ground node Y coordinate (meters)
+ * @param txPowerDbm Transmit power in dBm
+ * @param rxSensitivityDbm Receiver sensitivity in dBm
+ * @return UavGroundCommRange with distance, path loss, and link quality metrics
+ */
+UavGroundCommRange CalculateUavGroundCommRange(double uavX, double uavY, double uavZ,
+                                               double groundX, double groundY,
+                                               double txPowerDbm, double rxSensitivityDbm);
+
+/**
+ * @brief Find all ground nodes within effective communication range of UAV
+ *
+ * @param uavX UAV X coordinate (meters)
+ * @param uavY UAV Y coordinate (meters)
+ * @param uavZ UAV altitude (meters)
+ * @param txPowerDbm Transmit power in dBm
+ * @param rxSensitivityDbm Receiver sensitivity in dBm
+ * @return Vector of node IDs that are within communication range
+ */
+std::vector<uint32_t> GetGroundNodesInUavRange(double uavX, double uavY, double uavZ,
+                                               double txPowerDbm, double rxSensitivityDbm);
+
+/**
+ * @brief Calculate maximum horizontal communication range for UAV at given altitude
+ *
+ * @param altitude UAV altitude (meters)
+ * @param txPowerDbm Transmit power in dBm
+ * @param rxSensitivityDbm Receiver sensitivity in dBm
+ * @return Maximum horizontal communication range in meters
+ */
+double CalculateMaxUavCommRange(double altitude, double txPowerDbm, double rxSensitivityDbm);
+
+/**
+ * @brief Schedule UAV communication range calculation after global setup phase
+ *
+ * @param uavAltitude UAV altitude in meters
+ * @param txPowerDbm UAV transmit power in dBm
+ * @param rxSensitivityDbm Ground node receiver sensitivity in dBm
+ * @param gridSize Grid size for analysis
+ * @param spacing Grid spacing
+ * @param delaySeconds Delay in seconds after global setup phase completes
+ */
+void ScheduleUavRangeCalculation(double uavAltitude, double txPowerDbm, 
+                                 double rxSensitivityDbm, uint32_t gridSize, 
+                                 double spacing, double delaySeconds = 0.15);
+
 } // namespace wsn
 } // namespace ns3
 

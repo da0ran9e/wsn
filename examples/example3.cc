@@ -71,6 +71,9 @@ main(int argc, char* argv[])
     NS_LOG_INFO("Global Setup Phase scheduled: start=" << startupTime 
                 << "s, duration=" << startupDuration << "s");
 
+    // Initialize visualizer for network debugging (outputs to network_log.txt)
+    InitializeScenario3Visualizer("network_log.txt");
+
     // Schedule completion of Global Setup Phase
     double completionTime = startupTime + startupDuration;
     uint32_t totalActivatedNodes = nodes.GetN();
@@ -82,6 +85,16 @@ main(int argc, char* argv[])
                                                 groundConfig.spacing);
     
     NS_LOG_INFO("Global Setup Phase Completion scheduled at t=" << completionTime << "s");
+
+    // Schedule UAV communication range calculation after global setup phase
+    ScheduleUavRangeCalculation(uavConfig.uavAltitude,
+                               groundConfig.txPowerDbm,
+                               groundConfig.rxSensitivityDbm,
+                               groundConfig.gridSize,
+                               groundConfig.spacing,
+                               0.15);  // Calculate 0.15s after setup completion
+    
+    NS_LOG_INFO("UAV range calculation scheduled");
 
     // std::vector<uint32_t> uavNodeIds;
     // for (uint32_t i = 0; i < numUavs; ++i)
@@ -96,6 +109,9 @@ main(int argc, char* argv[])
     // Run actual network simulation
     Simulator::Stop(Seconds(groundConfig.simTimeSeconds));
     Simulator::Run();
+
+    // Close visualizer logger
+    CloseScenario3Visualizer();
 
     Simulator::Destroy();
     return 0;

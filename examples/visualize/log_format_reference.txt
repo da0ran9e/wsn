@@ -1,0 +1,20 @@
+SCENARIO3 VISUAL DEBUG TXT FORMAT (v1)
+
+1) META lines (optional, many lines)
+META key=value
+
+2) NODE lines (required)
+NODE id=<uint> x=<double> y=<double> cell=<int> leader=<uint> color=<uint>
+
+3) LINK lines (optional)
+LINK a=<uint> b=<uint> kind=<string>
+
+4) STEP blocks (optional, for timeline)
+STEP t=<double> suspiciousCells=<comma-separated-int> suspiciousNodes=<comma-separated-uint>
+ENDSTEP
+
+Notes:
+- Lines starting with # are comments.
+- Empty lines are ignored.
+- Order suggestion: META -> NODE -> LINK -> STEP.
+- This format is temporary for debug; later can be generated directly from scenario3 hooks.

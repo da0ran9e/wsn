@@ -73,6 +73,21 @@ build_lib_example(
     ${libwsn}
 )
 
+build_lib_example(
+  NAME test_uav_range
+  SOURCE_FILES 
+    test_uav_range.cc
+    scenarios/scenario3.cc
+  LIBRARIES_TO_LINK
+    ${libcore}
+    ${libnetwork}
+    ${libmobility}
+    ${libspectrum}
+    ${libantenna}
+    ${libpropagation}
+    ${libwsn}
+)
+
 #build_lib_example(
 #  NAME uav-example
 #  SOURCE_FILES uav-example.cc
