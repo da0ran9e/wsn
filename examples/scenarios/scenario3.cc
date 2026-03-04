@@ -22,6 +22,7 @@
 #include <cmath>
 #include <fstream>
 #include <sstream>
+#include <iomanip>
 
 namespace ns3
 {
@@ -29,6 +30,9 @@ namespace wsn
 {
 
 NS_LOG_COMPONENT_DEFINE("Scenario3");
+
+// Global storage for suspicious nodes detected during setup phase
+static std::set<uint32_t> g_suspiciousNodes;
 
 //
 // VISUALIZATION LOGGING (for TXT format debug visualizer)
@@ -438,6 +442,18 @@ OnSelectSignalSourceLocation(uint32_t gridSize, double spacing)
     {
         std::vector<uint32_t> cellNodes = scenario3::GetNodesInCell(cellId);
         NS_LOG_INFO("  Cell " << cellId << ": " << cellNodes.size() << " nodes");
+        for (uint32_t nodeId : cellNodes)
+        {
+            if (suspiciousNodes.find(nodeId) != suspiciousNodes.end())
+            {
+                const scenario3::GlobalNodeInfo* info = scenario3::GetNodeInfo(nodeId);
+                if (info)
+                {
+                    NS_LOG_INFO("    Node " << nodeId << " at (" << info->posX << ", " 
+                                << info->posY << ")");
+                }
+            }
+        }
     }
 
     // Log suspicious region to visualizer TXT format
@@ -445,6 +461,12 @@ OnSelectSignalSourceLocation(uint32_t gridSize, double spacing)
     g_visualLogger.AddSuspiciousCells(suspiciousRegion);
     g_visualLogger.AddSuspiciousNodes(suspiciousNodes);
     g_visualLogger.EndStep();
+
+    // Store suspicious nodes globally for later UAV flight planning
+    g_suspiciousNodes = suspiciousNodes;
+    
+    NS_LOG_INFO("[SUSPICIOUS REGION] Ready for UAV flight planning. Suspicious nodes: " 
+                << suspiciousNodes.size() << " nodes detected.");
 }
 
 void
@@ -1115,6 +1137,227 @@ ScheduleUavRangeCalculation(double uavAltitude, double txPowerDbm,
                        spacing);
     
     NS_LOG_INFO("UAV range calculation scheduled for t=" << setupCompletionTime << "s");
+}
+
+//
+// GREEDY FLIGHT PATH PLANNING
+//
+
+/**
+ * @brief Calculate Greedy Nearest Neighbor flight path
+ *
+ * Implements a greedy algorithm: at each step, fly to the nearest unvisited 
+ * suspicious node, update the path and continue until all nodes are visited.
+ */
+UavFlightPath
+CalculateGreedyFlightPath(const std::set<uint32_t>& suspiciousNodeIds,
+                         double startX, double startY, double startZ,
+                         double uavSpeed,
+                         double txPowerDbm, double rxSensitivityDbm)
+{
+    UavFlightPath result;
+    result.waypoints.clear();
+    result.totalDistance = 0.0;
+    result.estimatedFlightTime = 0.0;
+    result.nodesToVisit = suspiciousNodeIds.size();
+    result.nodesReachable = 0;
+    result.coveragePercentage = 0.0;
+    result.isValid = false;
+
+    // Check if suspicious region is empty
+    if (suspiciousNodeIds.empty())
+    {
+        NS_LOG_WARN("[GREEDY FLIGHT PATH] Empty suspicious region");
+        return result;
+    }
+
+    // Initialize: track visited nodes
+    std::set<uint32_t> unvisited = suspiciousNodeIds;
+    std::set<uint32_t> visited;
+
+    // Starting position
+    double currentX = startX;
+    double currentY = startY;
+    double currentZ = startZ;
+    double currentTime = 0.0;
+
+    // Log start of greedy traversal
+    NS_LOG_INFO("[GREEDY FLIGHT PATH] Starting from (" << currentX << ", " << currentY 
+                << ", " << currentZ << ") to visit " << unvisited.size() << " nodes");
+
+    // Greedy loop: always go to nearest unvisited node
+    uint32_t waypointCount = 0;
+    while (!unvisited.empty())
+    {
+        double minDistance = std::numeric_limits<double>::max();
+        uint32_t nearestNodeId = UINT32_MAX;
+        double nearestX = 0, nearestY = 0;
+
+        // Find nearest unvisited node
+        for (uint32_t nodeId : unvisited)
+        {
+            const scenario3::GlobalNodeInfo* nodeInfo = scenario3::GetNodeInfo(nodeId);
+            if (!nodeInfo)
+                continue;
+
+            // Calculate 2D horizontal distance (flying is mostly horizontal)
+            double dx = nodeInfo->posX - currentX;
+            double dy = nodeInfo->posY - currentY;
+            double distance = std::sqrt(dx * dx + dy * dy);
+
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                nearestNodeId = nodeId;
+                nearestX = nodeInfo->posX;
+                nearestY = nodeInfo->posY;
+            }
+        }
+
+        // No valid node found
+        if (nearestNodeId == UINT32_MAX)
+        {
+            NS_LOG_WARN("[GREEDY FLIGHT PATH] Could not find nearest unvisited node");
+            break;
+        }
+
+        // Check if node is reachable at this altitude
+        UavGroundCommRange commRange = CalculateUavGroundCommRange(
+            nearestX, nearestY, currentZ, nearestX, nearestY, txPowerDbm, rxSensitivityDbm);
+
+        if (commRange.isInRange)
+        {
+            result.nodesReachable++;
+        }
+
+        // Update current position
+        currentX = nearestX;
+        currentY = nearestY;
+        currentTime += minDistance / uavSpeed;
+
+        // Create waypoint
+        UavFlightWaypoint wp;
+        wp.x = nearestX;
+        wp.y = nearestY;
+        wp.z = currentZ;
+        wp.targetNodeId = nearestNodeId;
+        wp.distanceFromPrevious = minDistance;
+        wp.arrivalTime = currentTime;
+
+        result.waypoints.push_back(wp);
+        result.totalDistance += minDistance;
+
+        // Mark as visited
+        visited.insert(nearestNodeId);
+        unvisited.erase(nearestNodeId);
+        
+        waypointCount++;
+
+        NS_LOG_INFO("[GREEDY FLIGHT PATH] Waypoint " << visited.size() 
+                     << ": Node " << nearestNodeId << " at (" << nearestX << ", " 
+                     << nearestY << "), distance=" << minDistance << "m, time=" << currentTime << "s");
+    }
+
+    // Calculate final statistics
+    result.estimatedFlightTime = result.totalDistance / uavSpeed;
+    result.coveragePercentage = (result.nodesToVisit > 0)
+        ? (100.0 * result.nodesReachable / result.nodesToVisit)
+        : 0.0;
+    result.isValid = (visited.size() == result.nodesToVisit);
+
+    NS_LOG_INFO("[GREEDY FLIGHT PATH] "
+                << "Total distance: " << result.totalDistance << "m | "
+                << "Flight time: " << result.estimatedFlightTime << "s | "
+                << "Visited: " << visited.size() << "/" << result.nodesToVisit << " nodes | "
+                << "Reachable: " << result.nodesReachable << "/" << result.nodesToVisit << " | "
+                << "Coverage: " << std::fixed << std::setprecision(1) 
+                << result.coveragePercentage << "% | "
+                << "Valid: " << (result.isValid ? "YES" : "NO"));
+
+    return result;
+}
+
+/**
+ * @brief Callback to calculate greedy flight path for suspicious region
+ *
+ * Called after suspicious region is detected. Calculates a greedy nearest-neighbor
+ * path that visits all suspicious nodes.
+ */
+static void
+OnCalculateGreedyFlightPath(double uavAltitude, double uavSpeed,
+                           double txPowerDbm, double rxSensitivityDbm,
+                           uint32_t gridSize, double spacing)
+{
+    NS_LOG_INFO("=== GREEDY FLIGHT PATH CALCULATION at t=" 
+                << Simulator::Now().GetSeconds() << "s ===");
+
+    // Use globally stored suspicious nodes
+    if (g_suspiciousNodes.empty())
+    {
+        NS_LOG_WARN("[GREEDY FLIGHT PATH] No suspicious nodes available");
+        return;
+    }
+
+    // Calculate starting position (grid center)
+    double gridDim = scenario3::ParameterCalculators::CalculateGridDimension(gridSize, spacing);
+    double startX = gridDim / 2.0;
+    double startY = gridDim / 2.0;
+    double startZ = uavAltitude;
+
+    // Calculate greedy path
+    UavFlightPath flightPath = CalculateGreedyFlightPath(
+        g_suspiciousNodes, startX, startY, startZ, uavSpeed, txPowerDbm, rxSensitivityDbm);
+
+    // Log detailed waypoints
+    if (flightPath.isValid)
+    {
+        NS_LOG_INFO("[GREEDY FLIGHT PATH] Waypoints Summary:");
+        for (size_t i = 0; i < flightPath.waypoints.size(); ++i)
+        {
+            const auto& wp = flightPath.waypoints[i];
+            std::ostringstream oss;
+            oss << std::fixed << std::setprecision(2);
+            oss << "  WP" << (i + 1) << ": Node " << wp.targetNodeId 
+                << " at (" << wp.x << ", " << wp.y << "), "
+                << "dist=" << wp.distanceFromPrevious << "m, "
+                << "arr_time=" << wp.arrivalTime << "s";
+            NS_LOG_INFO(oss.str());
+        }
+    }
+
+    NS_LOG_INFO("=== END GREEDY FLIGHT PATH CALCULATION ===");
+}
+
+/**
+ * @brief Schedule Greedy flight path calculation
+ *
+ * @param uavAltitude UAV altitude in meters
+ * @param uavSpeed UAV speed in m/s
+ * @param txPowerDbm UAV transmit power in dBm
+ * @param rxSensitivityDbm Ground node receiver sensitivity in dBm
+ * @param gridSize Grid size for starting position calculation
+ * @param spacing Grid spacing
+ * @param delaySeconds Delay before scheduling calculation
+ */
+void
+CalculateAndLogGreedyFlightPath(double uavAltitude, double uavSpeed,
+                               double txPowerDbm, double rxSensitivityDbm,
+                               uint32_t gridSize, double spacing)
+{
+    // Directly call the callback without additional scheduling
+    OnCalculateGreedyFlightPath(uavAltitude, uavSpeed, txPowerDbm, rxSensitivityDbm,
+                               gridSize, spacing);
+}
+// UAV nằm ngoài cách xa mạng về phía trái 
+// Ý tưởng đơn giản: (hình xoắn ốc)
+// UAV bay thẳng đến mép trên hoặc dưới của suspicious region (tuỳ theo khoảng cách gần nhất), 
+// sau đó bay dọc theo mép đó vòng vào trong cho đến khi phủ kín toàn bộ suspicious region.
+// Hàm này chỉ trả về đường bay logic được tính toán trước chưa có thực thi và tương tác mạng
+
+void 
+ScheduleUavSpiralTrajectory()
+{
+    // ...
 }
 
 } // namespace wsn

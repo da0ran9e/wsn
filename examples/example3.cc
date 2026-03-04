@@ -96,15 +96,24 @@ main(int argc, char* argv[])
     
     NS_LOG_INFO("UAV range calculation scheduled");
 
-    // std::vector<uint32_t> uavNodeIds;
-    // for (uint32_t i = 0; i < numUavs; ++i)
-    // {
-    //     uint32_t uavNodeId = ScheduleScenario3UavFragmentTraffic(groundConfig, uavConfig, nodes, 
-    //                                                              channel, numFragments, 
-    //                                                              totalConfidence, i);
-    //     uavNodeIds.push_back(uavNodeId);
-    //     NS_LOG_INFO("UAV #" << (i + 1) << " created: ID=" << uavNodeId);
-    // }
+    // Schedule Greedy flight path calculation to visit all suspicious nodes
+    // The suspicious region is detected during setup phase completion (at completionTime)
+    // Schedule this AFTER setup phase completes and suspicious region is calculated
+    double greedyFlightTime = completionTime + 0.2;  // 0.2s after setup completion
+    
+    // Schedule the callback to run at the specified time
+    Simulator::Schedule(Seconds(greedyFlightTime), 
+                       &CalculateAndLogGreedyFlightPath,
+                       uavConfig.uavAltitude,
+                       scenario3::UAVParams::DEFAULT_SPEED,  // m/s
+                       groundConfig.txPowerDbm,
+                       groundConfig.rxSensitivityDbm,
+                       groundConfig.gridSize,
+                       groundConfig.spacing);
+
+    NS_LOG_INFO("Greedy flight path calculation scheduled");
+
+    // TODO: ScheduleUavSpiralTrajectory();
 
     // Run actual network simulation
     Simulator::Stop(Seconds(groundConfig.simTimeSeconds));

@@ -311,6 +311,70 @@ void ScheduleUavRangeCalculation(double uavAltitude, double txPowerDbm,
                                  double rxSensitivityDbm, uint32_t gridSize, 
                                  double spacing, double delaySeconds = 0.15);
 
+/**
+ * @brief UAV flight waypoint information
+ */
+struct UavFlightWaypoint
+{
+    double x;                   ///< X coordinate (meters)
+    double y;                   ///< Y coordinate (meters)
+    double z;                   ///< Z altitude (meters)
+    uint32_t targetNodeId;      ///< Target suspicious node ID
+    double distanceFromPrevious; ///< Distance from previous waypoint (meters)
+    double arrivalTime;         ///< Estimated arrival time (seconds)
+};
+
+/**
+ * @brief UAV flight path planning result
+ */
+struct UavFlightPath
+{
+    std::vector<UavFlightWaypoint> waypoints;      ///< List of waypoints
+    double totalDistance;                           ///< Total flight distance (meters)
+    double estimatedFlightTime;                     ///< Estimated flight duration (seconds)
+    uint32_t nodesToVisit;                          ///< Total nodes to visit
+    uint32_t nodesReachable;                        ///< Nodes reachable at UAV altitude
+    double coveragePercentage;                      ///< Coverage percentage
+    bool isValid;                                   ///< Whether path is valid
+};
+
+/**
+ * @brief Calculate Greedy Nearest Neighbor flight path to cover all suspicious nodes
+ *
+ * Implements a greedy algorithm that starts at a given position and iteratively
+ * visits the nearest unvisited suspicious node until all are covered.
+ *
+ * @param suspiciousNodeIds Set of node IDs in suspicious region to visit
+ * @param startX Starting X coordinate (meters)
+ * @param startY Starting Y coordinate (meters)
+ * @param startZ Starting altitude (meters)
+ * @param uavSpeed UAV flying speed (m/s)
+ * @param txPowerDbm UAV transmit power in dBm
+ * @param rxSensitivityDbm Ground node receiver sensitivity in dBm
+ * @return UavFlightPath with waypoints and coverage statistics
+ */
+UavFlightPath CalculateGreedyFlightPath(const std::set<uint32_t>& suspiciousNodeIds,
+                                        double startX, double startY, double startZ,
+                                        double uavSpeed,
+                                        double txPowerDbm, double rxSensitivityDbm);
+
+/**
+ * @brief Immediately calculate and log greedy flight path for current suspicious nodes
+ *
+ * This is a direct calculation function that processes the globally-stored suspicious nodes.
+ * Call this after suspicious nodes have been detected and stored.
+ *
+ * @param uavAltitude UAV altitude in meters
+ * @param uavSpeed UAV speed in m/s
+ * @param txPowerDbm UAV transmit power in dBm
+ * @param rxSensitivityDbm Ground node receiver sensitivity in dBm
+ * @param gridSize Grid size for starting position calculation
+ * @param spacing Grid spacing
+ */
+void CalculateAndLogGreedyFlightPath(double uavAltitude, double uavSpeed,
+                                     double txPowerDbm, double rxSensitivityDbm,
+                                     uint32_t gridSize, double spacing);
+
 } // namespace wsn
 } // namespace ns3
 
