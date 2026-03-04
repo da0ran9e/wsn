@@ -375,6 +375,33 @@ void CalculateAndLogGreedyFlightPath(double uavAltitude, double uavSpeed,
                                      double txPowerDbm, double rxSensitivityDbm,
                                      uint32_t gridSize, double spacing);
 
+/**
+ * @brief Schedule UAV node movement through suspicious-region waypoints
+ *
+ * Builds a waypoint trajectory from the current suspicious node set using
+ * the greedy flight path planner, then applies it to an existing UAV node
+ * via WaypointMobilityModel.
+ *
+ * @param nodes Node container containing the UAV node
+ * @param uavNodeId Node ID of UAV to control
+ * @param startTimeSeconds Absolute simulation time to start flight plan
+ * @param uavAltitude Planned UAV altitude in meters
+ * @param uavSpeed UAV speed in m/s
+ * @param txPowerDbm UAV transmit power in dBm
+ * @param rxSensitivityDbm Ground node receiver sensitivity in dBm
+ * @param gridSize Grid size for center/start calculation
+ * @param spacing Grid spacing
+ */
+void ScheduleUavWaypointFlightOverSuspiciousRegion(NodeContainer nodes,
+                                                   uint32_t uavNodeId,
+                                                   double startTimeSeconds,
+                                                   double uavAltitude,
+                                                   double uavSpeed,
+                                                   double txPowerDbm,
+                                                   double rxSensitivityDbm,
+                                                   uint32_t gridSize,
+                                                   double spacing);
+
 } // namespace wsn
 } // namespace ns3
 

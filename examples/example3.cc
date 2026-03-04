@@ -13,6 +13,7 @@
 
 #include "ns3/core-module.h"
 #include "ns3/log.h"
+#include "ns3/mobility-module.h"
 
 using namespace ns3;
 using namespace ns3::wsn;
@@ -36,6 +37,7 @@ main(int argc, char* argv[])
     cmd.AddValue("rxSensitivity", "RX sensitivity in dBm", groundConfig.rxSensitivityDbm);
     cmd.AddValue("simTime", "Simulation time in seconds", groundConfig.simTimeSeconds);
     cmd.AddValue("uavAltitude", "UAV altitude in meters", uavConfig.uavAltitude);
+    cmd.AddValue("uavSpeed", "UAV speed in m/s", uavConfig.uavSpeed);
     cmd.AddValue("uavBroadcastInterval", "UAV broadcast interval in seconds",
                  uavConfig.uavBroadcastInterval);
     cmd.AddValue("numUavs", "Number of UAVs", numUavs);
@@ -113,7 +115,32 @@ main(int argc, char* argv[])
 
     NS_LOG_INFO("Greedy flight path calculation scheduled");
 
-    // TODO: ScheduleUavSpiralTrajectory();
+    // Create a dedicated UAV node for suspicious-region waypoint control
+    Ptr<Node> planningUavNode = CreateObject<Node>();
+    Ptr<WaypointMobilityModel> planningUavMobility = CreateObject<WaypointMobilityModel>();
+    planningUavNode->AggregateObject(planningUavMobility);
+
+    uint32_t planningUavNodeId = nodes.GetN();
+    nodes.Add(planningUavNode);
+
+    // Schedule movement of this UAV through suspicious-region waypoints
+    // Run after suspicious region generation (completionTime + 0.1s)
+    double waypointScheduleTime = completionTime + 0.25;
+    double waypointStartTime = completionTime + 0.30;
+    Simulator::Schedule(Seconds(waypointScheduleTime),
+                        &ScheduleUavWaypointFlightOverSuspiciousRegion,
+                        nodes,
+                        planningUavNodeId,
+                        waypointStartTime,
+                        uavConfig.uavAltitude,
+                        uavConfig.uavSpeed,
+                        groundConfig.txPowerDbm,
+                        groundConfig.rxSensitivityDbm,
+                        groundConfig.gridSize,
+                        groundConfig.spacing);
+
+    NS_LOG_INFO("UAV waypoint scheduler registered for node " << planningUavNodeId
+                << " at t=" << waypointScheduleTime << "s");
 
     // Run actual network simulation
     Simulator::Stop(Seconds(groundConfig.simTimeSeconds));

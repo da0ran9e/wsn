@@ -1186,7 +1186,6 @@ CalculateGreedyFlightPath(const std::set<uint32_t>& suspiciousNodeIds,
                 << ", " << currentZ << ") to visit " << unvisited.size() << " nodes");
 
     // Greedy loop: always go to nearest unvisited node
-    uint32_t waypointCount = 0;
     while (!unvisited.empty())
     {
         double minDistance = std::numeric_limits<double>::max();
@@ -1251,8 +1250,6 @@ CalculateGreedyFlightPath(const std::set<uint32_t>& suspiciousNodeIds,
         visited.insert(nearestNodeId);
         unvisited.erase(nearestNodeId);
         
-        waypointCount++;
-
         NS_LOG_INFO("[GREEDY FLIGHT PATH] Waypoint " << visited.size() 
                      << ": Node " << nearestNodeId << " at (" << nearestX << ", " 
                      << nearestY << "), distance=" << minDistance << "m, time=" << currentTime << "s");
@@ -1348,16 +1345,101 @@ CalculateAndLogGreedyFlightPath(double uavAltitude, double uavSpeed,
     OnCalculateGreedyFlightPath(uavAltitude, uavSpeed, txPowerDbm, rxSensitivityDbm,
                                gridSize, spacing);
 }
-// UAV nằm ngoài cách xa mạng về phía trái 
-// Ý tưởng đơn giản: (hình xoắn ốc)
-// UAV bay thẳng đến mép trên hoặc dưới của suspicious region (tuỳ theo khoảng cách gần nhất), 
-// sau đó bay dọc theo mép đó vòng vào trong cho đến khi phủ kín toàn bộ suspicious region.
-// Hàm này chỉ trả về đường bay logic được tính toán trước chưa có thực thi và tương tác mạng
 
-void 
-ScheduleUavSpiralTrajectory()
+void
+ScheduleUavWaypointFlightOverSuspiciousRegion(NodeContainer nodes,
+                                              uint32_t uavNodeId,
+                                              double startTimeSeconds,
+                                              double uavAltitude,
+                                              double uavSpeed,
+                                              double txPowerDbm,
+                                              double rxSensitivityDbm,
+                                              uint32_t gridSize,
+                                              double spacing)
 {
-    // ...
+    if (uavNodeId >= nodes.GetN())
+    {
+        NS_LOG_WARN("[UAV WAYPOINT SCHEDULER] Invalid UAV node ID: " << uavNodeId
+                    << " (nodes size=" << nodes.GetN() << ")");
+        return;
+    }
+
+    if (g_suspiciousNodes.empty())
+    {
+        NS_LOG_WARN("[UAV WAYPOINT SCHEDULER] No suspicious nodes available; skip scheduling");
+        return;
+    }
+
+    if (uavSpeed <= 0.0)
+    {
+        NS_LOG_WARN("[UAV WAYPOINT SCHEDULER] Invalid UAV speed: " << uavSpeed);
+        return;
+    }
+
+    // Start at grid center (same reference as greedy planner callback)
+    const double gridDim = scenario3::ParameterCalculators::CalculateGridDimension(gridSize, spacing);
+    const double startX = gridDim / 2.0;
+    const double startY = gridDim / 2.0;
+
+    UavFlightPath flightPath = CalculateGreedyFlightPath(g_suspiciousNodes,
+                                                         startX,
+                                                         startY,
+                                                         uavAltitude,
+                                                         uavSpeed,
+                                                         txPowerDbm,
+                                                         rxSensitivityDbm);
+
+    if (!flightPath.isValid || flightPath.waypoints.empty())
+    {
+        NS_LOG_WARN("[UAV WAYPOINT SCHEDULER] Flight path invalid or empty");
+        return;
+    }
+
+    Ptr<Node> uavNode = nodes.Get(uavNodeId);
+    if (!uavNode)
+    {
+        NS_LOG_WARN("[UAV WAYPOINT SCHEDULER] UAV node ptr is null: " << uavNodeId);
+        return;
+    }
+
+    Ptr<WaypointMobilityModel> waypointMobility = uavNode->GetObject<WaypointMobilityModel>();
+    if (!waypointMobility)
+    {
+        // If node does not have WaypointMobilityModel, create one and pin initial point.
+        waypointMobility = CreateObject<WaypointMobilityModel>();
+        uavNode->AggregateObject(waypointMobility);
+    }
+
+    // Add explicit start waypoint.
+    waypointMobility->AddWaypoint(Waypoint(Seconds(startTimeSeconds),
+                                           Vector(startX, startY, uavAltitude)));
+
+    // Add waypoints produced by greedy planner, with absolute simulation timestamps.
+    for (const auto& wp : flightPath.waypoints)
+    {
+        const double absTime = startTimeSeconds + wp.arrivalTime;
+        waypointMobility->AddWaypoint(Waypoint(Seconds(absTime),
+                                               Vector(wp.x, wp.y, wp.z)));
+    }
+
+    // Optional return to center after finishing suspicious-region scan.
+    const auto& lastWp = flightPath.waypoints.back();
+    const double backDx = startX - lastWp.x;
+    const double backDy = startY - lastWp.y;
+    const double returnDistance = std::sqrt(backDx * backDx + backDy * backDy);
+    const double returnTime = returnDistance / uavSpeed;
+    const double returnAbsTime = startTimeSeconds + flightPath.estimatedFlightTime + returnTime;
+
+    waypointMobility->AddWaypoint(Waypoint(Seconds(returnAbsTime),
+                                           Vector(startX, startY, uavAltitude)));
+
+    NS_LOG_INFO("[UAV WAYPOINT SCHEDULER] UAV node=" << uavNodeId
+                << " | suspiciousNodes=" << g_suspiciousNodes.size()
+                << " | flightDistance=" << flightPath.totalDistance << "m"
+                << " | flightTime=" << flightPath.estimatedFlightTime << "s"
+                << " | returnDistance=" << returnDistance << "m"
+                << " | startTime=" << startTimeSeconds << "s"
+                << " | endTime=" << returnAbsTime << "s");
 }
 
 } // namespace wsn
