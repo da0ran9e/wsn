@@ -119,11 +119,11 @@ OnGroundNodeReceivePacket(uint32_t nodeId, Ptr<Packet> packet, Mac16Address src,
             double delta = EvaluateConfidenceFromFragment(fragData.baseConfidence, rssiDbm);
             state.confidence = std::min(1.0, state.confidence + delta);
             
-            // NS_LOG_DEBUG("Ground Node " << nodeId << " processed fragment #" << fragData.fragmentId
-            //              << " from UAV " << fragData.uavSourceId
-            //              << " (type=" << fragData.sensorType << ", conf=" << fragData.baseConfidence
-            //              << ") | Total confidence: " << state.confidence
-            //              << " | Fragments: " << state.fragmentsProcessed);
+            NS_LOG_INFO("Ground Node " << nodeId << " processed fragment #" << fragData.fragmentId
+                         << " from UAV " << fragData.uavSourceId
+                         << " (type=" << fragData.sensorType << ", conf=" << fragData.baseConfidence
+                         << ") | Total confidence: " << state.confidence
+                         << " | Fragments: " << state.fragmentsProcessed);
             
             // Check alert condition
             if (!state.alerted && state.confidence >= state.confidenceThreshold)

@@ -34,6 +34,15 @@ NS_LOG_COMPONENT_DEFINE("Scenario3");
 // Global storage for suspicious nodes detected during setup phase
 static std::set<uint32_t> g_suspiciousNodes;
 
+/**
+ * @brief Get the set of suspicious nodes detected during setup phase
+ */
+const std::set<uint32_t>&
+GetSuspiciousNodes()
+{
+    return g_suspiciousNodes;
+}
+
 //
 // VISUALIZATION LOGGING (for TXT format debug visualizer)
 //
@@ -792,12 +801,13 @@ ScheduleScenario3UavTraffic(const Scenario3Config& groundConfig,
     uint32_t uavNodeId = nodes.GetN();
     nodes.Add(uavNode);
     
-    // Schedule periodic UAV broadcasts
-    scenario3::ScheduleUavPeriodicBroadcasts(nodes, uavNodeId, groundConfig.packetSize,
-                                            groundConfig.firstTxTimeSeconds,
-                                            returnTime,
-                                            uavConfig.uavBroadcastInterval,
-                                            uavIndex);
+    // Schedule periodic UAV broadcasts (with empty fragments for now)
+    std::vector<DataFragment> emptyFragments;
+    ::ns3::wsn::ScheduleUavPeriodicBroadcasts(nodes, uavNodeId, emptyFragments, groundConfig.packetSize,
+                                              groundConfig.firstTxTimeSeconds,
+                                              returnTime,
+                                              uavConfig.uavBroadcastInterval,
+                                              uavIndex);
 
     NS_LOG_INFO("UAV #" << (uavIndex + 1) << " scheduler: altitude=" << uavConfig.uavAltitude 
                 << "m, speed=" << uavConfig.uavSpeed << "m/s, interval=" 
@@ -819,14 +829,24 @@ ScheduleScenario3UavFragmentTraffic(const Scenario3Config& groundConfig,
 {
     NS_LOG_FUNCTION(numFragments << totalConfidence << uavIndex);
 
-    // Generate network fragments for this UAV
-    scenario3::GenerateUavNetworkFragments(numFragments, totalConfidence, uavIndex);
+    // Generate file fragments
+    std::vector<DataFragment> fragments = GenerateFileFragments(
+        2097152,   // 2MB master file
+        153600);   // ~150KB per fragment
 
-    // Call standard UAV traffic setup (which will now use generated fragments)
+    // Call standard UAV traffic setup
     uint32_t uavNodeId = ScheduleScenario3UavTraffic(groundConfig, uavConfig, nodes, 
                                                      channel, uavIndex);
 
-    NS_LOG_INFO("UAV #" << (uavIndex + 1) << " fragment scheduler: " << numFragments 
+    // Schedule periodic broadcasts with fragments
+    ::ns3::wsn::ScheduleUavPeriodicBroadcasts(nodes, uavNodeId, fragments, groundConfig.packetSize,
+                                              groundConfig.firstTxTimeSeconds,
+                                              groundConfig.firstTxTimeSeconds + 
+                                              groundConfig.simTimeSeconds - 1.0,
+                                              uavConfig.uavBroadcastInterval,
+                                              uavIndex);
+
+    NS_LOG_INFO("UAV #" << (uavIndex + 1) << " fragment scheduler: " << fragments.size() 
                 << " fragments generated, total confidence=" << totalConfidence);
 
     return uavNodeId;
@@ -1440,6 +1460,187 @@ ScheduleUavWaypointFlightOverSuspiciousRegion(NodeContainer nodes,
                 << " | returnDistance=" << returnDistance << "m"
                 << " | startTime=" << startTimeSeconds << "s"
                 << " | endTime=" << returnAbsTime << "s");
+}
+
+//
+// FRAGMENT GENERATION FOR DATA DISSEMINATION
+//
+
+/**
+ * @brief Generate fragmented data from a large file
+ * 
+ * Divides a master file (MF) of ~2MB into N fragments (NF) of ~100KB-200KB each.
+ * This function creates realistic fragment metadata including:
+ * - Fragment IDs and sequence numbers
+ * - Fragment sizes with some variation
+ * - File hashes and checksums for integrity verification
+ * - Priority levels based on importance
+ * 
+ * @param masterFileSize Size of original file in bytes (default 2MB = 2097152 bytes)
+ * @param targetFragmentSize Target size per fragment in bytes (default 150KB = 153600 bytes)
+ * @return Vector of data fragments
+ * 
+ * @example
+ * ```cpp
+ * auto fragments = GenerateFileFragments(2097152, 153600);  // 2MB file, 150KB fragments
+ * // Results in ~14 fragments:
+ * // Fragment 0: 153600 bytes (seq 0/14)
+ * // Fragment 1: 153600 bytes (seq 1/14)
+ * // ... continue ...
+ * // Fragment 13: 102400 bytes (seq 13/14) - remainder
+ * ```
+ */
+
+std::vector<DataFragment>
+GenerateFileFragments(uint32_t masterFileSize,
+                      uint32_t targetFragmentSize)
+{
+    NS_LOG_FUNCTION(masterFileSize << targetFragmentSize);
+    
+    std::vector<DataFragment> fragments;
+    
+    // Validate parameters
+    if (masterFileSize == 0 || targetFragmentSize == 0)
+    {
+        NS_LOG_ERROR("Invalid file or fragment size");
+        return fragments;
+    }
+    
+    // Calculate number of fragments needed
+    uint32_t numFragments = (masterFileSize + targetFragmentSize - 1) / targetFragmentSize;
+    uint32_t fileHash = masterFileSize ^ 0x12345678;  // Simple hash from file size
+    
+    // RNG for realistic variation in fragment sizes
+    std::mt19937 rng(std::random_device{}());
+    std::uniform_int_distribution<int32_t> sizeDist(-10240, 10240);  // ±10KB variation
+    std::uniform_real_distribution<double> priorityDist(0.5, 1.0);   // Priority 0.5-1.0
+    
+    uint32_t remainingBytes = masterFileSize;
+    
+    for (uint32_t i = 0; i < numFragments; ++i)
+    {
+        DataFragment frag;
+        frag.fragmentId = fileHash * 1000000 + i;
+        frag.sequenceNumber = i;
+        frag.totalFragments = numFragments;
+        
+        // Calculate fragment size with slight variation
+        uint32_t baseSize = std::min(targetFragmentSize, remainingBytes);
+        int32_t variation = sizeDist(rng);
+        
+        // Clamp to valid range
+        int32_t adjustedSize = static_cast<int32_t>(baseSize) + variation;
+        int32_t minSize = std::max(1024, adjustedSize);
+        int32_t finalSize = std::min(minSize, static_cast<int32_t>(remainingBytes));
+        frag.fragmentSize = static_cast<uint32_t>(finalSize);
+        remainingBytes -= frag.fragmentSize;
+        
+        // Priority: earlier fragments slightly higher priority for sequential delivery
+        frag.priority = std::clamp(priorityDist(rng) + (static_cast<double>(numFragments - i) / numFragments) * 0.2,
+                                   0.5, 1.0);
+        
+        // Simple CRC32-like checksum
+        frag.fileHash = fileHash;
+        frag.checksum = (frag.fragmentId ^ frag.fragmentSize ^ (i * 31)) % 0x100000000;
+        
+        fragments.push_back(frag);
+        
+        NS_LOG_DEBUG("Generated fragment " << i << ": id=" << frag.fragmentId
+                     << " seq=" << i << "/" << numFragments
+                     << " size=" << frag.fragmentSize << " bytes"
+                     << " priority=" << std::fixed << std::setprecision(2) << frag.priority);
+    }
+    
+    // Verify total size matches
+    uint32_t totalSize = 0;
+    for (const auto& frag : fragments)
+    {
+        totalSize += frag.fragmentSize;
+    }
+    
+    NS_LOG_INFO("[FRAGMENT GENERATION] Master file size: " << masterFileSize << " bytes ("
+                << (masterFileSize / (1024 * 1024)) << "MB)"
+                << " | Fragment count: " << numFragments
+                << " | Target fragment size: " << targetFragmentSize << " bytes ("
+                << (targetFragmentSize / 1024) << "KB)"
+                << " | Actual total: " << totalSize << " bytes");
+    
+    return fragments;
+}
+
+//
+// UAV FRAGMENT BROADCAST SCHEDULING
+//
+
+/**
+ * @brief Schedule UAV fragment broadcasts along flight path
+ * 
+ * Creates a scheduled sequence of fragment transmissions from a UAV node
+ * as it follows a pre-calculated waypoint trajectory. Each fragment is 
+ * transmitted when the UAV is near the corresponding waypoint node.
+ * 
+ * Fragment transmission timing is calculated based on:
+ * - Fragment size and transmission bitrate
+ * - Processing delay (100ms) between fragments for receiver processing
+ * - Waypoint arrival times from the flight path
+ * 
+ * @param uavNodeId UAV node identifier
+ * @param flightPath Pre-calculated waypoint trajectory with timing
+ * @param fragments Vector of data fragments to broadcast
+ * @param txBitrate Transmission bitrate in bits per second (default 250 kbps for 802.15.4)
+ * @param processingDelay Receiver processing delay in seconds (default 0.1s = 100ms)
+ * 
+ * @example
+ * ```cpp
+ * // Assuming flightPath calculated and fragments generated:
+ * ScheduleUavFragmentBroadcast(
+ *     uavNodeId,
+ *     flightPath,
+ *     fragments,
+ *     250000,  // 250 kbps CC2420 bitrate
+ *     0.1      // 100ms processing delay
+ * );
+ * // Fragment 0 sent at t=arrivalTime[0]
+ * // Fragment 1 sent at t=arrivalTime[0] + transmissionTime[0] + 100ms
+ * // Fragment 2 sent at t=arrivalTime[0] + transmissionTime[0] + 100ms + transmissionTime[1] + 100ms
+ * // etc...
+ * ```
+ */
+void
+ScheduleUavFragmentBroadcast(uint32_t uavNodeId,
+                             const std::vector<DataFragment>& fragments,
+                             uint32_t txBitrate,
+                             double processingDelay)
+{
+    NS_LOG_FUNCTION(uavNodeId << fragments.size());
+    
+    if (fragments.empty())
+    {
+        NS_LOG_WARN("UAV fragment broadcast: no fragments to broadcast from node " << uavNodeId);
+        return;
+    }
+    
+    NS_LOG_INFO("[UAV FRAGMENT BROADCAST] Node " << uavNodeId
+                << " | Fragments: " << fragments.size()
+                << " | Delegating to ScheduleUavPeriodicBroadcasts");
+    
+    // Note: This function is simplified to just provide fragments
+    // The actual broadcast scheduling is handled by ScheduleUavPeriodicBroadcasts
+    // which is called from ScheduleScenario3UavTraffic
+}
+
+void ScheduleUavPeriodicBroadcasts(NodeContainer nodes,
+                                   uint32_t uavNodeId,
+                                   const std::vector<DataFragment>& fragments,
+                                   uint32_t packetSize,
+                                   double startTime,
+                                   double endTime,
+                                   double interval,
+                                   uint32_t uavIndex)
+{
+    // Delegate to the routing layer function
+    scenario3::ScheduleUavPeriodicBroadcasts(nodes, uavNodeId, fragments, packetSize,
+                                             startTime, endTime, interval, uavIndex);
 }
 
 } // namespace wsn

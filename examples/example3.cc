@@ -10,6 +10,8 @@
 
 #include "scenarios/scenario3.h"
 #include "../model/routing/scenario3/parameters.h"
+#include "../model/routing/scenario3/uav-node-routing.h"
+#include "../helper/cc2420-helper.h"
 
 #include "ns3/core-module.h"
 #include "ns3/log.h"
@@ -115,32 +117,89 @@ main(int argc, char* argv[])
 
     NS_LOG_INFO("Greedy flight path calculation scheduled");
 
-    // Create a dedicated UAV node for suspicious-region waypoint control
-    Ptr<Node> planningUavNode = CreateObject<Node>();
-    Ptr<WaypointMobilityModel> planningUavMobility = CreateObject<WaypointMobilityModel>();
-    planningUavNode->AggregateObject(planningUavMobility);
+    // Schedule UAV node creation AFTER setup phase completes to avoid context conflicts
+    double uavCreationTime = completionTime + 0.15;
+    uint32_t* pPlanningUavNodeId = new uint32_t(0);  // Store UAV ID for later callbacks
+    
+    Simulator::Schedule(Seconds(uavCreationTime), [&nodes, &channel, &groundConfig, &uavConfig, completionTime, pPlanningUavNodeId]() {
+        // Create a dedicated UAV node for suspicious-region waypoint control
+        Ptr<Node> planningUavNode = CreateObject<Node>();
+        Ptr<WaypointMobilityModel> planningUavMobility = CreateObject<WaypointMobilityModel>();
+        planningUavNode->AggregateObject(planningUavMobility);
 
-    uint32_t planningUavNodeId = nodes.GetN();
-    nodes.Add(planningUavNode);
+        // Set initial position at grid center with UAV altitude
+        double gridDim = scenario3::ParameterCalculators::CalculateGridDimension(
+            groundConfig.gridSize, groundConfig.spacing);
+        double startX = gridDim / 2.0;
+        double startY = gridDim / 2.0;
+        
+        planningUavMobility->AddWaypoint(Waypoint(Seconds(completionTime + 0.20),
+                                                  Vector(startX, startY, uavConfig.uavAltitude)));
+
+        // Install CC2420 device on planning UAV after mobility setup
+        Cc2420Helper cc2420Uav;
+        cc2420Uav.SetChannel(channel);
+        cc2420Uav.SetPhyAttribute("TxPower", DoubleValue(groundConfig.txPowerDbm));
+        cc2420Uav.SetPhyAttribute("RxSensitivity", DoubleValue(groundConfig.rxSensitivityDbm));
+        
+        NetDeviceContainer planningUavDevices = cc2420Uav.Install(planningUavNode);
+        scenario3::InitializeUavNodeRouting(planningUavDevices, groundConfig.packetSize);
+
+        *pPlanningUavNodeId = nodes.GetN();
+        nodes.Add(planningUavNode);
+
+        NS_LOG_INFO("Planning UAV node created: ID=" << *pPlanningUavNodeId 
+                    << " with CC2420 device and waypoint mobility");
+    });
 
     // Schedule movement of this UAV through suspicious-region waypoints
-    // Run after suspicious region generation (completionTime + 0.1s)
+    // Run after UAV node creation
     double waypointScheduleTime = completionTime + 0.25;
     double waypointStartTime = completionTime + 0.30;
-    Simulator::Schedule(Seconds(waypointScheduleTime),
-                        &ScheduleUavWaypointFlightOverSuspiciousRegion,
-                        nodes,
-                        planningUavNodeId,
-                        waypointStartTime,
-                        uavConfig.uavAltitude,
-                        uavConfig.uavSpeed,
-                        groundConfig.txPowerDbm,
-                        groundConfig.rxSensitivityDbm,
-                        groundConfig.gridSize,
-                        groundConfig.spacing);
+    Simulator::Schedule(Seconds(waypointScheduleTime), [&nodes, pPlanningUavNodeId, waypointStartTime, &uavConfig, &groundConfig]() {
+        ScheduleUavWaypointFlightOverSuspiciousRegion(
+            nodes,
+            *pPlanningUavNodeId,
+            waypointStartTime,
+            uavConfig.uavAltitude,
+            uavConfig.uavSpeed,
+            groundConfig.txPowerDbm,
+            groundConfig.rxSensitivityDbm,
+            groundConfig.gridSize,
+            groundConfig.spacing);
+        
+        NS_LOG_INFO("UAV waypoint scheduler executed for node " << *pPlanningUavNodeId);
+    });
 
-    NS_LOG_INFO("UAV waypoint scheduler registered for node " << planningUavNodeId
-                << " at t=" << waypointScheduleTime << "s");
+    NS_LOG_INFO("UAV waypoint scheduler registered at t=" << waypointScheduleTime << "s");
+
+    // Note: Fragment broadcast is now handled automatically by ScheduleUavPeriodicBroadcasts
+    // which is called within the UAV traffic scheduling function.
+    // The following generates fragments and calls ScheduleUavPeriodicBroadcasts directly.
+    double fragmentBroadcastTime = waypointScheduleTime + 0.05;
+    
+    Simulator::Schedule(Seconds(fragmentBroadcastTime), [pPlanningUavNodeId, &nodes, &groundConfig, &uavConfig, completionTime]() {
+        // Generate fragments
+        auto fragments = GenerateFileFragments(2097152, 153600);  // 2MB file, 150KB fragments
+        
+        NS_LOG_INFO("[UAV FRAGMENT BROADCAST] Node " << *pPlanningUavNodeId
+                    << " | Fragments: " << fragments.size()
+                    << " | Scheduling periodic broadcasts");
+        
+        // Schedule periodic broadcasts with fragments
+        // Start AFTER setup phase completes (completionTime + margin)
+        ns3::wsn::ScheduleUavPeriodicBroadcasts(
+            nodes,  // Pass nodes container with all nodes
+            *pPlanningUavNodeId,
+            fragments,
+            groundConfig.packetSize,
+            completionTime + 0.5,  // Start 0.5s after setup completes (t=6.5s)
+            groundConfig.simTimeSeconds - 1.0,      // End 1s before simulation ends
+            uavConfig.uavBroadcastInterval,
+            0);  // UAV index 0
+    });
+
+    NS_LOG_INFO("Fragment broadcast scheduling registered at t=" << fragmentBroadcastTime << "s");
 
     // Run actual network simulation
     Simulator::Stop(Seconds(groundConfig.simTimeSeconds));

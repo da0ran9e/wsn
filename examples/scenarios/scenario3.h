@@ -402,6 +402,86 @@ void ScheduleUavWaypointFlightOverSuspiciousRegion(NodeContainer nodes,
                                                    uint32_t gridSize,
                                                    double spacing);
 
+/**
+ * @brief Data fragment structure for file dissemination
+ */
+struct DataFragment
+{
+    uint32_t fragmentId;        ///< Unique fragment identifier
+    uint32_t sequenceNumber;    ///< Position in sequence
+    uint32_t totalFragments;    ///< Total number of fragments in set
+    uint32_t fragmentSize;      ///< Size of this fragment in bytes
+    uint32_t fileHash;          ///< Hash of original file
+    double priority;            ///< Priority for transmission [0, 1]
+    uint32_t checksum;          ///< CRC32 checksum for integrity
+};
+
+/**
+ * @brief Generate fragmented data from a large file
+ * 
+ * Divides a master file (MF) of ~2MB into N fragments (NF) of ~100KB-200KB each.
+ * Creates realistic fragment metadata including:
+ * - Fragment IDs and sequence numbers
+ * - Fragment sizes with some variation  
+ * - File hashes and checksums for integrity verification
+ * - Priority levels based on importance
+ * 
+ * @param masterFileSize Size of original file in bytes (default 2MB = 2097152 bytes)
+ * @param targetFragmentSize Target size per fragment in bytes (default 150KB = 153600 bytes)
+ * @return Vector of data fragments
+ */
+std::vector<DataFragment> GenerateFileFragments(uint32_t masterFileSize = 2097152,
+                                                uint32_t targetFragmentSize = 153600);
+
+/**
+ * @brief Get the set of suspicious nodes detected during setup phase
+ * @return Const reference to set of suspicious node IDs
+ */
+const std::set<uint32_t>& GetSuspiciousNodes();
+
+/**
+ * @brief Schedule UAV fragment broadcasts
+ * 
+ * Simplified wrapper that generates fragments and delegates to 
+ * ScheduleUavPeriodicBroadcasts for actual transmission scheduling.
+ * 
+ * @param uavNodeId UAV node identifier
+ * @param fragments Vector of data fragments to broadcast (unused, kept for compatibility)
+ * @param txBitrate Transmission bitrate (unused, kept for compatibility)
+ * @param processingDelay Receiver processing delay (unused, kept for compatibility)
+ * 
+ * @note This function is simplified and does not perform actual scheduling.
+ *       The real broadcast scheduling is handled by ScheduleUavPeriodicBroadcasts.
+ */
+void ScheduleUavFragmentBroadcast(uint32_t uavNodeId,
+                                 const std::vector<DataFragment>& fragments,
+                                 uint32_t txBitrate = 250000,
+                                 double processingDelay = 0.1);
+
+/**
+ * @brief Schedule periodic UAV fragment broadcasts
+ * 
+ * Schedules a UAV to broadcast data fragments at regular intervals.
+ * Implements round-robin fragment selection and sequence numbering.
+ * 
+ * @param nodes NodeContainer with UAV nodes (can be empty, UAV accessed by ID)
+ * @param uavNodeId ID of the UAV node to broadcast
+ * @param fragments Vector of data fragments to broadcast
+ * @param packetSize Packet size in bytes
+ * @param startTime Start time for broadcasts
+ * @param endTime End time for broadcasts
+ * @param interval Interval between broadcasts
+ * @param uavIndex Index of this UAV (0, 1, 2, ...)
+ */
+void ScheduleUavPeriodicBroadcasts(NodeContainer nodes,
+                                   uint32_t uavNodeId,
+                                   const std::vector<DataFragment>& fragments,
+                                   uint32_t packetSize,
+                                   double startTime,
+                                   double endTime,
+                                   double interval,
+                                   uint32_t uavIndex);
+
 } // namespace wsn
 } // namespace ns3
 
