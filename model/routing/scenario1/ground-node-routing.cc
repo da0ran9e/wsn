@@ -96,8 +96,8 @@ OnGroundNodeReceivePacket(uint32_t nodeId, Ptr<Packet> packet, Mac16Address src,
             double delta = EvaluateConfidenceFromFragment(fragData.baseConfidence, rssiDbm);
             state.confidence = std::min(1.0, state.confidence + delta);
             
-            NS_LOG_DEBUG("Ground Node " << nodeId << " processed fragment #" << fragData.fragmentId
-                         << " (type=" << fragData.sensorType << ", conf=" << fragData.baseConfidence
+            NS_LOG_DEBUG(nodeId << " #" << fragData.fragmentId
+                         << " conf=" << fragData.baseConfidence
                          << ") | Total confidence: " << state.confidence
                          << " | Fragments: " << state.fragmentsProcessed);
             

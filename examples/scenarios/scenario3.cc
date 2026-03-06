@@ -832,7 +832,8 @@ ScheduleScenario3UavFragmentTraffic(const Scenario3Config& groundConfig,
     // Generate file fragments
     std::vector<DataFragment> fragments = GenerateFileFragments(
         2097152,   // 2MB master file
-        153600);   // ~150KB per fragment
+        153600,    // ~150KB per fragment
+        0.95);     // 95% master file confidence
 
     // Call standard UAV traffic setup
     uint32_t uavNodeId = ScheduleScenario3UavTraffic(groundConfig, uavConfig, nodes, 
@@ -1475,27 +1476,30 @@ ScheduleUavWaypointFlightOverSuspiciousRegion(NodeContainer nodes,
  * - Fragment sizes with some variation
  * - File hashes and checksums for integrity verification
  * - Priority levels based on importance
+ * - Confidence values proportional to fragment size relative to master file
  * 
  * @param masterFileSize Size of original file in bytes (default 2MB = 2097152 bytes)
  * @param targetFragmentSize Target size per fragment in bytes (default 150KB = 153600 bytes)
+ * @param masterFileConfidence Master file confidence level (0.0-1.0, default 0.95 = 95%)
  * @return Vector of data fragments
  * 
  * @example
  * ```cpp
- * auto fragments = GenerateFileFragments(2097152, 153600);  // 2MB file, 150KB fragments
+ * auto fragments = GenerateFileFragments(2097152, 153600, 0.95);  // 2MB file, 150KB fragments, 95% confidence
  * // Results in ~14 fragments:
- * // Fragment 0: 153600 bytes (seq 0/14)
- * // Fragment 1: 153600 bytes (seq 1/14)
+ * // Fragment 0: 153600 bytes (seq 0/14), confidence = (153600/2097152) * 0.95 ≈ 0.0696
+ * // Fragment 1: 153600 bytes (seq 1/14), confidence = (153600/2097152) * 0.95 ≈ 0.0696
  * // ... continue ...
- * // Fragment 13: 102400 bytes (seq 13/14) - remainder
+ * // Fragment 13: 102400 bytes (seq 13/14), confidence = (102400/2097152) * 0.95 ≈ 0.0464
  * ```
  */
 
 std::vector<DataFragment>
 GenerateFileFragments(uint32_t masterFileSize,
-                      uint32_t targetFragmentSize)
+                      uint32_t targetFragmentSize,
+                      double masterFileConfidence)
 {
-    NS_LOG_FUNCTION(masterFileSize << targetFragmentSize);
+    NS_LOG_FUNCTION(masterFileSize << targetFragmentSize << masterFileConfidence);
     
     std::vector<DataFragment> fragments;
     
@@ -1503,6 +1507,13 @@ GenerateFileFragments(uint32_t masterFileSize,
     if (masterFileSize == 0 || targetFragmentSize == 0)
     {
         NS_LOG_ERROR("Invalid file or fragment size");
+        return fragments;
+    }
+    
+    if (masterFileConfidence < 0.0 || masterFileConfidence > 1.0)
+    {
+        NS_LOG_ERROR("Invalid master file confidence: " << masterFileConfidence 
+                     << " (must be 0.0-1.0)");
         return fragments;
     }
     
@@ -1535,9 +1546,10 @@ GenerateFileFragments(uint32_t masterFileSize,
         frag.fragmentSize = static_cast<uint32_t>(finalSize);
         remainingBytes -= frag.fragmentSize;
         
-        // Priority: earlier fragments slightly higher priority for sequential delivery
-        frag.priority = std::clamp(priorityDist(rng) + (static_cast<double>(numFragments - i) / numFragments) * 0.2,
-                                   0.5, 1.0);
+        // Calculate confidence based on fragment size ratio to master file
+        // Each fragment contributes proportionally to total master file confidence
+        frag.priority = (static_cast<double>(frag.fragmentSize) / static_cast<double>(masterFileSize)) 
+                        * masterFileConfidence;
         
         // Simple CRC32-like checksum
         frag.fileHash = fileHash;
@@ -1548,22 +1560,28 @@ GenerateFileFragments(uint32_t masterFileSize,
         NS_LOG_DEBUG("Generated fragment " << i << ": id=" << frag.fragmentId
                      << " seq=" << i << "/" << numFragments
                      << " size=" << frag.fragmentSize << " bytes"
-                     << " priority=" << std::fixed << std::setprecision(2) << frag.priority);
+                     << " confidence=" << std::fixed << std::setprecision(4) << frag.priority);
     }
     
     // Verify total size matches
     uint32_t totalSize = 0;
+    double totalConfidence = 0.0;
     for (const auto& frag : fragments)
     {
         totalSize += frag.fragmentSize;
+        totalConfidence += frag.priority;
     }
     
     NS_LOG_INFO("[FRAGMENT GENERATION] Master file size: " << masterFileSize << " bytes ("
                 << (masterFileSize / (1024 * 1024)) << "MB)"
+                << " | Master confidence: " << std::fixed << std::setprecision(2) 
+                << (masterFileConfidence * 100.0) << "%"
                 << " | Fragment count: " << numFragments
                 << " | Target fragment size: " << targetFragmentSize << " bytes ("
                 << (targetFragmentSize / 1024) << "KB)"
-                << " | Actual total: " << totalSize << " bytes");
+                << " | Actual total: " << totalSize << " bytes"
+                << " | Total fragment confidence: " << std::setprecision(4) << totalConfidence 
+                << " (" << std::setprecision(2) << (totalConfidence * 100.0) << "%)");
     
     return fragments;
 }

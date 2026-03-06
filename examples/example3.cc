@@ -180,7 +180,7 @@ main(int argc, char* argv[])
     
     Simulator::Schedule(Seconds(fragmentBroadcastTime), [pPlanningUavNodeId, &nodes, &groundConfig, &uavConfig, completionTime]() {
         // Generate fragments
-        auto fragments = GenerateFileFragments(2097152, 153600);  // 2MB file, 150KB fragments
+        auto fragments = GenerateFileFragments(2097152, 153600, 0.95);  // 2MB file, 150KB fragments, 95% confidence
         
         NS_LOG_INFO("[UAV FRAGMENT BROADCAST] Node " << *pPlanningUavNodeId
                     << " | Fragments: " << fragments.size()

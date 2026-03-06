@@ -428,10 +428,12 @@ struct DataFragment
  * 
  * @param masterFileSize Size of original file in bytes (default 2MB = 2097152 bytes)
  * @param targetFragmentSize Target size per fragment in bytes (default 150KB = 153600 bytes)
+ * @param masterFileConfidence Master file confidence level (0.0-1.0, default 0.95 = 95%)
  * @return Vector of data fragments
  */
 std::vector<DataFragment> GenerateFileFragments(uint32_t masterFileSize = 2097152,
-                                                uint32_t targetFragmentSize = 153600);
+                                                uint32_t targetFragmentSize = 153600,
+                                                double masterFileConfidence = 0.95);
 
 /**
  * @brief Get the set of suspicious nodes detected during setup phase
