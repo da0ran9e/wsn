@@ -52,13 +52,132 @@ std::map<uint32_t, GroundLogicState> g_groundLogicPerNode;
 struct GroundNetworkState
 {
     std::set<uint32_t> receivedFragmentIds;
+    std::map<uint32_t, double> fragmentConfidenceById;
     double confidence = 0.0;
     uint32_t fragmentsProcessed = 0;
     bool alerted = false;
     double confidenceThreshold = 0.75;
+    double cooperationThreshold = 0.35;
+    double lastCooperationRequestTime = -1.0;
 };
 
 std::map<uint32_t, GroundNetworkState> g_groundNetworkPerNode;
+
+static void
+CheckGroundNodeAlert(uint32_t nodeId, GroundNetworkState& state, const std::string& source)
+{
+    if (!state.alerted && state.confidence >= state.confidenceThreshold)
+    {
+        state.alerted = true;
+        NS_LOG_WARN("*** ALERT *** Ground Node " << nodeId
+                   << " at t=" << Simulator::Now().GetSeconds() << "s"
+                   << " | Source: " << source
+                   << " | Confidence: " << state.confidence
+                   << " | Fragments: " << state.fragmentsProcessed);
+    }
+}
+
+static void
+ApplyFragmentToGroundNode(uint32_t targetNodeId,
+                          uint32_t fragmentId,
+                          double fragmentConfidence,
+                          uint32_t providerNodeId,
+                          const std::string& source)
+{
+    GroundNetworkState& targetState = g_groundNetworkPerNode[targetNodeId];
+    if (targetState.receivedFragmentIds.count(fragmentId) > 0)
+    {
+        return;
+    }
+
+    targetState.receivedFragmentIds.insert(fragmentId);
+    targetState.fragmentConfidenceById[fragmentId] = fragmentConfidence;
+    targetState.fragmentsProcessed++;
+    targetState.confidence = std::min(1.0, targetState.confidence + fragmentConfidence);
+
+    NS_LOG_INFO("Node " << targetNodeId << " received shared fragment #" << fragmentId
+                << " from node " << providerNodeId
+                << " | fragConf=" << fragmentConfidence
+                << " | totalConf=" << targetState.confidence
+                << " | Fragments=" << targetState.fragmentsProcessed
+                << " | source=" << source);
+
+    CheckGroundNodeAlert(targetNodeId, targetState, source);
+}
+
+static void
+StartCellCooperation(uint32_t requesterNodeId)
+{
+    const GlobalNodeInfo* requesterInfo = GetNodeInfo(requesterNodeId);
+    if (!requesterInfo)
+    {
+        NS_LOG_DEBUG("[CELL-COOP] Missing node info for requester " << requesterNodeId);
+        return;
+    }
+
+    const int32_t requesterCellId = requesterInfo->cellId;
+    if (requesterCellId < 0)
+    {
+        NS_LOG_DEBUG("[CELL-COOP] Invalid cell for requester " << requesterNodeId);
+        return;
+    }
+
+    GroundNetworkState& requesterState = g_groundNetworkPerNode[requesterNodeId];
+    std::vector<uint32_t> sameCellNodes = GetNodesInCell(requesterCellId);
+
+    NS_LOG_INFO("[CELL-COOP][REQUEST] Node " << requesterNodeId
+                << " (cell=" << requesterCellId << ")"
+                << " | conf=" << requesterState.confidence
+                << " | localFrags=" << requesterState.fragmentsProcessed
+                << " | peers=" << sameCellNodes.size());
+
+    uint32_t totalShared = 0;
+    for (uint32_t peerNodeId : sameCellNodes)
+    {
+        if (peerNodeId == requesterNodeId)
+        {
+            continue;
+        }
+
+        const auto peerStateIt = g_groundNetworkPerNode.find(peerNodeId);
+        if (peerStateIt == g_groundNetworkPerNode.end())
+        {
+            continue;
+        }
+
+        const GroundNetworkState& peerState = peerStateIt->second;
+        uint32_t sharedFromPeer = 0;
+
+        for (const auto& [fragmentId, fragConf] : peerState.fragmentConfidenceById)
+        {
+            if (requesterState.receivedFragmentIds.count(fragmentId) > 0)
+            {
+                continue;
+            }
+
+            ApplyFragmentToGroundNode(requesterNodeId,
+                                     fragmentId,
+                                     fragConf,
+                                     peerNodeId,
+                                     "cell-cooperation");
+            sharedFromPeer++;
+            totalShared++;
+        }
+
+        if (sharedFromPeer > 0)
+        {
+            NS_LOG_INFO("[CELL-COOP][REPLY] Node " << peerNodeId
+                        << " shared " << sharedFromPeer
+                        << " fragment(s) to node " << requesterNodeId);
+        }
+    }
+
+    NS_LOG_INFO("[CELL-COOP][SUMMARY] Node " << requesterNodeId
+                << " received " << totalShared
+                << " fragment(s) from peers in cell " << requesterCellId
+                << " | newConf=" << requesterState.confidence
+                << " | newFrags=" << requesterState.fragmentsProcessed);
+}
 
 static double
 EvaluateConfidenceFromFragment(double baseConfidence, double rssiDbm)
@@ -114,6 +233,7 @@ OnGroundNodeReceivePacket(uint32_t nodeId, Ptr<Packet> packet, Mac16Address src,
         {
             // New fragment - add it
             state.receivedFragmentIds.insert(fragData.fragmentId);
+            state.fragmentConfidenceById[fragData.fragmentId] = fragData.baseConfidence;
             state.fragmentsProcessed++;
             
             double delta = EvaluateConfidenceFromFragment(fragData.baseConfidence, rssiDbm);
@@ -124,16 +244,19 @@ OnGroundNodeReceivePacket(uint32_t nodeId, Ptr<Packet> packet, Mac16Address src,
                          << ", conf = " << fragData.baseConfidence
                          << " / " << state.confidence
                          << "\t | Fragments: " << state.fragmentsProcessed);
-            
-            // Check alert condition
-            if (!state.alerted && state.confidence >= state.confidenceThreshold)
+
+            // Khi confidence đạt ngưỡng cooperation, node yêu cầu các node cùng cell
+            // chia sẻ các fragment còn thiếu.
+            const double now = Simulator::Now().GetSeconds();
+            if (state.confidence >= state.cooperationThreshold &&
+                (state.lastCooperationRequestTime < 0.0 ||
+                 (now - state.lastCooperationRequestTime) >= 0.5))
             {
-                state.alerted = true;
-                NS_LOG_WARN("*** ALERT *** Ground Node " << nodeId
-                           << " at t=" << Simulator::Now().GetSeconds() << "s"
-                           << " | Confidence: " << state.confidence
-                           << " | Fragments: " << state.fragmentsProcessed);
+                state.lastCooperationRequestTime = now;
+                StartCellCooperation(nodeId);
             }
+
+            CheckGroundNodeAlert(nodeId, state, "uav-broadcast");
         }
         else
         {
@@ -141,10 +264,6 @@ OnGroundNodeReceivePacket(uint32_t nodeId, Ptr<Packet> packet, Mac16Address src,
                         << fragData.fragmentId);
         }
     }
-
-    // NS_LOG_INFO("t=" << Simulator::Now().GetSeconds() << "s Ground Node " << nodeId 
-    //                  << " RX from " << src << " size=" << packet->GetSize()
-    //                  << " RSSI=" << rssiDbm << " dBm");
 }
 
 /**
@@ -235,6 +354,7 @@ ResetGroundRoutingStatistics()
     g_groundTotalTx = 0;
     g_groundTotalRx = 0;
     g_groundRxPerNode.clear();
+    g_groundNetworkPerNode.clear();
 }
 
 void
