@@ -44,6 +44,20 @@ build_lib(
     model/routing/scenario3/uav-node-routing.cc
     model/routing/scenario3/fragment.cc
     model/routing/scenario3/packet-header.cc
+    model/routing/scenario4/helper/calc-utils.cc
+    model/routing/scenario4/packet-header.cc
+    model/routing/scenario4/fragment.cc
+    model/routing/scenario4/node-routing.cc
+    model/routing/scenario4/base-station-node/base-station-node.cc
+    model/routing/scenario4/base-station-node/network-setup.cc
+    model/routing/scenario4/base-station-node/region-selection.cc
+    model/routing/scenario4/base-station-node/uav-control.cc
+    model/routing/scenario4/base-station-node/fragment-generator.cc
+    model/routing/scenario4/ground-node-routing/ground-node-routing.cc
+    model/routing/scenario4/ground-node-routing/startup-phase.cc
+    model/routing/scenario4/ground-node-routing/cell-cooperation.cc
+    model/routing/scenario4/uav-node-routing/uav-node-routing.cc
+    model/routing/scenario4/uav-node-routing/fragment-broadcast.cc
     model/routing/wsn-forwarder.cc
     model/routing/wsn-routing-header.cc
     model/routing/wsn-routing-protocol.cc
@@ -96,6 +110,20 @@ build_lib(
     model/routing/scenario3/uav-node-routing.h
     model/routing/scenario3/fragment.h
     model/routing/scenario3/packet-header.h
+    model/routing/scenario4/helper/calc-utils.h
+    model/routing/scenario4/packet-header.h
+    model/routing/scenario4/fragment.h
+    model/routing/scenario4/node-routing.h
+    model/routing/scenario4/base-station-node/base-station-node.h
+    model/routing/scenario4/base-station-node/network-setup.h
+    model/routing/scenario4/base-station-node/region-selection.h
+    model/routing/scenario4/base-station-node/uav-control.h
+    model/routing/scenario4/base-station-node/fragment-generator.h
+    model/routing/scenario4/ground-node-routing/ground-node-routing.h
+    model/routing/scenario4/ground-node-routing/startup-phase.h
+    model/routing/scenario4/ground-node-routing/cell-cooperation.h
+    model/routing/scenario4/uav-node-routing/uav-node-routing.h
+    model/routing/scenario4/uav-node-routing/fragment-broadcast.h
     model/routing/wsn-forwarder.h
     model/routing/wsn-routing-header.h
     model/routing/wsn-routing-protocol.h

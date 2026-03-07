@@ -1,0 +1,74 @@
+/*
+ * Scenario 4 - Configuration Validation
+ */
+
+#include "scenario4-config.h"
+#include <sstream>
+
+namespace ns3 {
+namespace wsn {
+namespace scenario4 {
+
+bool
+Scenario4RunConfig::Validate(std::string& errorMsg) const
+{
+    std::ostringstream oss;
+    
+    // Grid validation
+    if (gridSize == 0) {
+        oss << "Grid size must be > 0";
+        errorMsg = oss.str();
+        return false;
+    }
+    
+    if (gridSpacing <= 0.0) {
+        oss << "Grid spacing must be > 0.0";
+        errorMsg = oss.str();
+        return false;
+    }
+    
+    // Timing validation
+    if (simTime <= 0.0) {
+        oss << "Simulation time must be > 0.0";
+        errorMsg = oss.str();
+        return false;
+    }
+    
+    // Fragment validation
+    if (numFragments == 0) {
+        oss << "Number of fragments must be > 0";
+        errorMsg = oss.str();
+        return false;
+    }
+    
+    // Threshold validation
+    if (cooperationThreshold <= 0.0 || cooperationThreshold >= 1.0) {
+        oss << "Cooperation threshold must be in (0, 1)";
+        errorMsg = oss.str();
+        return false;
+    }
+    
+    if (alertThreshold <= 0.0 || alertThreshold >= 1.0) {
+        oss << "Alert threshold must be in (0, 1)";
+        errorMsg = oss.str();
+        return false;
+    }
+    
+    if (cooperationThreshold >= alertThreshold) {
+        oss << "Cooperation threshold must be < alert threshold";
+        errorMsg = oss.str();
+        return false;
+    }
+    
+    if (suspiciousPercent <= 0.0 || suspiciousPercent >= 1.0) {
+        oss << "Suspicious percent must be in (0, 1)";
+        errorMsg = oss.str();
+        return false;
+    }
+    
+    return true;
+}
+
+} // namespace scenario4
+} // namespace wsn
+} // namespace ns3
