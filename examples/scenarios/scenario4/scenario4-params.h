@@ -55,6 +55,11 @@ constexpr double COOPERATION_THRESHOLD = 0.35;  // trigger cell cooperation
 constexpr double ALERT_THRESHOLD = 0.75;        // trigger alert state
 constexpr double SUSPICIOUS_COVERAGE_PERCENT = 0.30;  // top 30% nodes
 
+// BS init suspicious-region selection parameters
+constexpr double BS_INIT_SUSPICIOUS_TARGET_PERCENT = SUSPICIOUS_COVERAGE_PERCENT;
+constexpr uint32_t BS_INIT_SUSPICIOUS_MAX_ITERATIONS = 100;
+constexpr uint32_t BS_INIT_SUSPICIOUS_MIN_TARGET_NODES = 1;
+
 // Network parameters
 constexpr double TX_POWER_DBM = 0.0;
 constexpr double RX_SENSITIVITY_DBM = -95.0;
@@ -85,6 +90,12 @@ ComputeDefaultHexGridOffset(uint32_t nodeCount)
 constexpr uint32_t DEFAULT_NUM_FRAGMENTS = 10;
 constexpr double MIN_FRAGMENT_CONFIDENCE = 0.1;
 constexpr double MAX_FRAGMENT_CONFIDENCE = 0.9;
+constexpr uint32_t DEFAULT_FRAGMENT_SIZE_BYTES = 1024;
+constexpr uint32_t DEFAULT_MASTER_FILE_SIZE_BYTES = 2 * 1024 * 1024; // 2 MB
+constexpr double DEFAULT_MASTER_FILE_CONFIDENCE = 0.95;
+constexpr double FRAGMENT_WEIGHT_MIN = 0.5;
+constexpr double FRAGMENT_WEIGHT_MAX = 2.0;
+constexpr uint32_t BS_INIT_FRAGMENT_GENERATION_COUNT = DEFAULT_NUM_FRAGMENTS;
 
 } // namespace params
 } // namespace scenario4

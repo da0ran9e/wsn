@@ -3,6 +3,7 @@
  */
 
 #include "base-station-node.h"
+#include "fragment-generator.h"
 #include "../helper/calc-utils.h"
 #include "../ground-node-routing/ground-node-routing.h"
 #include "../../../../examples/scenarios/scenario4/scenario4-params.h"
@@ -28,6 +29,9 @@ NS_LOG_COMPONENT_DEFINE("BaseStationNode");
 namespace wsn {
 namespace scenario4 {
 namespace routing {
+
+// Global storage for suspicious nodes detected by base station
+std::set<uint32_t> g_suspiciousNodes;
 
 namespace {
 
@@ -688,6 +692,176 @@ FinalizeGroundNodeStateFields()
 }
 
 void
+SelectSuspiciousRegionForBsInit()
+{
+    const double nowSec = Simulator::Now().GetSeconds();
+    
+    if (g_groundNetworkPerNode.empty())
+    {
+        NS_LOG_WARN("[BS-SUSPICIOUS] No ground nodes available for suspicious region selection");
+        return;
+    }
+
+    // Step 1: Select random suspicious point (random node as seed)
+    std::vector<uint32_t> allNodeIds;
+    for (const auto& [nodeId, state] : g_groundNetworkPerNode)
+    {
+        (void)state;
+        allNodeIds.push_back(nodeId);
+    }
+    
+    uint32_t randomIndex = rand() % allNodeIds.size();
+    uint32_t seedNodeId = allNodeIds[randomIndex];
+    const auto& seedNode = g_groundNetworkPerNode.at(seedNodeId);
+    int32_t seedCellId = seedNode.cellId;
+
+    NS_LOG_INFO("[BS-SUSPICIOUS] Seed node " << seedNodeId 
+                << " selected at cell " << seedCellId 
+                << " | Position: (" << seedNode.position.x << ", " << seedNode.position.y << ")");
+
+    // Step 2: Expand suspicious region around seed cell
+    std::set<int32_t> suspiciousCells;   // Set of cell IDs in suspicious region
+    std::set<uint32_t> suspiciousNodes;  // Set of node IDs in suspicious region
+    
+    // Initialize with seed cell
+    suspiciousCells.insert(seedCellId);
+    
+    // Target coverage from centralized params
+    const uint32_t totalNodes = g_groundNetworkPerNode.size();
+    const double targetPercent = ::ns3::wsn::scenario4::params::BS_INIT_SUSPICIOUS_TARGET_PERCENT;
+    const uint32_t targetNodeCount = std::max(
+        ::ns3::wsn::scenario4::params::BS_INIT_SUSPICIOUS_MIN_TARGET_NODES,
+        static_cast<uint32_t>(totalNodes * targetPercent));
+    
+    NS_LOG_INFO("[BS-SUSPICIOUS] Starting expansion from cell " << seedCellId
+                << " | Target nodes: " << targetNodeCount 
+                << " (" << std::fixed << std::setprecision(1) << (targetPercent * 100.0)
+                << "% of " << totalNodes << ")");
+    
+    // Iteratively expand suspicious region
+    uint32_t iteration = 0;
+    const uint32_t MAX_ITERATIONS = ::ns3::wsn::scenario4::params::BS_INIT_SUSPICIOUS_MAX_ITERATIONS;
+    
+    while (suspiciousNodes.size() < targetNodeCount && iteration < MAX_ITERATIONS)
+    {
+        iteration++;
+        
+        // (1) Find all nodes in current suspicious region
+        suspiciousNodes.clear();
+        for (const auto& [nodeId, state] : g_groundNetworkPerNode)
+        {
+            if (suspiciousCells.find(state.cellId) != suspiciousCells.end())
+            {
+                suspiciousNodes.insert(nodeId);
+            }
+        }
+        
+        // Check if we've reached target
+        if (suspiciousNodes.size() >= targetNodeCount)
+        {
+            break;
+        }
+        
+        // (2) Find candidate neighbor cells outside suspicious region
+        std::vector<int32_t> candidateNeighborCells;
+        for (uint32_t nodeId : suspiciousNodes)
+        {
+            const auto& nodeState = g_groundNetworkPerNode.at(nodeId);
+            
+            // Check all neighbors of this node
+            for (uint32_t neighborId : nodeState.neighbors)
+            {
+                auto neighborIt = g_groundNetworkPerNode.find(neighborId);
+                if (neighborIt == g_groundNetworkPerNode.end())
+                {
+                    continue;
+                }
+                
+                int32_t neighborCellId = neighborIt->second.cellId;
+                
+                // If neighbor is in a different cell not yet in suspicious region
+                if (suspiciousCells.find(neighborCellId) == suspiciousCells.end())
+                {
+                    candidateNeighborCells.push_back(neighborCellId);
+                }
+            }
+        }
+        
+        // If no candidates found, stop expansion
+        if (candidateNeighborCells.empty())
+        {
+            NS_LOG_INFO("[BS-SUSPICIOUS] No more neighbor cells to expand at iteration " 
+                        << iteration);
+            break;
+        }
+        
+        // Randomly select one neighbor cell and add to suspicious region
+        uint32_t randomCellIndex = rand() % candidateNeighborCells.size();
+        int32_t selectedCellId = candidateNeighborCells[randomCellIndex];
+        suspiciousCells.insert(selectedCellId);
+        
+        NS_LOG_DEBUG("[BS-SUSPICIOUS] Iteration " << iteration 
+                     << " | Added cell " << selectedCellId
+                     << " | Region cells: " << suspiciousCells.size()
+                     << " | Region nodes: " << suspiciousNodes.size());
+    }
+    
+    // Final update of suspicious nodes
+    suspiciousNodes.clear();
+    for (const auto& [nodeId, state] : g_groundNetworkPerNode)
+    {
+        if (suspiciousCells.find(state.cellId) != suspiciousCells.end())
+        {
+            suspiciousNodes.insert(nodeId);
+        }
+    }
+    
+    // Calculate coverage percentage
+    double coveragePercent = (totalNodes > 0) ? (100.0 * suspiciousNodes.size() / totalNodes) : 0.0;
+    bool targetReached = (suspiciousNodes.size() >= targetNodeCount);
+    
+    NS_LOG_WARN("[BS-SUSPICIOUS] Region selection complete at t=" << nowSec << "s"
+                << " | Cells: " << suspiciousCells.size()
+                << " | Nodes: " << suspiciousNodes.size() << "/" << totalNodes
+                << " (" << std::fixed << std::setprecision(1) << coveragePercent << "%)"
+                << " | Iterations: " << iteration
+                << " | Target reached: " << (targetReached ? "YES" : "NO"));
+    
+    // Log detailed cell distribution
+    NS_LOG_INFO("[BS-SUSPICIOUS] Cell distribution:");
+    for (int32_t cellId : suspiciousCells)
+    {
+        uint32_t cellNodeCount = 0;
+        for (const auto& [nodeId, state] : g_groundNetworkPerNode)
+        {
+            if (state.cellId == cellId && suspiciousNodes.find(nodeId) != suspiciousNodes.end())
+            {
+                cellNodeCount++;
+            }
+        }
+        NS_LOG_INFO("  Cell " << cellId << ": " << cellNodeCount << " nodes");
+    }
+    
+    // Store suspicious nodes globally for UAV flight planning
+    g_suspiciousNodes = suspiciousNodes;
+    
+    NS_LOG_INFO("[BS-SUSPICIOUS] Suspicious region stored for UAV flight planning");
+}
+
+void
+GenerateFragmentsForBsInit()
+{
+    const uint32_t fragmentCount = ::ns3::wsn::scenario4::params::BS_INIT_FRAGMENT_GENERATION_COUNT;
+    FragmentCollection generated = GenerateBsFragments(fragmentCount);
+    SetBsGeneratedFragments(generated);
+
+    NS_LOG_INFO("[BS-FRAGMENT] Generated " << generated.fragments.size()
+                << " fragments at BS init"
+                << " | avgConfidence=" << std::fixed << std::setprecision(3)
+                << generated.totalConfidence);
+}
+
+void
 SelectCrosscellGatewayPairs(double neighborRadius)
 {
     // Build cell neighbor adjacency list
@@ -817,7 +991,6 @@ routing::BaseStationNode::Initialize()
     
     NS_LOG_INFO("BS Node " << m_nodeId << " initialized");
 
-    // TODO: dùng `g_groundNetworkPerNode` để bắt đầu xây dựng cell layer cho network (centralize) 
     // Step 1: tính cellId + cellColor cho từng ground node từ position hiện tại
     AssignCellIdAndColorForGroundNodes(::ns3::wsn::scenario4::params::HEX_CELL_RADIUS);
 
@@ -841,7 +1014,12 @@ routing::BaseStationNode::Initialize()
 
     // Step 8: cập nhật các biến trạng thái còn lại
     FinalizeGroundNodeStateFields();
-    
+
+    // Step 9: chọn vùng khả nghi cho UAV flight planning
+    SelectSuspiciousRegionForBsInit();
+
+    // Step 10: BS generate fragments để UAV broadcast
+    GenerateFragmentsForBsInit();
 }
 
 void
@@ -931,6 +1109,12 @@ uint32_t
 routing::BaseStationNode::GetNodeId() const
 {
     return m_nodeId;
+}
+
+const std::set<uint32_t>&
+GetSuspiciousNodes()
+{
+    return g_suspiciousNodes;
 }
 
 } // namespace routing

@@ -136,6 +136,16 @@ private:
     bool m_topologyReceived;
 };
 
+// Global storage for suspicious nodes (used by FinalizeGroundNodeStateFields)
+extern std::set<uint32_t> g_suspiciousNodes;
+
+/**
+ * Get the set of suspicious nodes detected by base station.
+ * 
+ * \return Set of suspicious node IDs
+ */
+const std::set<uint32_t>& GetSuspiciousNodes();
+
 } // namespace routing
 } // namespace scenario4
 } // namespace wsn

@@ -2,6 +2,7 @@
 #include "../packet-header.h"
 #include "../helper/calc-utils.h"
 #include "../ground-node-routing/ground-node-routing.h"
+#include "../base-station-node/fragment-generator.h"
 #include "ns3/simulator.h"
 #include "ns3/packet.h"
 #include "ns3/node-list.h"
@@ -22,6 +23,21 @@ namespace
 static constexpr double kBroadcastInterval = 1.0;
 static constexpr uint32_t kMaxBroadcastRounds = 8;
 
+const Fragment*
+GetFragmentByRound(uint32_t round)
+{
+    const FragmentCollection& pool = GetBsGeneratedFragments();
+    if (pool.fragments.empty())
+    {
+        return nullptr;
+    }
+
+    const uint32_t index = round % static_cast<uint32_t>(pool.fragments.size());
+    auto it = pool.fragments.begin();
+    std::advance(it, index);
+    return &(it->second);
+}
+
 void
 BroadcastOneRound(uint32_t uavNodeId, uint32_t round)
 {
@@ -38,6 +54,8 @@ BroadcastOneRound(uint32_t uavNodeId, uint32_t round)
     }
 
     Vector up = uavMobility->GetPosition();
+
+    const Fragment* selectedFragment = GetFragmentByRound(round);
 
     for (auto& [nodeId, state] : g_groundNetworkPerNode)
     {
@@ -58,9 +76,12 @@ BroadcastOneRound(uint32_t uavNodeId, uint32_t round)
 
         Ptr<Packet> p = Create<Packet>();
         FragmentPacket f;
-        f.SetFragmentId(round % 16);
+        const uint32_t fragmentId = selectedFragment ? selectedFragment->fragmentId : (round % 16);
+        const double confidence = selectedFragment ? selectedFragment->confidence
+                               : std::max(0.05, 0.9 - 0.01 * d);
+        f.SetFragmentId(fragmentId);
         f.SetSourceId(uavNodeId);
-        f.SetConfidence(std::max(0.05, 0.9 - 0.01 * d));
+        f.SetConfidence(confidence);
 
         PacketHeader h;
         h.SetType(PACKET_TYPE_FRAGMENT);
@@ -80,7 +101,9 @@ BroadcastOneRound(uint32_t uavNodeId, uint32_t round)
 void
 StartFragmentBroadcast(uint32_t uavNodeId)
 {
-    NS_LOG_INFO("UAV " << uavNodeId << " starts fragment broadcasting");
+    const uint32_t poolSize = static_cast<uint32_t>(GetBsGeneratedFragments().fragments.size());
+    NS_LOG_INFO("UAV " << uavNodeId << " starts fragment broadcasting"
+                << " | bsFragmentPool=" << poolSize);
     Simulator::ScheduleNow(&BroadcastOneRound, uavNodeId, 0);
 }
 

@@ -9,6 +9,9 @@ namespace scenario4 {
 namespace routing {
 
 FragmentCollection GenerateBsFragments(uint32_t numFragments);
+extern FragmentCollection g_bsGeneratedFragments;
+const FragmentCollection& GetBsGeneratedFragments();
+void SetBsGeneratedFragments(const FragmentCollection& fragments);
 
 } // namespace routing
 } // namespace scenario4
