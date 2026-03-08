@@ -17,6 +17,12 @@ namespace routing {
  */
 void InitializeBaseStation(uint32_t nodeId);
 
+/**
+ * Trigger one BS control tick.
+ * BS will pull latest shared topology snapshot if available.
+ */
+void TickBaseStationControl();
+
 } // namespace routing
 } // namespace scenario4
 } // namespace wsn

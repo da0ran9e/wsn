@@ -76,11 +76,12 @@ private:
     // Network components
     NodeContainer m_groundNodes;
     Ptr<Node> m_bsNode;
-    Ptr<Node> m_uavNode;
+    NodeContainer m_uavNodes;
     
     // Helper methods
     void BuildGroundNetwork();
     void BuildBaseStation();
+    void BuildUavNodes();
     void InstallProtocolStack();
 };
 

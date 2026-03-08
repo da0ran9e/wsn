@@ -10,6 +10,7 @@
 #include "ns3/simulator.h"
 #include "ns3/mobility-model.h"
 #include "ns3/node-list.h"
+#include <algorithm>
 
 namespace ns3 {
 
@@ -21,6 +22,8 @@ namespace routing {
 
 // Global state storage
 std::map<uint32_t, GroundNetworkState> g_groundNetworkPerNode;
+GlobalTopology g_latestTopologySnapshot;
+bool g_hasLatestTopologySnapshot = false;
 
 void
 InitializeGroundNodeRouting(NodeContainer nodes, uint32_t numFragments)
@@ -33,25 +36,79 @@ InitializeGroundNodeRouting(NodeContainer nodes, uint32_t numFragments)
         uint32_t nodeId = node->GetId();
         
         GroundNetworkState state;
-        state.nodeId = nodeId;
-        state.fragments = GenerateFragments(numFragments);
-        state.confidence = state.fragments.totalConfidence;
-        state.packetCount = 0;
         
+        // === Node Identity ===
+        state.nodeId = nodeId;
+        state.isCellLeader = false; // Sẽ được xác định trong startup phase
+        state.cellId = -1; // Chưa xác định cell ID
+        state.cellColor = -1; // Chưa xác định màu cell
+        state.isTimeSynchronized = false;
+        state.clockOffsetSec = 0.0;
+        state.lastSyncTime = 0.0;
+        
+        // === Fragment Management ===
+        state.fragments.fragments.clear();
+        state.confidence = 0.0; // Tính toán sau khi nhận fragment
+        state.expectedFragmentCount = 0;
+        state.fragmentCoverageRatio = 0.0;
+        state.fragmentsReceivedFromUav = 0;
+        state.fragmentsReceivedFromPeers = 0;
+        state.duplicateFragmentsDiscarded = 0;
+        
+        // === Neighbor Discovery ===
+        state.startupComplete = false;
+        state.isIsolated = false;
+        state.lifecyclePhase = GroundNodeLifecyclePhase::DISCOVERY;
+        // neighbors, neighborRssi, neighborDistance sẽ được fill trong startup
+        
+        // === Cell Info ===
         // Compute cell ID from position
         Ptr<MobilityModel> mobility = node->GetObject<MobilityModel>();
         if (mobility) {
             Vector pos = mobility->GetPosition();
-            state.cellId = helper::ComputeCellId(pos.x, pos.y, 80.0);
+            state.position = pos;
         } else {
-            state.cellId = 0;
+            state.cellId = -1;
+            state.cellColor = -1;
         }
+        
+        // === Communication Statistics ===
+        state.packetCount = 0;
+        state.startupPacketsReceived = 0;
+        state.fragmentPacketsReceived = 0;
+        state.cooperationPacketsReceived = 0;
+        state.packetsSent = 0;
+        state.totalBytesReceived = 0.0;
+        state.totalBytesSent = 0.0;
+        state.lastPacketRssiDbm = 0.0;
+        state.avgPacketRssiDbm = 0.0;
+        state.rssiSampleCount = 0;
+        
+        // === Cell Cooperation ===
+        state.cooperationRequestsSent = 0;
+        state.cooperationRequestsReceived = 0;
+        state.lastCooperationTime = 0.0;
+        state.cooperationEnabled = true; // Mặc định enable cooperation
+        
+        // === UAV Interaction ===
+        state.lastUavContactTime = 0.0;
+        state.uavEncounters = 0;
+        
+        // === Topology Reporting ===
+        state.lastTopologyReportTime = 0.0;
+        state.topologyReportCount = 0;
+        
+        // === Energy & Resource ===
+        state.remainingEnergy = 1000.0; // 1000 joules mặc định
+        state.energyConsumedTx = 0.0;
+        state.energyConsumedRx = 0.0;
+        
+        // === Timing ===
+        state.initializationTime = Simulator::Now().GetSeconds();
+        state.lastActivityTime = state.initializationTime;
         
         g_groundNetworkPerNode[nodeId] = state;
         
-        NS_LOG_DEBUG("Ground node " << nodeId << " initialized with " 
-                     << numFragments << " fragments, confidence=" 
-                     << state.confidence << ", cell=" << state.cellId);
     }
     
     NS_LOG_INFO("Ground node routing initialized for " << nodes.GetN() << " nodes");
@@ -68,7 +125,22 @@ OnGroundNodeReceivePacket(uint32_t nodeId, Ptr<const Packet> packet, double rssi
     }
     
     GroundNetworkState& state = g_groundNetworkPerNode[nodeId];
+    
+    // Update statistics
     state.packetCount++;
+    state.totalBytesReceived += packet->GetSize();
+    state.lastActivityTime = Simulator::Now().GetSeconds();
+    state.lastPacketRssiDbm = rssiDbm;
+    state.rssiSampleCount++;
+    state.avgPacketRssiDbm += (rssiDbm - state.avgPacketRssiDbm) / state.rssiSampleCount;
+    state.lifecyclePhase = (state.remainingEnergy > 0.0)
+                           ? GroundNodeLifecyclePhase::ACTIVE
+                           : GroundNodeLifecyclePhase::DEAD;
+    
+    // Estimate energy consumption for reception (simplified model)
+    const double rxEnergyCost = 0.001 * packet->GetSize() / 1024.0; // ~1mJ per KB
+    state.energyConsumedRx += rxEnergyCost;
+    state.remainingEnergy = std::max(0.0, state.remainingEnergy - rxEnergyCost);
     
     // Try to extract packet header
     Ptr<Packet> copy = packet->Copy();
@@ -78,11 +150,30 @@ OnGroundNodeReceivePacket(uint32_t nodeId, Ptr<const Packet> packet, double rssi
     switch (header.GetType()) {
         case PACKET_TYPE_STARTUP:
             NS_LOG_DEBUG("Node " << nodeId << " received STARTUP packet");
+            state.startupPacketsReceived++;
+            {
+                StartupPhasePacket startupPkt;
+                copy->RemoveHeader(startupPkt);
+                uint32_t srcNodeId = startupPkt.GetNodeId();
+                if (srcNodeId != nodeId)
+                {
+                    state.neighbors.insert(srcNodeId);
+                    state.neighborRssi[srcNodeId] = rssiDbm;
+
+                    double srcX = 0.0;
+                    double srcY = 0.0;
+                    startupPkt.GetPosition(srcX, srcY);
+                    state.neighborDistance[srcNodeId] =
+                        helper::CalculateDistance(state.position.x, state.position.y, srcX, srcY);
+                }
+            }
             // Handle startup phase (will be implemented in startup-phase module)
             break;
             
         case PACKET_TYPE_FRAGMENT:
             NS_LOG_DEBUG("Node " << nodeId << " received FRAGMENT packet");
+            state.fragmentPacketsReceived++;
+            
             // Handle fragment reception
             {
                 FragmentPacket fragPkt;
@@ -102,18 +193,37 @@ OnGroundNodeReceivePacket(uint32_t nodeId, Ptr<const Packet> packet, double rssi
                     
                     state.fragments.AddFragment(frag);
                     state.confidence = state.fragments.totalConfidence;
+                    state.fragmentLastUpdateTime[fragId] = Simulator::Now().GetSeconds();
+                    state.fragmentCoverageRatio = (state.expectedFragmentCount > 0)
+                                                  ? static_cast<double>(state.fragments.fragments.size()) /
+                                                        state.expectedFragmentCount
+                                                  : 0.0;
+                    
+                    // Track fragment reception (source tracking requires header extension)
+                    state.fragmentsReceivedFromUav++; // Giả sử từ UAV, sẽ phân biệt chi tiết sau
+                    state.lastUavContactTime = Simulator::Now().GetSeconds();
+                    state.uavEncounters++;
                     
                     NS_LOG_INFO("Node " << nodeId << " updated fragment " << fragId 
                                 << " with confidence " << confidence);
                 }
+                else
+                {
+                    state.duplicateFragmentsDiscarded++;
+                }
 
                 // Trigger in-cell cooperation when threshold condition is met
-                RequestFragmentSharing(nodeId, state.cellId);
+                if (state.cooperationEnabled) {
+                    RequestFragmentSharing(nodeId, state.cellId);
+                }
             }
             break;
             
         case PACKET_TYPE_COOPERATION:
             NS_LOG_DEBUG("Node " << nodeId << " received COOPERATION packet");
+            state.cooperationPacketsReceived++;
+            state.cooperationRequestsReceived++;
+            state.lastCooperationTime = Simulator::Now().GetSeconds();
             // Handle cooperation (will be implemented in cell-cooperation module)
             break;
             
@@ -163,16 +273,21 @@ void
 SendTopologyToBS()
 {
     NS_LOG_FUNCTION_NOARGS();
-    
-    GlobalTopology topology = BuildTopologySnapshot();
-    
-    // Send to BS via callback
-    if (g_bsTopologyCallback) {
-        g_bsTopologyCallback(topology);
-        NS_LOG_INFO("Topology sent to BS with " << topology.nodes.size() << " nodes");
-    } else {
-        NS_LOG_WARN("BS topology callback not registered");
+
+    // Cache topology snapshot for pull-based access by BS
+    g_latestTopologySnapshot = BuildTopologySnapshot();
+    g_hasLatestTopologySnapshot = true;
+    NS_LOG_INFO("Topology cached locally with " << g_latestTopologySnapshot.nodes.size() << " nodes");
+}
+
+const GlobalTopology*
+GetLatestTopologySnapshotPtr()
+{
+    if (!g_hasLatestTopologySnapshot)
+    {
+        return nullptr;
     }
+    return &g_latestTopologySnapshot;
 }
 
 } // namespace routing

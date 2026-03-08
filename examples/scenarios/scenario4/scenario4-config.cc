@@ -33,10 +33,47 @@ Scenario4RunConfig::Validate(std::string& errorMsg) const
         errorMsg = oss.str();
         return false;
     }
+
+    if (startupPhaseDuration <= 0.0 || startupPhaseDuration >= simTime) {
+        oss << "Startup phase duration must be > 0 and < simulation time";
+        errorMsg = oss.str();
+        return false;
+    }
+
+    if (uavPlanningDelay < 0.0) {
+        oss << "UAV planning delay must be >= 0";
+        errorMsg = oss.str();
+        return false;
+    }
+
+    if (fragmentBroadcastInterval <= 0.0) {
+        oss << "Fragment broadcast interval must be > 0";
+        errorMsg = oss.str();
+        return false;
+    }
     
     // Fragment validation
     if (numFragments == 0) {
         oss << "Number of fragments must be > 0";
+        errorMsg = oss.str();
+        return false;
+    }
+
+    if (numUavs == 0) {
+        oss << "Number of UAVs must be > 0";
+        errorMsg = oss.str();
+        return false;
+    }
+
+    // UAV/BS validation
+    if (uavAltitude <= 0.0) {
+        oss << "UAV altitude must be > 0";
+        errorMsg = oss.str();
+        return false;
+    }
+
+    if (uavSpeed <= 0.0) {
+        oss << "UAV speed must be > 0";
         errorMsg = oss.str();
         return false;
     }

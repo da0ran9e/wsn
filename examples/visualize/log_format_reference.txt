@@ -13,8 +13,24 @@ LINK a=<uint> b=<uint> kind=<string>
 STEP t=<double> suspiciousCells=<comma-separated-int> suspiciousNodes=<comma-separated-uint>
 ENDSTEP
 
+
+SCENARIO4 CELL-FORMATION EXTENSION (v2)
+
+Use same META/NODE/LINK from v1, then add these optional sections.
+
+5) CELL lines (optional, cell summary after formation)
+CELL id=<int> leader=<uint> size=<uint> members=<comma-separated-uint> color=<uint>
+
+6) FORMEVENT lines (optional, timeline of cell formation)
+FORMEVENT t=<double> stage=<string> formedCells=<comma-separated-int> totalCells=<uint> totalNodes=<uint>
+
+7) FORMSNAPSHOT blocks (optional, detailed per-stage cell state)
+FORMSNAPSHOT t=<double> stage=<string>
+CELL id=<int> leader=<uint> size=<uint> members=<comma-separated-uint> color=<uint>
+ENDFORMSNAPSHOT
+
 Notes:
-- Lines starting with # are comments.
-- Empty lines are ignored.
-- Order suggestion: META -> NODE -> LINK -> STEP.
-- This format is temporary for debug; later can be generated directly from scenario3 hooks.
+- `stage` examples: precompute, startup-discovery, stable
+- `members` can be '-' if empty
+- Parser should ignore unknown lines for forward compatibility
+

@@ -1,7 +1,8 @@
 #include "scenario4-scheduler.h"
-#include "scenario4-params.h"
+#include "scenario4-visualizer.h"
 #include "ns3/simulator.h"
 #include "ns3/log.h"
+#include "../../../model/routing/scenario4/node-routing.h"
 #include "../../../model/routing/scenario4/ground-node-routing/startup-phase.h"
 #include "../../../model/routing/scenario4/ground-node-routing/ground-node-routing.h"
 
@@ -24,6 +25,7 @@ SchedulePeriodicTopologyTick(double intervalSec, double endSec)
 
     Simulator::Schedule(Seconds(intervalSec), [] {
         routing::SendTopologyToBS();
+        routing::TickBaseStationControl();
     });
 
     Simulator::Schedule(Seconds(intervalSec), &SchedulePeriodicTopologyTick, intervalSec, endSec);
@@ -33,8 +35,10 @@ SchedulePeriodicTopologyTick(double intervalSec, double endSec)
 void
 ScheduleScenario4Events(const Scenario4RunConfig& config)
 {
-    Simulator::Schedule(Seconds(params::STARTUP_PHASE_DURATION), &routing::RunStartupPhase);
-    Simulator::Schedule(Seconds(params::STARTUP_PHASE_DURATION + 0.5),
+    Simulator::Schedule(Seconds(config.startupPhaseDuration), &routing::RunStartupPhase);
+    Simulator::Schedule(Seconds(config.startupPhaseDuration + 0.005), &DumpScenario4CellFormationSnapshot);
+    Simulator::Schedule(Seconds(config.startupPhaseDuration + 0.01), &routing::TickBaseStationControl);
+    Simulator::Schedule(Seconds(config.startupPhaseDuration + 0.5),
                         &SchedulePeriodicTopologyTick,
                         1.0,
                         config.simTime);

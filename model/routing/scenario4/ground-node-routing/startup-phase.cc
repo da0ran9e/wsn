@@ -27,6 +27,12 @@ RunStartupPhase()
     for (auto& [nodeId, state] : g_groundNetworkPerNode)
     {
         state.neighbors.clear();
+        state.twoHopNeighbors.clear();
+        state.neighborRssi.clear();
+        state.neighborDistance.clear();
+        state.cellPeers.clear();
+        state.isCellLeader = false;
+        state.lifecyclePhase = GroundNodeLifecyclePhase::DISCOVERY;
     }
 
     for (auto itA = g_groundNetworkPerNode.begin(); itA != g_groundNetworkPerNode.end(); ++itA)
@@ -63,6 +69,8 @@ RunStartupPhase()
             {
                 itA->second.neighbors.insert(itB->first);
                 itB->second.neighbors.insert(itA->first);
+                itA->second.neighborDistance[itB->first] = dist;
+                itB->second.neighborDistance[itA->first] = dist;
             }
         }
     }
@@ -98,6 +106,7 @@ RunStartupPhase()
             Vector dstPos = dstMob->GetPosition();
             double dist = helper::CalculateDistance(srcPos.x, srcPos.y, dstPos.x, dstPos.y);
             double syntheticRssi = -45.0 - 0.15 * dist;
+            g_groundNetworkPerNode[srcId].neighborRssi[dstId] = syntheticRssi;
 
             Ptr<Packet> p = Create<Packet>();
             StartupPhasePacket startup;
@@ -115,7 +124,59 @@ RunStartupPhase()
         }
     }
 
-    // 3) Send aggregated topology to BS callback
+    // 3) Compute 2-hop neighbors and cell peers
+    for (auto& [nodeId, state] : g_groundNetworkPerNode)
+    {
+        for (uint32_t neighborId : state.neighbors)
+        {
+            auto itNeighbor = g_groundNetworkPerNode.find(neighborId);
+            if (itNeighbor == g_groundNetworkPerNode.end())
+            {
+                continue;
+            }
+            for (uint32_t n2 : itNeighbor->second.neighbors)
+            {
+                if (n2 != nodeId && !state.neighbors.count(n2))
+                {
+                    state.twoHopNeighbors.insert(n2);
+                }
+            }
+        }
+
+        for (const auto& [peerId, peerState] : g_groundNetworkPerNode)
+        {
+            if (peerId != nodeId && peerState.cellId == state.cellId)
+            {
+                state.cellPeers.insert(peerId);
+            }
+        }
+    }
+
+    // 4) Select deterministic cell leader = smallest nodeId in each cell
+    std::map<int32_t, uint32_t> leaderByCell;
+    for (const auto& [nodeId, state] : g_groundNetworkPerNode)
+    {
+        auto [it, inserted] = leaderByCell.emplace(state.cellId, nodeId);
+        if (!inserted && nodeId < it->second)
+        {
+            it->second = nodeId;
+        }
+    }
+
+    for (auto& [nodeId, state] : g_groundNetworkPerNode)
+    {
+        auto it = leaderByCell.find(state.cellId);
+        state.isCellLeader = (it != leaderByCell.end() && it->second == nodeId);
+        state.startupComplete = true;
+        state.isTimeSynchronized = true;
+        state.lastSyncTime = Simulator::Now().GetSeconds();
+        state.isIsolated = state.neighbors.empty();
+        state.lifecyclePhase = (state.remainingEnergy > 0.0)
+                               ? GroundNodeLifecyclePhase::ACTIVE
+                               : GroundNodeLifecyclePhase::DEAD;
+    }
+
+    // 5) Send aggregated topology to BS callback
     SendTopologyToBS();
 
     NS_LOG_INFO("[STARTUP] Discovery completed");

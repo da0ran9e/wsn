@@ -6,6 +6,7 @@
 #include "scenario4-params.h"
 #include "scenario4-scheduler.h"
 #include "scenario4-metrics.h"
+#include "scenario4-visualizer.h"
 #include "ns3/log.h"
 #include "ns3/simulator.h"
 #include "ns3/mobility-helper.h"
@@ -51,14 +52,7 @@ Scenario4Runner::Build()
     
     BuildGroundNetwork();
     BuildBaseStation();
-
-    // Create UAV node (position and routing initialized later)
-    m_uavNode = CreateObject<Node>();
-    {
-        Ptr<MobilityModel> uavMobility = CreateObject<ConstantPositionMobilityModel>();
-        uavMobility->SetPosition(Vector(0.0, 0.0, params::DEFAULT_UAV_ALTITUDE));
-        m_uavNode->AggregateObject(uavMobility);
-    }
+    BuildUavNodes();
 
     InstallProtocolStack();
     
@@ -66,10 +60,17 @@ Scenario4Runner::Build()
     routing::InitializeGroundNodeRouting(m_groundNodes, m_config.numFragments);
     routing::InitializeBaseStation(m_bsNode->GetId());
 
-    // Initialize UAV routing callback endpoint
-    routing::InitializeUavRouting(m_uavNode);
+    // Initialize UAV routing callback endpoints
+    for (uint32_t i = 0; i < m_uavNodes.GetN(); ++i)
+    {
+        routing::InitializeUavRouting(m_uavNodes.Get(i));
+    }
+
+    // Dump initial node positions/metadata for offline visualizer
+    DumpScenario4InitialNodesToFile(m_groundNodes, m_bsNode, m_uavNodes, m_config);
     
-    NS_LOG_INFO("Network built: " << m_groundNodes.GetN() << " ground nodes + 1 BS");
+    NS_LOG_INFO("Network built: " << m_groundNodes.GetN() << " ground nodes + 1 BS + "
+                << m_uavNodes.GetN() << " UAVs");
 }
 
 void
@@ -110,16 +111,39 @@ Scenario4Runner::BuildBaseStation()
     // Position BS far from network
     Ptr<MobilityModel> mobility = CreateObject<ConstantPositionMobilityModel>();
     mobility->SetPosition(Vector(
-        params::BS_POSITION_X,
-        params::BS_POSITION_Y,
-        params::BS_POSITION_Z
+        m_config.bsPositionX,
+        m_config.bsPositionY,
+        m_config.bsPositionZ
     ));
     m_bsNode->AggregateObject(mobility);
     
     NS_LOG_INFO("Base station positioned at (" 
-                << params::BS_POSITION_X << ", "
-                << params::BS_POSITION_Y << ", "
-                << params::BS_POSITION_Z << ")");
+                << m_config.bsPositionX << ", "
+                << m_config.bsPositionY << ", "
+                << m_config.bsPositionZ << ")");
+}
+
+void
+Scenario4Runner::BuildUavNodes()
+{
+    NS_LOG_FUNCTION(this);
+
+    // Create UAV nodes (same initial XY position as BS)
+    m_uavNodes.Create(m_config.numUavs);
+    for (uint32_t i = 0; i < m_uavNodes.GetN(); ++i)
+    {
+        Ptr<Node> uav = m_uavNodes.Get(i);
+        Ptr<MobilityModel> uavMobility = CreateObject<ConstantPositionMobilityModel>();
+        uavMobility->SetPosition(Vector(
+            m_config.bsPositionX,
+            m_config.bsPositionY,
+            m_config.uavAltitude));
+        uav->AggregateObject(uavMobility);
+    }
+
+    NS_LOG_INFO("UAV nodes created: " << m_uavNodes.GetN()
+                << " (initial position: " << m_config.bsPositionX << ", "
+                << m_config.bsPositionY << ", " << m_config.uavAltitude << ")");
 }
 
 void
@@ -144,20 +168,20 @@ Scenario4Runner::InstallProtocolStack()
     // Install on BS (for control plane, though it uses callbacks)
     NetDeviceContainer bsDevice = wifi.Install(wifiPhy, wifiMac, m_bsNode);
 
-    // Install on UAV if already created
+    // Install on UAVs if already created
     NetDeviceContainer uavDevice;
-    if (m_uavNode)
+    if (m_uavNodes.GetN() > 0)
     {
-        uavDevice = wifi.Install(wifiPhy, wifiMac, m_uavNode);
+        uavDevice = wifi.Install(wifiPhy, wifiMac, m_uavNodes);
     }
     
     // Internet stack
     InternetStackHelper internet;
     internet.Install(m_groundNodes);
     internet.Install(m_bsNode);
-    if (m_uavNode)
+    if (m_uavNodes.GetN() > 0)
     {
-        internet.Install(m_uavNode);
+        internet.Install(m_uavNodes);
     }
     
     NS_LOG_INFO("Protocol stack installed");

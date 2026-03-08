@@ -45,6 +45,7 @@ build_lib(
     model/routing/scenario3/fragment.cc
     model/routing/scenario3/packet-header.cc
     model/routing/scenario4/helper/calc-utils.cc
+    model/routing/scenario4/scenario4-routing-globals.cc
     model/routing/scenario4/packet-header.cc
     model/routing/scenario4/fragment.cc
     model/routing/scenario4/node-routing.cc

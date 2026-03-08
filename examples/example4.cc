@@ -25,20 +25,28 @@ NS_LOG_COMPONENT_DEFINE("Example4");
 int main(int argc, char* argv[])
 {
     // ===== Default Configuration =====
+    // Defaults are copied from scenario4-params.h via Scenario4RunConfig.
+    // CLI values below override those defaults before runtime use.
     Scenario4RunConfig config;
-    config.gridSize = 10;
-    config.gridSpacing = 40.0;
-    config.simTime = 60.0;
-    config.numFragments = 10;
-    config.seed = 42;
-    config.runId = 1;
     
     // ===== CLI Parsing =====
     CommandLine cmd(__FILE__);
     cmd.AddValue("gridSize", "Size of the ground node grid (N x N)", config.gridSize);
     cmd.AddValue("gridSpacing", "Spacing between ground nodes (meters)", config.gridSpacing);
     cmd.AddValue("simTime", "Total simulation time (seconds)", config.simTime);
+    cmd.AddValue("startupPhaseDuration", "Startup phase duration (seconds)", config.startupPhaseDuration);
+    cmd.AddValue("uavPlanningDelay", "Delay after startup before UAV planning (seconds)", config.uavPlanningDelay);
+    cmd.AddValue("fragmentBroadcastInterval", "UAV fragment broadcast interval (seconds)", config.fragmentBroadcastInterval);
     cmd.AddValue("numFragments", "Number of file fragments to generate", config.numFragments);
+    cmd.AddValue("numUavs", "Number of UAV nodes", config.numUavs);
+    cmd.AddValue("bsX", "Base station X position", config.bsPositionX);
+    cmd.AddValue("bsY", "Base station Y position", config.bsPositionY);
+    cmd.AddValue("bsZ", "Base station Z position", config.bsPositionZ);
+    cmd.AddValue("uavAltitude", "UAV altitude", config.uavAltitude);
+    cmd.AddValue("uavSpeed", "UAV speed", config.uavSpeed);
+    cmd.AddValue("cooperationThreshold", "Cooperation threshold (0,1)", config.cooperationThreshold);
+    cmd.AddValue("alertThreshold", "Alert threshold (0,1)", config.alertThreshold);
+    cmd.AddValue("suspiciousPercent", "Suspicious coverage percent (0,1)", config.suspiciousPercent);
     cmd.AddValue("seed", "Random seed for reproducibility", config.seed);
     cmd.AddValue("runId", "Run ID for multiple simulation runs", config.runId);
     cmd.Parse(argc, argv);
@@ -67,6 +75,7 @@ int main(int argc, char* argv[])
                 << ", Spacing: " << config.gridSpacing << "m");
     NS_LOG_INFO("Simulation Time: " << config.simTime << "s");
     NS_LOG_INFO("Fragments: " << config.numFragments);
+    NS_LOG_INFO("UAVs: " << config.numUavs);
     NS_LOG_INFO("Seed: " << config.seed << ", Run ID: " << config.runId);
     
     Scenario4Runner runner(config);
