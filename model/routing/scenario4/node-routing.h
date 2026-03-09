@@ -23,6 +23,16 @@ void InitializeBaseStation(uint32_t nodeId);
  */
 void TickBaseStationControl();
 
+/**
+ * Initialize UAV flight - schedule waypoint movements based on planned paths.
+ */
+void InitializeUavFlight();
+
+/**
+ * Initialize UAV fragment broadcast.
+ */
+void InitializeUavBroadcast();
+
 } // namespace routing
 } // namespace scenario4
 } // namespace wsn

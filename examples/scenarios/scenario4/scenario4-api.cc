@@ -65,12 +65,6 @@ Scenario4Runner::Build()
     {
         routing::InitializeUavRouting(m_uavNodes.Get(i));
     }
-
-    // Dump initial node positions/metadata for offline visualizer
-    DumpScenario4InitialNodesToFile(m_groundNodes, m_bsNode, m_uavNodes, m_config);
-    
-    NS_LOG_INFO("Network built: " << m_groundNodes.GetN() << " ground nodes + 1 BS + "
-                << m_uavNodes.GetN() << " UAVs");
 }
 
 void

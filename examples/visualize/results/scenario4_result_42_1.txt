@@ -368,22 +368,44 @@ Step 10: Generate Fragments
   Total fragments: 10
   Average confidence: 0.095
 
-[UAV-PATH] 102 strategy=GreedySetCover totalDistance=1892.0m totalTime=104.6s avgSpeed=20.0m/s broadcastRadius=50.0m coverage=38/38 waypoints: (140.0,40.0) (160.0,120.0) (100.0,40.0) (140.0,20.0) (160.0,140.0)
-[UAV-PATH] 101 strategy=GreedyNearestNeighbor totalDistance=2220.2m totalTime=187.0s avgSpeed=20.0m/s waypoints: (80.0,0.0) (100.0,0.0) (120.0,0.0) (140.0,0.0) (160.0,0.0) (180.0,0.0) (180.0,20.0) (160.0,20.0) (140.0,20.0) (120.0,20.0) (100.0,20.0) (80.0,20.0) (80.0,40.0) (100.0,40.0) (120.0,40.0) (140.0,40.0) (160.0,40.0) (180.0,40.0) (180.0,60.0) (160.0,60.0) (140.0,60.0) (120.0,60.0) (140.0,80.0) (160.0,80.0) (180.0,80.0) (180.0,100.0) (160.0,100.0) (140.0,100.0) (140.0,120.0) (160.0,120.0) (180.0,120.0) (180.0,140.0) (160.0,140.0) (140.0,140.0) (140.0,160.0) (160.0,160.0) (180.0,160.0) (180.0,180.0)
+[UAV-PATH] 102 strategy=GreedySetCover totalDistance=626.7m totalTime=41.8s flightSpeed=15.0m/s hoverTime=0.0s avgSpeed=15.0m/s broadcastRadius=50.0m coverage=38/38 waypoints: (140.0,40.0) (160.0,120.0) (100.0,40.0) (140.0,20.0) (160.0,140.0)
+[UAV-PATH] 101 strategy=GreedyNearestNeighbor totalDistance=954.2m totalTime=114.2s flightSpeed=25.0m/s hoverTime=2.0s avgSpeed=25.0m/s waypoints: (80.0,0.0) (100.0,0.0) (120.0,0.0) (140.0,0.0) (160.0,0.0) (180.0,0.0) (180.0,20.0) (160.0,20.0) (140.0,20.0) (120.0,20.0) (100.0,20.0) (80.0,20.0) (80.0,40.0) (100.0,40.0) (120.0,40.0) (140.0,40.0) (160.0,40.0) (180.0,40.0) (180.0,60.0) (160.0,60.0) (140.0,60.0) (120.0,60.0) (140.0,80.0) (160.0,80.0) (180.0,80.0) (180.0,100.0) (160.0,100.0) (140.0,100.0) (140.0,120.0) (160.0,120.0) (180.0,120.0) (180.0,140.0) (160.0,140.0) (140.0,140.0) (140.0,160.0) (160.0,160.0) (180.0,160.0) (180.0,180.0)
 Step 11: Plan UAV Flight Paths
   Total UAVs: 2
   UAV 101:
     Waypoints: 38
-    Total time: 187.0s
-    Total distance: 2220.2m
+    Total time: 114.2s
+    Total distance: 954.2m
   UAV 102:
     Waypoints: 5
-    Total time: 104.6s
-    Total distance: 1892.0m
+    Total time: 41.8s
+    Total distance: 626.7m
 
 === Base Station Initialization Complete ===
 End Time: 0.0s
 
+[EVENT] 13.3 | event=UAVWaypointArrival | nodeId=101 | pos=(80.0,0.0,20.0)
+[EVENT] 16.1 | event=UAVWaypointArrival | nodeId=101 | pos=(100.0,0.0,20.0)
+[EVENT] 18.9 | event=UAVWaypointArrival | nodeId=101 | pos=(120.0,0.0,20.0)
+[EVENT] 21.7 | event=UAVWaypointArrival | nodeId=101 | pos=(140.0,0.0,20.0)
+[EVENT] 23.6 | event=UAVWaypointArrival | nodeId=102 | pos=(140.0,40.0,20.0)
+[EVENT] 24.5 | event=UAVWaypointArrival | nodeId=101 | pos=(160.0,0.0,20.0)
+[EVENT] 27.3 | event=UAVWaypointArrival | nodeId=101 | pos=(180.0,0.0,20.0)
+[EVENT] 29.1 | event=UAVWaypointArrival | nodeId=102 | pos=(160.0,120.0,20.0)
+[EVENT] 30.1 | event=UAVWaypointArrival | nodeId=101 | pos=(180.0,20.0,20.0)
+[EVENT] 32.9 | event=UAVWaypointArrival | nodeId=101 | pos=(160.0,20.0,20.0)
+[EVENT] 35.7 | event=UAVWaypointArrival | nodeId=101 | pos=(140.0,20.0,20.0)
+[EVENT] 35.8 | event=UAVWaypointArrival | nodeId=102 | pos=(100.0,40.0,20.0)
+[EVENT] 38.5 | event=UAVWaypointArrival | nodeId=101 | pos=(120.0,20.0,20.0)
+[EVENT] 38.8 | event=UAVWaypointArrival | nodeId=102 | pos=(140.0,20.0,20.0)
+[EVENT] 41.3 | event=UAVWaypointArrival | nodeId=101 | pos=(100.0,20.0,20.0)
+[EVENT] 44.1 | event=UAVWaypointArrival | nodeId=101 | pos=(80.0,20.0,20.0)
+[EVENT] 46.9 | event=UAVWaypointArrival | nodeId=102 | pos=(160.0,140.0,20.0)
+[EVENT] 46.9 | event=UAVWaypointArrival | nodeId=101 | pos=(80.0,40.0,20.0)
+[EVENT] 49.7 | event=UAVWaypointArrival | nodeId=101 | pos=(100.0,40.0,20.0)
+[EVENT] 52.5 | event=UAVWaypointArrival | nodeId=101 | pos=(120.0,40.0,20.0)
+[EVENT] 55.3 | event=UAVWaypointArrival | nodeId=101 | pos=(140.0,40.0,20.0)
+[EVENT] 58.1 | event=UAVWaypointArrival | nodeId=101 | pos=(160.0,40.0,20.0)
 
 ======================================
       Simulation Complete

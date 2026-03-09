@@ -1001,9 +1001,15 @@ PlanUavFlightPathsForBsInit()
     }
 
     const double altitude = ::ns3::wsn::scenario4::params::BS_INIT_UAV_PATROL_ALTITUDE;
-    const double speed = ::ns3::wsn::scenario4::params::UAV_PATH_SPEED;
-    const double hoverTime = ::ns3::wsn::scenario4::params::UAV_WAYPOINT_HOVER_TIME;
     const double broadcastRadius = ::ns3::wsn::scenario4::params::UAV_BROADCAST_RADIUS;
+    
+    // UAV1: Fast speed with hover time
+    const double uav1Speed = ::ns3::wsn::scenario4::params::UAV1_SPEED;
+    const double uav1HoverTime = ::ns3::wsn::scenario4::params::UAV1_HOVER_TIME;
+    
+    // UAV2: Slow speed without hover time
+    const double uav2Speed = ::ns3::wsn::scenario4::params::UAV2_SPEED;
+    const double uav2HoverTime = ::ns3::wsn::scenario4::params::UAV2_HOVER_TIME;
 
     // ===== UAV 1: Greedy Nearest Neighbor (visit every node) =====
     const uint32_t uav1NodeId = uavNodeIds[0];
@@ -1046,14 +1052,14 @@ PlanUavFlightPathsForBsInit()
         if (nearestNodeId == std::numeric_limits<uint32_t>::max())
             break;
         
-        currentTime += minDistance / speed;
+        currentTime += minDistance / uav1Speed;
         
         Waypoint wp;
         wp.position = Vector(nearestPos.x, nearestPos.y, altitude);
         wp.arrivalTime = currentTime;
         path1.waypoints.push_back(wp);
         
-        currentTime += hoverTime;
+        currentTime += uav1HoverTime;
         visitedNodes.insert(nearestNodeId);
         currentPos = nearestPos;
         
@@ -1079,7 +1085,12 @@ PlanUavFlightPathsForBsInit()
                 << " | waypoints=" << path1.waypoints.size()
                 << " | totalTime=" << std::fixed << std::setprecision(1) << path1.totalTime << "s"
                 << " | totalDistance=" << totalDistance1 << "m"
-                << " | avgSpeed=" << (totalDistance1 / (path1.totalTime - path1.waypoints.size() * hoverTime)) << "m/s");
+                << " | flightSpeed=" << uav1Speed << "m/s"
+                << " | hoverTime=" << uav1HoverTime << "s/waypoint"
+                << " | avgSpeed=" << (totalDistance1 / (path1.totalTime - path1.waypoints.size() * uav1HoverTime)) << "m/s");
+
+    // Store UAV1 start time for synchronization
+    const double uav1StartTime = path1.waypoints.empty() ? 0.0 : path1.waypoints[0].arrivalTime;
 
     // ===== UAV 2: Greedy Set Cover (minimize waypoints with coverage radius) =====
     if (uavNodeIds.size() >= 2)
@@ -1092,7 +1103,7 @@ PlanUavFlightPathsForBsInit()
         UavFlightPath path2;
         std::set<uint32_t> coveredNodes;  // Nodes already covered by waypoints
         Vector currentPos2 = uav2StartPos;
-        double currentTime2 = 0.0;
+        double currentTime2 = 0.0;  // Both UAVs start at t=0 from base station
         
         NS_LOG_INFO("[BS-UAV-PATH] UAV2: Planning coverage-based path"
                     << " | broadcastRadius=" << broadcastRadius << "m"
@@ -1147,14 +1158,14 @@ PlanUavFlightPathsForBsInit()
             }
             
             // Add this waypoint
-            currentTime2 += bestDistance / speed;
+            currentTime2 += bestDistance / uav2Speed;
             
             Waypoint wp2;
             wp2.position = Vector(bestWaypointPos.x, bestWaypointPos.y, altitude);
             wp2.arrivalTime = currentTime2;
             path2.waypoints.push_back(wp2);
             
-            currentTime2 += hoverTime;
+            currentTime2 += uav2HoverTime;
             
             // Mark all nodes covered by this waypoint
             uint32_t actualCovered = 0;
@@ -1199,7 +1210,9 @@ PlanUavFlightPathsForBsInit()
                     << " | covered=" << coveredNodes.size() << "/" << suspiciousNodePositions.size()
                     << " | totalTime=" << std::fixed << std::setprecision(1) << path2.totalTime << "s"
                     << " | totalDistance=" << totalDistance2 << "m"
-                    << " | avgSpeed=" << (totalDistance2 / (path2.totalTime - path2.waypoints.size() * hoverTime)) << "m/s");
+                    << " | flightSpeed=" << uav2Speed << "m/s"
+                    << " | hoverTime=" << uav2HoverTime << "s/waypoint"
+                    << " | avgSpeed=" << (totalDistance2 / std::max(0.001, path2.totalTime - path2.waypoints.size() * uav2HoverTime)) << "m/s");
         
         // Log UAV2 to file
         if (ns3::wsn::scenario4::params::g_resultFileStream)
@@ -1209,7 +1222,9 @@ PlanUavFlightPathsForBsInit()
                 << " strategy=GreedySetCover"
                 << " totalDistance=" << std::fixed << std::setprecision(1) << totalDistance2 << "m"
                 << " totalTime=" << path2.totalTime << "s"
-                << " avgSpeed=" << (totalDistance2 / (path2.totalTime - path2.waypoints.size() * hoverTime)) << "m/s"
+                << " flightSpeed=" << uav2Speed << "m/s"
+                << " hoverTime=" << uav2HoverTime << "s"
+                << " avgSpeed=" << (totalDistance2 / std::max(0.001, path2.totalTime - path2.waypoints.size() * uav2HoverTime)) << "m/s"
                 << " broadcastRadius=" << broadcastRadius << "m"
                 << " coverage=" << coveredNodes.size() << "/" << suspiciousNodePositions.size()
                 << " waypoints:";
@@ -1231,7 +1246,9 @@ PlanUavFlightPathsForBsInit()
             << " strategy=GreedyNearestNeighbor"
             << " totalDistance=" << std::fixed << std::setprecision(1) << totalDistance1 << "m"
             << " totalTime=" << path1.totalTime << "s"
-            << " avgSpeed=" << (totalDistance1 / (path1.totalTime - path1.waypoints.size() * hoverTime)) << "m/s"
+            << " flightSpeed=" << uav1Speed << "m/s"
+            << " hoverTime=" << uav1HoverTime << "s"
+            << " avgSpeed=" << (totalDistance1 / (path1.totalTime - path1.waypoints.size() * uav1HoverTime)) << "m/s"
             << " waypoints:";
         for (const auto& wp : path1.waypoints)
         {

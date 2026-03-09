@@ -79,7 +79,7 @@ InitializeUavRouting(Ptr<Node> uavNode)
     uint32_t nodeId = uavNode->GetId();
     g_uavNodes[nodeId] = uavNode;
 
-    g_bsUavCommandCallback = &OnUavCommandReceived;
+    //g_bsUavCommandCallback = &OnUavCommandReceived;
 }
 
 } // namespace routing

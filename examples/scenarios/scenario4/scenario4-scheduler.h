@@ -9,6 +9,9 @@ namespace scenario4 {
 
 void ScheduleScenario4Events(const Scenario4RunConfig& config);
 
+void ScheduleSingleScenario4Event(const Scenario4RunConfig& config);
+
+
 } // namespace scenario4
 } // namespace wsn
 } // namespace ns3

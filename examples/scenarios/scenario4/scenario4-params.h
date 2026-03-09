@@ -36,8 +36,8 @@ constexpr uint32_t DEFAULT_GRID_SIZE = 10;
 constexpr double DEFAULT_SPACING = 20.0;
 
 // Base station location (far from network to avoid interference)
-constexpr double BS_POSITION_X = -1000.0;
-constexpr double BS_POSITION_Y = -1000.0;
+constexpr double BS_POSITION_X = -100.0;
+constexpr double BS_POSITION_Y = -100.0;
 constexpr double BS_POSITION_Z = 0.0;
 
 // UAV parameters
@@ -84,6 +84,14 @@ constexpr double UAV_BROADCAST_RADIUS = 50.0;  // meters - UAV communication/bro
 // UAV path planning strategy
 constexpr double BS_INIT_UAV_STARTING_ALTITUDE = DEFAULT_UAV_ALTITUDE;
 constexpr double BS_INIT_UAV_PATROL_ALTITUDE = DEFAULT_UAV_ALTITUDE;
+
+// UAV1 (Greedy Nearest Neighbor): Fast speed + hover time at each node
+constexpr double UAV1_SPEED = 25.0;  // m/s - faster flight speed
+constexpr double UAV1_HOVER_TIME = 2.0;  // seconds - hover to broadcast fragments
+
+// UAV2 (Greedy Set Cover): Slower speed + no hover time
+constexpr double UAV2_SPEED = 15.0;  // m/s - slower flight speed
+constexpr double UAV2_HOVER_TIME = 0.0;  // seconds - no hovering
 
 inline int32_t
 ComputeDefaultHexGridOffset(uint32_t nodeCount)
