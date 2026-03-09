@@ -69,6 +69,32 @@ int main(int argc, char* argv[])
         return 1;
     }
     
+    // ===== Open Global Result File =====
+    std::ostringstream resultFilename;
+    resultFilename << "/Users/mophan/Github/ns-3-dev-git-ns-3.46/src/wsn/examples/visualize/results/scenario4_result_"
+                   << config.seed << "_" << config.runId << ".txt";
+    ns3::wsn::scenario4::params::g_resultFileStream = new std::ofstream(resultFilename.str());
+    
+    if (ns3::wsn::scenario4::params::g_resultFileStream && 
+        ns3::wsn::scenario4::params::g_resultFileStream->is_open())
+    {
+        *ns3::wsn::scenario4::params::g_resultFileStream 
+            << "======================================" << std::endl
+            << "    Scenario 4 Simulation Results    " << std::endl
+            << "======================================" << std::endl
+            << "Configuration:" << std::endl
+            << "  Grid: " << config.gridSize << "x" << config.gridSize << std::endl
+            << "  Spacing: " << config.gridSpacing << "m" << std::endl
+            << "  Simulation Time: " << config.simTime << "s" << std::endl
+            << "  Fragments: " << config.numFragments << std::endl
+            << "  UAVs: " << config.numUavs << std::endl
+            << "  Seed: " << config.seed << std::endl
+            << "  Run ID: " << config.runId << std::endl
+            << "======================================" << std::endl
+            << std::endl;
+        ns3::wsn::scenario4::params::g_resultFileStream->flush();
+    }
+    
     // ===== Run Scenario =====
     NS_LOG_INFO("=== Scenario 4 Starting ===");
     NS_LOG_INFO("Grid: " << config.gridSize << "x" << config.gridSize 
@@ -84,6 +110,23 @@ int main(int argc, char* argv[])
     runner.Run();
     
     NS_LOG_INFO("=== Scenario 4 Complete ===");
+    
+    // ===== Close Global Result File =====
+    if (ns3::wsn::scenario4::params::g_resultFileStream)
+    {
+        if (ns3::wsn::scenario4::params::g_resultFileStream->is_open())
+        {
+            *ns3::wsn::scenario4::params::g_resultFileStream
+                << std::endl
+                << "======================================" << std::endl
+                << "      Simulation Complete" << std::endl
+                << "======================================" << std::endl;
+            ns3::wsn::scenario4::params::g_resultFileStream->close();
+        }
+        delete ns3::wsn::scenario4::params::g_resultFileStream;
+        ns3::wsn::scenario4::params::g_resultFileStream = nullptr;
+        NS_LOG_INFO("Results saved to: " << resultFilename.str());
+    }
     
     Simulator::Destroy();
     return 0;

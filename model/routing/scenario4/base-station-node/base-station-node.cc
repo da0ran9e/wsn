@@ -14,12 +14,14 @@
 #include "ns3/node-list.h"
 #include "ns3/simulator.h"
 #include <cmath>
+#include <fstream>
 #include <iomanip>
 #include <iterator>
 #include <limits>
 #include <map>
 #include <queue>
 #include <set>
+#include <sstream>
 #include <vector>
 
 namespace ns3 {
@@ -69,7 +71,19 @@ AssignCellIdAndColorForGroundNodes(double cellRadius)
                     << ") q=" << coord.q << " r=" << coord.r
                     << " cellId=" << state.cellId
                     << " color=" << state.cellColor);
+        // TODO: in log vào `g_resultFileStream` tại đây
+        // Format: [NODE] nodeId cellId cellColor posX posY
+        if (ns3::wsn::scenario4::params::g_resultFileStream)
+        {
+            *ns3::wsn::scenario4::params::g_resultFileStream
+                << "[NODE-INFO] " << nodeId << " "
+                << state.cellId << " "
+                << state.cellColor << " "
+                << pos.x << " "
+                << pos.y << std::endl;
+        }
     }
+
 
     NS_LOG_INFO("[BS-INIT] Assigned cellId/cellColor for " << updatedCount
         << " ground nodes (gridOffset=" << gridOffset << ")");
@@ -116,6 +130,23 @@ DiscoverNeighborsAndTwoHopsForGroundNodes(double neighborRadius)
             itB->second.neighborRssi[itA->first] = syntheticRssi;
 
             neighborLinks++;
+        }
+    }
+
+    // in log `g_resultFileStream` tại đây
+    // Format: [NEIGHBOR-DISCOVERY] nodeId neighbor1 neighbor2 ...
+    if (ns3::wsn::scenario4::params::g_resultFileStream)
+    {
+        for (const auto& [nodeId, state] : g_groundNetworkPerNode)
+        {
+            *ns3::wsn::scenario4::params::g_resultFileStream
+                << "[NEIGHBOR-DISCOVERY] [" << nodeId << "]";
+            for (uint32_t neighborId : state.neighbors)
+            {
+                *ns3::wsn::scenario4::params::g_resultFileStream
+                    << " " << neighborId;
+            }
+            *ns3::wsn::scenario4::params::g_resultFileStream << std::endl;
         }
     }
 
@@ -206,6 +237,14 @@ SelectCellLeadersByNearestCellCenter(double cellRadius)
         NS_LOG_DEBUG("[BS-INIT] cellId=" << cellId << " CL=" << bestLeaderId
                                           << " center=(" << centerX << "," << centerY
                                           << ") dist=" << bestDistance);
+
+        // TODO: in log vào `g_resultFileStream` tại đây
+        // Format: [CELL-LEADER] cellId leaderNodeId (distance)
+        if (ns3::wsn::scenario4::params::g_resultFileStream)
+        {
+            *ns3::wsn::scenario4::params::g_resultFileStream
+                << "[CELL-LEADER] [" << cellId << "] " << bestLeaderId << " (" << bestDistance << ")" << std::endl;
+        }
     }
 
     NS_LOG_INFO("[BS-INIT] Cell leader selection done: " << selectedLeaderCount << " cells");
@@ -526,6 +565,20 @@ BuildIntraCellRoutingTrees()
     }
     
     NS_LOG_INFO("[BS-INIT] Intra-cell routing trees built: " << totalTreeNodes << " tree nodes total");
+    // TODO: in log vào `g_resultFileStream` tại đây
+    // Format: [INTRA-CELL-TREE] nodeId [cellId] parentId1 (parentCellId1) parentId2 (parentCellId2) ...
+    if (ns3::wsn::scenario4::params::g_resultFileStream)
+    {
+        for (const auto& [nodeId, cellRoutes] : ::ns3::wsn::scenario4::params::g_intraCellRoutingTree)
+        {            *ns3::wsn::scenario4::params::g_resultFileStream
+                << "[INTRA-CELL-TREE] [" << nodeId << "]";
+            for (const auto& [destCellId, parentId] : cellRoutes)
+            {                *ns3::wsn::scenario4::params::g_resultFileStream
+                    << " " << parentId << " (" << destCellId << ")";
+            }
+            *ns3::wsn::scenario4::params::g_resultFileStream << std::endl;
+        }   
+    }
 }
 
 void
@@ -844,7 +897,26 @@ SelectSuspiciousRegionForBsInit()
     
     // Store suspicious nodes globally for UAV flight planning
     g_suspiciousNodes = suspiciousNodes;
-    
+    // TODO: in log vào `g_resultFileStream` tại đây
+    // Format: [SUSPICIOUS-POINT] pointX pointY 
+    // Format: [SUSPICIOUS-REGION] nodeId1 nodeId2 ... (Cell: cell1 cell2 ...)
+    if (ns3::wsn::scenario4::params::g_resultFileStream)
+    {
+        const auto& seedPos = seedNode.position;
+        *ns3::wsn::scenario4::params::g_resultFileStream
+            << "[SUSPICIOUS-POINT] " << seedPos.x << " " << seedPos.y << std::endl;
+        *ns3::wsn::scenario4::params::g_resultFileStream
+            << "[SUSPICIOUS-REGION] ";
+        for (uint32_t nodeId : suspiciousNodes)
+        {            *ns3::wsn::scenario4::params::g_resultFileStream << " " << nodeId;
+        }   
+        *ns3::wsn::scenario4::params::g_resultFileStream
+            << " (Cells: ";
+        for (int32_t cellId : suspiciousCells)
+        {            *ns3::wsn::scenario4::params::g_resultFileStream << " " << cellId;
+        }
+        *ns3::wsn::scenario4::params::g_resultFileStream << ")" << std::endl;
+    }
     NS_LOG_INFO("[BS-SUSPICIOUS] Suspicious region stored for UAV flight planning");
 }
 
@@ -859,6 +931,316 @@ GenerateFragmentsForBsInit()
                 << " fragments at BS init"
                 << " | avgConfidence=" << std::fixed << std::setprecision(3)
                 << generated.totalConfidence);
+
+    // TODO: in log vào `g_resultFileStream` tại đây
+    // Format: [FRAGMENTS] fragmentSize1(confidence1) fragmentSize2(confidence2) ...
+    if (ns3::wsn::scenario4::params::g_resultFileStream)
+    {        *ns3::wsn::scenario4::params::g_resultFileStream
+            << "[FRAGMENTS]";
+        for (int i = 0; i < generated.fragments.size(); ++i)
+        {
+            const auto& frag = generated.fragments[i];
+            *ns3::wsn::scenario4::params::g_resultFileStream
+                << " " << frag.size << "(" << std::fixed << std::setprecision(3) << frag.confidence << ")";
+        }
+        *ns3::wsn::scenario4::params::g_resultFileStream << std::endl;
+    }    
+}
+
+void
+PlanUavFlightPathsForBsInit()
+{
+    if (g_suspiciousNodes.empty())
+    {
+        NS_LOG_WARN("[BS-UAV-PATH] No suspicious nodes to plan paths for");
+        return;
+    }
+
+    // Clear previous paths
+    ClearUavFlightPaths();
+
+    // Get suspicious node positions with node IDs
+    std::vector<std::pair<uint32_t, Vector>> suspiciousNodePositions;
+    for (uint32_t nodeId : g_suspiciousNodes)
+    {
+        auto it = g_groundNetworkPerNode.find(nodeId);
+        if (it != g_groundNetworkPerNode.end())
+        {
+            suspiciousNodePositions.push_back({nodeId, it->second.position});
+        }
+    }
+
+    if (suspiciousNodePositions.empty())
+    {
+        NS_LOG_WARN("[BS-UAV-PATH] No valid positions for suspicious nodes");
+        return;
+    }
+
+    // Get UAV nodes (assumes UAVs are nodes with specific IDs or mobility model)
+    std::vector<uint32_t> uavNodeIds;
+    for (uint32_t i = 0; i < NodeList::GetNNodes(); ++i)
+    {
+        Ptr<Node> node = NodeList::GetNode(i);
+        if (!node) continue;
+        
+        Ptr<MobilityModel> mobility = node->GetObject<MobilityModel>();
+        if (!mobility) continue;
+        
+        const Vector pos = mobility->GetPosition();
+        // UAVs are at altitude > 0
+        if (pos.z > 1.0)
+        {
+            uavNodeIds.push_back(i);
+        }
+    }
+
+    if (uavNodeIds.empty())
+    {
+        NS_LOG_WARN("[BS-UAV-PATH] No UAV nodes found");
+        return;
+    }
+
+    const double altitude = ::ns3::wsn::scenario4::params::BS_INIT_UAV_PATROL_ALTITUDE;
+    const double speed = ::ns3::wsn::scenario4::params::UAV_PATH_SPEED;
+    const double hoverTime = ::ns3::wsn::scenario4::params::UAV_WAYPOINT_HOVER_TIME;
+    const double broadcastRadius = ::ns3::wsn::scenario4::params::UAV_BROADCAST_RADIUS;
+
+    // ===== UAV 1: Greedy Nearest Neighbor (visit every node) =====
+    const uint32_t uav1NodeId = uavNodeIds[0];
+    Ptr<Node> uav1Node = NodeList::GetNode(uav1NodeId);
+    Ptr<MobilityModel> uav1Mobility = uav1Node->GetObject<MobilityModel>();
+    const Vector uav1StartPos = uav1Mobility->GetPosition();
+
+    UavFlightPath path1;
+    std::set<uint32_t> visitedNodes;
+    Vector currentPos = uav1StartPos;
+    double currentTime = 0.0;
+    
+    NS_LOG_INFO("[BS-UAV-PATH] UAV1: Planning path using Greedy Nearest Neighbor"
+                << " | suspiciousNodes=" << suspiciousNodePositions.size()
+                << " | startPos=(" << std::fixed << std::setprecision(1) 
+                << uav1StartPos.x << "," << uav1StartPos.y << "," << uav1StartPos.z << ")");
+    
+    // Visit all suspicious nodes using nearest neighbor heuristic
+    while (visitedNodes.size() < suspiciousNodePositions.size())
+    {
+        // Find nearest unvisited node
+        double minDistance = std::numeric_limits<double>::max();
+        uint32_t nearestNodeId = std::numeric_limits<uint32_t>::max();
+        Vector nearestPos;
+        
+        for (const auto& [nodeId, pos] : suspiciousNodePositions)
+        {
+            if (visitedNodes.count(nodeId) > 0)
+                continue;
+            
+            double dist = helper::CalculateDistance(currentPos.x, currentPos.y, pos.x, pos.y);
+            if (dist < minDistance)
+            {
+                minDistance = dist;
+                nearestNodeId = nodeId;
+                nearestPos = pos;
+            }
+        }
+        
+        if (nearestNodeId == std::numeric_limits<uint32_t>::max())
+            break;
+        
+        currentTime += minDistance / speed;
+        
+        Waypoint wp;
+        wp.position = Vector(nearestPos.x, nearestPos.y, altitude);
+        wp.arrivalTime = currentTime;
+        path1.waypoints.push_back(wp);
+        
+        currentTime += hoverTime;
+        visitedNodes.insert(nearestNodeId);
+        currentPos = nearestPos;
+        
+        NS_LOG_DEBUG("[BS-UAV-PATH] UAV1 Waypoint " << path1.waypoints.size() 
+                     << " | node=" << nearestNodeId
+                     << " | pos=(" << nearestPos.x << "," << nearestPos.y << ")"
+                     << " | dist=" << minDistance << "m");
+    }
+    
+    path1.totalTime = currentTime;
+    SetUavFlightPath(uav1NodeId, path1);
+    
+    // Calculate total path distance for UAV1
+    double totalDistance1 = 0.0;
+    Vector prevPos1 = uav1StartPos;
+    for (const auto& wp : path1.waypoints)
+    {
+        totalDistance1 += helper::CalculateDistance(prevPos1.x, prevPos1.y, wp.position.x, wp.position.y);
+        prevPos1 = wp.position;
+    }
+
+    NS_LOG_INFO("[BS-UAV-PATH] UAV1 path planned"
+                << " | waypoints=" << path1.waypoints.size()
+                << " | totalTime=" << std::fixed << std::setprecision(1) << path1.totalTime << "s"
+                << " | totalDistance=" << totalDistance1 << "m"
+                << " | avgSpeed=" << (totalDistance1 / (path1.totalTime - path1.waypoints.size() * hoverTime)) << "m/s");
+
+    // ===== UAV 2: Greedy Set Cover (minimize waypoints with coverage radius) =====
+    if (uavNodeIds.size() >= 2)
+    {
+        const uint32_t uav2NodeId = uavNodeIds[1];
+        Ptr<Node> uav2Node = NodeList::GetNode(uav2NodeId);
+        Ptr<MobilityModel> uav2Mobility = uav2Node->GetObject<MobilityModel>();
+        const Vector uav2StartPos = uav2Mobility->GetPosition();
+
+        UavFlightPath path2;
+        std::set<uint32_t> coveredNodes;  // Nodes already covered by waypoints
+        Vector currentPos2 = uav2StartPos;
+        double currentTime2 = 0.0;
+        
+        NS_LOG_INFO("[BS-UAV-PATH] UAV2: Planning coverage-based path"
+                    << " | broadcastRadius=" << broadcastRadius << "m"
+                    << " | startPos=(" << std::fixed << std::setprecision(1)
+                    << uav2StartPos.x << "," << uav2StartPos.y << "," << uav2StartPos.z << ")");
+        
+        // Greedy Set Cover: repeatedly choose waypoint that covers most uncovered nodes
+        while (coveredNodes.size() < suspiciousNodePositions.size())
+        {
+            Vector bestWaypointPos;
+            uint32_t maxNewCoverage = 0;
+            double bestDistance = std::numeric_limits<double>::max();
+            
+            // Try each suspicious node position as potential waypoint
+            for (const auto& [candidateNodeId, candidatePos] : suspiciousNodePositions)
+            {
+                // Count how many uncovered nodes this waypoint would cover
+                uint32_t newCoverageCount = 0;
+                for (const auto& [nodeId, nodePos] : suspiciousNodePositions)
+                {
+                    if (coveredNodes.count(nodeId) > 0)
+                        continue;  // Already covered
+                    
+                    double dist = helper::CalculateDistance(
+                        candidatePos.x, candidatePos.y, nodePos.x, nodePos.y);
+                    
+                    if (dist <= broadcastRadius)
+                    {
+                        newCoverageCount++;
+                    }
+                }
+                
+                // Select waypoint with best coverage, breaking ties by distance from current position
+                double distFromCurrent = helper::CalculateDistance(
+                    currentPos2.x, currentPos2.y, candidatePos.x, candidatePos.y);
+                
+                if (newCoverageCount > maxNewCoverage ||
+                    (newCoverageCount == maxNewCoverage && distFromCurrent < bestDistance))
+                {
+                    maxNewCoverage = newCoverageCount;
+                    bestWaypointPos = candidatePos;
+                    bestDistance = distFromCurrent;
+                }
+            }
+            
+            if (maxNewCoverage == 0)
+            {
+                NS_LOG_WARN("[BS-UAV-PATH] UAV2: No more nodes can be covered, but "
+                           << (suspiciousNodePositions.size() - coveredNodes.size())
+                           << " nodes remain uncovered");
+                break;
+            }
+            
+            // Add this waypoint
+            currentTime2 += bestDistance / speed;
+            
+            Waypoint wp2;
+            wp2.position = Vector(bestWaypointPos.x, bestWaypointPos.y, altitude);
+            wp2.arrivalTime = currentTime2;
+            path2.waypoints.push_back(wp2);
+            
+            currentTime2 += hoverTime;
+            
+            // Mark all nodes covered by this waypoint
+            uint32_t actualCovered = 0;
+            for (const auto& [nodeId, nodePos] : suspiciousNodePositions)
+            {
+                if (coveredNodes.count(nodeId) > 0)
+                    continue;
+                
+                double dist = helper::CalculateDistance(
+                    bestWaypointPos.x, bestWaypointPos.y, nodePos.x, nodePos.y);
+                
+                if (dist <= broadcastRadius)
+                {
+                    coveredNodes.insert(nodeId);
+                    actualCovered++;
+                }
+            }
+            
+            currentPos2 = bestWaypointPos;
+            
+            NS_LOG_DEBUG("[BS-UAV-PATH] UAV2 Waypoint " << path2.waypoints.size()
+                        << " | pos=(" << bestWaypointPos.x << "," << bestWaypointPos.y << ")"
+                        << " | covered=" << actualCovered << " new nodes"
+                        << " | totalCovered=" << coveredNodes.size() << "/" << suspiciousNodePositions.size()
+                        << " | dist=" << bestDistance << "m");
+        }
+        
+        path2.totalTime = currentTime2;
+        SetUavFlightPath(uav2NodeId, path2);
+        
+        // Calculate total path distance for UAV2
+        double totalDistance2 = 0.0;
+        Vector prevPos2 = uav2StartPos;
+        for (const auto& wp : path2.waypoints)
+        {
+            totalDistance2 += helper::CalculateDistance(prevPos2.x, prevPos2.y, wp.position.x, wp.position.y);
+            prevPos2 = wp.position;
+        }
+        
+        NS_LOG_INFO("[BS-UAV-PATH] UAV2 coverage-based path planned"
+                    << " | waypoints=" << path2.waypoints.size()
+                    << " | covered=" << coveredNodes.size() << "/" << suspiciousNodePositions.size()
+                    << " | totalTime=" << std::fixed << std::setprecision(1) << path2.totalTime << "s"
+                    << " | totalDistance=" << totalDistance2 << "m"
+                    << " | avgSpeed=" << (totalDistance2 / (path2.totalTime - path2.waypoints.size() * hoverTime)) << "m/s");
+        
+        // Log UAV2 to file
+        if (ns3::wsn::scenario4::params::g_resultFileStream)
+        {
+            *ns3::wsn::scenario4::params::g_resultFileStream
+                << "[UAV-PATH] " << uav2NodeId
+                << " strategy=GreedySetCover"
+                << " totalDistance=" << std::fixed << std::setprecision(1) << totalDistance2 << "m"
+                << " totalTime=" << path2.totalTime << "s"
+                << " avgSpeed=" << (totalDistance2 / (path2.totalTime - path2.waypoints.size() * hoverTime)) << "m/s"
+                << " broadcastRadius=" << broadcastRadius << "m"
+                << " coverage=" << coveredNodes.size() << "/" << suspiciousNodePositions.size()
+                << " waypoints:";
+            for (const auto& wp : path2.waypoints)
+            {
+                *ns3::wsn::scenario4::params::g_resultFileStream
+                    << " (" << std::fixed << std::setprecision(1)
+                    << wp.position.x << "," << wp.position.y << ")";
+            }
+            *ns3::wsn::scenario4::params::g_resultFileStream << std::endl;
+        }
+    }
+
+    // Log UAV1 to file
+    if (ns3::wsn::scenario4::params::g_resultFileStream)
+    {
+        *ns3::wsn::scenario4::params::g_resultFileStream
+            << "[UAV-PATH] " << uav1NodeId
+            << " strategy=GreedyNearestNeighbor"
+            << " totalDistance=" << std::fixed << std::setprecision(1) << totalDistance1 << "m"
+            << " totalTime=" << path1.totalTime << "s"
+            << " avgSpeed=" << (totalDistance1 / (path1.totalTime - path1.waypoints.size() * hoverTime)) << "m/s"
+            << " waypoints:";
+        for (const auto& wp : path1.waypoints)
+        {
+            *ns3::wsn::scenario4::params::g_resultFileStream
+                << " (" << std::fixed << std::setprecision(1)
+                << wp.position.x << "," << wp.position.y << ")";
+        }
+        *ns3::wsn::scenario4::params::g_resultFileStream << std::endl;
+    }
 }
 
 void
@@ -991,35 +1373,226 @@ routing::BaseStationNode::Initialize()
     
     NS_LOG_INFO("BS Node " << m_nodeId << " initialized");
 
+    // Write to global result file if open
+    if (::ns3::wsn::scenario4::params::g_resultFileStream && 
+        ::ns3::wsn::scenario4::params::g_resultFileStream->is_open())
+    {
+        *::ns3::wsn::scenario4::params::g_resultFileStream
+            << "\n=== Base Station Initialization ===" << std::endl
+            << "BS Node ID: " << m_nodeId << std::endl
+            << "Start Time: " << Simulator::Now().GetSeconds() << "s" << std::endl
+            << std::endl;
+        ::ns3::wsn::scenario4::params::g_resultFileStream->flush();
+    }
+
     // Step 1: tính cellId + cellColor cho từng ground node từ position hiện tại
     AssignCellIdAndColorForGroundNodes(::ns3::wsn::scenario4::params::HEX_CELL_RADIUS);
+    if (::ns3::wsn::scenario4::params::g_resultFileStream && 
+        ::ns3::wsn::scenario4::params::g_resultFileStream->is_open())
+    {
+        *::ns3::wsn::scenario4::params::g_resultFileStream
+            << "Step 1: Assign Cell ID and Color" << std::endl
+            << "  Total ground nodes: " << g_groundNetworkPerNode.size() << std::endl
+            << "  Cell radius: " << ::ns3::wsn::scenario4::params::HEX_CELL_RADIUS << "m" << std::endl
+            << std::endl;
+        ::ns3::wsn::scenario4::params::g_resultFileStream->flush();
+    }
 
     // Step 2: neighbor + 2-hop discovery theo bán kính truyền tin
     DiscoverNeighborsAndTwoHopsForGroundNodes(::ns3::wsn::scenario4::params::NEIGHBOR_DISCOVERY_RADIUS);
+    if (::ns3::wsn::scenario4::params::g_resultFileStream && 
+        ::ns3::wsn::scenario4::params::g_resultFileStream->is_open())
+    {
+        uint32_t totalNeighbors = 0;
+        for (const auto& [nodeId, state] : g_groundNetworkPerNode)
+        {
+            totalNeighbors += state.neighbors.size();
+        }
+        *::ns3::wsn::scenario4::params::g_resultFileStream
+            << "Step 2: Neighbor Discovery" << std::endl
+            << "  Discovery radius: " << ::ns3::wsn::scenario4::params::NEIGHBOR_DISCOVERY_RADIUS << "m" << std::endl
+            << "  Total neighbor links: " << totalNeighbors / 2 << std::endl
+            << std::endl;
+        ::ns3::wsn::scenario4::params::g_resultFileStream->flush();
+    }
 
     // Step 3: chọn cell leader (CL) gần tâm cell nhất
     SelectCellLeadersByNearestCellCenter(::ns3::wsn::scenario4::params::HEX_CELL_RADIUS);
+    if (::ns3::wsn::scenario4::params::g_resultFileStream && 
+        ::ns3::wsn::scenario4::params::g_resultFileStream->is_open())
+    {
+        uint32_t leaderCount = 0;
+        std::map<int32_t, uint32_t> cellLeaders;
+        for (const auto& [nodeId, state] : g_groundNetworkPerNode)
+        {
+            if (state.isCellLeader)
+            {
+                leaderCount++;
+                cellLeaders[state.cellId] = nodeId;
+            }
+        }
+        *::ns3::wsn::scenario4::params::g_resultFileStream
+            << "Step 3: Select Cell Leaders" << std::endl
+            << "  Total cells: " << leaderCount << std::endl;
+        for (const auto& [cellId, leaderId] : cellLeaders)
+        {
+            *::ns3::wsn::scenario4::params::g_resultFileStream
+                << "    Cell " << cellId << ": Leader " << leaderId << std::endl;
+        }
+        *::ns3::wsn::scenario4::params::g_resultFileStream << std::endl;
+        ::ns3::wsn::scenario4::params::g_resultFileStream->flush();
+    }
 
     // Step 4: chọn gateway pairs cho cross-cell communication
     SelectCrosscellGatewayPairs(::ns3::wsn::scenario4::params::NEIGHBOR_DISCOVERY_RADIUS);
+    if (::ns3::wsn::scenario4::params::g_resultFileStream && 
+        ::ns3::wsn::scenario4::params::g_resultFileStream->is_open())
+    {
+        uint32_t gatewayPairCount = 0;
+        for (const auto& [cellId, neighbors] : ::ns3::wsn::scenario4::params::g_cellGatewayPairs)
+        {
+            gatewayPairCount += neighbors.size();
+        }
+        *::ns3::wsn::scenario4::params::g_resultFileStream
+            << "Step 4: Select Gateway Pairs" << std::endl
+            << "  Total gateway pairs: " << gatewayPairCount / 2 << std::endl
+            << std::endl;
+        ::ns3::wsn::scenario4::params::g_resultFileStream->flush();
+    }
 
     // Step 5: xây dựng intra-cell routing trees cho mỗi cell
     BuildIntraCellRoutingTrees();
+    if (::ns3::wsn::scenario4::params::g_resultFileStream && 
+        ::ns3::wsn::scenario4::params::g_resultFileStream->is_open())
+    {
+        *::ns3::wsn::scenario4::params::g_resultFileStream
+            << "Step 5: Build Intra-Cell Routing Trees" << std::endl
+            << "  Total routing entries: " << ::ns3::wsn::scenario4::params::g_intraCellRoutingTree.size() << std::endl
+            << std::endl;
+        ::ns3::wsn::scenario4::params::g_resultFileStream->flush();
+    }
 
     // Step 6: bổ sung route để đảm bảo reachability tới neighboring cells
     EnhanceRoutingTreesForGatewayAccess();
+    if (::ns3::wsn::scenario4::params::g_resultFileStream && 
+        ::ns3::wsn::scenario4::params::g_resultFileStream->is_open())
+    {
+        *::ns3::wsn::scenario4::params::g_resultFileStream
+            << "Step 6: Enhance Routing for Gateway Access" << std::endl
+            << "  Routing tree enhanced for cross-cell communication" << std::endl
+            << std::endl;
+        ::ns3::wsn::scenario4::params::g_resultFileStream->flush();
+    }
 
     // Step 7: kiểm tra tính hợp lệ của routing trees
     ValidateIntraCellRoutingTrees();
+    if (::ns3::wsn::scenario4::params::g_resultFileStream && 
+        ::ns3::wsn::scenario4::params::g_resultFileStream->is_open())
+    {
+        *::ns3::wsn::scenario4::params::g_resultFileStream
+            << "Step 7: Validate Routing Trees" << std::endl
+            << "  Routing tree validation completed" << std::endl
+            << std::endl;
+        ::ns3::wsn::scenario4::params::g_resultFileStream->flush();
+    }
 
     // Step 8: cập nhật các biến trạng thái còn lại
     FinalizeGroundNodeStateFields();
+    if (::ns3::wsn::scenario4::params::g_resultFileStream && 
+        ::ns3::wsn::scenario4::params::g_resultFileStream->is_open())
+    {
+        *::ns3::wsn::scenario4::params::g_resultFileStream
+            << "Step 8: Finalize Ground Node States" << std::endl
+            << "  All node states finalized" << std::endl
+            << std::endl;
+        ::ns3::wsn::scenario4::params::g_resultFileStream->flush();
+    }
 
     // Step 9: chọn vùng khả nghi cho UAV flight planning
     SelectSuspiciousRegionForBsInit();
+    if (::ns3::wsn::scenario4::params::g_resultFileStream && 
+        ::ns3::wsn::scenario4::params::g_resultFileStream->is_open())
+    {
+        *::ns3::wsn::scenario4::params::g_resultFileStream
+            << "Step 9: Select Suspicious Region" << std::endl
+            << "  Suspicious nodes: " << g_suspiciousNodes.size() << std::endl
+            << "  Coverage: " << std::fixed << std::setprecision(1) 
+            << (100.0 * g_suspiciousNodes.size() / g_groundNetworkPerNode.size()) << "%" << std::endl
+            << "  Node IDs: ";
+        for (uint32_t nodeId : g_suspiciousNodes)
+        {
+            *::ns3::wsn::scenario4::params::g_resultFileStream << nodeId << " ";
+        }
+        *::ns3::wsn::scenario4::params::g_resultFileStream << std::endl << std::endl;
+        ::ns3::wsn::scenario4::params::g_resultFileStream->flush();
+    }
 
     // Step 10: BS generate fragments để UAV broadcast
     GenerateFragmentsForBsInit();
+    if (::ns3::wsn::scenario4::params::g_resultFileStream && 
+        ::ns3::wsn::scenario4::params::g_resultFileStream->is_open())
+    {
+        const FragmentCollection& fragments = GetBsGeneratedFragments();
+        *::ns3::wsn::scenario4::params::g_resultFileStream
+            << "Step 10: Generate Fragments" << std::endl
+            << "  Total fragments: " << fragments.fragments.size() << std::endl
+            << "  Average confidence: " << std::fixed << std::setprecision(3) 
+            << fragments.totalConfidence << std::endl
+            << std::endl;
+        ::ns3::wsn::scenario4::params::g_resultFileStream->flush();
+    }
+
+    // Step 11: lên lịch đường bay cho UAV
+    PlanUavFlightPathsForBsInit();
+    if (::ns3::wsn::scenario4::params::g_resultFileStream && 
+        ::ns3::wsn::scenario4::params::g_resultFileStream->is_open())
+    {
+        const auto& uavPaths = GetUavFlightPaths();
+        *::ns3::wsn::scenario4::params::g_resultFileStream
+            << "Step 11: Plan UAV Flight Paths" << std::endl
+            << "  Total UAVs: " << uavPaths.size() << std::endl;
+        
+        for (const auto& [uavId, path] : uavPaths)
+        {
+            *::ns3::wsn::scenario4::params::g_resultFileStream
+                << "  UAV " << uavId << ":" << std::endl
+                << "    Waypoints: " << path.waypoints.size() << std::endl
+                << "    Total time: " << std::fixed << std::setprecision(1) 
+                << path.totalTime << "s" << std::endl;
+            
+            // Calculate total distance
+            double totalDist = 0.0;
+            Ptr<Node> uavNode = NodeList::GetNode(uavId);
+            if (uavNode)
+            {
+                Ptr<MobilityModel> mobility = uavNode->GetObject<MobilityModel>();
+                if (mobility)
+                {
+                    Vector prevPos = mobility->GetPosition();
+                    for (const auto& wp : path.waypoints)
+                    {
+                        totalDist += helper::CalculateDistance(prevPos.x, prevPos.y, wp.position.x, wp.position.y);
+                        prevPos = wp.position;
+                    }
+                }
+            }
+            *::ns3::wsn::scenario4::params::g_resultFileStream
+                << "    Total distance: " << std::fixed << std::setprecision(1) 
+                << totalDist << "m" << std::endl;
+        }
+        *::ns3::wsn::scenario4::params::g_resultFileStream << std::endl;
+        ::ns3::wsn::scenario4::params::g_resultFileStream->flush();
+    }
+
+    if (::ns3::wsn::scenario4::params::g_resultFileStream && 
+        ::ns3::wsn::scenario4::params::g_resultFileStream->is_open())
+    {
+        *::ns3::wsn::scenario4::params::g_resultFileStream
+            << "=== Base Station Initialization Complete ===" << std::endl
+            << "End Time: " << Simulator::Now().GetSeconds() << "s" << std::endl
+            << std::endl;
+        ::ns3::wsn::scenario4::params::g_resultFileStream->flush();
+    }
 }
 
 void

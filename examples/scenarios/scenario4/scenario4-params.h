@@ -10,7 +10,9 @@
 #include <algorithm>
 #include <cmath>
 #include <cstdint>
+#include <fstream>
 #include <map>
+#include <string>
 #include <vector>
 
 namespace ns3 {
@@ -75,6 +77,13 @@ constexpr uint32_t HEX_GRID_OFFSET_EXTRA = 1000;
 // UAV flight planning defaults
 constexpr double UAV_PATH_ALTITUDE = DEFAULT_UAV_ALTITUDE;
 constexpr double UAV_PATH_SPEED = DEFAULT_UAV_SPEED;
+constexpr double UAV_WAYPOINT_HOVER_TIME = 2.0;  // seconds per waypoint
+constexpr double UAV_PATH_MARGIN_METERS = 10.0;  // safety margin around suspicious region
+constexpr double UAV_BROADCAST_RADIUS = 50.0;  // meters - UAV communication/broadcast coverage radius
+
+// UAV path planning strategy
+constexpr double BS_INIT_UAV_STARTING_ALTITUDE = DEFAULT_UAV_ALTITUDE;
+constexpr double BS_INIT_UAV_PATROL_ALTITUDE = DEFAULT_UAV_ALTITUDE;
 
 inline int32_t
 ComputeDefaultHexGridOffset(uint32_t nodeCount)
@@ -96,6 +105,12 @@ constexpr double DEFAULT_MASTER_FILE_CONFIDENCE = 0.95;
 constexpr double FRAGMENT_WEIGHT_MIN = 0.5;
 constexpr double FRAGMENT_WEIGHT_MAX = 2.0;
 constexpr uint32_t BS_INIT_FRAGMENT_GENERATION_COUNT = DEFAULT_NUM_FRAGMENTS;
+
+// ===== GLOBAL RESULT FILE STREAM =====
+// Global file stream for logging all scenario4 results to a single file
+// Example4.cc will open/close this stream
+// Other files can write directly: if (g_resultFileStream) *g_resultFileStream << "text";
+extern std::ofstream* g_resultFileStream;
 
 } // namespace params
 } // namespace scenario4

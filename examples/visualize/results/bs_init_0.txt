@@ -1,0 +1,52 @@
+=== Base Station Initialization Results ===
+BS Node ID: 49
+Start Time: 0s
+
+Step 1: Assign Cell ID and Color
+  Total ground nodes: 49
+  Cell radius: 80m
+
+Step 2: Neighbor Discovery
+  Discovery radius: 80m
+  Total neighbor links: 670
+
+Step 3: Select Cell Leaders
+  Total cells: 4
+    Cell 0: Leader 0
+    Cell 1: Leader 6
+    Cell 9999: Leader 42
+    Cell 10000: Leader 45
+
+Step 4: Select Gateway Pairs
+  Total gateway pairs: 5
+
+Step 5: Build Intra-Cell Routing Trees
+  Total routing entries: 49
+
+Step 6: Enhance Routing for Gateway Access
+  Routing tree enhanced for cross-cell communication
+
+Step 7: Validate Routing Trees
+  Routing tree validation completed
+
+Step 8: Finalize Ground Node States
+  All node states finalized
+
+Step 9: Select Suspicious Region
+  Suspicious nodes: 15
+  Coverage: 30.6%
+  Node IDs: 0 1 2 3 7 8 9 10 14 15 16 17 21 22 28 
+
+Step 10: Generate Fragments
+  Total fragments: 10
+  Average confidence: 0.095
+
+Step 11: Plan UAV Flight Paths
+  Total UAVs: 1
+  UAV 50:
+    Waypoints: 15
+    Total time: 115.9s
+    Total distance: 1718.9m
+
+=== Initialization Complete ===
+End Time: 0.0s
