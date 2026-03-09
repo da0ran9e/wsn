@@ -48,7 +48,7 @@ constexpr double DEFAULT_UAV_SPEED = 20.0;  // m/s
 // Timing constants
 constexpr double STARTUP_PHASE_DURATION = 5.0;  // seconds
 constexpr double UAV_PLANNING_DELAY = 0.2;      // seconds after startup
-constexpr double FRAGMENT_BROADCAST_INTERVAL = 1.0;  // seconds
+constexpr double FRAGMENT_BROADCAST_INTERVAL = 0.2;  // seconds - UAV1_HOVER_TIME / DEFAULT_NUM_FRAGMENTS = 2.0s / 10 = 0.2s
 
 // ===== ROUTING PARAMETERS =====
 

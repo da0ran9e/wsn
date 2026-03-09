@@ -11,6 +11,7 @@
 #include "ns3/mobility-model.h"
 #include "ns3/node-list.h"
 #include <algorithm>
+#include "../../../../examples/scenarios/scenario4/scenario4-params.h"
 
 namespace ns3 {
 
@@ -173,6 +174,16 @@ OnGroundNodeReceivePacket(uint32_t nodeId, Ptr<const Packet> packet, double rssi
         case PACKET_TYPE_FRAGMENT:
             NS_LOG_DEBUG("Node " << nodeId << " received FRAGMENT packet");
             state.fragmentPacketsReceived++;
+            // Format: [EVENT] time | event=ReceiveFragment | nodeId=... | rssi=... | confidence=...
+            if (ns3::wsn::scenario4::params::g_resultFileStream)
+            {
+                *ns3::wsn::scenario4::params::g_resultFileStream << "[EVENT] " << Simulator::Now().GetSeconds()
+                    << " | event=ReceiveFragment"
+                    << " | nodeId=" << nodeId
+                    << " | rssi=" << rssiDbm
+                    << " | confidence=" << state.confidence
+                    << "\n";
+            }
             
             // Handle fragment reception
             {

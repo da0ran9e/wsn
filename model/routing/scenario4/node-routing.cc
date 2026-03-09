@@ -7,11 +7,14 @@
 #include "base-station-node/base-station-node.h"
 #include "base-station-node/fragment-generator.h"
 #include "ground-node-routing/ground-node-routing.h"
+#include "packet-header.h"
 #include "ns3/log.h"
 #include "ns3/mobility-model.h"
 #include "ns3/node-list.h"
 #include "ns3/simulator.h"
+#include "ns3/packet.h"
 #include "../../../examples/scenarios/scenario4/scenario4-params.h"
+#include <cmath>
 
 namespace ns3 {
 
@@ -132,8 +135,172 @@ void InitializeUavFlight()
 void InitializeUavBroadcast()
 {
     NS_LOG_FUNCTION_NOARGS();
-    NS_LOG_INFO("[UAV-BROADCAST] Fragment broadcast initialization (placeholder)");
-    // TODO: phần này chỉ khởi tạo broadcast cho UAV thứ 2
+    
+    // Get UAV flight paths
+    const auto& uavPaths = GetUavFlightPaths();
+    
+    if (uavPaths.size() < 2)
+    {
+        NS_LOG_WARN("[UAV-BROADCAST] UAV2 not available (need at least 2 UAVs)");
+        return;
+    }
+    
+    // Get UAV2 (second UAV in the map)
+    auto it = uavPaths.begin();
+    ++it; // Move to second UAV
+    const uint32_t uav2NodeId = it->first;
+    const UavFlightPath& uav2Path = it->second;
+    
+    if (uav2Path.waypoints.empty())
+    {
+        NS_LOG_WARN("[UAV-BROADCAST] UAV2 has no waypoints");
+        return;
+    }
+    
+    // Get fragments to broadcast
+    const FragmentCollection& fragments = GetBsGeneratedFragments();
+    
+    if (fragments.fragments.empty())
+    {
+        NS_LOG_WARN("[UAV-BROADCAST] No fragments available for broadcast");
+        return;
+    }
+    
+    // UAV2 broadcasts from first waypoint until last waypoint
+    const double broadcastStartTime = uav2Path.waypoints[0].arrivalTime;
+    const double broadcastEndTime = uav2Path.waypoints.back().arrivalTime;
+    const double broadcastInterval = ns3::wsn::scenario4::params::FRAGMENT_BROADCAST_INTERVAL;
+    
+    // Calculate total broadcast duration and number of cycles
+    const double totalBroadcastDuration = broadcastEndTime - broadcastStartTime;
+    const double singleCycleDuration = fragments.fragments.size() * broadcastInterval;
+    const uint32_t numBroadcastCycles = static_cast<uint32_t>(
+        std::ceil(totalBroadcastDuration / singleCycleDuration));
+    
+    NS_LOG_INFO("[UAV-BROADCAST] Initializing UAV2 fragment broadcast"
+                << " | uavNodeId=" << uav2NodeId
+                << " | numFragments=" << fragments.fragments.size()
+                << " | startTime=" << broadcastStartTime << "s"
+                << " | endTime=" << broadcastEndTime << "s"
+                << " | duration=" << totalBroadcastDuration << "s"
+                << " | cycleDuration=" << singleCycleDuration << "s"
+                << " | numCycles=" << numBroadcastCycles
+                << " | interval=" << broadcastInterval << "s");
+    
+    // Schedule broadcast cycles - repeat until reaching last waypoint
+    double currentTime = broadcastStartTime;
+    uint32_t totalBroadcasts = 0;
+    
+    for (uint32_t cycle = 0; cycle < numBroadcastCycles; ++cycle)
+    {
+        for (const auto& [fragmentId, fragment] : fragments.fragments)
+        {
+            // Stop scheduling if we've reached the last waypoint time
+            if (currentTime > broadcastEndTime)
+            {
+                break;
+            }
+            
+            const uint32_t cycleNum = cycle; // Capture for lambda
+            Simulator::Schedule(Seconds(currentTime), [uav2NodeId, fragmentId, fragment, cycleNum]() {
+                NS_LOG_INFO("[UAV-BROADCAST] UAV " << uav2NodeId 
+                            << " broadcasting fragment " << fragmentId
+                            << " (cycle " << (cycleNum + 1) << ")"
+                            << " | confidence=" << std::fixed << std::setprecision(3) << fragment.confidence
+                            << " | size=" << fragment.size << " bytes"
+                            << " | t=" << Simulator::Now().GetSeconds() << "s");
+                
+                // Log to result file
+                if (ns3::wsn::scenario4::params::g_resultFileStream)
+                {
+                    *ns3::wsn::scenario4::params::g_resultFileStream
+                        << "[EVENT] " << Simulator::Now().GetSeconds()
+                        << " | event=UAVFragmentBroadcast"
+                        << " | nodeId=" << uav2NodeId
+                        << " | fragmentId=" << fragmentId
+                        << " | cycle=" << (cycleNum + 1)
+                        << " | confidence=" << std::fixed << std::setprecision(3) << fragment.confidence
+                        << " | size=" << fragment.size
+                        << std::endl;
+                }
+                
+                // Broadcast fragment to ground nodes within radius
+                Ptr<Node> uavNode = NodeList::GetNode(uav2NodeId);
+                if (!uavNode) return;
+                
+                Ptr<MobilityModel> uavMobility = uavNode->GetObject<MobilityModel>();
+                if (!uavMobility) return;
+                
+                Vector uavPos = uavMobility->GetPosition();
+                const double broadcastRadius = ns3::wsn::scenario4::params::UAV_BROADCAST_RADIUS;
+                uint32_t nodesInRange = 0;
+                
+                // Find all ground nodes within broadcast radius
+                for (uint32_t i = 0; i < NodeList::GetNNodes(); ++i)
+                {
+                    Ptr<Node> groundNode = NodeList::GetNode(i);
+                    if (!groundNode) continue;
+                    
+                    // Skip UAV nodes (they have z > 1.0)
+                    Ptr<MobilityModel> groundMobility = groundNode->GetObject<MobilityModel>();
+                    if (!groundMobility) continue;
+                    
+                    Vector groundPos = groundMobility->GetPosition();
+                    if (groundPos.z > 1.0) continue; // Skip UAVs
+                    
+                    // Check if within broadcast radius
+                    double distance = std::sqrt(
+                        std::pow(uavPos.x - groundPos.x, 2.0) +
+                        std::pow(uavPos.y - groundPos.y, 2.0));
+                    
+                    if (distance <= broadcastRadius)
+                    {
+                        // Create packet with fragment
+                        Ptr<Packet> pkt = Create<Packet>(fragment.size);
+                        
+                        // Add fragment header
+                        FragmentPacket fragHeader;
+                        fragHeader.SetFragmentId(fragmentId);
+                        fragHeader.SetConfidence(fragment.confidence);
+                        fragHeader.SetSourceId(uav2NodeId);
+                        pkt->AddHeader(fragHeader);
+                        
+                        // Add packet type header
+                        PacketHeader typeHeader;
+                        typeHeader.SetType(PACKET_TYPE_FRAGMENT);
+                        pkt->AddHeader(typeHeader);
+                        
+                        // Calculate RSSI based on distance (simplified path loss model)
+                        // RSSI = TxPower - PathLoss
+                        // PathLoss = 40 + 20*log10(distance) for 2.4GHz
+                        double pathLoss = 40.0 + 20.0 * std::log10(std::max(1.0, distance));
+                        double txPower = 0.0; // 0 dBm
+                        double rssi = txPower - pathLoss;
+                        
+                        // Deliver packet to ground node
+                        OnGroundNodeReceivePacket(groundNode->GetId(), pkt, rssi);
+                        nodesInRange++;
+                    }
+                }
+                
+                NS_LOG_DEBUG("[UAV-BROADCAST] Fragment " << fragmentId 
+                            << " delivered to " << nodesInRange << " ground nodes"
+                            << " | radius=" << broadcastRadius << "m");
+            });
+            
+            currentTime += broadcastInterval;
+            totalBroadcasts++;
+        }
+        
+        if (currentTime > broadcastEndTime)
+        {
+            break;
+        }
+    }
+    
+    NS_LOG_INFO("[UAV-BROADCAST] Scheduled " << totalBroadcasts 
+                << " total fragment broadcasts in " << numBroadcastCycles << " cycles"
+                << " | actualEndTime=" << (currentTime - broadcastInterval) << "s");
 }
 
 } // namespace routing
