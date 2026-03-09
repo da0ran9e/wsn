@@ -50,7 +50,7 @@ InitializeGroundNodeRouting(NodeContainer nodes, uint32_t numFragments)
         // === Fragment Management ===
         state.fragments.fragments.clear();
         state.confidence = 0.0; // Tính toán sau khi nhận fragment
-        state.expectedFragmentCount = 0;
+        state.expectedFragmentCount = numFragments;
         state.fragmentCoverageRatio = 0.0;
         state.fragmentsReceivedFromUav = 0;
         state.fragmentsReceivedFromPeers = 0;
@@ -174,46 +174,64 @@ OnGroundNodeReceivePacket(uint32_t nodeId, Ptr<const Packet> packet, double rssi
         case PACKET_TYPE_FRAGMENT:
             NS_LOG_DEBUG("Node " << nodeId << " received FRAGMENT packet");
             state.fragmentPacketsReceived++;
-            // Format: [EVENT] time | event=ReceiveFragment | nodeId=... | rssi=... | confidence=...
-            if (ns3::wsn::scenario4::params::g_resultFileStream)
-            {
-                *ns3::wsn::scenario4::params::g_resultFileStream << "[EVENT] " << Simulator::Now().GetSeconds()
-                    << " | event=ReceiveFragment"
-                    << " | nodeId=" << nodeId
-                    << " | rssi=" << rssiDbm
-                    << " | confidence=" << state.confidence
-                    << "\n";
-            }
-            
+
             // Handle fragment reception
             {
                 FragmentPacket fragPkt;
-                copy->RemoveHeader(fragPkt);
+                if (copy->RemoveHeader(fragPkt) == 0)
+                {
+                    NS_LOG_WARN("Node " << nodeId << " received malformed FRAGMENT packet");
+                    break;
+                }
                 
                 uint32_t fragId = fragPkt.GetFragmentId();
-                double confidence = fragPkt.GetConfidence();
+                double confidence = std::clamp(fragPkt.GetConfidence(), 0.0, 1.0);
+                uint32_t srcNodeId = fragPkt.GetSourceId();
+                const double now = Simulator::Now().GetSeconds();
+
+                bool fromUav = false;
+                if (srcNodeId < NodeList::GetNNodes())
+                {
+                    Ptr<Node> srcNode = NodeList::GetNode(srcNodeId);
+                    if (srcNode)
+                    {
+                        Ptr<MobilityModel> srcMobility = srcNode->GetObject<MobilityModel>();
+                        if (srcMobility)
+                        {
+                            fromUav = srcMobility->GetPosition().z > 1.0;
+                        }
+                    }
+                }
                 
                 // Update fragment if new or higher confidence
+                bool updated = false;
                 if (!state.fragments.HasFragment(fragId) ||
                     state.fragments.GetFragment(fragId)->confidence < confidence) {
                     
                     Fragment frag;
                     frag.fragmentId = fragId;
                     frag.confidence = confidence;
-                    frag.size = 1024;
+                    frag.size = copy->GetSize();
                     
                     state.fragments.AddFragment(frag);
                     state.confidence = state.fragments.totalConfidence;
-                    state.fragmentLastUpdateTime[fragId] = Simulator::Now().GetSeconds();
+                    state.fragmentLastUpdateTime[fragId] = now;
                     state.fragmentCoverageRatio = (state.expectedFragmentCount > 0)
                                                   ? static_cast<double>(state.fragments.fragments.size()) /
                                                         state.expectedFragmentCount
                                                   : 0.0;
                     
-                    // Track fragment reception (source tracking requires header extension)
-                    state.fragmentsReceivedFromUav++; // Giả sử từ UAV, sẽ phân biệt chi tiết sau
-                    state.lastUavContactTime = Simulator::Now().GetSeconds();
-                    state.uavEncounters++;
+                    if (fromUav)
+                    {
+                        state.fragmentsReceivedFromUav++;
+                        state.lastUavContactTime = now;
+                        state.uavEncounters++;
+                    }
+                    else
+                    {
+                        state.fragmentsReceivedFromPeers++;
+                    }
+                    updated = true;
                     
                     NS_LOG_INFO("Node " << nodeId << " updated fragment " << fragId 
                                 << " with confidence " << confidence);
@@ -223,8 +241,26 @@ OnGroundNodeReceivePacket(uint32_t nodeId, Ptr<const Packet> packet, double rssi
                     state.duplicateFragmentsDiscarded++;
                 }
 
-                // Trigger in-cell cooperation when threshold condition is met
-                if (state.cooperationEnabled) {
+                // Format: [EVENT] time | event=ReceiveFragment | nodeId=... | rssi=... | confidence=...
+                if (ns3::wsn::scenario4::params::g_resultFileStream)
+                {
+                    *ns3::wsn::scenario4::params::g_resultFileStream << "[EVENT] " << now
+                        << " | event=ReceiveFragment"
+                        << " | nodeId=" << nodeId
+                        << " | srcNodeId=" << srcNodeId
+                        << " | fragmentId=" << fragId
+                        << " | rssi=" << rssiDbm
+                        << " | confidence=" << state.confidence
+                        << " | updated=" << (updated ? 1 : 0)
+                        << "\n";
+                }
+
+                // Trigger in-cell cooperation only when confidence reaches threshold
+                if (state.cooperationEnabled &&
+                    updated &&
+                    helper::IsCooperationTriggered(
+                        state.confidence,
+                        ns3::wsn::scenario4::params::COOPERATION_THRESHOLD)) {
                     RequestFragmentSharing(nodeId, state.cellId);
                 }
             }

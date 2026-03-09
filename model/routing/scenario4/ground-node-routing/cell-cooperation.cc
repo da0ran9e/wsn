@@ -2,6 +2,7 @@
 #include "ground-node-routing.h"
 #include "../helper/calc-utils.h"
 #include "ns3/simulator.h"
+#include "../../../../examples/scenarios/scenario4/scenario4-params.h"
 
 namespace ns3 {
 namespace wsn {
@@ -39,6 +40,16 @@ ShareFragments(uint32_t fromNode, uint32_t toNode)
                                           toState.expectedFragmentCount
                                     : 0.0;
     toState.lastCooperationTime = Simulator::Now().GetSeconds();
+    // Format: [EVENT] time | event=ShareFragments | fromNode=... | toNode=... | mergedCount=... | newConfidence=...
+    if (ns3::wsn::scenario4::params::g_resultFileStream)
+    {        *ns3::wsn::scenario4::params::g_resultFileStream << "[EVENT] " << Simulator::Now().GetSeconds()
+            << " | event=ShareFragments"
+            << " | fromNode=" << fromNode
+            << " | toNode=" << toNode
+            << " | mergedCount=" << mergedCount
+            << " | newConfidence=" << toState.confidence
+            << "\n";
+    }
 }
 
 void
