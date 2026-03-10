@@ -186,7 +186,7 @@ Scenario4Runner::Schedule()
 {
     NS_LOG_FUNCTION(this);
     NS_LOG_INFO("Scheduling simulation events...");
-    ScheduleScenario4Events(m_config);
+    ScheduleSingleScenario4Event(m_config);
     
     NS_LOG_INFO("Events scheduled for " << m_config.simTime << " seconds");
 }

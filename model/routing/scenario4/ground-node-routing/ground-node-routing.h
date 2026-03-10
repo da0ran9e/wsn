@@ -69,6 +69,8 @@ struct GroundNetworkState
     uint32_t cooperationRequestsReceived;     // Số lần nhận request từ peer
     bool cooperationEnabled;                  // Node có tham gia cooperation không
     double lastCooperationTime;              // Timestamp cooperation gần nhất
+    bool cooperationTimeoutScheduled;         // Đã schedule cooperation timeout chưa
+    double cooperationTimeoutTime;            // Thời điểm timeout sẽ trigger
     
     // === Communication Statistics ===
     uint32_t packetCount;                     // Tổng số packet nhận được

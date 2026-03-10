@@ -7,6 +7,7 @@
 #include "base-station-node/base-station-node.h"
 #include "base-station-node/fragment-generator.h"
 #include "ground-node-routing/ground-node-routing.h"
+#include "ground-node-routing/cell-cooperation.h"
 #include "packet-header.h"
 #include "ns3/log.h"
 #include "ns3/mobility-model.h"
@@ -121,7 +122,7 @@ void InitializeUavFlight()
                 if (ns3::wsn::scenario4::params::g_resultFileStream)
                 {
                     *ns3::wsn::scenario4::params::g_resultFileStream
-                        << "[EVENT] " << Simulator::Now().GetSeconds()
+                        << "\n[EVENT] " << Simulator::Now().GetSeconds()
                         << " | event=UAVWaypointArrival"
                         << " | nodeId=" << uavNodeId
                         << " | pos=(" << wp.position.x << "," << wp.position.y << "," << wp.position.z << ")"
@@ -214,7 +215,7 @@ void InitializeUavBroadcast()
                 if (ns3::wsn::scenario4::params::g_resultFileStream)
                 {
                     *ns3::wsn::scenario4::params::g_resultFileStream
-                        << "[EVENT] " << Simulator::Now().GetSeconds()
+                        << "\n[EVENT] " << Simulator::Now().GetSeconds()
                         << " | event=UAVFragmentBroadcast"
                         << " | nodeId=" << uav2NodeId
                         << " | fragmentId=" << fragmentId
@@ -301,6 +302,81 @@ void InitializeUavBroadcast()
     NS_LOG_INFO("[UAV-BROADCAST] Scheduled " << totalBroadcasts 
                 << " total fragment broadcasts in " << numBroadcastCycles << " cycles"
                 << " | actualEndTime=" << (currentTime - broadcastInterval) << "s");
+}
+
+void InitializeCellCooperationTimeout()
+{
+    NS_LOG_FUNCTION_NOARGS();
+    
+    // Force cooperation timeout: Triggered when UAV2 reaches its last waypoint.
+    // At this point, all fragments have been broadcast and nodes should share
+    // fragments regardless of whether they've reached the cooperation threshold.
+    
+    // Get UAV flight paths
+    const auto& uavPaths = GetUavFlightPaths();
+    
+    if (uavPaths.size() < 2)
+    {
+        NS_LOG_WARN("[CELL-COOPERATION-TIMEOUT] UAV2 not available (need at least 2 UAVs)");
+        return;
+    }
+    
+    // Get UAV2 (second UAV in the map)
+    auto it = uavPaths.begin();
+    ++it; // Move to second UAV
+    const UavFlightPath& uav2Path = it->second;
+    
+    if (uav2Path.waypoints.empty())
+    {
+        NS_LOG_WARN("[CELL-COOPERATION-TIMEOUT] UAV2 has no waypoints");
+        return;
+    }
+    
+    // Timeout = time when UAV2 reaches last waypoint
+    const double cooperationTimeoutSec = uav2Path.waypoints.back().arrivalTime;
+    
+    NS_LOG_INFO("[CELL-COOPERATION-TIMEOUT] Scheduling forced cooperation trigger"
+                << " | uav2LastWaypointTime=" << cooperationTimeoutSec << "s"
+                << " | numWaypoints=" << uav2Path.waypoints.size());
+    
+    Simulator::Schedule(Seconds(cooperationTimeoutSec), []() {
+        NS_LOG_INFO("[CELL-COOPERATION-TIMEOUT] Global timeout triggered for fallback cooperation"
+                    << " | t=" << Simulator::Now().GetSeconds() << "s");
+        
+        uint32_t triggeredCount = 0;
+        uint32_t skippedCount = 0;
+        
+        // Trigger cooperation only for nodes that haven't triggered per-node timeout
+        for (auto& [nodeId, state] : g_groundNetworkPerNode)
+        {
+            const bool hasAllFragments =
+                (state.expectedFragmentCount > 0) &&
+                (state.fragments.fragments.size() >= state.expectedFragmentCount);
+            if (state.cooperationEnabled && state.cellId >= 0 && !state.cooperationTimeoutScheduled && !hasAllFragments)
+            {
+                RequestFragmentSharing(nodeId, state.cellId);
+                triggeredCount++;
+            }
+            else if (state.cooperationEnabled && state.cellId >= 0 && state.cooperationTimeoutScheduled)
+            {
+                skippedCount++;
+            }
+        }
+        
+        NS_LOG_INFO("[CELL-COOPERATION-TIMEOUT] Global timeout completed"
+                    << " | triggered=" << triggeredCount 
+                    << " | skipped=" << skippedCount << " (already cooperated)");
+        
+        // Log to result file
+        if (ns3::wsn::scenario4::params::g_resultFileStream)
+        {
+            *ns3::wsn::scenario4::params::g_resultFileStream
+                << "[EVENT] " << Simulator::Now().GetSeconds()
+                << " | event=CellCooperationTimeout"
+                << " | triggeredNodes=" << triggeredCount
+                << std::endl;
+        }
+    });
 }
 
 } // namespace routing

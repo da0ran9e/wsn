@@ -47,7 +47,10 @@ ScheduleScenario4Events(const Scenario4RunConfig& config)
     // Step 4: Initialize UAV fragment broadcast
     Simulator::Schedule(Seconds(config.startupPhaseDuration + 0.2), &routing::InitializeUavBroadcast);
     
-    // Step 5: Periodic topology updates and BS control ticks
+    // Step 5: Initialize cell cooperation timeout (force cooperation after delay)
+    Simulator::Schedule(Seconds(config.startupPhaseDuration + 0.3), &routing::InitializeCellCooperationTimeout);
+    
+    // Step 6: Periodic topology updates and BS control ticks
     Simulator::Schedule(Seconds(config.startupPhaseDuration + 0.5),
                         &SchedulePeriodicTopologyTick,
                         1.0,
@@ -60,8 +63,9 @@ ScheduleScenario4Events(const Scenario4RunConfig& config)
 void
 ScheduleSingleScenario4Event(const Scenario4RunConfig& config)
 {
-    // Điều khiển UAV bay theo lịch trình đã lên kế hoạch
-    Simulator::Schedule(Seconds(config.startupPhaseDuration + 0.01), &routing::TickBaseStationControl);
+    Simulator::Schedule(Seconds(config.startupPhaseDuration + 0.1), &routing::InitializeUavFlight);
+    Simulator::Schedule(Seconds(config.startupPhaseDuration + 0.2), &routing::InitializeUavBroadcast);
+    Simulator::Schedule(Seconds(config.startupPhaseDuration + 0.3), &routing::InitializeCellCooperationTimeout);
     Simulator::Stop(Seconds(config.simTime));
     NS_LOG_INFO("Single Scenario4 event scheduled");
 }

@@ -1,43 +1,92 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="vi">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Scenario3 Network Visual Debug</title>
+  <title>Scenario 4 Visualizer</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header>
-    <h1>Scenario3 Visual Debug</h1>
-    <p>Simple HTML + JS debug viewer using TXT log format.</p>
-  </header>
+  <div class="app">
+    <main class="map-shell">
+      <div class="map-layout">
+        <div class="map-stage">
+          <div id="mapViewport" class="map-viewport" aria-label="Bản đồ mô phỏng">
+            <div id="mapContent" class="map-content">
+              <div id="gridLayer" class="layer layer-grid"></div>
+              <svg id="hexLayer" class="layer layer-hex" xmlns="http://www.w3.org/2000/svg"></svg>
+              <svg id="hexColorLayer" class="layer layer-hex-color" xmlns="http://www.w3.org/2000/svg"></svg>
+              <svg id="suspiciousCellLayer" class="layer layer-suspicious-cell" xmlns="http://www.w3.org/2000/svg"></svg>
+              <svg id="nodeLayer" class="layer layer-node" xmlns="http://www.w3.org/2000/svg"></svg>
+              <svg id="nodeColorLayer" class="layer layer-node-color" xmlns="http://www.w3.org/2000/svg"></svg>
+              <svg id="suspiciousNodeLayer" class="layer layer-suspicious-node" xmlns="http://www.w3.org/2000/svg"></svg>
+              <svg id="uavPathLayer" class="layer layer-uav-path" xmlns="http://www.w3.org/2000/svg"></svg>
+              <svg id="uavEventLayer" class="layer layer-uav-event" xmlns="http://www.w3.org/2000/svg"></svg>
+              <svg id="communicationLayer" class="layer layer-communication" xmlns="http://www.w3.org/2000/svg"></svg>
+              <div class="map-label">Layer 1: Hexagon • Layer 2: Cell Color • Layer 3: Suspicious Cells • Layer 4: Nodes • Layer 5: Node Color • Layer 6: Suspicious Nodes • Layer 7: UAV Paths • Layer 8: UAV Waypoint Events • Layer 9: Communications</div>
+            </div>
+          </div>
 
-  <section class="toolbar">
-    <label>
-      Log file:
-      <input id="logFile" value="sample_network_log.txt" />
-    </label>
-    <button id="loadBtn">Load</button>
-    <button id="prevBtn">Prev Step</button>
-    <button id="nextBtn">Next Step</button>
-    <span id="stepInfo">Step: -</span>
-  </section>
+          <div class="timeline-panel">
+            <div class="timeline-actions">
+              <button id="zoomInBtn" type="button">+</button>
+              <button id="zoomOutBtn" type="button">−</button>
+              <button id="resetViewBtn" type="button">Reset View</button>
+              <button id="prevFrameBtn" type="button">◀</button>
+              <button id="playPauseBtn" type="button">Play</button>
+              <button id="nextFrameBtn" type="button">▶</button>
+              <span id="eventFrameLabel" class="timeline-label">Frame: --/--</span>
+              <span id="eventTimeLabel" class="timeline-label">Time: --</span>
+            </div>
+            <input id="eventSlider" class="timeline-slider" type="range" min="0" max="0" value="0" step="1" />
+          </div>
+        </div>
 
-  <main>
-    <canvas id="canvas" width="1000" height="650"></canvas>
-    <aside>
-      <h3>Summary</h3>
-      <pre id="summary"></pre>
-      <h3>Expected TXT tags</h3>
-      <pre>
-META key=value
-NODE id=0 x=0 y=0 cell=0 leader=0
-LINK a=0 b=1 kind=logical
-STEP t=6.10 suspiciousCells=0,48 suspiciousNodes=0,1,2
-ENDSTEP
-      </pre>
-    </aside>
-  </main>
+        <aside class="layers-panel">
+          <h2>Layers</h2>
+          <label class="file-picker">
+            <span>Result file (.txt)</span>
+            <input id="resultFileInput" type="file" accept=".txt" />
+          </label>
+
+          <label class="layer-toggle">
+            <input id="toggleGrid" type="checkbox" checked />
+            <span>Grid Layer</span>
+          </label>
+          <label class="layer-toggle">
+            <input id="toggleHex" type="checkbox" checked />
+            <span>Hexagon Layer</span>
+          </label>
+          <label class="layer-toggle">
+            <input id="toggleHexColor" type="checkbox" />
+            <span>Cell Color Layer</span>
+          </label>
+          <label class="layer-toggle">
+            <input id="toggleNode" type="checkbox" checked />
+            <span>Node Layer</span>
+          </label>
+          <label class="layer-toggle">
+            <input id="toggleNodeColor" type="checkbox" checked />
+            <span>Node Color Layer</span>
+          </label>
+          <label class="layer-toggle">
+            <input id="toggleSuspiciousNode" type="checkbox" />
+            <span>Suspicious Node Layer</span>
+          </label>
+          <label class="layer-toggle">
+            <input id="toggleUavPath" type="checkbox" checked />
+            <span>UAV Flight Paths</span>
+          </label>
+          <label class="layer-toggle">
+            <input id="toggleCommunication" type="checkbox" checked />
+            <span>Communication Links (R/S)</span>
+          </label>
+
+          <div id="nodeStats" class="node-stats">Nodes: --</div>
+        </aside>
+      </div>
+    </main>
+  </div>
 
   <script src="app.js"></script>
 </body>

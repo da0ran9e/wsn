@@ -44,6 +44,16 @@ AssignCellIdAndColorForGroundNodes(double cellRadius)
     const uint32_t nodeCount = static_cast<uint32_t>(g_groundNetworkPerNode.size());
     const int32_t gridOffset = ::ns3::wsn::scenario4::params::ComputeDefaultHexGridOffset(nodeCount);
 
+    if (ns3::wsn::scenario4::params::g_resultFileStream)
+        {
+            *ns3::wsn::scenario4::params::g_resultFileStream
+                << "[NODE-INFO] " << "nodeId" << " "
+                << "cellId" << " "
+                << "cellColor" << " "
+                << "posX" << " "
+                << "posY" << std::endl;
+        }
+        
     for (auto& [nodeId, state] : g_groundNetworkPerNode)
     {
         Ptr<Node> node = NodeList::GetNode(nodeId);
@@ -194,6 +204,12 @@ SelectCellLeadersByNearestCellCenter(double cellRadius)
     }
 
     uint32_t selectedLeaderCount = 0;
+
+    if (ns3::wsn::scenario4::params::g_resultFileStream)
+    {
+        *ns3::wsn::scenario4::params::g_resultFileStream
+            << "[CELL-LEADER] " << "cellId" << " leaderNodeId" << " distanceToCenter" << std::endl;
+    }
 
     for (const auto& [cellId, members] : membersByCell)
     {
@@ -569,6 +585,9 @@ BuildIntraCellRoutingTrees()
     // Format: [INTRA-CELL-TREE] nodeId [cellId] parentId1 (parentCellId1) parentId2 (parentCellId2) ...
     if (ns3::wsn::scenario4::params::g_resultFileStream)
     {
+        *ns3::wsn::scenario4::params::g_resultFileStream
+            << "[INTRA-CELL-TREE] " << "nodeId" << " [cellId]" << " parentId1 (destCellId1)" 
+            << " parentId2 (destCellId2) ..." << std::endl;
         for (const auto& [nodeId, cellRoutes] : ::ns3::wsn::scenario4::params::g_intraCellRoutingTree)
         {            *ns3::wsn::scenario4::params::g_resultFileStream
                 << "[INTRA-CELL-TREE] [" << nodeId << "]";
@@ -904,8 +923,10 @@ SelectSuspiciousRegionForBsInit()
     {
         const auto& seedPos = seedNode.position;
         *ns3::wsn::scenario4::params::g_resultFileStream
+            << "[SUSPICIOUS-POINT] " << "seedPos.x" << " " << "seedPos.y" << std::endl
             << "[SUSPICIOUS-POINT] " << seedPos.x << " " << seedPos.y << std::endl;
         *ns3::wsn::scenario4::params::g_resultFileStream
+            << "[SUSPICIOUS-REGION] " << "nodeId1 nodeId2 ..." << " (Cell: cell1 cell2 ...)" << std::endl
             << "[SUSPICIOUS-REGION] ";
         for (uint32_t nodeId : suspiciousNodes)
         {            *ns3::wsn::scenario4::params::g_resultFileStream << " " << nodeId;
@@ -1218,6 +1239,7 @@ PlanUavFlightPathsForBsInit()
         if (ns3::wsn::scenario4::params::g_resultFileStream)
         {
             *ns3::wsn::scenario4::params::g_resultFileStream
+                << "[UAV-PATH] uav2NodeId strategy totalDistance totalTime flightSpeed hoverTime avgSpeed broadcastRadius coverage waypoints: (x1, y1) (x2, y2) ..." << std::endl
                 << "[UAV-PATH] " << uav2NodeId
                 << " strategy=GreedySetCover"
                 << " totalDistance=" << std::fixed << std::setprecision(1) << totalDistance2 << "m"

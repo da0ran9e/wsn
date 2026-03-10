@@ -32,7 +32,7 @@ extern std::map<int32_t, std::map<int32_t, std::vector<uint32_t>>> g_cellGateway
 // ===== SCENARIO PARAMETERS =====
 
 // Grid parameters
-constexpr uint32_t DEFAULT_GRID_SIZE = 10;
+constexpr uint32_t DEFAULT_GRID_SIZE = 20;
 constexpr double DEFAULT_SPACING = 20.0;
 
 // Base station location (far from network to avoid interference)
@@ -90,7 +90,7 @@ constexpr double UAV1_SPEED = 25.0;  // m/s - faster flight speed
 constexpr double UAV1_HOVER_TIME = 2.0;  // seconds - hover to broadcast fragments
 
 // UAV2 (Greedy Set Cover): Slower speed + no hover time
-constexpr double UAV2_SPEED = 15.0;  // m/s - slower flight speed
+constexpr double UAV2_SPEED = 80.0;  // m/s - slower flight speed
 constexpr double UAV2_HOVER_TIME = 0.0;  // seconds - no hovering
 
 inline int32_t

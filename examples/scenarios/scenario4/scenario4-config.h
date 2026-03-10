@@ -24,7 +24,7 @@ struct Scenario4RunConfig
     double gridSpacing = params::DEFAULT_SPACING;
     
     // Simulation timing
-    double simTime = 60.0;
+    double simTime = 160.0;
     double startupPhaseDuration = params::STARTUP_PHASE_DURATION;
     double uavPlanningDelay = params::UAV_PLANNING_DELAY;
     double fragmentBroadcastInterval = params::FRAGMENT_BROADCAST_INTERVAL;
@@ -36,7 +36,7 @@ struct Scenario4RunConfig
     uint32_t numUavs = params::DEFAULT_NUM_UAVS;
     
     // Reproducibility
-    uint32_t seed = 42;
+    uint32_t seed = 34;
     uint32_t runId = 1;
 
     // Base station position

@@ -33,6 +33,9 @@ void InitializeUavFlight();
  */
 void InitializeUavBroadcast();
 
+void InitializeCellCooperationTimeout();
+
+
 } // namespace routing
 } // namespace scenario4
 } // namespace wsn

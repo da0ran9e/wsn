@@ -16,6 +16,11 @@
 
 #include "scenarios/scenario4/scenario4-api.h"
 #include "scenarios/scenario4/scenario4-config.h"
+#include "../model/routing/scenario4/ground-node-routing/ground-node-routing.h"
+#include "../model/routing/scenario4/base-station-node/fragment-generator.h"
+
+#include <algorithm>
+#include <iomanip>
 
 using namespace ns3;
 using namespace ns3::wsn::scenario4;
@@ -85,6 +90,7 @@ int main(int argc, char* argv[])
             << "Configuration:" << std::endl
             << "  Grid: " << config.gridSize << "x" << config.gridSize << std::endl
             << "  Spacing: " << config.gridSpacing << "m" << std::endl
+            << "  Cell Radius: " << ns3::wsn::scenario4::params::HEX_CELL_RADIUS << "m" << std::endl
             << "  Simulation Time: " << config.simTime << "s" << std::endl
             << "  Fragments: " << config.numFragments << std::endl
             << "  UAVs: " << config.numUavs << std::endl
@@ -116,6 +122,101 @@ int main(int argc, char* argv[])
     {
         if (ns3::wsn::scenario4::params::g_resultFileStream->is_open())
         {
+            // ===== Final Summary Tables =====
+            auto& states = ns3::wsn::scenario4::routing::g_groundNetworkPerNode;
+            auto& out = *ns3::wsn::scenario4::params::g_resultFileStream;
+
+            const auto& suspiciousNodes = ns3::wsn::scenario4::routing::GetSuspiciousNodes();
+
+            out << "\n=== Final Ground Node Summary (Suspicious Nodes Only) ===\n";
+            out << "[NodeID] | [Conf] | [UAVFrags] | [UAVConf] | [CoopFrags] | [CoopConf] | [CoopCount] | [Alert]\n";
+            for (const auto& [nodeId, st] : states)
+            {
+                if (!suspiciousNodes.empty() && suspiciousNodes.find(nodeId) == suspiciousNodes.end())
+                {
+                    continue;
+                }
+
+                const uint32_t uniqueFragments = static_cast<uint32_t>(st.fragments.fragments.size());
+                const double uavFraction = (uniqueFragments > 0)
+                                               ? std::min(1.0,
+                                                          static_cast<double>(st.fragmentsReceivedFromUav) /
+                                                              static_cast<double>(uniqueFragments))
+                                               : 0.0;
+                const double uavConf = st.confidence * uavFraction;
+                const double coopConf = std::max(0.0, st.confidence - uavConf);
+                const uint32_t alert = (st.confidence >= config.alertThreshold) ? 1u : 0u;
+
+                out << std::fixed << std::setprecision(3)
+                    << nodeId << " \t| "
+                    << st.confidence << " \t| "
+                    << st.fragmentsReceivedFromUav << " \t| "
+                    << uavConf << " \t| "
+                    << st.fragmentsReceivedFromPeers << " \t| "
+                    << coopConf << " \t| "
+                    << st.cooperationRequestsSent << " \t| "
+                    << alert << "\n";
+            }
+
+            out << "\n=== Final UAV Summary ===\n";
+            out << "[UAVID] \t| [FragsBroadcast] \t| [Coverage] \t| [AvgRSSI] \t| [TimeToComplete]\n";
+
+            const auto& uavPaths = ns3::wsn::scenario4::routing::GetUavFlightPaths();
+            const auto& fragments = ns3::wsn::scenario4::routing::GetBsGeneratedFragments();
+
+            // Derive coarse network-wide receive coverage/RSSI from ground node stats.
+            uint32_t coveredNodes = 0;
+            double rssiSum = 0.0;
+            uint32_t rssiSamples = 0;
+            for (const auto& [nodeId, st] : states)
+            {
+                (void)nodeId;
+                if (st.fragmentsReceivedFromUav > 0)
+                {
+                    coveredNodes++;
+                }
+                if (st.rssiSampleCount > 0)
+                {
+                    rssiSum += st.avgPacketRssiDbm;
+                    rssiSamples++;
+                }
+            }
+            const double coveragePct = states.empty()
+                                           ? 0.0
+                                           : (100.0 * static_cast<double>(coveredNodes) /
+                                              static_cast<double>(states.size()));
+            const double avgRssi = (rssiSamples > 0) ? (rssiSum / rssiSamples) : 0.0;
+
+            uint32_t uavIndex = 0;
+            for (const auto& [uavId, path] : uavPaths)
+            {
+                uint32_t fragsBroadcast = 0;
+
+                // UAV2 is used for fragment broadcasting in current design.
+                if (uavIndex == 1 && !path.waypoints.empty() && !fragments.fragments.empty())
+                {
+                    const double broadcastStartTime = path.waypoints.front().arrivalTime;
+                    const double broadcastEndTime = path.waypoints.back().arrivalTime;
+                    const double interval = config.fragmentBroadcastInterval;
+                    const double cycleDuration = static_cast<double>(fragments.fragments.size()) * interval;
+                    if (cycleDuration > 0.0)
+                    {
+                        const uint32_t numCycles = static_cast<uint32_t>(
+                            std::ceil((broadcastEndTime - broadcastStartTime) / cycleDuration));
+                        fragsBroadcast = numCycles * static_cast<uint32_t>(fragments.fragments.size());
+                    }
+                }
+
+                out << std::fixed << std::setprecision(3)
+                    << uavId << " \t| "
+                    << fragsBroadcast << " \t| "
+                    << coveragePct << "% \t| "
+                    << avgRssi << " \t| "
+                    << path.totalTime << "\n";
+
+                uavIndex++;
+            }
+
             *ns3::wsn::scenario4::params::g_resultFileStream
                 << std::endl
                 << "======================================" << std::endl
@@ -125,6 +226,7 @@ int main(int argc, char* argv[])
         }
         delete ns3::wsn::scenario4::params::g_resultFileStream;
         ns3::wsn::scenario4::params::g_resultFileStream = nullptr;
+
         NS_LOG_INFO("Results saved to: " << resultFilename.str());
     }
     
