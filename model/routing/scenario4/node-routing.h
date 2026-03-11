@@ -35,6 +35,16 @@ void InitializeUavBroadcast();
 
 void InitializeCellCooperationTimeout();
 
+/**
+ * Mark UAV2 mission as completed early.
+ */
+void MarkUav2MissionCompleted(uint32_t triggerNodeId, double triggerConfidence);
+
+/**
+ * Check if UAV2 mission already completed.
+ */
+bool IsUav2MissionCompleted();
+
 
 } // namespace routing
 } // namespace scenario4

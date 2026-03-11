@@ -12,6 +12,7 @@
 #include "ns3/log.h"
 #include "ns3/mobility-model.h"
 #include "ns3/node-list.h"
+#include "ns3/random-variable-stream.h"
 #include "ns3/simulator.h"
 #include <cmath>
 #include <fstream>
@@ -34,6 +35,7 @@ namespace routing {
 
 // Global storage for suspicious nodes detected by base station
 std::set<uint32_t> g_suspiciousNodes;
+uint32_t g_suspiciousSeedNodeId = std::numeric_limits<uint32_t>::max();
 
 namespace {
 
@@ -767,6 +769,7 @@ void
 SelectSuspiciousRegionForBsInit()
 {
     const double nowSec = Simulator::Now().GetSeconds();
+    Ptr<UniformRandomVariable> uv = CreateObject<UniformRandomVariable>();
     
     if (g_groundNetworkPerNode.empty())
     {
@@ -782,7 +785,7 @@ SelectSuspiciousRegionForBsInit()
         allNodeIds.push_back(nodeId);
     }
     
-    uint32_t randomIndex = rand() % allNodeIds.size();
+    uint32_t randomIndex = uv->GetInteger(0, allNodeIds.size() - 1);
     uint32_t seedNodeId = allNodeIds[randomIndex];
     const auto& seedNode = g_groundNetworkPerNode.at(seedNodeId);
     int32_t seedCellId = seedNode.cellId;
@@ -868,7 +871,7 @@ SelectSuspiciousRegionForBsInit()
         }
         
         // Randomly select one neighbor cell and add to suspicious region
-        uint32_t randomCellIndex = rand() % candidateNeighborCells.size();
+        uint32_t randomCellIndex = uv->GetInteger(0, candidateNeighborCells.size() - 1);
         int32_t selectedCellId = candidateNeighborCells[randomCellIndex];
         suspiciousCells.insert(selectedCellId);
         
@@ -915,6 +918,7 @@ SelectSuspiciousRegionForBsInit()
     }
     
     // Store suspicious nodes globally for UAV flight planning
+    g_suspiciousSeedNodeId = seedNodeId;
     g_suspiciousNodes = suspiciousNodes;
     // TODO: in log vào `g_resultFileStream` tại đây
     // Format: [SUSPICIOUS-POINT] pointX pointY 
@@ -950,7 +954,7 @@ GenerateFragmentsForBsInit()
 
     NS_LOG_INFO("[BS-FRAGMENT] Generated " << generated.fragments.size()
                 << " fragments at BS init"
-                << " | avgConfidence=" << std::fixed << std::setprecision(3)
+                << " | totalConfidence=" << std::fixed << std::setprecision(3)
                 << generated.totalConfidence);
 
     // TODO: in log vào `g_resultFileStream` tại đây
@@ -1575,7 +1579,7 @@ routing::BaseStationNode::Initialize()
         *::ns3::wsn::scenario4::params::g_resultFileStream
             << "Step 10: Generate Fragments" << std::endl
             << "  Total fragments: " << fragments.fragments.size() << std::endl
-            << "  Average confidence: " << std::fixed << std::setprecision(3) 
+            << "  Total confidence: " << std::fixed << std::setprecision(3) 
             << fragments.totalConfidence << std::endl
             << std::endl;
         ::ns3::wsn::scenario4::params::g_resultFileStream->flush();
@@ -1727,6 +1731,12 @@ const std::set<uint32_t>&
 GetSuspiciousNodes()
 {
     return g_suspiciousNodes;
+}
+
+uint32_t
+GetSuspiciousSeedNodeId()
+{
+    return g_suspiciousSeedNodeId;
 }
 
 } // namespace routing

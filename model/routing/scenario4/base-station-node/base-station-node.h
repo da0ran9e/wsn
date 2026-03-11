@@ -138,6 +138,7 @@ private:
 
 // Global storage for suspicious nodes (used by FinalizeGroundNodeStateFields)
 extern std::set<uint32_t> g_suspiciousNodes;
+extern uint32_t g_suspiciousSeedNodeId;
 
 /**
  * Get the set of suspicious nodes detected by base station.
@@ -145,6 +146,13 @@ extern std::set<uint32_t> g_suspiciousNodes;
  * \return Set of suspicious node IDs
  */
 const std::set<uint32_t>& GetSuspiciousNodes();
+
+/**
+ * Get suspicious seed node ID (suspicious point node).
+ *
+ * \return Node ID, or UINT32_MAX if not set yet
+ */
+uint32_t GetSuspiciousSeedNodeId();
 
 } // namespace routing
 } // namespace scenario4

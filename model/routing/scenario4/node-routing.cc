@@ -16,6 +16,8 @@
 #include "ns3/packet.h"
 #include "../../../examples/scenarios/scenario4/scenario4-params.h"
 #include <cmath>
+#include <iomanip>
+#include <limits>
 
 namespace ns3 {
 
@@ -28,6 +30,10 @@ namespace routing {
 // Global BS instance
 static BaseStationNode* g_baseStation = nullptr;
 static double g_lastProcessedTopologyTs = -1.0;
+static bool g_uav1MissionCompleted = false;
+static double g_uav1MissionCompletedTime = -1.0;
+static bool g_uav2MissionCompleted = false;
+static double g_uav2MissionCompletedTime = -1.0;
 
 void InitializeBaseStation(uint32_t nodeId)
 {
@@ -35,6 +41,39 @@ void InitializeBaseStation(uint32_t nodeId)
         g_baseStation = new BaseStationNode(nodeId);
         g_baseStation->Initialize();
     }
+}
+
+void
+MarkUav2MissionCompleted(uint32_t triggerNodeId, double triggerConfidence)
+{
+    if (g_uav2MissionCompleted)
+    {
+        return;
+    }
+
+    g_uav2MissionCompleted = true;
+    g_uav2MissionCompletedTime = Simulator::Now().GetSeconds();
+
+    NS_LOG_WARN("[UAV2-MISSION] Early completion triggered"
+                << " | triggerNodeId=" << triggerNodeId
+                << " | confidence=" << std::fixed << std::setprecision(3) << triggerConfidence
+                << " | t=" << g_uav2MissionCompletedTime << "s");
+
+    if (ns3::wsn::scenario4::params::g_resultFileStream)
+    {
+        *ns3::wsn::scenario4::params::g_resultFileStream
+            << "\n[EVENT] " << g_uav2MissionCompletedTime
+            << " | event=UAV2MissionComplete"
+            << " | triggerNodeId=" << triggerNodeId
+            << " | confidence=" << std::fixed << std::setprecision(3) << triggerConfidence
+            << std::endl;
+    }
+}
+
+bool
+IsUav2MissionCompleted()
+{
+    return g_uav2MissionCompleted;
 }
 
 void TickBaseStationControl()
@@ -72,6 +111,23 @@ void InitializeUavFlight()
         NS_LOG_WARN("[UAV-FLIGHT] No UAV flight paths available");
         return;
     }
+
+    // UAV1 is defined as the first UAV in the planned path map.
+    const uint32_t uav1NodeId = uavPaths.begin()->first;
+
+    // Suspicious point node position (seed node selected by BS).
+    Vector suspiciousPointPos{0.0, 0.0, 0.0};
+    bool hasSuspiciousPointPos = false;
+    const uint32_t suspiciousSeedNodeId = GetSuspiciousSeedNodeId();
+    if (suspiciousSeedNodeId != std::numeric_limits<uint32_t>::max())
+    {
+        auto itState = g_groundNetworkPerNode.find(suspiciousSeedNodeId);
+        if (itState != g_groundNetworkPerNode.end())
+        {
+            suspiciousPointPos = itState->second.position;
+            hasSuspiciousPointPos = true;
+        }
+    }
     
     NS_LOG_INFO("[UAV-FLIGHT] Initializing flight for " << uavPaths.size() << " UAVs");
     
@@ -100,9 +156,20 @@ void InitializeUavFlight()
         for (size_t i = 0; i < path.waypoints.size(); ++i)
         {
             const Waypoint& wp = path.waypoints[i];
+            const bool isUav1 = (uavNodeId == uav1NodeId);
+            const bool hasPreviousWaypoint = (i > 0);
+            const Waypoint prevWp = hasPreviousWaypoint ? path.waypoints[i - 1] : wp;
             
             // Schedule position update at waypoint arrival time
-            Simulator::Schedule(Seconds(wp.arrivalTime), [uavNodeId, wp, i]() {
+            Simulator::Schedule(Seconds(wp.arrivalTime),
+                                [uavNodeId,
+                                 wp,
+                                 i,
+                                 isUav1,
+                                 hasPreviousWaypoint,
+                                 prevWp,
+                                 hasSuspiciousPointPos,
+                                 suspiciousPointPos]() {
                 Ptr<Node> node = NodeList::GetNode(uavNodeId);
                 if (!node) return;
                 
@@ -127,6 +194,35 @@ void InitializeUavFlight()
                         << " | nodeId=" << uavNodeId
                         << " | pos=(" << wp.position.x << "," << wp.position.y << "," << wp.position.z << ")"
                         << std::endl;
+                }
+
+                // UAV1 mission completion: considered done right after leaving suspicious point.
+                // In discrete waypoint events, we detect this at arrival of the waypoint
+                // immediately after the suspicious-point waypoint.
+                if (!g_uav1MissionCompleted && isUav1 && hasPreviousWaypoint && hasSuspiciousPointPos)
+                {
+                    constexpr double kPosEps = 1.0;
+                    const bool prevIsSuspiciousPoint =
+                        (std::abs(prevWp.position.x - suspiciousPointPos.x) <= kPosEps) &&
+                        (std::abs(prevWp.position.y - suspiciousPointPos.y) <= kPosEps);
+
+                    if (prevIsSuspiciousPoint)
+                    {
+                        g_uav1MissionCompleted = true;
+                        g_uav1MissionCompletedTime = Simulator::Now().GetSeconds();
+
+                        NS_LOG_WARN("[UAV1-MISSION] Completed after leaving suspicious point"
+                                    << " | t=" << g_uav1MissionCompletedTime << "s");
+
+                        if (ns3::wsn::scenario4::params::g_resultFileStream)
+                        {
+                            *ns3::wsn::scenario4::params::g_resultFileStream
+                                << "\n[EVENT] " << g_uav1MissionCompletedTime
+                                << " | event=UAV1MissionComplete"
+                                << " | reason=LeftSuspiciousPoint"
+                                << std::endl;
+                        }
+                    }
                 }
             });
         }
@@ -204,6 +300,11 @@ void InitializeUavBroadcast()
             
             const uint32_t cycleNum = cycle; // Capture for lambda
             Simulator::Schedule(Seconds(currentTime), [uav2NodeId, fragmentId, fragment, cycleNum]() {
+                if (g_uav2MissionCompleted)
+                {
+                    return;
+                }
+
                 NS_LOG_INFO("[UAV-BROADCAST] UAV " << uav2NodeId 
                             << " broadcasting fragment " << fragmentId
                             << " (cycle " << (cycleNum + 1) << ")"

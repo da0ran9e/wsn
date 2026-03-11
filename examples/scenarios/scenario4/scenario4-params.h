@@ -86,7 +86,7 @@ constexpr double BS_INIT_UAV_STARTING_ALTITUDE = DEFAULT_UAV_ALTITUDE;
 constexpr double BS_INIT_UAV_PATROL_ALTITUDE = DEFAULT_UAV_ALTITUDE;
 
 // UAV1 (Greedy Nearest Neighbor): Fast speed + hover time at each node
-constexpr double UAV1_SPEED = 25.0;  // m/s - faster flight speed
+constexpr double UAV1_SPEED = 80.0;  // m/s - faster flight speed
 constexpr double UAV1_HOVER_TIME = 2.0;  // seconds - hover to broadcast fragments
 
 // UAV2 (Greedy Set Cover): Slower speed + no hover time

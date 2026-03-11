@@ -31,7 +31,7 @@ struct Fragment
 struct FragmentCollection
 {
     std::map<uint32_t, Fragment> fragments;
-    double totalConfidence;
+    double totalConfidence; ///< Cumulative confidence over unique fragments currently held
     
     /**
      * Add or update fragment.

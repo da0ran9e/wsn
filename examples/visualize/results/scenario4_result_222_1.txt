@@ -5,10 +5,10 @@ Configuration:
   Grid: 20x20
   Spacing: 20m
   Cell Radius: 80m
-  Simulation Time: 160s
+  Simulation Time: 10s
   Fragments: 10
   UAVs: 2
-  Seed: 42
+  Seed: 222
   Run ID: 1
 ======================================
 
@@ -1279,1276 +1279,257 @@ Step 8: Finalize Ground Node States
   All node states finalized
 
 [SUSPICIOUS-POINT] seedPos.x seedPos.y
-[SUSPICIOUS-POINT] 220 160
+[SUSPICIOUS-POINT] 300 260
 [SUSPICIOUS-REGION] nodeId1 nodeId2 ... (Cell: cell1 cell2 ...)
-[SUSPICIOUS-REGION]  62 63 64 65 69 70 71 72 81 82 83 84 85 86 87 88 89 90 91 92 93 100 101 102 103 104 105 106 107 108 109 110 111 112 113 121 122 123 124 125 126 127 128 129 130 131 132 133 141 142 143 144 145 146 147 148 149 150 151 152 153 161 162 163 164 165 166 167 168 169 170 171 172 173 182 183 184 185 186 187 188 189 190 191 192 204 205 206 207 208 209 210 224 225 226 227 228 229 230 244 245 246 247 248 249 250 264 265 266 267 268 269 270 284 285 286 287 288 289 290 306 307 308 (Cells:  10000 10001 20000)
+[SUSPICIOUS-REGION]  4 5 6 7 8 9 10 24 25 26 27 28 29 30 44 45 46 47 48 49 50 62 63 64 65 66 67 68 69 70 71 72 81 82 83 84 85 86 87 88 89 90 91 92 93 100 101 102 103 104 105 106 107 108 109 110 111 112 113 121 122 123 124 125 126 127 128 129 130 131 132 133 141 142 143 144 145 146 147 148 149 150 151 152 153 161 162 163 164 165 166 167 168 169 170 171 172 173 182 183 184 185 189 190 191 192 193 194 195 211 212 213 214 215 216 217 231 232 233 234 235 236 237 251 252 253 254 255 256 257 271 272 273 274 275 276 277 291 292 293 294 295 296 297 313 314 315 (Cells:  1 10000 10001 20001)
 Step 9: Select Suspicious Region
-  Suspicious nodes: 123
-  Coverage: 30.8%
-  Node IDs: 62 63 64 65 69 70 71 72 81 82 83 84 85 86 87 88 89 90 91 92 93 100 101 102 103 104 105 106 107 108 109 110 111 112 113 121 122 123 124 125 126 127 128 129 130 131 132 133 141 142 143 144 145 146 147 148 149 150 151 152 153 161 162 163 164 165 166 167 168 169 170 171 172 173 182 183 184 185 186 187 188 189 190 191 192 204 205 206 207 208 209 210 224 225 226 227 228 229 230 244 245 246 247 248 249 250 264 265 266 267 268 269 270 284 285 286 287 288 289 290 306 307 308 
+  Suspicious nodes: 147
+  Coverage: 36.8%
+  Node IDs: 4 5 6 7 8 9 10 24 25 26 27 28 29 30 44 45 46 47 48 49 50 62 63 64 65 66 67 68 69 70 71 72 81 82 83 84 85 86 87 88 89 90 91 92 93 100 101 102 103 104 105 106 107 108 109 110 111 112 113 121 122 123 124 125 126 127 128 129 130 131 132 133 141 142 143 144 145 146 147 148 149 150 151 152 153 161 162 163 164 165 166 167 168 169 170 171 172 173 182 183 184 185 189 190 191 192 193 194 195 211 212 213 214 215 216 217 231 232 233 234 235 236 237 251 252 253 254 255 256 257 271 272 273 274 275 276 277 291 292 293 294 295 296 297 313 314 315 
 
-[FRAGMENTS] 364204(0.165) 174697(0.079) 211121(0.096) 109664(0.050) 140805(0.064) 201712(0.091) 326164(0.148) 156539(0.071) 255508(0.116) 156738(0.071)
+[FRAGMENTS] 173792(0.079) 259262(0.117) 115444(0.052) 122181(0.055) 119697(0.054) 319473(0.145) 224082(0.102) 119333(0.054) 353790(0.160) 290098(0.131)
 Step 10: Generate Fragments
   Total fragments: 10
   Total confidence: 0.950
 
 [UAV-PATH] uav2NodeId strategy totalDistance totalTime flightSpeed hoverTime avgSpeed broadcastRadius coverage waypoints: (x1, y1) (x2, y2) ...
-[UAV-PATH] 402 strategy=GreedySetCover totalDistance=1447.3m totalTime=18.1s flightSpeed=80.0m/s hoverTime=0.0s avgSpeed=80.0m/s broadcastRadius=50.0m coverage=123/123 waypoints: (60.0,100.0) (140.0,160.0) (220.0,100.0) (140.0,260.0) (80.0,200.0) (200.0,200.0) (140.0,80.0) (40.0,120.0) (220.0,140.0) (200.0,240.0) (120.0,260.0)
-[UAV-PATH] 401 strategy=GreedyNearestNeighbor totalDistance=2775.2m totalTime=280.7s flightSpeed=80.0m/s hoverTime=2.0s avgSpeed=80.0m/s waypoints: (40.0,60.0) (60.0,60.0) (80.0,60.0) (100.0,60.0) (100.0,80.0) (80.0,80.0) (60.0,80.0) (40.0,80.0) (20.0,80.0) (20.0,100.0) (0.0,100.0) (20.0,120.0) (40.0,120.0) (40.0,100.0) (60.0,100.0) (80.0,100.0) (100.0,100.0) (120.0,100.0) (120.0,80.0) (140.0,80.0) (160.0,80.0) (180.0,80.0) (180.0,60.0) (200.0,60.0) (220.0,60.0) (240.0,60.0) (240.0,80.0) (220.0,80.0) (200.0,80.0) (200.0,100.0) (180.0,100.0) (160.0,100.0) (140.0,100.0) (140.0,120.0) (120.0,120.0) (100.0,120.0) (80.0,120.0) (60.0,120.0) (60.0,140.0) (40.0,140.0) (20.0,140.0) (20.0,160.0) (40.0,160.0) (60.0,160.0) (80.0,160.0) (80.0,140.0) (100.0,140.0) (120.0,140.0) (140.0,140.0) (160.0,140.0) (160.0,120.0) (180.0,120.0) (200.0,120.0) (220.0,120.0) (220.0,100.0) (240.0,100.0) (260.0,100.0) (260.0,80.0) (260.0,120.0) (240.0,120.0) (240.0,140.0) (220.0,140.0) (200.0,140.0) (180.0,140.0) (180.0,160.0) (160.0,160.0) (140.0,160.0) (120.0,160.0) (100.0,160.0) (100.0,180.0) (80.0,180.0) (60.0,180.0) (40.0,180.0) (80.0,200.0) (100.0,200.0) (120.0,200.0) (120.0,180.0) (140.0,180.0) (160.0,180.0) (180.0,180.0) (200.0,180.0) (200.0,160.0) (220.0,160.0) (240.0,160.0) (260.0,160.0) (260.0,140.0) (240.0,180.0) (220.0,180.0) (200.0,200.0) (180.0,200.0) (160.0,200.0) (140.0,200.0) (140.0,220.0) (120.0,220.0) (100.0,220.0) (80.0,220.0) (80.0,240.0) (100.0,240.0) (120.0,240.0) (140.0,240.0) (160.0,240.0) (160.0,220.0) (180.0,220.0) (200.0,220.0) (200.0,240.0) (180.0,240.0) (180.0,260.0) (160.0,260.0) (140.0,260.0) (120.0,260.0) (100.0,260.0) (80.0,260.0) (80.0,280.0) (100.0,280.0) (120.0,280.0) (140.0,280.0) (160.0,280.0) (180.0,280.0) (200.0,280.0) (200.0,260.0) (160.0,300.0) (140.0,300.0) (120.0,300.0)
+[UAV-PATH] 402 strategy=GreedySetCover totalDistance=1918.9m totalTime=24.0s flightSpeed=80.0m/s hoverTime=0.0s avgSpeed=80.0m/s broadcastRadius=50.0m coverage=147/147 waypoints: (60.0,100.0) (140.0,40.0) (220.0,100.0) (260.0,220.0) (140.0,140.0) (300.0,260.0) (60.0,160.0) (220.0,160.0) (300.0,200.0) (260.0,260.0) (200.0,40.0) (120.0,20.0) (40.0,80.0)
+[UAV-PATH] 401 strategy=GreedyNearestNeighbor totalDistance=3265.6m totalTime=334.8s flightSpeed=80.0m/s hoverTime=2.0s avgSpeed=80.0m/s waypoints: (80.0,0.0) (100.0,0.0) (120.0,0.0) (140.0,0.0) (160.0,0.0) (180.0,0.0) (200.0,0.0) (200.0,20.0) (180.0,20.0) (160.0,20.0) (140.0,20.0) (120.0,20.0) (100.0,20.0) (80.0,20.0) (80.0,40.0) (100.0,40.0) (120.0,40.0) (140.0,40.0) (160.0,40.0) (180.0,40.0) (200.0,40.0) (200.0,60.0) (180.0,60.0) (160.0,60.0) (140.0,60.0) (120.0,60.0) (100.0,60.0) (80.0,60.0) (60.0,60.0) (40.0,60.0) (40.0,80.0) (20.0,80.0) (20.0,100.0) (0.0,100.0) (20.0,120.0) (40.0,120.0) (40.0,100.0) (60.0,100.0) (60.0,80.0) (80.0,80.0) (100.0,80.0) (120.0,80.0) (140.0,80.0) (160.0,80.0) (180.0,80.0) (200.0,80.0) (220.0,80.0) (220.0,60.0) (240.0,60.0) (240.0,80.0) (260.0,80.0) (260.0,100.0) (240.0,100.0) (220.0,100.0) (200.0,100.0) (180.0,100.0) (160.0,100.0) (140.0,100.0) (120.0,100.0) (100.0,100.0) (80.0,100.0) (80.0,120.0) (60.0,120.0) (60.0,140.0) (40.0,140.0) (20.0,140.0) (20.0,160.0) (40.0,160.0) (60.0,160.0) (80.0,160.0) (80.0,140.0) (100.0,140.0) (100.0,120.0) (120.0,120.0) (140.0,120.0) (160.0,120.0) (180.0,120.0) (200.0,120.0) (220.0,120.0) (240.0,120.0) (260.0,120.0) (260.0,140.0) (240.0,140.0) (220.0,140.0) (200.0,140.0) (180.0,140.0) (160.0,140.0) (140.0,140.0) (120.0,140.0) (120.0,160.0) (100.0,160.0) (100.0,180.0) (80.0,180.0) (60.0,180.0) (40.0,180.0) (140.0,160.0) (160.0,160.0) (180.0,160.0) (200.0,160.0) (220.0,160.0) (240.0,160.0) (260.0,160.0) (260.0,180.0) (240.0,180.0) (220.0,180.0) (200.0,180.0) (180.0,180.0) (220.0,200.0) (240.0,200.0) (260.0,200.0) (280.0,200.0) (280.0,180.0) (300.0,180.0) (300.0,200.0) (320.0,200.0) (340.0,200.0) (340.0,220.0) (320.0,220.0) (300.0,220.0) (280.0,220.0) (260.0,220.0) (240.0,220.0) (220.0,220.0) (220.0,240.0) (240.0,240.0) (260.0,240.0) (280.0,240.0) (300.0,240.0) (320.0,240.0) (340.0,240.0) (340.0,260.0) (320.0,260.0) (300.0,260.0) (280.0,260.0) (260.0,260.0) (240.0,260.0) (220.0,260.0) (220.0,280.0) (240.0,280.0) (260.0,280.0) (280.0,280.0) (300.0,280.0) (320.0,280.0) (340.0,280.0) (300.0,300.0) (280.0,300.0) (260.0,300.0)
 Step 11: Plan UAV Flight Paths
   Total UAVs: 2
   UAV 401:
-    Waypoints: 123
-    Total time: 280.7s
-    Total distance: 2775.2m
+    Waypoints: 147
+    Total time: 334.8s
+    Total distance: 3265.6m
   UAV 402:
-    Waypoints: 11
-    Total time: 18.1s
-    Total distance: 1447.3m
+    Waypoints: 13
+    Total time: 24.0s
+    Total distance: 1918.9m
 
 === Base Station Initialization Complete ===
 End Time: 0.0s
 
 
-[EVENT] 7.8 | event=UAVWaypointArrival | nodeId=401 | pos=(40.0,60.0,20.0)
+[EVENT] 7.7 | event=UAVWaypointArrival | nodeId=401 | pos=(80.0,0.0,20.0)
 
 [EVENT] 8.3 | event=UAVWaypointArrival | nodeId=402 | pos=(60.0,100.0,20.0)
 
-[EVENT] 8.4 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=0 | cycle=1 | confidence=0.165 | size=364204
+[EVENT] 8.4 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=0 | cycle=1 | confidence=0.079 | size=173792
 402-R-62(0) 402-R-63(0) 402-R-64(0) 402-R-81(0) 402-R-82(0) 402-R-83(0) 402-R-84(0) 402-R-85(0) 402-R-101(0) 402-R-102(0) 402-R-103(0) 402-R-104(0) 402-R-105(0) 402-R-121(0) 402-R-122(0) 402-R-123(0) 402-R-124(0) 402-R-125(0) 402-R-142(0) 402-R-143(0) 402-R-144(0) 
-[EVENT] 8.602 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=1 | cycle=1 | confidence=0.079 | size=174697
+[EVENT] 8.602 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=1 | cycle=1 | confidence=0.117 | size=259262
 402-R-62(1) 402-R-63(1) 402-R-64(1) 402-R-81(1) 402-R-82(1) 402-R-83(1) 402-R-84(1) 402-R-85(1) 402-R-101(1) 402-R-102(1) 402-R-103(1) 402-R-104(1) 402-R-105(1) 402-R-121(1) 402-R-122(1) 402-R-123(1) 402-R-124(1) 402-R-125(1) 402-R-142(1) 402-R-143(1) 402-R-144(1) 
-[EVENT] 8.802 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=2 | cycle=1 | confidence=0.096 | size=211121
+[EVENT] 8.802 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=2 | cycle=1 | confidence=0.052 | size=115444
 402-R-62(2) 402-R-63(2) 402-R-64(2) 402-R-81(2) 402-R-82(2) 402-R-83(2) 402-R-84(2) 402-R-85(2) 402-R-101(2) 402-R-102(2) 402-R-103(2) 402-R-104(2) 402-R-105(2) 402-R-121(2) 402-R-122(2) 402-R-123(2) 402-R-124(2) 402-R-125(2) 402-R-142(2) 402-R-143(2) 402-R-144(2) 
-[EVENT] 8.802 | event=RequestFragmentSharing | nodeId=62 | cellId=10000 | confidence=0.340 | fragments=0 1 2 
+[EVENT] 8.802 | event=RequestFragmentSharing | nodeId=62 | cellId=10000 | confidence=0.248 | fragments=0 1 2 
 
-[EVENT] 8.802 | event=RequestFragmentSharing | nodeId=63 | cellId=10000 | confidence=0.340 | fragments=0 1 2 
+[EVENT] 8.802 | event=RequestFragmentSharing | nodeId=63 | cellId=10000 | confidence=0.248 | fragments=0 1 2 
 
-[EVENT] 8.802 | event=RequestFragmentSharing | nodeId=64 | cellId=10000 | confidence=0.340 | fragments=0 1 2 
+[EVENT] 8.802 | event=RequestFragmentSharing | nodeId=64 | cellId=10000 | confidence=0.248 | fragments=0 1 2 
 
-[EVENT] 8.802 | event=RequestFragmentSharing | nodeId=81 | cellId=10000 | confidence=0.340 | fragments=0 1 2 
+[EVENT] 8.802 | event=RequestFragmentSharing | nodeId=81 | cellId=10000 | confidence=0.248 | fragments=0 1 2 
 
-[EVENT] 8.802 | event=RequestFragmentSharing | nodeId=82 | cellId=10000 | confidence=0.340 | fragments=0 1 2 
+[EVENT] 8.802 | event=RequestFragmentSharing | nodeId=82 | cellId=10000 | confidence=0.248 | fragments=0 1 2 
 
-[EVENT] 8.802 | event=RequestFragmentSharing | nodeId=83 | cellId=10000 | confidence=0.340 | fragments=0 1 2 
+[EVENT] 8.802 | event=RequestFragmentSharing | nodeId=83 | cellId=10000 | confidence=0.248 | fragments=0 1 2 
 
-[EVENT] 8.802 | event=RequestFragmentSharing | nodeId=84 | cellId=10000 | confidence=0.340 | fragments=0 1 2 
+[EVENT] 8.802 | event=RequestFragmentSharing | nodeId=84 | cellId=10000 | confidence=0.248 | fragments=0 1 2 
 
-[EVENT] 8.802 | event=RequestFragmentSharing | nodeId=85 | cellId=10000 | confidence=0.340 | fragments=0 1 2 
+[EVENT] 8.802 | event=RequestFragmentSharing | nodeId=85 | cellId=10000 | confidence=0.248 | fragments=0 1 2 
 
-[EVENT] 8.802 | event=RequestFragmentSharing | nodeId=101 | cellId=10000 | confidence=0.340 | fragments=0 1 2 
+[EVENT] 8.802 | event=RequestFragmentSharing | nodeId=101 | cellId=10000 | confidence=0.248 | fragments=0 1 2 
 
-[EVENT] 8.802 | event=RequestFragmentSharing | nodeId=102 | cellId=10000 | confidence=0.340 | fragments=0 1 2 
+[EVENT] 8.802 | event=RequestFragmentSharing | nodeId=102 | cellId=10000 | confidence=0.248 | fragments=0 1 2 
 
-[EVENT] 8.802 | event=RequestFragmentSharing | nodeId=103 | cellId=10000 | confidence=0.340 | fragments=0 1 2 
+[EVENT] 8.802 | event=RequestFragmentSharing | nodeId=103 | cellId=10000 | confidence=0.248 | fragments=0 1 2 
 
-[EVENT] 8.802 | event=RequestFragmentSharing | nodeId=104 | cellId=10000 | confidence=0.340 | fragments=0 1 2 
+[EVENT] 8.802 | event=RequestFragmentSharing | nodeId=104 | cellId=10000 | confidence=0.248 | fragments=0 1 2 
 
-[EVENT] 8.802 | event=RequestFragmentSharing | nodeId=105 | cellId=10000 | confidence=0.340 | fragments=0 1 2 
+[EVENT] 8.802 | event=RequestFragmentSharing | nodeId=105 | cellId=10000 | confidence=0.248 | fragments=0 1 2 
 
-[EVENT] 8.802 | event=RequestFragmentSharing | nodeId=121 | cellId=10000 | confidence=0.340 | fragments=0 1 2 
+[EVENT] 8.802 | event=RequestFragmentSharing | nodeId=121 | cellId=10000 | confidence=0.248 | fragments=0 1 2 
 
-[EVENT] 8.802 | event=RequestFragmentSharing | nodeId=122 | cellId=10000 | confidence=0.340 | fragments=0 1 2 
+[EVENT] 8.802 | event=RequestFragmentSharing | nodeId=122 | cellId=10000 | confidence=0.248 | fragments=0 1 2 
 
-[EVENT] 8.802 | event=RequestFragmentSharing | nodeId=123 | cellId=10000 | confidence=0.340 | fragments=0 1 2 
+[EVENT] 8.802 | event=RequestFragmentSharing | nodeId=123 | cellId=10000 | confidence=0.248 | fragments=0 1 2 
 
-[EVENT] 8.802 | event=RequestFragmentSharing | nodeId=124 | cellId=10000 | confidence=0.340 | fragments=0 1 2 
+[EVENT] 8.802 | event=RequestFragmentSharing | nodeId=124 | cellId=10000 | confidence=0.248 | fragments=0 1 2 
 
-[EVENT] 8.802 | event=RequestFragmentSharing | nodeId=125 | cellId=10000 | confidence=0.340 | fragments=0 1 2 
+[EVENT] 8.802 | event=RequestFragmentSharing | nodeId=125 | cellId=10000 | confidence=0.248 | fragments=0 1 2 
 
-[EVENT] 8.802 | event=RequestFragmentSharing | nodeId=142 | cellId=10000 | confidence=0.340 | fragments=0 1 2 
+[EVENT] 8.802 | event=RequestFragmentSharing | nodeId=142 | cellId=10000 | confidence=0.248 | fragments=0 1 2 
 
-[EVENT] 8.802 | event=RequestFragmentSharing | nodeId=143 | cellId=10000 | confidence=0.340 | fragments=0 1 2 
+[EVENT] 8.802 | event=RequestFragmentSharing | nodeId=143 | cellId=10000 | confidence=0.248 | fragments=0 1 2 
 
-[EVENT] 8.802 | event=RequestFragmentSharing | nodeId=144 | cellId=10000 | confidence=0.340 | fragments=0 1 2 
+[EVENT] 8.802 | event=RequestFragmentSharing | nodeId=144 | cellId=10000 | confidence=0.248 | fragments=0 1 2 
 
-[EVENT] 9.002 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=3 | cycle=1 | confidence=0.050 | size=109664
+[EVENT] 9.002 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=3 | cycle=1 | confidence=0.055 | size=122181
 402-R-62(3) 402-R-63(3) 402-R-64(3) 402-R-81(3) 402-R-82(3) 402-R-83(3) 402-R-84(3) 402-R-85(3) 402-R-101(3) 402-R-102(3) 402-R-103(3) 402-R-104(3) 402-R-105(3) 402-R-121(3) 402-R-122(3) 402-R-123(3) 402-R-124(3) 402-R-125(3) 402-R-142(3) 402-R-143(3) 402-R-144(3) 
-[EVENT] 9.202 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=4 | cycle=1 | confidence=0.064 | size=140805
+[EVENT] 9.202 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=4 | cycle=1 | confidence=0.054 | size=119697
 402-R-62(4) 402-R-63(4) 402-R-64(4) 402-R-81(4) 402-R-82(4) 402-R-83(4) 402-R-84(4) 402-R-85(4) 402-R-101(4) 402-R-102(4) 402-R-103(4) 402-R-104(4) 402-R-105(4) 402-R-121(4) 402-R-122(4) 402-R-123(4) 402-R-124(4) 402-R-125(4) 402-R-142(4) 402-R-143(4) 402-R-144(4) 
-[EVENT] 9.402 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=5 | cycle=1 | confidence=0.091 | size=201712
+[EVENT] 9.402 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=5 | cycle=1 | confidence=0.145 | size=319473
 402-R-62(5) 402-R-63(5) 402-R-64(5) 402-R-81(5) 402-R-82(5) 402-R-83(5) 402-R-84(5) 402-R-85(5) 402-R-101(5) 402-R-102(5) 402-R-103(5) 402-R-104(5) 402-R-105(5) 402-R-121(5) 402-R-122(5) 402-R-123(5) 402-R-124(5) 402-R-125(5) 402-R-142(5) 402-R-143(5) 402-R-144(5) 
-[EVENT] 9.552 | event=UAVWaypointArrival | nodeId=402 | pos=(140.000,160.000,20.000)
-
-[EVENT] 9.602 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=6 | cycle=1 | confidence=0.148 | size=326164
-402-R-126(6) 402-R-127(6) 402-R-128(6) 402-R-145(6) 402-R-146(6) 402-R-147(6) 402-R-148(6) 402-R-149(6) 402-R-165(6) 402-R-166(6) 402-R-167(6) 402-R-168(6) 402-R-169(6) 402-R-185(6) 402-R-186(6) 402-R-187(6) 402-R-188(6) 402-R-189(6) 402-R-206(6) 402-R-207(6) 402-R-208(6) 
-[EVENT] 9.802 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=7 | cycle=1 | confidence=0.071 | size=156539
-402-R-126(7) 402-R-127(7) 402-R-128(7) 402-R-145(7) 402-R-146(7) 402-R-147(7) 402-R-148(7) 402-R-149(7) 402-R-165(7) 402-R-166(7) 402-R-167(7) 402-R-168(7) 402-R-169(7) 402-R-185(7) 402-R-186(7) 402-R-187(7) 402-R-188(7) 402-R-189(7) 402-R-206(7) 402-R-207(7) 402-R-208(7) 
-[EVENT] 10.002 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=8 | cycle=1 | confidence=0.116 | size=255508
-402-R-126(8) 402-R-127(8) 402-R-128(8) 402-R-145(8) 402-R-146(8) 402-R-147(8) 402-R-148(8) 402-R-149(8) 402-R-165(8) 402-R-166(8) 402-R-167(8) 402-R-168(8) 402-R-169(8) 402-R-185(8) 402-R-186(8) 402-R-187(8) 402-R-188(8) 402-R-189(8) 402-R-206(8) 402-R-207(8) 402-R-208(8) 62-S-126(0) 62-S-126(1) 62-S-126(2) 62-S-126(3) 62-S-126(4) 62-S-126(5) 
-[EVENT] 10.002 | event=RequestFragmentSharing | nodeId=126 | cellId=10000 | confidence=0.879 | fragments=0 1 2 3 4 5 6 7 8 
-
-[EVENT] 10.002 | event=RequestFragmentSharing | nodeId=127 | cellId=10001 | confidence=0.334 | fragments=6 7 8 
-
-[EVENT] 10.002 | event=RequestFragmentSharing | nodeId=128 | cellId=10001 | confidence=0.334 | fragments=6 7 8 
-62-S-145(0) 62-S-145(1) 62-S-145(2) 62-S-145(3) 62-S-145(4) 62-S-145(5) 
-[EVENT] 10.002 | event=RequestFragmentSharing | nodeId=145 | cellId=10000 | confidence=0.879 | fragments=0 1 2 3 4 5 6 7 8 
-62-S-146(0) 62-S-146(1) 62-S-146(2) 62-S-146(3) 62-S-146(4) 62-S-146(5) 
-[EVENT] 10.002 | event=RequestFragmentSharing | nodeId=146 | cellId=10000 | confidence=0.879 | fragments=0 1 2 3 4 5 6 7 8 
-
-[EVENT] 10.002 | event=RequestFragmentSharing | nodeId=147 | cellId=10001 | confidence=0.334 | fragments=6 7 8 
-
-[EVENT] 10.002 | event=RequestFragmentSharing | nodeId=148 | cellId=10001 | confidence=0.334 | fragments=6 7 8 
-
-[EVENT] 10.002 | event=RequestFragmentSharing | nodeId=149 | cellId=10001 | confidence=0.334 | fragments=6 7 8 
-62-S-165(0) 62-S-165(1) 62-S-165(2) 62-S-165(3) 62-S-165(4) 62-S-165(5) 
-[EVENT] 10.002 | event=RequestFragmentSharing | nodeId=165 | cellId=10000 | confidence=0.879 | fragments=0 1 2 3 4 5 6 7 8 
-62-S-166(0) 62-S-166(1) 62-S-166(2) 62-S-166(3) 62-S-166(4) 62-S-166(5) 
-[EVENT] 10.002 | event=RequestFragmentSharing | nodeId=166 | cellId=10000 | confidence=0.879 | fragments=0 1 2 3 4 5 6 7 8 
-
-[EVENT] 10.002 | event=RequestFragmentSharing | nodeId=167 | cellId=10001 | confidence=0.334 | fragments=6 7 8 
-
-[EVENT] 10.002 | event=RequestFragmentSharing | nodeId=168 | cellId=10001 | confidence=0.334 | fragments=6 7 8 
-
-[EVENT] 10.002 | event=RequestFragmentSharing | nodeId=169 | cellId=10001 | confidence=0.334 | fragments=6 7 8 
-62-S-185(0) 62-S-185(1) 62-S-185(2) 62-S-185(3) 62-S-185(4) 62-S-185(5) 
-[EVENT] 10.002 | event=RequestFragmentSharing | nodeId=185 | cellId=10000 | confidence=0.879 | fragments=0 1 2 3 4 5 6 7 8 
-
-[EVENT] 10.002 | event=RequestFragmentSharing | nodeId=186 | cellId=20000 | confidence=0.334 | fragments=6 7 8 
-
-[EVENT] 10.002 | event=RequestFragmentSharing | nodeId=187 | cellId=20000 | confidence=0.334 | fragments=6 7 8 
-
-[EVENT] 10.002 | event=RequestFragmentSharing | nodeId=188 | cellId=20000 | confidence=0.334 | fragments=6 7 8 
-
-[EVENT] 10.002 | event=RequestFragmentSharing | nodeId=189 | cellId=10001 | confidence=0.334 | fragments=6 7 8 
-
-[EVENT] 10.002 | event=RequestFragmentSharing | nodeId=206 | cellId=20000 | confidence=0.334 | fragments=6 7 8 
-
-[EVENT] 10.002 | event=RequestFragmentSharing | nodeId=207 | cellId=20000 | confidence=0.334 | fragments=6 7 8 
-
-[EVENT] 10.002 | event=RequestFragmentSharing | nodeId=208 | cellId=20000 | confidence=0.334 | fragments=6 7 8 
-
-[EVENT] 10.008 | event=UAVWaypointArrival | nodeId=401 | pos=(60.000,60.000,20.000)
-
-[EVENT] 10.202 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=9 | cycle=1 | confidence=0.071 | size=156738
-402-R-126(9) 402-R-127(9) 402-R-128(9) 402-R-145(9) 402-R-146(9) 402-R-147(9) 402-R-148(9) 402-R-149(9) 402-R-165(9) 402-R-166(9) 402-R-167(9) 402-R-168(9) 402-R-169(9) 402-R-185(9) 402-R-186(9) 402-R-187(9) 402-R-188(9) 402-R-189(9) 402-R-206(9) 402-R-207(9) 402-R-208(9) 
-[EVENT] 10.402 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=0 | cycle=2 | confidence=0.165 | size=364204
-402-R-126(0) 402-R-127(0) 402-R-128(0) 402-R-145(0) 402-R-146(0) 402-R-147(0) 402-R-148(0) 402-R-149(0) 402-R-165(0) 402-R-166(0) 402-R-167(0) 402-R-168(0) 402-R-169(0) 402-R-185(0) 402-R-186(0) 402-R-187(0) 402-R-188(0) 402-R-189(0) 402-R-206(0) 402-R-207(0) 402-R-208(0) 
-[EVENT] 10.602 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=1 | cycle=2 | confidence=0.079 | size=174697
-402-R-126(1) 402-R-127(1) 402-R-128(1) 402-R-145(1) 402-R-146(1) 402-R-147(1) 402-R-148(1) 402-R-149(1) 402-R-165(1) 402-R-166(1) 402-R-167(1) 402-R-168(1) 402-R-169(1) 402-R-185(1) 402-R-186(1) 402-R-187(1) 402-R-188(1) 402-R-189(1) 402-R-206(1) 402-R-207(1) 402-R-208(1) 
-[EVENT] 10.802 | event=UAVWaypointArrival | nodeId=402 | pos=(220.000,100.000,20.000)
-
-[EVENT] 10.802 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=2 | cycle=2 | confidence=0.096 | size=211121
-402-R-70(2) 402-R-71(2) 402-R-72(2) 402-R-89(2) 402-R-90(2) 402-R-91(2) 402-R-92(2) 402-R-93(2) 402-R-109(2) 402-R-110(2) 402-R-111(2) 402-R-112(2) 402-R-113(2) 402-R-129(2) 402-R-130(2) 402-R-131(2) 402-R-132(2) 402-R-133(2) 402-R-150(2) 402-R-151(2) 402-R-152(2) 
-[EVENT] 11.002 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=3 | cycle=2 | confidence=0.050 | size=109664
-402-R-70(3) 402-R-71(3) 402-R-72(3) 402-R-89(3) 402-R-90(3) 402-R-91(3) 402-R-92(3) 402-R-93(3) 402-R-109(3) 402-R-110(3) 402-R-111(3) 402-R-112(3) 402-R-113(3) 402-R-129(3) 402-R-130(3) 402-R-131(3) 402-R-132(3) 402-R-133(3) 402-R-150(3) 402-R-151(3) 402-R-152(3) 
-[EVENT] 11.202 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=4 | cycle=2 | confidence=0.064 | size=140805
-402-R-70(4) 402-R-71(4) 402-R-72(4) 402-R-89(4) 402-R-90(4) 402-R-91(4) 402-R-92(4) 402-R-93(4) 402-R-109(4) 402-R-110(4) 402-R-111(4) 402-R-112(4) 402-R-113(4) 402-R-129(4) 402-R-130(4) 402-R-131(4) 402-R-132(4) 402-R-133(4) 402-R-150(4) 402-R-151(4) 402-R-152(4) 127-S-70(0) 127-S-70(1) 127-S-70(6) 127-S-70(7) 127-S-70(8) 127-S-70(9) 
-[EVENT] 11.202 | event=RequestFragmentSharing | nodeId=70 | cellId=10001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-70-S-71(0) 70-S-71(1) 70-S-71(6) 70-S-71(7) 70-S-71(8) 70-S-71(9) 
-[EVENT] 11.202 | event=RequestFragmentSharing | nodeId=71 | cellId=10001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-70-S-72(0) 70-S-72(1) 70-S-72(6) 70-S-72(7) 70-S-72(8) 70-S-72(9) 
-[EVENT] 11.202 | event=RequestFragmentSharing | nodeId=72 | cellId=10001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-70-S-89(0) 70-S-89(1) 70-S-89(6) 70-S-89(7) 70-S-89(8) 70-S-89(9) 
-[EVENT] 11.202 | event=RequestFragmentSharing | nodeId=89 | cellId=10001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-70-S-90(0) 70-S-90(1) 70-S-90(6) 70-S-90(7) 70-S-90(8) 70-S-90(9) 
-[EVENT] 11.202 | event=RequestFragmentSharing | nodeId=90 | cellId=10001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-70-S-91(0) 70-S-91(1) 70-S-91(6) 70-S-91(7) 70-S-91(8) 70-S-91(9) 
-[EVENT] 11.202 | event=RequestFragmentSharing | nodeId=91 | cellId=10001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-70-S-92(0) 70-S-92(1) 70-S-92(6) 70-S-92(7) 70-S-92(8) 70-S-92(9) 
-[EVENT] 11.202 | event=RequestFragmentSharing | nodeId=92 | cellId=10001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-70-S-93(0) 70-S-93(1) 70-S-93(6) 70-S-93(7) 70-S-93(8) 70-S-93(9) 
-[EVENT] 11.202 | event=RequestFragmentSharing | nodeId=93 | cellId=10001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-70-S-109(0) 70-S-109(1) 70-S-109(6) 70-S-109(7) 70-S-109(8) 70-S-109(9) 
-[EVENT] 11.202 | event=RequestFragmentSharing | nodeId=109 | cellId=10001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-70-S-110(0) 70-S-110(1) 70-S-110(6) 70-S-110(7) 70-S-110(8) 70-S-110(9) 
-[EVENT] 11.202 | event=RequestFragmentSharing | nodeId=110 | cellId=10001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-70-S-111(0) 70-S-111(1) 70-S-111(6) 70-S-111(7) 70-S-111(8) 70-S-111(9) 
-[EVENT] 11.202 | event=RequestFragmentSharing | nodeId=111 | cellId=10001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-70-S-112(0) 70-S-112(1) 70-S-112(6) 70-S-112(7) 70-S-112(8) 70-S-112(9) 
-[EVENT] 11.202 | event=RequestFragmentSharing | nodeId=112 | cellId=10001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-70-S-113(0) 70-S-113(1) 70-S-113(6) 70-S-113(7) 70-S-113(8) 70-S-113(9) 
-[EVENT] 11.202 | event=RequestFragmentSharing | nodeId=113 | cellId=10001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-70-S-129(0) 70-S-129(1) 70-S-129(6) 70-S-129(7) 70-S-129(8) 70-S-129(9) 
-[EVENT] 11.202 | event=RequestFragmentSharing | nodeId=129 | cellId=10001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-70-S-130(0) 70-S-130(1) 70-S-130(6) 70-S-130(7) 70-S-130(8) 70-S-130(9) 
-[EVENT] 11.202 | event=RequestFragmentSharing | nodeId=130 | cellId=10001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-70-S-131(0) 70-S-131(1) 70-S-131(6) 70-S-131(7) 70-S-131(8) 70-S-131(9) 
-[EVENT] 11.202 | event=RequestFragmentSharing | nodeId=131 | cellId=10001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-70-S-132(0) 70-S-132(1) 70-S-132(6) 70-S-132(7) 70-S-132(8) 70-S-132(9) 
-[EVENT] 11.202 | event=RequestFragmentSharing | nodeId=132 | cellId=10001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-70-S-133(0) 70-S-133(1) 70-S-133(6) 70-S-133(7) 70-S-133(8) 70-S-133(9) 
-[EVENT] 11.202 | event=RequestFragmentSharing | nodeId=133 | cellId=10001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-70-S-150(0) 70-S-150(1) 70-S-150(6) 70-S-150(7) 70-S-150(8) 70-S-150(9) 
-[EVENT] 11.202 | event=RequestFragmentSharing | nodeId=150 | cellId=10001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-70-S-151(0) 70-S-151(1) 70-S-151(6) 70-S-151(7) 70-S-151(8) 70-S-151(9) 
-[EVENT] 11.202 | event=RequestFragmentSharing | nodeId=151 | cellId=10001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-70-S-152(0) 70-S-152(1) 70-S-152(6) 70-S-152(7) 70-S-152(8) 70-S-152(9) 
-[EVENT] 11.202 | event=RequestFragmentSharing | nodeId=152 | cellId=10001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-
-[EVENT] 11.402 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=5 | cycle=2 | confidence=0.091 | size=201712
-402-R-70(5) 402-R-71(5) 402-R-72(5) 402-R-89(5) 402-R-90(5) 402-R-91(5) 402-R-92(5) 402-R-93(5) 402-R-109(5) 402-R-110(5) 402-R-111(5) 402-R-112(5) 402-R-113(5) 402-R-129(5) 402-R-130(5) 402-R-131(5) 402-R-132(5) 402-R-133(5) 402-R-150(5) 402-R-151(5) 402-R-152(5) 
-[EVENT] 11.602 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=6 | cycle=2 | confidence=0.148 | size=326164
-402-R-70(6) 402-R-71(6) 402-R-72(6) 402-R-89(6) 402-R-90(6) 402-R-91(6) 402-R-92(6) 402-R-93(6) 402-R-109(6) 402-R-110(6) 402-R-111(6) 402-R-112(6) 402-R-113(6) 402-R-129(6) 402-R-130(6) 402-R-131(6) 402-R-132(6) 402-R-133(6) 402-R-150(6) 402-R-151(6) 402-R-152(6) 
-[EVENT] 11.802 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=7 | cycle=2 | confidence=0.071 | size=156539
-402-R-70(7) 402-R-71(7) 402-R-72(7) 402-R-89(7) 402-R-90(7) 402-R-91(7) 402-R-92(7) 402-R-93(7) 402-R-109(7) 402-R-110(7) 402-R-111(7) 402-R-112(7) 402-R-113(7) 402-R-129(7) 402-R-130(7) 402-R-131(7) 402-R-132(7) 402-R-133(7) 402-R-150(7) 402-R-151(7) 402-R-152(7) 
-[EVENT] 12.002 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=8 | cycle=2 | confidence=0.116 | size=255508
-402-R-70(8) 402-R-71(8) 402-R-72(8) 402-R-89(8) 402-R-90(8) 402-R-91(8) 402-R-92(8) 402-R-93(8) 402-R-109(8) 402-R-110(8) 402-R-111(8) 402-R-112(8) 402-R-113(8) 402-R-129(8) 402-R-130(8) 402-R-131(8) 402-R-132(8) 402-R-133(8) 402-R-150(8) 402-R-151(8) 402-R-152(8) 
-[EVENT] 12.202 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=9 | cycle=2 | confidence=0.071 | size=156738
-402-R-70(9) 402-R-71(9) 402-R-72(9) 402-R-89(9) 402-R-90(9) 402-R-91(9) 402-R-92(9) 402-R-93(9) 402-R-109(9) 402-R-110(9) 402-R-111(9) 402-R-112(9) 402-R-113(9) 402-R-129(9) 402-R-130(9) 402-R-131(9) 402-R-132(9) 402-R-133(9) 402-R-150(9) 402-R-151(9) 402-R-152(9) 
-[EVENT] 12.258 | event=UAVWaypointArrival | nodeId=401 | pos=(80.000,60.000,20.000)
-
-[EVENT] 12.402 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=0 | cycle=3 | confidence=0.165 | size=364204
-402-R-70(0) 402-R-71(0) 402-R-72(0) 402-R-89(0) 402-R-90(0) 402-R-91(0) 402-R-92(0) 402-R-93(0) 402-R-109(0) 402-R-110(0) 402-R-111(0) 402-R-112(0) 402-R-113(0) 402-R-129(0) 402-R-130(0) 402-R-131(0) 402-R-132(0) 402-R-133(0) 402-R-150(0) 402-R-151(0) 402-R-152(0) 
-[EVENT] 12.602 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=1 | cycle=3 | confidence=0.079 | size=174697
-402-R-70(1) 402-R-71(1) 402-R-72(1) 402-R-89(1) 402-R-90(1) 402-R-91(1) 402-R-92(1) 402-R-93(1) 402-R-109(1) 402-R-110(1) 402-R-111(1) 402-R-112(1) 402-R-113(1) 402-R-129(1) 402-R-130(1) 402-R-131(1) 402-R-132(1) 402-R-133(1) 402-R-150(1) 402-R-151(1) 402-R-152(1) 
-[EVENT] 12.802 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=2 | cycle=3 | confidence=0.096 | size=211121
-402-R-70(2) 402-R-71(2) 402-R-72(2) 402-R-89(2) 402-R-90(2) 402-R-91(2) 402-R-92(2) 402-R-93(2) 402-R-109(2) 402-R-110(2) 402-R-111(2) 402-R-112(2) 402-R-113(2) 402-R-129(2) 402-R-130(2) 402-R-131(2) 402-R-132(2) 402-R-133(2) 402-R-150(2) 402-R-151(2) 402-R-152(2) 
-[EVENT] 13.002 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=3 | cycle=3 | confidence=0.050 | size=109664
-402-R-70(3) 402-R-71(3) 402-R-72(3) 402-R-89(3) 402-R-90(3) 402-R-91(3) 402-R-92(3) 402-R-93(3) 402-R-109(3) 402-R-110(3) 402-R-111(3) 402-R-112(3) 402-R-113(3) 402-R-129(3) 402-R-130(3) 402-R-131(3) 402-R-132(3) 402-R-133(3) 402-R-150(3) 402-R-151(3) 402-R-152(3) 
-[EVENT] 13.038 | event=UAVWaypointArrival | nodeId=402 | pos=(140.000,260.000,20.000)
-
-[EVENT] 13.202 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=4 | cycle=3 | confidence=0.064 | size=140805
-402-R-226(4) 402-R-227(4) 402-R-228(4) 402-R-245(4) 402-R-246(4) 402-R-247(4) 402-R-248(4) 402-R-249(4) 402-R-265(4) 402-R-266(4) 402-R-267(4) 402-R-268(4) 402-R-269(4) 402-R-285(4) 402-R-286(4) 402-R-287(4) 402-R-288(4) 402-R-289(4) 402-R-306(4) 402-R-307(4) 402-R-308(4) 
-[EVENT] 13.402 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=5 | cycle=3 | confidence=0.091 | size=201712
-402-R-226(5) 402-R-227(5) 402-R-228(5) 402-R-245(5) 402-R-246(5) 402-R-247(5) 402-R-248(5) 402-R-249(5) 402-R-265(5) 402-R-266(5) 402-R-267(5) 402-R-268(5) 402-R-269(5) 402-R-285(5) 402-R-286(5) 402-R-287(5) 402-R-288(5) 402-R-289(5) 402-R-306(5) 402-R-307(5) 402-R-308(5) 
-[EVENT] 13.602 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=6 | cycle=3 | confidence=0.148 | size=326164
-402-R-226(6) 402-R-227(6) 402-R-228(6) 402-R-245(6) 402-R-246(6) 402-R-247(6) 402-R-248(6) 402-R-249(6) 402-R-265(6) 402-R-266(6) 402-R-267(6) 402-R-268(6) 402-R-269(6) 402-R-285(6) 402-R-286(6) 402-R-287(6) 402-R-288(6) 402-R-289(6) 402-R-306(6) 402-R-307(6) 402-R-308(6) 186-S-226(0) 186-S-226(1) 186-S-226(7) 186-S-226(8) 186-S-226(9) 
-[EVENT] 13.602 | event=RequestFragmentSharing | nodeId=226 | cellId=20000 | confidence=0.805 | fragments=0 1 4 5 6 7 8 9 
-186-S-227(0) 186-S-227(1) 186-S-227(7) 186-S-227(8) 186-S-227(9) 
-[EVENT] 13.602 | event=RequestFragmentSharing | nodeId=227 | cellId=20000 | confidence=0.805 | fragments=0 1 4 5 6 7 8 9 
-186-S-228(0) 186-S-228(1) 186-S-228(7) 186-S-228(8) 186-S-228(9) 
-[EVENT] 13.602 | event=RequestFragmentSharing | nodeId=228 | cellId=20000 | confidence=0.805 | fragments=0 1 4 5 6 7 8 9 
-186-S-245(0) 186-S-245(1) 186-S-245(7) 186-S-245(8) 186-S-245(9) 
-[EVENT] 13.602 | event=RequestFragmentSharing | nodeId=245 | cellId=20000 | confidence=0.805 | fragments=0 1 4 5 6 7 8 9 
-186-S-246(0) 186-S-246(1) 186-S-246(7) 186-S-246(8) 186-S-246(9) 
-[EVENT] 13.602 | event=RequestFragmentSharing | nodeId=246 | cellId=20000 | confidence=0.805 | fragments=0 1 4 5 6 7 8 9 
-186-S-247(0) 186-S-247(1) 186-S-247(7) 186-S-247(8) 186-S-247(9) 
-[EVENT] 13.602 | event=RequestFragmentSharing | nodeId=247 | cellId=20000 | confidence=0.805 | fragments=0 1 4 5 6 7 8 9 
-186-S-248(0) 186-S-248(1) 186-S-248(7) 186-S-248(8) 186-S-248(9) 
-[EVENT] 13.602 | event=RequestFragmentSharing | nodeId=248 | cellId=20000 | confidence=0.805 | fragments=0 1 4 5 6 7 8 9 
-186-S-249(0) 186-S-249(1) 186-S-249(7) 186-S-249(8) 186-S-249(9) 
-[EVENT] 13.602 | event=RequestFragmentSharing | nodeId=249 | cellId=20000 | confidence=0.805 | fragments=0 1 4 5 6 7 8 9 
-186-S-265(0) 186-S-265(1) 186-S-265(7) 186-S-265(8) 186-S-265(9) 
-[EVENT] 13.602 | event=RequestFragmentSharing | nodeId=265 | cellId=20000 | confidence=0.805 | fragments=0 1 4 5 6 7 8 9 
-186-S-266(0) 186-S-266(1) 186-S-266(7) 186-S-266(8) 186-S-266(9) 
-[EVENT] 13.602 | event=RequestFragmentSharing | nodeId=266 | cellId=20000 | confidence=0.805 | fragments=0 1 4 5 6 7 8 9 
-186-S-267(0) 186-S-267(1) 186-S-267(7) 186-S-267(8) 186-S-267(9) 
-[EVENT] 13.602 | event=RequestFragmentSharing | nodeId=267 | cellId=20000 | confidence=0.805 | fragments=0 1 4 5 6 7 8 9 
-186-S-268(0) 186-S-268(1) 186-S-268(7) 186-S-268(8) 186-S-268(9) 
-[EVENT] 13.602 | event=RequestFragmentSharing | nodeId=268 | cellId=20000 | confidence=0.805 | fragments=0 1 4 5 6 7 8 9 
-186-S-269(0) 186-S-269(1) 186-S-269(7) 186-S-269(8) 186-S-269(9) 
-[EVENT] 13.602 | event=RequestFragmentSharing | nodeId=269 | cellId=20000 | confidence=0.805 | fragments=0 1 4 5 6 7 8 9 
-186-S-285(0) 186-S-285(1) 186-S-285(7) 186-S-285(8) 186-S-285(9) 
-[EVENT] 13.602 | event=RequestFragmentSharing | nodeId=285 | cellId=20000 | confidence=0.805 | fragments=0 1 4 5 6 7 8 9 
-186-S-286(0) 186-S-286(1) 186-S-286(7) 186-S-286(8) 186-S-286(9) 
-[EVENT] 13.602 | event=RequestFragmentSharing | nodeId=286 | cellId=20000 | confidence=0.805 | fragments=0 1 4 5 6 7 8 9 
-186-S-287(0) 186-S-287(1) 186-S-287(7) 186-S-287(8) 186-S-287(9) 
-[EVENT] 13.602 | event=RequestFragmentSharing | nodeId=287 | cellId=20000 | confidence=0.805 | fragments=0 1 4 5 6 7 8 9 
-186-S-288(0) 186-S-288(1) 186-S-288(7) 186-S-288(8) 186-S-288(9) 
-[EVENT] 13.602 | event=RequestFragmentSharing | nodeId=288 | cellId=20000 | confidence=0.805 | fragments=0 1 4 5 6 7 8 9 
-186-S-289(0) 186-S-289(1) 186-S-289(7) 186-S-289(8) 186-S-289(9) 
-[EVENT] 13.602 | event=RequestFragmentSharing | nodeId=289 | cellId=20000 | confidence=0.805 | fragments=0 1 4 5 6 7 8 9 
-186-S-306(0) 186-S-306(1) 186-S-306(7) 186-S-306(8) 186-S-306(9) 
-[EVENT] 13.602 | event=RequestFragmentSharing | nodeId=306 | cellId=20000 | confidence=0.805 | fragments=0 1 4 5 6 7 8 9 
-186-S-307(0) 186-S-307(1) 186-S-307(7) 186-S-307(8) 186-S-307(9) 
-[EVENT] 13.602 | event=RequestFragmentSharing | nodeId=307 | cellId=20000 | confidence=0.805 | fragments=0 1 4 5 6 7 8 9 
-186-S-308(0) 186-S-308(1) 186-S-308(7) 186-S-308(8) 186-S-308(9) 
-[EVENT] 13.602 | event=RequestFragmentSharing | nodeId=308 | cellId=20000 | confidence=0.805 | fragments=0 1 4 5 6 7 8 9 
-
-[EVENT] 13.802 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=7 | cycle=3 | confidence=0.071 | size=156539
-402-R-226(7) 402-R-227(7) 402-R-228(7) 402-R-245(7) 402-R-246(7) 402-R-247(7) 402-R-248(7) 402-R-249(7) 402-R-265(7) 402-R-266(7) 402-R-267(7) 402-R-268(7) 402-R-269(7) 402-R-285(7) 402-R-286(7) 402-R-287(7) 402-R-288(7) 402-R-289(7) 402-R-306(7) 402-R-307(7) 402-R-308(7) 
-[EVENT] 14.002 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=8 | cycle=3 | confidence=0.116 | size=255508
-402-R-226(8) 402-R-227(8) 402-R-228(8) 402-R-245(8) 402-R-246(8) 402-R-247(8) 402-R-248(8) 402-R-249(8) 402-R-265(8) 402-R-266(8) 402-R-267(8) 402-R-268(8) 402-R-269(8) 402-R-285(8) 402-R-286(8) 402-R-287(8) 402-R-288(8) 402-R-289(8) 402-R-306(8) 402-R-307(8) 402-R-308(8) 
-[EVENT] 14.098 | event=UAVWaypointArrival | nodeId=402 | pos=(80.000,200.000,20.000)
-
-[EVENT] 14.202 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=9 | cycle=3 | confidence=0.071 | size=156738
-402-R-163(9) 402-R-164(9) 402-R-165(9) 402-R-182(9) 402-R-183(9) 402-R-184(9) 402-R-185(9) 402-R-186(9) 402-R-202(9) 402-R-203(9) 402-R-204(9) 402-R-205(9) 402-R-206(9) 402-R-222(9) 402-R-223(9) 402-R-224(9) 402-R-225(9) 402-R-226(9) 402-R-243(9) 402-R-244(9) 402-R-245(9) 
-[EVENT] 14.402 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=0 | cycle=4 | confidence=0.165 | size=364204
-402-R-163(0) 402-R-164(0) 402-R-165(0) 402-R-182(0) 402-R-183(0) 402-R-184(0) 402-R-185(0) 402-R-186(0) 402-R-202(0) 402-R-203(0) 402-R-204(0) 402-R-205(0) 402-R-206(0) 402-R-222(0) 402-R-223(0) 402-R-224(0) 402-R-225(0) 402-R-226(0) 402-R-243(0) 402-R-244(0) 402-R-245(0) 
-[EVENT] 14.508 | event=UAVWaypointArrival | nodeId=401 | pos=(100.000,60.000,20.000)
-
-[EVENT] 14.602 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=1 | cycle=4 | confidence=0.079 | size=174697
-402-R-163(1) 402-R-164(1) 402-R-165(1) 402-R-182(1) 402-R-183(1) 402-R-184(1) 402-R-185(1) 402-R-186(1) 402-R-202(1) 402-R-203(1) 402-R-204(1) 402-R-205(1) 402-R-206(1) 402-R-222(1) 402-R-223(1) 402-R-224(1) 402-R-225(1) 402-R-226(1) 402-R-243(1) 402-R-244(1) 402-R-245(1) 62-S-163(2) 62-S-163(3) 62-S-163(4) 62-S-163(5) 126-S-163(6) 126-S-163(7) 126-S-163(8) 
-[EVENT] 14.602 | event=RequestFragmentSharing | nodeId=163 | cellId=10000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
-62-S-164(2) 62-S-164(3) 62-S-164(4) 62-S-164(5) 126-S-164(6) 126-S-164(7) 126-S-164(8) 
-[EVENT] 14.602 | event=RequestFragmentSharing | nodeId=164 | cellId=10000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
-62-S-182(2) 62-S-182(3) 62-S-182(4) 62-S-182(5) 126-S-182(6) 126-S-182(7) 126-S-182(8) 
-[EVENT] 14.602 | event=RequestFragmentSharing | nodeId=182 | cellId=10000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
-62-S-183(2) 62-S-183(3) 62-S-183(4) 62-S-183(5) 126-S-183(6) 126-S-183(7) 126-S-183(8) 
-[EVENT] 14.602 | event=RequestFragmentSharing | nodeId=183 | cellId=10000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
-62-S-184(2) 62-S-184(3) 62-S-184(4) 62-S-184(5) 126-S-184(6) 126-S-184(7) 126-S-184(8) 
-[EVENT] 14.602 | event=RequestFragmentSharing | nodeId=184 | cellId=10000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
-
-[EVENT] 14.602 | event=RequestFragmentSharing | nodeId=202 | cellId=19999 | confidence=0.315 | fragments=0 1 9 
-
-[EVENT] 14.602 | event=RequestFragmentSharing | nodeId=203 | cellId=19999 | confidence=0.315 | fragments=0 1 9 
-186-S-204(6) 186-S-204(7) 186-S-204(8) 226-S-204(4) 226-S-204(5) 
-[EVENT] 14.602 | event=RequestFragmentSharing | nodeId=204 | cellId=20000 | confidence=0.805 | fragments=0 1 4 5 6 7 8 9 
-186-S-205(6) 186-S-205(7) 186-S-205(8) 204-S-205(4) 204-S-205(5) 
-[EVENT] 14.602 | event=RequestFragmentSharing | nodeId=205 | cellId=20000 | confidence=0.805 | fragments=0 1 4 5 6 7 8 9 
-
-[EVENT] 14.602 | event=RequestFragmentSharing | nodeId=222 | cellId=19999 | confidence=0.315 | fragments=0 1 9 
-
-[EVENT] 14.602 | event=RequestFragmentSharing | nodeId=223 | cellId=19999 | confidence=0.315 | fragments=0 1 9 
-186-S-224(6) 186-S-224(7) 186-S-224(8) 204-S-224(4) 204-S-224(5) 
-[EVENT] 14.602 | event=RequestFragmentSharing | nodeId=224 | cellId=20000 | confidence=0.805 | fragments=0 1 4 5 6 7 8 9 
-186-S-225(6) 186-S-225(7) 186-S-225(8) 204-S-225(4) 204-S-225(5) 
-[EVENT] 14.602 | event=RequestFragmentSharing | nodeId=225 | cellId=20000 | confidence=0.805 | fragments=0 1 4 5 6 7 8 9 
-
-[EVENT] 14.602 | event=RequestFragmentSharing | nodeId=243 | cellId=19999 | confidence=0.315 | fragments=0 1 9 
-186-S-244(6) 186-S-244(7) 186-S-244(8) 204-S-244(4) 204-S-244(5) 
-[EVENT] 14.602 | event=RequestFragmentSharing | nodeId=244 | cellId=20000 | confidence=0.805 | fragments=0 1 4 5 6 7 8 9 
-
-[EVENT] 14.802 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=2 | cycle=4 | confidence=0.096 | size=211121
-402-R-163(2) 402-R-164(2) 402-R-165(2) 402-R-182(2) 402-R-183(2) 402-R-184(2) 402-R-185(2) 402-R-186(2) 402-R-202(2) 402-R-203(2) 402-R-204(2) 402-R-205(2) 402-R-206(2) 402-R-222(2) 402-R-223(2) 402-R-224(2) 402-R-225(2) 402-R-226(2) 402-R-243(2) 402-R-244(2) 402-R-245(2) 
-[EVENT] 15.002 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=3 | cycle=4 | confidence=0.050 | size=109664
-402-R-163(3) 402-R-164(3) 402-R-165(3) 402-R-182(3) 402-R-183(3) 402-R-184(3) 402-R-185(3) 402-R-186(3) 402-R-202(3) 402-R-203(3) 402-R-204(3) 402-R-205(3) 402-R-206(3) 402-R-222(3) 402-R-223(3) 402-R-224(3) 402-R-225(3) 402-R-226(3) 402-R-243(3) 402-R-244(3) 402-R-245(3) 
-[EVENT] 15.202 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=4 | cycle=4 | confidence=0.064 | size=140805
-402-R-163(4) 402-R-164(4) 402-R-165(4) 402-R-182(4) 402-R-183(4) 402-R-184(4) 402-R-185(4) 402-R-186(4) 402-R-202(4) 402-R-203(4) 402-R-204(4) 402-R-205(4) 402-R-206(4) 402-R-222(4) 402-R-223(4) 402-R-224(4) 402-R-225(4) 402-R-226(4) 402-R-243(4) 402-R-244(4) 402-R-245(4) 
-[EVENT] 15.402 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=5 | cycle=4 | confidence=0.091 | size=201712
-402-R-163(5) 402-R-164(5) 402-R-165(5) 402-R-182(5) 402-R-183(5) 402-R-184(5) 402-R-185(5) 402-R-186(5) 402-R-202(5) 402-R-203(5) 402-R-204(5) 402-R-205(5) 402-R-206(5) 402-R-222(5) 402-R-223(5) 402-R-224(5) 402-R-225(5) 402-R-226(5) 402-R-243(5) 402-R-244(5) 402-R-245(5) 
-[EVENT] 15.598 | event=UAVWaypointArrival | nodeId=402 | pos=(200.000,200.000,20.000)
-
-[EVENT] 15.602 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=6 | cycle=4 | confidence=0.148 | size=326164
-402-R-169(6) 402-R-170(6) 402-R-171(6) 402-R-188(6) 402-R-189(6) 402-R-190(6) 402-R-191(6) 402-R-192(6) 402-R-208(6) 402-R-209(6) 402-R-210(6) 402-R-211(6) 402-R-212(6) 402-R-228(6) 402-R-229(6) 402-R-230(6) 402-R-231(6) 402-R-232(6) 402-R-249(6) 402-R-250(6) 402-R-251(6) 
-[EVENT] 15.802 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=7 | cycle=4 | confidence=0.071 | size=156539
-402-R-169(7) 402-R-170(7) 402-R-171(7) 402-R-188(7) 402-R-189(7) 402-R-190(7) 402-R-191(7) 402-R-192(7) 402-R-208(7) 402-R-209(7) 402-R-210(7) 402-R-211(7) 402-R-212(7) 402-R-228(7) 402-R-229(7) 402-R-230(7) 402-R-231(7) 402-R-232(7) 402-R-249(7) 402-R-250(7) 402-R-251(7) 
-[EVENT] 16.002 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=8 | cycle=4 | confidence=0.116 | size=255508
-402-R-169(8) 402-R-170(8) 402-R-171(8) 402-R-188(8) 402-R-189(8) 402-R-190(8) 402-R-191(8) 402-R-192(8) 402-R-208(8) 402-R-209(8) 402-R-210(8) 402-R-211(8) 402-R-212(8) 402-R-228(8) 402-R-229(8) 402-R-230(8) 402-R-231(8) 402-R-232(8) 402-R-249(8) 402-R-250(8) 402-R-251(8) 70-S-170(0) 70-S-170(1) 70-S-170(2) 70-S-170(3) 70-S-170(4) 70-S-170(5) 70-S-170(9) 
-[EVENT] 16.002 | event=RequestFragmentSharing | nodeId=170 | cellId=10001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
-70-S-171(0) 70-S-171(1) 70-S-171(2) 70-S-171(3) 70-S-171(4) 70-S-171(5) 70-S-171(9) 
-[EVENT] 16.002 | event=RequestFragmentSharing | nodeId=171 | cellId=10001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
-70-S-190(0) 70-S-190(1) 70-S-190(2) 70-S-190(3) 70-S-190(4) 70-S-190(5) 70-S-190(9) 
-[EVENT] 16.002 | event=RequestFragmentSharing | nodeId=190 | cellId=10001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
-70-S-191(0) 70-S-191(1) 70-S-191(2) 70-S-191(3) 70-S-191(4) 70-S-191(5) 70-S-191(9) 
-[EVENT] 16.002 | event=RequestFragmentSharing | nodeId=191 | cellId=10001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
-70-S-192(0) 70-S-192(1) 70-S-192(2) 70-S-192(3) 70-S-192(4) 70-S-192(5) 70-S-192(9) 
-[EVENT] 16.002 | event=RequestFragmentSharing | nodeId=192 | cellId=10001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
-186-S-209(0) 186-S-209(1) 186-S-209(2) 186-S-209(3) 186-S-209(4) 186-S-209(5) 186-S-209(9) 
-[EVENT] 16.002 | event=RequestFragmentSharing | nodeId=209 | cellId=20000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
-186-S-210(0) 186-S-210(1) 186-S-210(2) 186-S-210(3) 186-S-210(4) 186-S-210(5) 186-S-210(9) 
-[EVENT] 16.002 | event=RequestFragmentSharing | nodeId=210 | cellId=20000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
-
-[EVENT] 16.002 | event=RequestFragmentSharing | nodeId=211 | cellId=20001 | confidence=0.334 | fragments=6 7 8 
-
-[EVENT] 16.002 | event=RequestFragmentSharing | nodeId=212 | cellId=20001 | confidence=0.334 | fragments=6 7 8 
-186-S-229(0) 186-S-229(1) 186-S-229(2) 186-S-229(3) 186-S-229(4) 186-S-229(5) 186-S-229(9) 
-[EVENT] 16.002 | event=RequestFragmentSharing | nodeId=229 | cellId=20000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
-186-S-230(0) 186-S-230(1) 186-S-230(2) 186-S-230(3) 186-S-230(4) 186-S-230(5) 186-S-230(9) 
-[EVENT] 16.002 | event=RequestFragmentSharing | nodeId=230 | cellId=20000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
-
-[EVENT] 16.002 | event=RequestFragmentSharing | nodeId=231 | cellId=20001 | confidence=0.334 | fragments=6 7 8 
-
-[EVENT] 16.002 | event=RequestFragmentSharing | nodeId=232 | cellId=20001 | confidence=0.334 | fragments=6 7 8 
-186-S-250(0) 186-S-250(1) 186-S-250(2) 186-S-250(3) 186-S-250(4) 186-S-250(5) 186-S-250(9) 
-[EVENT] 16.002 | event=RequestFragmentSharing | nodeId=250 | cellId=20000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
-
-[EVENT] 16.002 | event=RequestFragmentSharing | nodeId=251 | cellId=20001 | confidence=0.334 | fragments=6 7 8 
-
-[EVENT] 16.202 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=9 | cycle=4 | confidence=0.071 | size=156738
-402-R-169(9) 402-R-170(9) 402-R-171(9) 402-R-188(9) 402-R-189(9) 402-R-190(9) 402-R-191(9) 402-R-192(9) 402-R-208(9) 402-R-209(9) 402-R-210(9) 402-R-211(9) 402-R-212(9) 402-R-228(9) 402-R-229(9) 402-R-230(9) 402-R-231(9) 402-R-232(9) 402-R-249(9) 402-R-250(9) 402-R-251(9) 
-[EVENT] 16.402 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=0 | cycle=5 | confidence=0.165 | size=364204
-402-R-169(0) 402-R-170(0) 402-R-171(0) 402-R-188(0) 402-R-189(0) 402-R-190(0) 402-R-191(0) 402-R-192(0) 402-R-208(0) 402-R-209(0) 402-R-210(0) 402-R-211(0) 402-R-212(0) 402-R-228(0) 402-R-229(0) 402-R-230(0) 402-R-231(0) 402-R-232(0) 402-R-249(0) 402-R-250(0) 402-R-251(0) 
-[EVENT] 16.602 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=1 | cycle=5 | confidence=0.079 | size=174697
-402-R-169(1) 402-R-170(1) 402-R-171(1) 402-R-188(1) 402-R-189(1) 402-R-190(1) 402-R-191(1) 402-R-192(1) 402-R-208(1) 402-R-209(1) 402-R-210(1) 402-R-211(1) 402-R-212(1) 402-R-228(1) 402-R-229(1) 402-R-230(1) 402-R-231(1) 402-R-232(1) 402-R-249(1) 402-R-250(1) 402-R-251(1) 
-[EVENT] 16.758 | event=UAVWaypointArrival | nodeId=401 | pos=(100.000,80.000,20.000)
-
-[EVENT] 16.802 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=2 | cycle=5 | confidence=0.096 | size=211121
-402-R-169(2) 402-R-170(2) 402-R-171(2) 402-R-188(2) 402-R-189(2) 402-R-190(2) 402-R-191(2) 402-R-192(2) 402-R-208(2) 402-R-209(2) 402-R-210(2) 402-R-211(2) 402-R-212(2) 402-R-228(2) 402-R-229(2) 402-R-230(2) 402-R-231(2) 402-R-232(2) 402-R-249(2) 402-R-250(2) 402-R-251(2) 
-[EVENT] 17.002 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=3 | cycle=5 | confidence=0.050 | size=109664
-402-R-169(3) 402-R-170(3) 402-R-171(3) 402-R-188(3) 402-R-189(3) 402-R-190(3) 402-R-191(3) 402-R-192(3) 402-R-208(3) 402-R-209(3) 402-R-210(3) 402-R-211(3) 402-R-212(3) 402-R-228(3) 402-R-229(3) 402-R-230(3) 402-R-231(3) 402-R-232(3) 402-R-249(3) 402-R-250(3) 402-R-251(3) 
-[EVENT] 17.202 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=4 | cycle=5 | confidence=0.064 | size=140805
-402-R-169(4) 402-R-170(4) 402-R-171(4) 402-R-188(4) 402-R-189(4) 402-R-190(4) 402-R-191(4) 402-R-192(4) 402-R-208(4) 402-R-209(4) 402-R-210(4) 402-R-211(4) 402-R-212(4) 402-R-228(4) 402-R-229(4) 402-R-230(4) 402-R-231(4) 402-R-232(4) 402-R-249(4) 402-R-250(4) 402-R-251(4) 
-[EVENT] 17.275 | event=UAVWaypointArrival | nodeId=402 | pos=(140.000,80.000,20.000)
-
-[EVENT] 17.402 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=5 | cycle=5 | confidence=0.091 | size=201712
-402-R-46(5) 402-R-47(5) 402-R-48(5) 402-R-65(5) 402-R-66(5) 402-R-67(5) 402-R-68(5) 402-R-69(5) 402-R-85(5) 402-R-86(5) 402-R-87(5) 402-R-88(5) 402-R-89(5) 402-R-105(5) 402-R-106(5) 402-R-107(5) 402-R-108(5) 402-R-109(5) 402-R-126(5) 402-R-127(5) 402-R-128(5) 
-[EVENT] 17.602 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=6 | cycle=5 | confidence=0.148 | size=326164
-402-R-46(6) 402-R-47(6) 402-R-48(6) 402-R-65(6) 402-R-66(6) 402-R-67(6) 402-R-68(6) 402-R-69(6) 402-R-85(6) 402-R-86(6) 402-R-87(6) 402-R-88(6) 402-R-89(6) 402-R-105(6) 402-R-106(6) 402-R-107(6) 402-R-108(6) 402-R-109(6) 402-R-126(6) 402-R-127(6) 402-R-128(6) 
-[EVENT] 17.802 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=7 | cycle=5 | confidence=0.071 | size=156539
-402-R-46(7) 402-R-47(7) 402-R-48(7) 402-R-65(7) 402-R-66(7) 402-R-67(7) 402-R-68(7) 402-R-69(7) 402-R-85(7) 402-R-86(7) 402-R-87(7) 402-R-88(7) 402-R-89(7) 402-R-105(7) 402-R-106(7) 402-R-107(7) 402-R-108(7) 402-R-109(7) 402-R-126(7) 402-R-127(7) 402-R-128(7) 
-[EVENT] 17.802 | event=RequestFragmentSharing | nodeId=46 | cellId=1 | confidence=0.310 | fragments=5 6 7 
-
-[EVENT] 17.802 | event=RequestFragmentSharing | nodeId=47 | cellId=1 | confidence=0.310 | fragments=5 6 7 
-
-[EVENT] 17.802 | event=RequestFragmentSharing | nodeId=48 | cellId=1 | confidence=0.310 | fragments=5 6 7 
-62-S-65(0) 62-S-65(1) 62-S-65(2) 62-S-65(3) 62-S-65(4) 126-S-65(8) 126-S-65(9) 
-[EVENT] 17.802 | event=RequestFragmentSharing | nodeId=65 | cellId=10000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
-
-[EVENT] 17.802 | event=RequestFragmentSharing | nodeId=66 | cellId=1 | confidence=0.310 | fragments=5 6 7 
-
-[EVENT] 17.802 | event=RequestFragmentSharing | nodeId=67 | cellId=1 | confidence=0.310 | fragments=5 6 7 
-
-[EVENT] 17.802 | event=RequestFragmentSharing | nodeId=68 | cellId=1 | confidence=0.310 | fragments=5 6 7 
-70-S-69(0) 70-S-69(1) 70-S-69(2) 70-S-69(3) 70-S-69(4) 70-S-69(8) 70-S-69(9) 
-[EVENT] 17.802 | event=RequestFragmentSharing | nodeId=69 | cellId=10001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
-62-S-86(0) 62-S-86(1) 62-S-86(2) 62-S-86(3) 62-S-86(4) 65-S-86(8) 65-S-86(9) 
-[EVENT] 17.802 | event=RequestFragmentSharing | nodeId=86 | cellId=10000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
-69-S-87(0) 69-S-87(1) 69-S-87(2) 69-S-87(3) 69-S-87(4) 69-S-87(8) 69-S-87(9) 
-[EVENT] 17.802 | event=RequestFragmentSharing | nodeId=87 | cellId=10001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
-69-S-88(0) 69-S-88(1) 69-S-88(2) 69-S-88(3) 69-S-88(4) 69-S-88(8) 69-S-88(9) 
-[EVENT] 17.802 | event=RequestFragmentSharing | nodeId=88 | cellId=10001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
-62-S-106(0) 62-S-106(1) 62-S-106(2) 62-S-106(3) 62-S-106(4) 65-S-106(8) 65-S-106(9) 
-[EVENT] 17.802 | event=RequestFragmentSharing | nodeId=106 | cellId=10000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
-69-S-107(0) 69-S-107(1) 69-S-107(2) 69-S-107(3) 69-S-107(4) 69-S-107(8) 69-S-107(9) 
-[EVENT] 17.802 | event=RequestFragmentSharing | nodeId=107 | cellId=10001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
-69-S-108(0) 69-S-108(1) 69-S-108(2) 69-S-108(3) 69-S-108(4) 69-S-108(8) 69-S-108(9) 
-[EVENT] 17.802 | event=RequestFragmentSharing | nodeId=108 | cellId=10001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
-
-[EVENT] 18.002 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=8 | cycle=5 | confidence=0.116 | size=255508
-402-R-46(8) 402-R-47(8) 402-R-48(8) 402-R-65(8) 402-R-66(8) 402-R-67(8) 402-R-68(8) 402-R-69(8) 402-R-85(8) 402-R-86(8) 402-R-87(8) 402-R-88(8) 402-R-89(8) 402-R-105(8) 402-R-106(8) 402-R-107(8) 402-R-108(8) 402-R-109(8) 402-R-126(8) 402-R-127(8) 402-R-128(8) 
-[EVENT] 18.202 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=9 | cycle=5 | confidence=0.071 | size=156738
-402-R-46(9) 402-R-47(9) 402-R-48(9) 402-R-65(9) 402-R-66(9) 402-R-67(9) 402-R-68(9) 402-R-69(9) 402-R-85(9) 402-R-86(9) 402-R-87(9) 402-R-88(9) 402-R-89(9) 402-R-105(9) 402-R-106(9) 402-R-107(9) 402-R-108(9) 402-R-109(9) 402-R-126(9) 402-R-127(9) 402-R-128(9) 
-[EVENT] 18.402 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=0 | cycle=6 | confidence=0.165 | size=364204
-402-R-46(0) 402-R-47(0) 402-R-48(0) 402-R-65(0) 402-R-66(0) 402-R-67(0) 402-R-68(0) 402-R-69(0) 402-R-85(0) 402-R-86(0) 402-R-87(0) 402-R-88(0) 402-R-89(0) 402-R-105(0) 402-R-106(0) 402-R-107(0) 402-R-108(0) 402-R-109(0) 402-R-126(0) 402-R-127(0) 402-R-128(0) 
-[EVENT] 18.602 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=1 | cycle=6 | confidence=0.079 | size=174697
-402-R-46(1) 402-R-47(1) 402-R-48(1) 402-R-65(1) 402-R-66(1) 402-R-67(1) 402-R-68(1) 402-R-69(1) 402-R-85(1) 402-R-86(1) 402-R-87(1) 402-R-88(1) 402-R-89(1) 402-R-105(1) 402-R-106(1) 402-R-107(1) 402-R-108(1) 402-R-109(1) 402-R-126(1) 402-R-127(1) 402-R-128(1) 
-[EVENT] 18.622 | event=UAVWaypointArrival | nodeId=402 | pos=(40.000,120.000,20.000)
-
-[EVENT] 18.802 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=2 | cycle=6 | confidence=0.096 | size=211121
-402-R-81(2) 402-R-82(2) 402-R-83(2) 402-R-100(2) 402-R-101(2) 402-R-102(2) 402-R-103(2) 402-R-104(2) 402-R-120(2) 402-R-121(2) 402-R-122(2) 402-R-123(2) 402-R-124(2) 402-R-140(2) 402-R-141(2) 402-R-142(2) 402-R-143(2) 402-R-144(2) 402-R-161(2) 402-R-162(2) 402-R-163(2) 
-[EVENT] 19.002 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=3 | cycle=6 | confidence=0.050 | size=109664
-402-R-81(3) 402-R-82(3) 402-R-83(3) 402-R-100(3) 402-R-101(3) 402-R-102(3) 402-R-103(3) 402-R-104(3) 402-R-120(3) 402-R-121(3) 402-R-122(3) 402-R-123(3) 402-R-124(3) 402-R-140(3) 402-R-141(3) 402-R-142(3) 402-R-143(3) 402-R-144(3) 402-R-161(3) 402-R-162(3) 402-R-163(3) 
-[EVENT] 19.008 | event=UAVWaypointArrival | nodeId=401 | pos=(80.000,80.000,20.000)
-
-[EVENT] 19.202 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=4 | cycle=6 | confidence=0.064 | size=140805
-402-R-81(4) 402-R-82(4) 402-R-83(4) 402-R-100(4) 402-R-101(4) 402-R-102(4) 402-R-103(4) 402-R-104(4) 402-R-120(4) 402-R-121(4) 402-R-122(4) 402-R-123(4) 402-R-124(4) 402-R-140(4) 402-R-141(4) 402-R-142(4) 402-R-143(4) 402-R-144(4) 402-R-161(4) 402-R-162(4) 402-R-163(4) 62-S-100(0) 62-S-100(1) 62-S-100(5) 65-S-100(6) 65-S-100(7) 65-S-100(8) 65-S-100(9) 
-[EVENT] 19.202 | event=RequestFragmentSharing | nodeId=100 | cellId=10000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
-
-[EVENT] 19.202 | event=RequestFragmentSharing | nodeId=120 | cellId=9999 | confidence=0.209 | fragments=2 3 4 
-
-[EVENT] 19.202 | event=RequestFragmentSharing | nodeId=140 | cellId=9999 | confidence=0.209 | fragments=2 3 4 
-62-S-141(0) 62-S-141(1) 62-S-141(5) 65-S-141(6) 65-S-141(7) 65-S-141(8) 65-S-141(9) 
-[EVENT] 19.202 | event=RequestFragmentSharing | nodeId=141 | cellId=10000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
-62-S-161(0) 62-S-161(1) 62-S-161(5) 65-S-161(6) 65-S-161(7) 65-S-161(8) 65-S-161(9) 
-[EVENT] 19.202 | event=RequestFragmentSharing | nodeId=161 | cellId=10000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
-62-S-162(0) 62-S-162(1) 62-S-162(5) 65-S-162(6) 65-S-162(7) 65-S-162(8) 65-S-162(9) 
-[EVENT] 19.202 | event=RequestFragmentSharing | nodeId=162 | cellId=10000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
-
-[EVENT] 19.402 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=5 | cycle=6 | confidence=0.091 | size=201712
-402-R-81(5) 402-R-82(5) 402-R-83(5) 402-R-100(5) 402-R-101(5) 402-R-102(5) 402-R-103(5) 402-R-104(5) 402-R-120(5) 402-R-121(5) 402-R-122(5) 402-R-123(5) 402-R-124(5) 402-R-140(5) 402-R-141(5) 402-R-142(5) 402-R-143(5) 402-R-144(5) 402-R-161(5) 402-R-162(5) 402-R-163(5) 
-[EVENT] 19.602 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=6 | cycle=6 | confidence=0.148 | size=326164
-402-R-81(6) 402-R-82(6) 402-R-83(6) 402-R-100(6) 402-R-101(6) 402-R-102(6) 402-R-103(6) 402-R-104(6) 402-R-120(6) 402-R-121(6) 402-R-122(6) 402-R-123(6) 402-R-124(6) 402-R-140(6) 402-R-141(6) 402-R-142(6) 402-R-143(6) 402-R-144(6) 402-R-161(6) 402-R-162(6) 402-R-163(6) 
-[EVENT] 19.802 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=7 | cycle=6 | confidence=0.071 | size=156539
-402-R-81(7) 402-R-82(7) 402-R-83(7) 402-R-100(7) 402-R-101(7) 402-R-102(7) 402-R-103(7) 402-R-104(7) 402-R-120(7) 402-R-121(7) 402-R-122(7) 402-R-123(7) 402-R-124(7) 402-R-140(7) 402-R-141(7) 402-R-142(7) 402-R-143(7) 402-R-144(7) 402-R-161(7) 402-R-162(7) 402-R-163(7) 
-[EVENT] 20.002 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=8 | cycle=6 | confidence=0.116 | size=255508
-402-R-81(8) 402-R-82(8) 402-R-83(8) 402-R-100(8) 402-R-101(8) 402-R-102(8) 402-R-103(8) 402-R-104(8) 402-R-120(8) 402-R-121(8) 402-R-122(8) 402-R-123(8) 402-R-124(8) 402-R-140(8) 402-R-141(8) 402-R-142(8) 402-R-143(8) 402-R-144(8) 402-R-161(8) 402-R-162(8) 402-R-163(8) 
-[EVENT] 20.202 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=9 | cycle=6 | confidence=0.071 | size=156738
-402-R-81(9) 402-R-82(9) 402-R-83(9) 402-R-100(9) 402-R-101(9) 402-R-102(9) 402-R-103(9) 402-R-104(9) 402-R-120(9) 402-R-121(9) 402-R-122(9) 402-R-123(9) 402-R-124(9) 402-R-140(9) 402-R-141(9) 402-R-142(9) 402-R-143(9) 402-R-144(9) 402-R-161(9) 402-R-162(9) 402-R-163(9) 
-[EVENT] 20.402 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=0 | cycle=7 | confidence=0.165 | size=364204
-402-R-81(0) 402-R-82(0) 402-R-83(0) 402-R-100(0) 402-R-101(0) 402-R-102(0) 402-R-103(0) 402-R-104(0) 402-R-120(0) 402-R-121(0) 402-R-122(0) 402-R-123(0) 402-R-124(0) 402-R-140(0) 402-R-141(0) 402-R-142(0) 402-R-143(0) 402-R-144(0) 402-R-161(0) 402-R-162(0) 402-R-163(0) 
-[EVENT] 20.602 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=1 | cycle=7 | confidence=0.079 | size=174697
-402-R-81(1) 402-R-82(1) 402-R-83(1) 402-R-100(1) 402-R-101(1) 402-R-102(1) 402-R-103(1) 402-R-104(1) 402-R-120(1) 402-R-121(1) 402-R-122(1) 402-R-123(1) 402-R-124(1) 402-R-140(1) 402-R-141(1) 402-R-142(1) 402-R-143(1) 402-R-144(1) 402-R-161(1) 402-R-162(1) 402-R-163(1) 
-[EVENT] 20.802 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=2 | cycle=7 | confidence=0.096 | size=211121
-402-R-81(2) 402-R-82(2) 402-R-83(2) 402-R-100(2) 402-R-101(2) 402-R-102(2) 402-R-103(2) 402-R-104(2) 402-R-120(2) 402-R-121(2) 402-R-122(2) 402-R-123(2) 402-R-124(2) 402-R-140(2) 402-R-141(2) 402-R-142(2) 402-R-143(2) 402-R-144(2) 402-R-161(2) 402-R-162(2) 402-R-163(2) 
-[EVENT] 20.885 | event=UAVWaypointArrival | nodeId=402 | pos=(220.000,140.000,20.000)
-
-[EVENT] 21.002 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=3 | cycle=7 | confidence=0.050 | size=109664
-402-R-110(3) 402-R-111(3) 402-R-112(3) 402-R-129(3) 402-R-130(3) 402-R-131(3) 402-R-132(3) 402-R-133(3) 402-R-149(3) 402-R-150(3) 402-R-151(3) 402-R-152(3) 402-R-153(3) 402-R-169(3) 402-R-170(3) 402-R-171(3) 402-R-172(3) 402-R-173(3) 402-R-190(3) 402-R-191(3) 402-R-192(3) 
-[EVENT] 21.202 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=4 | cycle=7 | confidence=0.064 | size=140805
-402-R-110(4) 402-R-111(4) 402-R-112(4) 402-R-129(4) 402-R-130(4) 402-R-131(4) 402-R-132(4) 402-R-133(4) 402-R-149(4) 402-R-150(4) 402-R-151(4) 402-R-152(4) 402-R-153(4) 402-R-169(4) 402-R-170(4) 402-R-171(4) 402-R-172(4) 402-R-173(4) 402-R-190(4) 402-R-191(4) 402-R-192(4) 
-[EVENT] 21.258 | event=UAVWaypointArrival | nodeId=401 | pos=(60.000,80.000,20.000)
-
-[EVENT] 21.402 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=5 | cycle=7 | confidence=0.091 | size=201712
-402-R-110(5) 402-R-111(5) 402-R-112(5) 402-R-129(5) 402-R-130(5) 402-R-131(5) 402-R-132(5) 402-R-133(5) 402-R-149(5) 402-R-150(5) 402-R-151(5) 402-R-152(5) 402-R-153(5) 402-R-169(5) 402-R-170(5) 402-R-171(5) 402-R-172(5) 402-R-173(5) 402-R-190(5) 402-R-191(5) 402-R-192(5) 69-S-153(0) 69-S-153(1) 69-S-153(2) 69-S-153(6) 69-S-153(7) 69-S-153(8) 69-S-153(9) 
-[EVENT] 21.402 | event=RequestFragmentSharing | nodeId=153 | cellId=10001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
-69-S-172(0) 69-S-172(1) 69-S-172(2) 69-S-172(6) 69-S-172(7) 69-S-172(8) 69-S-172(9) 
-[EVENT] 21.402 | event=RequestFragmentSharing | nodeId=172 | cellId=10001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
-69-S-173(0) 69-S-173(1) 69-S-173(2) 69-S-173(6) 69-S-173(7) 69-S-173(8) 69-S-173(9) 
-[EVENT] 21.402 | event=RequestFragmentSharing | nodeId=173 | cellId=10001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
-
-[EVENT] 21.602 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=6 | cycle=7 | confidence=0.148 | size=326164
-402-R-110(6) 402-R-111(6) 402-R-112(6) 402-R-129(6) 402-R-130(6) 402-R-131(6) 402-R-132(6) 402-R-133(6) 402-R-149(6) 402-R-150(6) 402-R-151(6) 402-R-152(6) 402-R-153(6) 402-R-169(6) 402-R-170(6) 402-R-171(6) 402-R-172(6) 402-R-173(6) 402-R-190(6) 402-R-191(6) 402-R-192(6) 
-[EVENT] 21.802 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=7 | cycle=7 | confidence=0.071 | size=156539
-402-R-110(7) 402-R-111(7) 402-R-112(7) 402-R-129(7) 402-R-130(7) 402-R-131(7) 402-R-132(7) 402-R-133(7) 402-R-149(7) 402-R-150(7) 402-R-151(7) 402-R-152(7) 402-R-153(7) 402-R-169(7) 402-R-170(7) 402-R-171(7) 402-R-172(7) 402-R-173(7) 402-R-190(7) 402-R-191(7) 402-R-192(7) 
-[EVENT] 22.002 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=8 | cycle=7 | confidence=0.116 | size=255508
-402-R-110(8) 402-R-111(8) 402-R-112(8) 402-R-129(8) 402-R-130(8) 402-R-131(8) 402-R-132(8) 402-R-133(8) 402-R-149(8) 402-R-150(8) 402-R-151(8) 402-R-152(8) 402-R-153(8) 402-R-169(8) 402-R-170(8) 402-R-171(8) 402-R-172(8) 402-R-173(8) 402-R-190(8) 402-R-191(8) 402-R-192(8) 
-[EVENT] 22.160 | event=UAVWaypointArrival | nodeId=402 | pos=(200.000,240.000,20.000)
-
-[EVENT] 22.202 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=9 | cycle=7 | confidence=0.071 | size=156738
-402-R-209(9) 402-R-210(9) 402-R-211(9) 402-R-228(9) 402-R-229(9) 402-R-230(9) 402-R-231(9) 402-R-232(9) 402-R-248(9) 402-R-249(9) 402-R-250(9) 402-R-251(9) 402-R-252(9) 402-R-268(9) 402-R-269(9) 402-R-270(9) 402-R-271(9) 402-R-272(9) 402-R-289(9) 402-R-290(9) 402-R-291(9) 
-[EVENT] 22.402 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=0 | cycle=8 | confidence=0.165 | size=364204
-402-R-209(0) 402-R-210(0) 402-R-211(0) 402-R-228(0) 402-R-229(0) 402-R-230(0) 402-R-231(0) 402-R-232(0) 402-R-248(0) 402-R-249(0) 402-R-250(0) 402-R-251(0) 402-R-252(0) 402-R-268(0) 402-R-269(0) 402-R-270(0) 402-R-271(0) 402-R-272(0) 402-R-289(0) 402-R-290(0) 402-R-291(0) 
-[EVENT] 22.602 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=1 | cycle=8 | confidence=0.079 | size=174697
-402-R-209(1) 402-R-210(1) 402-R-211(1) 402-R-228(1) 402-R-229(1) 402-R-230(1) 402-R-231(1) 402-R-232(1) 402-R-248(1) 402-R-249(1) 402-R-250(1) 402-R-251(1) 402-R-252(1) 402-R-268(1) 402-R-269(1) 402-R-270(1) 402-R-271(1) 402-R-272(1) 402-R-289(1) 402-R-290(1) 402-R-291(1) 211-S-252(2) 211-S-252(3) 211-S-252(4) 211-S-252(6) 211-S-252(7) 211-S-252(8) 
-[EVENT] 22.602 | event=RequestFragmentSharing | nodeId=252 | cellId=20001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-186-S-270(2) 186-S-270(3) 186-S-270(4) 186-S-270(5) 186-S-270(6) 186-S-270(7) 186-S-270(8) 
-[EVENT] 22.602 | event=RequestFragmentSharing | nodeId=270 | cellId=20000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
-211-S-271(2) 211-S-271(3) 211-S-271(4) 211-S-271(6) 211-S-271(7) 211-S-271(8) 
-[EVENT] 22.602 | event=RequestFragmentSharing | nodeId=271 | cellId=20001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-211-S-272(2) 211-S-272(3) 211-S-272(4) 211-S-272(6) 211-S-272(7) 211-S-272(8) 
-[EVENT] 22.602 | event=RequestFragmentSharing | nodeId=272 | cellId=20001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-186-S-290(2) 186-S-290(3) 186-S-290(4) 186-S-290(5) 186-S-290(6) 186-S-290(7) 186-S-290(8) 
-[EVENT] 22.602 | event=RequestFragmentSharing | nodeId=290 | cellId=20000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
-211-S-291(2) 211-S-291(3) 211-S-291(4) 211-S-291(6) 211-S-291(7) 211-S-291(8) 
-[EVENT] 22.602 | event=RequestFragmentSharing | nodeId=291 | cellId=20001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-
-[EVENT] 22.802 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=2 | cycle=8 | confidence=0.096 | size=211121
-402-R-209(2) 402-R-210(2) 402-R-211(2) 402-R-228(2) 402-R-229(2) 402-R-230(2) 402-R-231(2) 402-R-232(2) 402-R-248(2) 402-R-249(2) 402-R-250(2) 402-R-251(2) 402-R-252(2) 402-R-268(2) 402-R-269(2) 402-R-270(2) 402-R-271(2) 402-R-272(2) 402-R-289(2) 402-R-290(2) 402-R-291(2) 
-[EVENT] 23.002 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=3 | cycle=8 | confidence=0.050 | size=109664
-402-R-209(3) 402-R-210(3) 402-R-211(3) 402-R-228(3) 402-R-229(3) 402-R-230(3) 402-R-231(3) 402-R-232(3) 402-R-248(3) 402-R-249(3) 402-R-250(3) 402-R-251(3) 402-R-252(3) 402-R-268(3) 402-R-269(3) 402-R-270(3) 402-R-271(3) 402-R-272(3) 402-R-289(3) 402-R-290(3) 402-R-291(3) 
-[EVENT] 23.191 | event=UAVWaypointArrival | nodeId=402 | pos=(120.000,260.000,20.000)
-
-[EVENT] 23.202 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=4 | cycle=8 | confidence=0.064 | size=140805
-402-R-225(4) 402-R-226(4) 402-R-227(4) 402-R-244(4) 402-R-245(4) 402-R-246(4) 402-R-247(4) 402-R-248(4) 402-R-264(4) 402-R-265(4) 402-R-266(4) 402-R-267(4) 402-R-268(4) 402-R-284(4) 402-R-285(4) 402-R-286(4) 402-R-287(4) 402-R-288(4) 402-R-305(4) 402-R-306(4) 402-R-307(4) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=0 | cellId=0 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=1 | cellId=0 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=2 | cellId=0 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=3 | cellId=0 | confidence=0.000 | fragments=
-46-S-4(0) 46-S-4(1) 46-S-4(5) 46-S-4(6) 46-S-4(7) 46-S-4(8) 46-S-4(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=4 | cellId=1 | confidence=0.741 | fragments=0 1 5 6 7 8 9 
-4-S-5(0) 4-S-5(1) 4-S-5(5) 4-S-5(6) 4-S-5(7) 4-S-5(8) 4-S-5(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=5 | cellId=1 | confidence=0.741 | fragments=0 1 5 6 7 8 9 
-4-S-6(0) 4-S-6(1) 4-S-6(5) 4-S-6(6) 4-S-6(7) 4-S-6(8) 4-S-6(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=6 | cellId=1 | confidence=0.741 | fragments=0 1 5 6 7 8 9 
-4-S-7(0) 4-S-7(1) 4-S-7(5) 4-S-7(6) 4-S-7(7) 4-S-7(8) 4-S-7(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=7 | cellId=1 | confidence=0.741 | fragments=0 1 5 6 7 8 9 
-4-S-8(0) 4-S-8(1) 4-S-8(5) 4-S-8(6) 4-S-8(7) 4-S-8(8) 4-S-8(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=8 | cellId=1 | confidence=0.741 | fragments=0 1 5 6 7 8 9 
-4-S-9(0) 4-S-9(1) 4-S-9(5) 4-S-9(6) 4-S-9(7) 4-S-9(8) 4-S-9(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=9 | cellId=1 | confidence=0.741 | fragments=0 1 5 6 7 8 9 
-4-S-10(0) 4-S-10(1) 4-S-10(5) 4-S-10(6) 4-S-10(7) 4-S-10(8) 4-S-10(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=10 | cellId=1 | confidence=0.741 | fragments=0 1 5 6 7 8 9 
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=11 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=12 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=13 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=14 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=15 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=16 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=17 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=18 | cellId=3 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=19 | cellId=3 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=20 | cellId=0 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=21 | cellId=0 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=22 | cellId=0 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=23 | cellId=0 | confidence=0.000 | fragments=
-4-S-24(0) 4-S-24(1) 4-S-24(5) 4-S-24(6) 4-S-24(7) 4-S-24(8) 4-S-24(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=24 | cellId=1 | confidence=0.741 | fragments=0 1 5 6 7 8 9 
-4-S-25(0) 4-S-25(1) 4-S-25(5) 4-S-25(6) 4-S-25(7) 4-S-25(8) 4-S-25(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=25 | cellId=1 | confidence=0.741 | fragments=0 1 5 6 7 8 9 
-4-S-26(0) 4-S-26(1) 4-S-26(5) 4-S-26(6) 4-S-26(7) 4-S-26(8) 4-S-26(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=26 | cellId=1 | confidence=0.741 | fragments=0 1 5 6 7 8 9 
-4-S-27(0) 4-S-27(1) 4-S-27(5) 4-S-27(6) 4-S-27(7) 4-S-27(8) 4-S-27(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=27 | cellId=1 | confidence=0.741 | fragments=0 1 5 6 7 8 9 
-4-S-28(0) 4-S-28(1) 4-S-28(5) 4-S-28(6) 4-S-28(7) 4-S-28(8) 4-S-28(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=28 | cellId=1 | confidence=0.741 | fragments=0 1 5 6 7 8 9 
-4-S-29(0) 4-S-29(1) 4-S-29(5) 4-S-29(6) 4-S-29(7) 4-S-29(8) 4-S-29(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=29 | cellId=1 | confidence=0.741 | fragments=0 1 5 6 7 8 9 
-4-S-30(0) 4-S-30(1) 4-S-30(5) 4-S-30(6) 4-S-30(7) 4-S-30(8) 4-S-30(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=30 | cellId=1 | confidence=0.741 | fragments=0 1 5 6 7 8 9 
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=31 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=32 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=33 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=34 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=35 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=36 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=37 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=38 | cellId=3 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=39 | cellId=3 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=40 | cellId=0 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=41 | cellId=0 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=42 | cellId=0 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=43 | cellId=0 | confidence=0.000 | fragments=
-4-S-44(0) 4-S-44(1) 4-S-44(5) 4-S-44(6) 4-S-44(7) 4-S-44(8) 4-S-44(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=44 | cellId=1 | confidence=0.741 | fragments=0 1 5 6 7 8 9 
-4-S-45(0) 4-S-45(1) 4-S-45(5) 4-S-45(6) 4-S-45(7) 4-S-45(8) 4-S-45(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=45 | cellId=1 | confidence=0.741 | fragments=0 1 5 6 7 8 9 
-4-S-49(0) 4-S-49(1) 4-S-49(5) 4-S-49(6) 4-S-49(7) 4-S-49(8) 4-S-49(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=49 | cellId=1 | confidence=0.741 | fragments=0 1 5 6 7 8 9 
-4-S-50(0) 4-S-50(1) 4-S-50(5) 4-S-50(6) 4-S-50(7) 4-S-50(8) 4-S-50(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=50 | cellId=1 | confidence=0.741 | fragments=0 1 5 6 7 8 9 
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=51 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=52 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=53 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=54 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=55 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=56 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=57 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=58 | cellId=3 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=59 | cellId=3 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=60 | cellId=0 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=61 | cellId=0 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=73 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=74 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=75 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=76 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=77 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=78 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=79 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=80 | cellId=0 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=94 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=95 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=96 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=97 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=98 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=99 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=114 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=115 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=116 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=117 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=118 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=119 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=134 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=135 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=136 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=137 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=138 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=139 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=154 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=155 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=156 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=157 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=158 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=159 | cellId=10002 | confidence=0.000 | fragments=
-120-S-160(0) 120-S-160(1) 120-S-160(2) 120-S-160(3) 120-S-160(4) 120-S-160(5) 120-S-160(6) 120-S-160(7) 120-S-160(8) 120-S-160(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=160 | cellId=9999 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=174 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=175 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=176 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=177 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=178 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=179 | cellId=10002 | confidence=0.000 | fragments=
-202-S-180(0) 202-S-180(1) 202-S-180(2) 202-S-180(3) 202-S-180(4) 202-S-180(5) 202-S-180(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=180 | cellId=19999 | confidence=0.616 | fragments=0 1 2 3 4 5 9 
-180-S-181(0) 180-S-181(1) 180-S-181(2) 180-S-181(3) 180-S-181(4) 180-S-181(5) 180-S-181(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=181 | cellId=19999 | confidence=0.616 | fragments=0 1 2 3 4 5 9 
-211-S-193(0) 211-S-193(1) 211-S-193(2) 211-S-193(3) 211-S-193(4) 211-S-193(6) 211-S-193(7) 211-S-193(8) 211-S-193(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=193 | cellId=20001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-193-S-194(0) 193-S-194(1) 193-S-194(2) 193-S-194(3) 193-S-194(4) 193-S-194(6) 193-S-194(7) 193-S-194(8) 193-S-194(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=194 | cellId=20001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-193-S-195(0) 193-S-195(1) 193-S-195(2) 193-S-195(3) 193-S-195(4) 193-S-195(6) 193-S-195(7) 193-S-195(8) 193-S-195(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=195 | cellId=20001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=196 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=197 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=198 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=199 | cellId=10002 | confidence=0.000 | fragments=
-180-S-200(0) 180-S-200(1) 180-S-200(2) 180-S-200(3) 180-S-200(4) 180-S-200(5) 180-S-200(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=200 | cellId=19999 | confidence=0.616 | fragments=0 1 2 3 4 5 9 
-180-S-201(0) 180-S-201(1) 180-S-201(2) 180-S-201(3) 180-S-201(4) 180-S-201(5) 180-S-201(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=201 | cellId=19999 | confidence=0.616 | fragments=0 1 2 3 4 5 9 
-193-S-213(0) 193-S-213(1) 193-S-213(2) 193-S-213(3) 193-S-213(4) 193-S-213(6) 193-S-213(7) 193-S-213(8) 193-S-213(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=213 | cellId=20001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-193-S-214(0) 193-S-214(1) 193-S-214(2) 193-S-214(3) 193-S-214(4) 193-S-214(6) 193-S-214(7) 193-S-214(8) 193-S-214(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=214 | cellId=20001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-193-S-215(0) 193-S-215(1) 193-S-215(2) 193-S-215(3) 193-S-215(4) 193-S-215(6) 193-S-215(7) 193-S-215(8) 193-S-215(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=215 | cellId=20001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-193-S-216(0) 193-S-216(1) 193-S-216(2) 193-S-216(3) 193-S-216(4) 193-S-216(6) 193-S-216(7) 193-S-216(8) 193-S-216(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=216 | cellId=20001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-193-S-217(0) 193-S-217(1) 193-S-217(2) 193-S-217(3) 193-S-217(4) 193-S-217(6) 193-S-217(7) 193-S-217(8) 193-S-217(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=217 | cellId=20001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=218 | cellId=20002 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=219 | cellId=20002 | confidence=0.000 | fragments=
-180-S-220(0) 180-S-220(1) 180-S-220(2) 180-S-220(3) 180-S-220(4) 180-S-220(5) 180-S-220(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=220 | cellId=19999 | confidence=0.616 | fragments=0 1 2 3 4 5 9 
-180-S-221(0) 180-S-221(1) 180-S-221(2) 180-S-221(3) 180-S-221(4) 180-S-221(5) 180-S-221(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=221 | cellId=19999 | confidence=0.616 | fragments=0 1 2 3 4 5 9 
-193-S-233(0) 193-S-233(1) 193-S-233(2) 193-S-233(3) 193-S-233(4) 193-S-233(6) 193-S-233(7) 193-S-233(8) 193-S-233(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=233 | cellId=20001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-193-S-234(0) 193-S-234(1) 193-S-234(2) 193-S-234(3) 193-S-234(4) 193-S-234(6) 193-S-234(7) 193-S-234(8) 193-S-234(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=234 | cellId=20001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-193-S-235(0) 193-S-235(1) 193-S-235(2) 193-S-235(3) 193-S-235(4) 193-S-235(6) 193-S-235(7) 193-S-235(8) 193-S-235(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=235 | cellId=20001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-193-S-236(0) 193-S-236(1) 193-S-236(2) 193-S-236(3) 193-S-236(4) 193-S-236(6) 193-S-236(7) 193-S-236(8) 193-S-236(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=236 | cellId=20001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-193-S-237(0) 193-S-237(1) 193-S-237(2) 193-S-237(3) 193-S-237(4) 193-S-237(6) 193-S-237(7) 193-S-237(8) 193-S-237(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=237 | cellId=20001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=238 | cellId=20002 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=239 | cellId=20002 | confidence=0.000 | fragments=
-180-S-240(0) 180-S-240(1) 180-S-240(2) 180-S-240(3) 180-S-240(4) 180-S-240(5) 180-S-240(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=240 | cellId=19999 | confidence=0.616 | fragments=0 1 2 3 4 5 9 
-180-S-241(0) 180-S-241(1) 180-S-241(2) 180-S-241(3) 180-S-241(4) 180-S-241(5) 180-S-241(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=241 | cellId=19999 | confidence=0.616 | fragments=0 1 2 3 4 5 9 
-180-S-242(0) 180-S-242(1) 180-S-242(2) 180-S-242(3) 180-S-242(4) 180-S-242(5) 180-S-242(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=242 | cellId=19999 | confidence=0.616 | fragments=0 1 2 3 4 5 9 
-193-S-253(0) 193-S-253(1) 193-S-253(2) 193-S-253(3) 193-S-253(4) 193-S-253(6) 193-S-253(7) 193-S-253(8) 193-S-253(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=253 | cellId=20001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-193-S-254(0) 193-S-254(1) 193-S-254(2) 193-S-254(3) 193-S-254(4) 193-S-254(6) 193-S-254(7) 193-S-254(8) 193-S-254(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=254 | cellId=20001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-193-S-255(0) 193-S-255(1) 193-S-255(2) 193-S-255(3) 193-S-255(4) 193-S-255(6) 193-S-255(7) 193-S-255(8) 193-S-255(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=255 | cellId=20001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-193-S-256(0) 193-S-256(1) 193-S-256(2) 193-S-256(3) 193-S-256(4) 193-S-256(6) 193-S-256(7) 193-S-256(8) 193-S-256(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=256 | cellId=20001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-193-S-257(0) 193-S-257(1) 193-S-257(2) 193-S-257(3) 193-S-257(4) 193-S-257(6) 193-S-257(7) 193-S-257(8) 193-S-257(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=257 | cellId=20001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=258 | cellId=20002 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=259 | cellId=20002 | confidence=0.000 | fragments=
-180-S-260(0) 180-S-260(1) 180-S-260(2) 180-S-260(3) 180-S-260(4) 180-S-260(5) 180-S-260(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=260 | cellId=19999 | confidence=0.616 | fragments=0 1 2 3 4 5 9 
-180-S-261(0) 180-S-261(1) 180-S-261(2) 180-S-261(3) 180-S-261(4) 180-S-261(5) 180-S-261(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=261 | cellId=19999 | confidence=0.616 | fragments=0 1 2 3 4 5 9 
-180-S-262(0) 180-S-262(1) 180-S-262(2) 180-S-262(3) 180-S-262(4) 180-S-262(5) 180-S-262(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=262 | cellId=19999 | confidence=0.616 | fragments=0 1 2 3 4 5 9 
-180-S-263(0) 180-S-263(1) 180-S-263(2) 180-S-263(3) 180-S-263(4) 180-S-263(5) 180-S-263(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=263 | cellId=19999 | confidence=0.616 | fragments=0 1 2 3 4 5 9 
-193-S-273(0) 193-S-273(1) 193-S-273(2) 193-S-273(3) 193-S-273(4) 193-S-273(6) 193-S-273(7) 193-S-273(8) 193-S-273(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=273 | cellId=20001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-193-S-274(0) 193-S-274(1) 193-S-274(2) 193-S-274(3) 193-S-274(4) 193-S-274(6) 193-S-274(7) 193-S-274(8) 193-S-274(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=274 | cellId=20001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-193-S-275(0) 193-S-275(1) 193-S-275(2) 193-S-275(3) 193-S-275(4) 193-S-275(6) 193-S-275(7) 193-S-275(8) 193-S-275(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=275 | cellId=20001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-193-S-276(0) 193-S-276(1) 193-S-276(2) 193-S-276(3) 193-S-276(4) 193-S-276(6) 193-S-276(7) 193-S-276(8) 193-S-276(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=276 | cellId=20001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-193-S-277(0) 193-S-277(1) 193-S-277(2) 193-S-277(3) 193-S-277(4) 193-S-277(6) 193-S-277(7) 193-S-277(8) 193-S-277(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=277 | cellId=20001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=278 | cellId=20002 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=279 | cellId=20002 | confidence=0.000 | fragments=
-180-S-280(0) 180-S-280(1) 180-S-280(2) 180-S-280(3) 180-S-280(4) 180-S-280(5) 180-S-280(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=280 | cellId=19999 | confidence=0.616 | fragments=0 1 2 3 4 5 9 
-180-S-281(0) 180-S-281(1) 180-S-281(2) 180-S-281(3) 180-S-281(4) 180-S-281(5) 180-S-281(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=281 | cellId=19999 | confidence=0.616 | fragments=0 1 2 3 4 5 9 
-180-S-282(0) 180-S-282(1) 180-S-282(2) 180-S-282(3) 180-S-282(4) 180-S-282(5) 180-S-282(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=282 | cellId=19999 | confidence=0.616 | fragments=0 1 2 3 4 5 9 
-180-S-283(0) 180-S-283(1) 180-S-283(2) 180-S-283(3) 180-S-283(4) 180-S-283(5) 180-S-283(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=283 | cellId=19999 | confidence=0.616 | fragments=0 1 2 3 4 5 9 
-193-S-292(0) 193-S-292(1) 193-S-292(2) 193-S-292(3) 193-S-292(4) 193-S-292(6) 193-S-292(7) 193-S-292(8) 193-S-292(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=292 | cellId=20001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-193-S-293(0) 193-S-293(1) 193-S-293(2) 193-S-293(3) 193-S-293(4) 193-S-293(6) 193-S-293(7) 193-S-293(8) 193-S-293(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=293 | cellId=20001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-193-S-294(0) 193-S-294(1) 193-S-294(2) 193-S-294(3) 193-S-294(4) 193-S-294(6) 193-S-294(7) 193-S-294(8) 193-S-294(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=294 | cellId=20001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-193-S-295(0) 193-S-295(1) 193-S-295(2) 193-S-295(3) 193-S-295(4) 193-S-295(6) 193-S-295(7) 193-S-295(8) 193-S-295(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=295 | cellId=20001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-193-S-296(0) 193-S-296(1) 193-S-296(2) 193-S-296(3) 193-S-296(4) 193-S-296(6) 193-S-296(7) 193-S-296(8) 193-S-296(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=296 | cellId=20001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-193-S-297(0) 193-S-297(1) 193-S-297(2) 193-S-297(3) 193-S-297(4) 193-S-297(6) 193-S-297(7) 193-S-297(8) 193-S-297(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=297 | cellId=20001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=298 | cellId=20002 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=299 | cellId=20002 | confidence=0.000 | fragments=
-180-S-300(0) 180-S-300(1) 180-S-300(2) 180-S-300(3) 180-S-300(4) 180-S-300(5) 180-S-300(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=300 | cellId=19999 | confidence=0.616 | fragments=0 1 2 3 4 5 9 
-180-S-301(0) 180-S-301(1) 180-S-301(2) 180-S-301(3) 180-S-301(4) 180-S-301(5) 180-S-301(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=301 | cellId=19999 | confidence=0.616 | fragments=0 1 2 3 4 5 9 
-305-S-302(4) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=302 | cellId=29999 | confidence=0.064 | fragments=4 
-302-S-303(4) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=303 | cellId=29999 | confidence=0.064 | fragments=4 
-302-S-304(4) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=304 | cellId=29999 | confidence=0.064 | fragments=4 
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=309 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=310 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=311 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=312 | cellId=30000 | confidence=0.000 | fragments=
-193-S-313(0) 193-S-313(1) 193-S-313(2) 193-S-313(3) 193-S-313(4) 193-S-313(6) 193-S-313(7) 193-S-313(8) 193-S-313(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=313 | cellId=20001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-193-S-314(0) 193-S-314(1) 193-S-314(2) 193-S-314(3) 193-S-314(4) 193-S-314(6) 193-S-314(7) 193-S-314(8) 193-S-314(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=314 | cellId=20001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-193-S-315(0) 193-S-315(1) 193-S-315(2) 193-S-315(3) 193-S-315(4) 193-S-315(6) 193-S-315(7) 193-S-315(8) 193-S-315(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=315 | cellId=20001 | confidence=0.859 | fragments=0 1 2 3 4 6 7 8 9 
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=316 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=317 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=318 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=319 | cellId=30001 | confidence=0.000 | fragments=
-180-S-320(0) 180-S-320(1) 180-S-320(2) 180-S-320(3) 180-S-320(4) 180-S-320(5) 180-S-320(9) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=320 | cellId=19999 | confidence=0.616 | fragments=0 1 2 3 4 5 9 
-302-S-321(4) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=321 | cellId=29999 | confidence=0.064 | fragments=4 
-302-S-322(4) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=322 | cellId=29999 | confidence=0.064 | fragments=4 
-302-S-323(4) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=323 | cellId=29999 | confidence=0.064 | fragments=4 
-302-S-324(4) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=324 | cellId=29999 | confidence=0.064 | fragments=4 
-302-S-325(4) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=325 | cellId=29999 | confidence=0.064 | fragments=4 
-302-S-326(4) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=326 | cellId=29999 | confidence=0.064 | fragments=4 
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=327 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=328 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=329 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=330 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=331 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=332 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=333 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=334 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=335 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=336 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=337 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=338 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=339 | cellId=30001 | confidence=0.000 | fragments=
-302-S-340(4) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=340 | cellId=29999 | confidence=0.064 | fragments=4 
-302-S-341(4) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=341 | cellId=29999 | confidence=0.064 | fragments=4 
-302-S-342(4) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=342 | cellId=29999 | confidence=0.064 | fragments=4 
-302-S-343(4) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=343 | cellId=29999 | confidence=0.064 | fragments=4 
-302-S-344(4) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=344 | cellId=29999 | confidence=0.064 | fragments=4 
-302-S-345(4) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=345 | cellId=29999 | confidence=0.064 | fragments=4 
-302-S-346(4) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=346 | cellId=29999 | confidence=0.064 | fragments=4 
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=347 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=348 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=349 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=350 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=351 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=352 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=353 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=354 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=355 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=356 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=357 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=358 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=359 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=360 | cellId=29998 | confidence=0.000 | fragments=
-302-S-361(4) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=361 | cellId=29999 | confidence=0.064 | fragments=4 
-302-S-362(4) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=362 | cellId=29999 | confidence=0.064 | fragments=4 
-302-S-363(4) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=363 | cellId=29999 | confidence=0.064 | fragments=4 
-302-S-364(4) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=364 | cellId=29999 | confidence=0.064 | fragments=4 
-302-S-365(4) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=365 | cellId=29999 | confidence=0.064 | fragments=4 
-302-S-366(4) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=366 | cellId=29999 | confidence=0.064 | fragments=4 
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=367 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=368 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=369 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=370 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=371 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=372 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=373 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=374 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=375 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=376 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=377 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=378 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=379 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=380 | cellId=29998 | confidence=0.000 | fragments=
-302-S-381(4) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=381 | cellId=29999 | confidence=0.064 | fragments=4 
-302-S-382(4) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=382 | cellId=29999 | confidence=0.064 | fragments=4 
-302-S-383(4) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=383 | cellId=29999 | confidence=0.064 | fragments=4 
-302-S-384(4) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=384 | cellId=29999 | confidence=0.064 | fragments=4 
-302-S-385(4) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=385 | cellId=29999 | confidence=0.064 | fragments=4 
-302-S-386(4) 
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=386 | cellId=29999 | confidence=0.064 | fragments=4 
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=387 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=388 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=389 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=390 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=391 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=392 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=393 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=394 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=395 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=396 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=397 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=398 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 23.391 | event=RequestFragmentSharing | nodeId=399 | cellId=30001 | confidence=0.000 | fragments=
-[EVENT] 23.391 | event=CellCooperationTimeout | triggeredNodes=254
-
-[EVENT] 23.508 | event=UAVWaypointArrival | nodeId=401 | pos=(40.000,80.000,20.000)
-186-S-264(0) 186-S-264(1) 186-S-264(2) 186-S-264(3) 186-S-264(5) 186-S-264(6) 186-S-264(7) 186-S-264(8) 186-S-264(9) 
-[EVENT] 23.602 | event=RequestFragmentSharing | nodeId=264 | cellId=20000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
-186-S-284(0) 186-S-284(1) 186-S-284(2) 186-S-284(3) 186-S-284(5) 186-S-284(6) 186-S-284(7) 186-S-284(8) 186-S-284(9) 
-[EVENT] 23.602 | event=RequestFragmentSharing | nodeId=284 | cellId=20000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
-
-[EVENT] 23.602 | event=RequestFragmentSharing | nodeId=305 | cellId=29999 | confidence=0.064 | fragments=4 
-
-[EVENT] 25.758 | event=UAVWaypointArrival | nodeId=401 | pos=(20.000,80.000,20.000)
-
-[EVENT] 28.008 | event=UAVWaypointArrival | nodeId=401 | pos=(20.000,100.000,20.000)
-
-[EVENT] 30.258 | event=UAVWaypointArrival | nodeId=401 | pos=(0.000,100.000,20.000)
-
-[EVENT] 32.611 | event=UAVWaypointArrival | nodeId=401 | pos=(20.000,120.000,20.000)
-
-[EVENT] 34.861 | event=UAVWaypointArrival | nodeId=401 | pos=(40.000,120.000,20.000)
-
-[EVENT] 37.111 | event=UAVWaypointArrival | nodeId=401 | pos=(40.000,100.000,20.000)
-
-[EVENT] 39.361 | event=UAVWaypointArrival | nodeId=401 | pos=(60.000,100.000,20.000)
-
-[EVENT] 41.611 | event=UAVWaypointArrival | nodeId=401 | pos=(80.000,100.000,20.000)
-
-[EVENT] 43.861 | event=UAVWaypointArrival | nodeId=401 | pos=(100.000,100.000,20.000)
-
-[EVENT] 46.111 | event=UAVWaypointArrival | nodeId=401 | pos=(120.000,100.000,20.000)
-
-[EVENT] 48.361 | event=UAVWaypointArrival | nodeId=401 | pos=(120.000,80.000,20.000)
-
-[EVENT] 50.611 | event=UAVWaypointArrival | nodeId=401 | pos=(140.000,80.000,20.000)
-
-[EVENT] 52.861 | event=UAVWaypointArrival | nodeId=401 | pos=(160.000,80.000,20.000)
-
-[EVENT] 55.111 | event=UAVWaypointArrival | nodeId=401 | pos=(180.000,80.000,20.000)
-
-[EVENT] 57.361 | event=UAVWaypointArrival | nodeId=401 | pos=(180.000,60.000,20.000)
-
-[EVENT] 59.611 | event=UAVWaypointArrival | nodeId=401 | pos=(200.000,60.000,20.000)
-
-[EVENT] 61.861 | event=UAVWaypointArrival | nodeId=401 | pos=(220.000,60.000,20.000)
-
-[EVENT] 64.111 | event=UAVWaypointArrival | nodeId=401 | pos=(240.000,60.000,20.000)
-
-[EVENT] 66.361 | event=UAVWaypointArrival | nodeId=401 | pos=(240.000,80.000,20.000)
-
-[EVENT] 68.611 | event=UAVWaypointArrival | nodeId=401 | pos=(220.000,80.000,20.000)
-
-[EVENT] 70.861 | event=UAVWaypointArrival | nodeId=401 | pos=(200.000,80.000,20.000)
-
-[EVENT] 73.111 | event=UAVWaypointArrival | nodeId=401 | pos=(200.000,100.000,20.000)
-
-[EVENT] 75.361 | event=UAVWaypointArrival | nodeId=401 | pos=(180.000,100.000,20.000)
-
-[EVENT] 77.611 | event=UAVWaypointArrival | nodeId=401 | pos=(160.000,100.000,20.000)
-
-[EVENT] 79.861 | event=UAVWaypointArrival | nodeId=401 | pos=(140.000,100.000,20.000)
-
-[EVENT] 82.111 | event=UAVWaypointArrival | nodeId=401 | pos=(140.000,120.000,20.000)
-
-[EVENT] 84.361 | event=UAVWaypointArrival | nodeId=401 | pos=(120.000,120.000,20.000)
-
-[EVENT] 86.611 | event=UAVWaypointArrival | nodeId=401 | pos=(100.000,120.000,20.000)
-
-[EVENT] 88.861 | event=UAVWaypointArrival | nodeId=401 | pos=(80.000,120.000,20.000)
-
-[EVENT] 91.111 | event=UAVWaypointArrival | nodeId=401 | pos=(60.000,120.000,20.000)
-
-[EVENT] 93.361 | event=UAVWaypointArrival | nodeId=401 | pos=(60.000,140.000,20.000)
-
-[EVENT] 95.611 | event=UAVWaypointArrival | nodeId=401 | pos=(40.000,140.000,20.000)
-
-[EVENT] 97.861 | event=UAVWaypointArrival | nodeId=401 | pos=(20.000,140.000,20.000)
-
-[EVENT] 100.111 | event=UAVWaypointArrival | nodeId=401 | pos=(20.000,160.000,20.000)
-
-[EVENT] 102.361 | event=UAVWaypointArrival | nodeId=401 | pos=(40.000,160.000,20.000)
-
-[EVENT] 104.611 | event=UAVWaypointArrival | nodeId=401 | pos=(60.000,160.000,20.000)
-
-[EVENT] 106.861 | event=UAVWaypointArrival | nodeId=401 | pos=(80.000,160.000,20.000)
-
-[EVENT] 109.111 | event=UAVWaypointArrival | nodeId=401 | pos=(80.000,140.000,20.000)
-
-[EVENT] 111.361 | event=UAVWaypointArrival | nodeId=401 | pos=(100.000,140.000,20.000)
-
-[EVENT] 113.611 | event=UAVWaypointArrival | nodeId=401 | pos=(120.000,140.000,20.000)
-
-[EVENT] 115.861 | event=UAVWaypointArrival | nodeId=401 | pos=(140.000,140.000,20.000)
-
-[EVENT] 118.111 | event=UAVWaypointArrival | nodeId=401 | pos=(160.000,140.000,20.000)
-
-[EVENT] 120.361 | event=UAVWaypointArrival | nodeId=401 | pos=(160.000,120.000,20.000)
-
-[EVENT] 122.611 | event=UAVWaypointArrival | nodeId=401 | pos=(180.000,120.000,20.000)
-
-[EVENT] 124.861 | event=UAVWaypointArrival | nodeId=401 | pos=(200.000,120.000,20.000)
-
-[EVENT] 127.111 | event=UAVWaypointArrival | nodeId=401 | pos=(220.000,120.000,20.000)
-
-[EVENT] 129.361 | event=UAVWaypointArrival | nodeId=401 | pos=(220.000,100.000,20.000)
-
-[EVENT] 131.611 | event=UAVWaypointArrival | nodeId=401 | pos=(240.000,100.000,20.000)
-
-[EVENT] 133.861 | event=UAVWaypointArrival | nodeId=401 | pos=(260.000,100.000,20.000)
-
-[EVENT] 136.111 | event=UAVWaypointArrival | nodeId=401 | pos=(260.000,80.000,20.000)
-
-[EVENT] 138.611 | event=UAVWaypointArrival | nodeId=401 | pos=(260.000,120.000,20.000)
-
-[EVENT] 140.861 | event=UAVWaypointArrival | nodeId=401 | pos=(240.000,120.000,20.000)
-
-[EVENT] 143.111 | event=UAVWaypointArrival | nodeId=401 | pos=(240.000,140.000,20.000)
-
-[EVENT] 145.361 | event=UAVWaypointArrival | nodeId=401 | pos=(220.000,140.000,20.000)
-
-[EVENT] 147.611 | event=UAVWaypointArrival | nodeId=401 | pos=(200.000,140.000,20.000)
-
-[EVENT] 149.861 | event=UAVWaypointArrival | nodeId=401 | pos=(180.000,140.000,20.000)
-
-[EVENT] 152.111 | event=UAVWaypointArrival | nodeId=401 | pos=(180.000,160.000,20.000)
-
-[EVENT] 154.361 | event=UAVWaypointArrival | nodeId=401 | pos=(160.000,160.000,20.000)
-
-[EVENT] 156.611 | event=UAVWaypointArrival | nodeId=401 | pos=(140.000,160.000,20.000)
-
-[EVENT] 158.861 | event=UAVWaypointArrival | nodeId=401 | pos=(120.000,160.000,20.000)
+[EVENT] 9.552 | event=UAVWaypointArrival | nodeId=402 | pos=(140.000,40.000,20.000)
+
+[EVENT] 9.602 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=6 | cycle=1 | confidence=0.102 | size=224082
+402-R-6(6) 402-R-7(6) 402-R-8(6) 402-R-25(6) 402-R-26(6) 402-R-27(6) 402-R-28(6) 402-R-29(6) 402-R-45(6) 402-R-46(6) 402-R-47(6) 402-R-48(6) 402-R-49(6) 402-R-65(6) 402-R-66(6) 402-R-67(6) 402-R-68(6) 402-R-69(6) 402-R-86(6) 402-R-87(6) 402-R-88(6) 
+[EVENT] 9.802 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=7 | cycle=1 | confidence=0.054 | size=119333
+402-R-6(7) 402-R-7(7) 402-R-8(7) 402-R-25(7) 402-R-26(7) 402-R-27(7) 402-R-28(7) 402-R-29(7) 402-R-45(7) 402-R-46(7) 402-R-47(7) 402-R-48(7) 402-R-49(7) 402-R-65(7) 402-R-66(7) 402-R-67(7) 402-R-68(7) 402-R-69(7) 402-R-86(7) 402-R-87(7) 402-R-88(7) 
+[EVENT] 9.924 | event=UAVWaypointArrival | nodeId=401 | pos=(100.000,0.000,20.000)
 
 === Final Ground Node Summary (Suspicious Nodes Only) ===
 [NodeID] | [Conf] | [UAVFrags] | [UAVConf] | [CoopFrags] | [CoopConf] | [CoopCount] | [Alert]
-62 	| 0.545 	| 6 	| 0.545 	| 0 	| 0.000 	| 1 	| 0
-63 	| 0.545 	| 6 	| 0.545 	| 0 	| 0.000 	| 1 	| 0
-64 	| 0.545 	| 6 	| 0.545 	| 0 	| 0.000 	| 1 	| 0
-65 	| 0.950 	| 3 	| 0.285 	| 7 	| 0.665 	| 1 	| 1
-69 	| 0.950 	| 3 	| 0.285 	| 7 	| 0.665 	| 1 	| 1
-70 	| 0.950 	| 4 	| 0.380 	| 6 	| 0.570 	| 1 	| 1
-71 	| 0.950 	| 4 	| 0.380 	| 6 	| 0.570 	| 1 	| 1
-72 	| 0.950 	| 4 	| 0.380 	| 6 	| 0.570 	| 1 	| 1
-81 	| 0.950 	| 10 	| 0.950 	| 0 	| 0.000 	| 1 	| 1
-82 	| 0.950 	| 10 	| 0.950 	| 0 	| 0.000 	| 1 	| 1
-83 	| 0.950 	| 10 	| 0.950 	| 0 	| 0.000 	| 1 	| 1
-84 	| 0.545 	| 6 	| 0.545 	| 0 	| 0.000 	| 1 	| 0
-85 	| 0.950 	| 10 	| 0.950 	| 0 	| 0.000 	| 1 	| 1
-86 	| 0.950 	| 3 	| 0.285 	| 7 	| 0.665 	| 1 	| 1
-87 	| 0.950 	| 3 	| 0.285 	| 7 	| 0.665 	| 1 	| 1
-88 	| 0.950 	| 3 	| 0.285 	| 7 	| 0.665 	| 1 	| 1
-89 	| 0.950 	| 4 	| 0.380 	| 6 	| 0.570 	| 1 	| 1
-90 	| 0.950 	| 4 	| 0.380 	| 6 	| 0.570 	| 1 	| 1
-91 	| 0.950 	| 4 	| 0.380 	| 6 	| 0.570 	| 1 	| 1
-92 	| 0.950 	| 4 	| 0.380 	| 6 	| 0.570 	| 1 	| 1
-93 	| 0.950 	| 4 	| 0.380 	| 6 	| 0.570 	| 1 	| 1
-100 	| 0.950 	| 3 	| 0.285 	| 7 	| 0.665 	| 1 	| 1
-101 	| 0.950 	| 10 	| 0.950 	| 0 	| 0.000 	| 1 	| 1
-102 	| 0.950 	| 10 	| 0.950 	| 0 	| 0.000 	| 1 	| 1
-103 	| 0.950 	| 10 	| 0.950 	| 0 	| 0.000 	| 1 	| 1
-104 	| 0.950 	| 10 	| 0.950 	| 0 	| 0.000 	| 1 	| 1
-105 	| 0.950 	| 10 	| 0.950 	| 0 	| 0.000 	| 1 	| 1
-106 	| 0.950 	| 3 	| 0.285 	| 7 	| 0.665 	| 1 	| 1
-107 	| 0.950 	| 3 	| 0.285 	| 7 	| 0.665 	| 1 	| 1
-108 	| 0.950 	| 3 	| 0.285 	| 7 	| 0.665 	| 1 	| 1
-109 	| 0.950 	| 4 	| 0.380 	| 6 	| 0.570 	| 1 	| 1
-110 	| 0.950 	| 4 	| 0.380 	| 6 	| 0.570 	| 1 	| 1
-111 	| 0.950 	| 4 	| 0.380 	| 6 	| 0.570 	| 1 	| 1
-112 	| 0.950 	| 4 	| 0.380 	| 6 	| 0.570 	| 1 	| 1
-113 	| 0.950 	| 4 	| 0.380 	| 6 	| 0.570 	| 1 	| 1
-121 	| 0.950 	| 10 	| 0.950 	| 0 	| 0.000 	| 1 	| 1
-122 	| 0.950 	| 10 	| 0.950 	| 0 	| 0.000 	| 1 	| 1
-123 	| 0.950 	| 10 	| 0.950 	| 0 	| 0.000 	| 1 	| 1
-124 	| 0.950 	| 10 	| 0.950 	| 0 	| 0.000 	| 1 	| 1
-125 	| 0.545 	| 6 	| 0.545 	| 0 	| 0.000 	| 1 	| 0
-126 	| 0.950 	| 4 	| 0.380 	| 6 	| 0.570 	| 1 	| 1
-127 	| 0.741 	| 7 	| 0.741 	| 0 	| 0.000 	| 1 	| 0
-128 	| 0.741 	| 7 	| 0.741 	| 0 	| 0.000 	| 1 	| 0
-129 	| 0.950 	| 4 	| 0.380 	| 6 	| 0.570 	| 1 	| 1
-130 	| 0.950 	| 4 	| 0.380 	| 6 	| 0.570 	| 1 	| 1
-131 	| 0.950 	| 4 	| 0.380 	| 6 	| 0.570 	| 1 	| 1
-132 	| 0.950 	| 4 	| 0.380 	| 6 	| 0.570 	| 1 	| 1
-133 	| 0.950 	| 4 	| 0.380 	| 6 	| 0.570 	| 1 	| 1
-141 	| 0.950 	| 3 	| 0.285 	| 7 	| 0.665 	| 1 	| 1
-142 	| 0.950 	| 10 	| 0.950 	| 0 	| 0.000 	| 1 	| 1
-143 	| 0.950 	| 10 	| 0.950 	| 0 	| 0.000 	| 1 	| 1
-144 	| 0.950 	| 10 	| 0.950 	| 0 	| 0.000 	| 1 	| 1
-145 	| 0.950 	| 4 	| 0.380 	| 6 	| 0.570 	| 1 	| 1
-146 	| 0.950 	| 4 	| 0.380 	| 6 	| 0.570 	| 1 	| 1
-147 	| 0.650 	| 6 	| 0.650 	| 0 	| 0.000 	| 1 	| 0
-148 	| 0.650 	| 6 	| 0.650 	| 0 	| 0.000 	| 1 	| 0
-149 	| 0.854 	| 9 	| 0.854 	| 0 	| 0.000 	| 1 	| 1
-150 	| 0.950 	| 4 	| 0.380 	| 6 	| 0.570 	| 1 	| 1
-151 	| 0.950 	| 4 	| 0.380 	| 6 	| 0.570 	| 1 	| 1
-152 	| 0.950 	| 4 	| 0.380 	| 6 	| 0.570 	| 1 	| 1
-153 	| 0.950 	| 3 	| 0.285 	| 7 	| 0.665 	| 1 	| 1
-161 	| 0.950 	| 3 	| 0.285 	| 7 	| 0.665 	| 1 	| 1
-162 	| 0.950 	| 3 	| 0.285 	| 7 	| 0.665 	| 1 	| 1
-163 	| 0.950 	| 3 	| 0.285 	| 7 	| 0.665 	| 1 	| 1
-164 	| 0.950 	| 3 	| 0.285 	| 7 	| 0.665 	| 1 	| 1
-165 	| 0.950 	| 4 	| 0.380 	| 6 	| 0.570 	| 1 	| 1
-166 	| 0.950 	| 4 	| 0.380 	| 6 	| 0.570 	| 1 	| 1
-167 	| 0.650 	| 6 	| 0.650 	| 0 	| 0.000 	| 1 	| 0
-168 	| 0.650 	| 6 	| 0.650 	| 0 	| 0.000 	| 1 	| 0
-169 	| 0.950 	| 10 	| 0.950 	| 0 	| 0.000 	| 1 	| 1
-170 	| 0.950 	| 3 	| 0.285 	| 7 	| 0.665 	| 1 	| 1
-171 	| 0.950 	| 3 	| 0.285 	| 7 	| 0.665 	| 1 	| 1
-172 	| 0.950 	| 3 	| 0.285 	| 7 	| 0.665 	| 1 	| 1
-173 	| 0.950 	| 3 	| 0.285 	| 7 	| 0.665 	| 1 	| 1
-182 	| 0.950 	| 3 	| 0.285 	| 7 	| 0.665 	| 1 	| 1
-183 	| 0.950 	| 3 	| 0.285 	| 7 	| 0.665 	| 1 	| 1
-184 	| 0.950 	| 3 	| 0.285 	| 7 	| 0.665 	| 1 	| 1
-185 	| 0.950 	| 4 	| 0.380 	| 6 	| 0.570 	| 1 	| 1
-186 	| 0.950 	| 10 	| 0.950 	| 0 	| 0.000 	| 1 	| 1
-187 	| 0.650 	| 6 	| 0.650 	| 0 	| 0.000 	| 1 	| 0
-188 	| 0.859 	| 9 	| 0.859 	| 0 	| 0.000 	| 1 	| 1
-189 	| 0.859 	| 9 	| 0.859 	| 0 	| 0.000 	| 1 	| 1
-190 	| 0.950 	| 3 	| 0.285 	| 7 	| 0.665 	| 1 	| 1
-191 	| 0.950 	| 3 	| 0.285 	| 7 	| 0.665 	| 1 	| 1
-192 	| 0.950 	| 3 	| 0.285 	| 7 	| 0.665 	| 1 	| 1
-204 	| 0.950 	| 5 	| 0.475 	| 5 	| 0.475 	| 1 	| 1
-205 	| 0.950 	| 5 	| 0.475 	| 5 	| 0.475 	| 1 	| 1
-206 	| 0.950 	| 10 	| 0.950 	| 0 	| 0.000 	| 1 	| 1
-207 	| 0.650 	| 6 	| 0.650 	| 0 	| 0.000 	| 1 	| 0
-208 	| 0.859 	| 9 	| 0.859 	| 0 	| 0.000 	| 1 	| 1
-209 	| 0.950 	| 3 	| 0.285 	| 7 	| 0.665 	| 1 	| 1
-210 	| 0.950 	| 3 	| 0.285 	| 7 	| 0.665 	| 1 	| 1
-224 	| 0.950 	| 5 	| 0.475 	| 5 	| 0.475 	| 1 	| 1
-225 	| 0.950 	| 5 	| 0.475 	| 5 	| 0.475 	| 1 	| 1
-226 	| 0.950 	| 5 	| 0.475 	| 5 	| 0.475 	| 1 	| 1
-227 	| 0.805 	| 3 	| 0.302 	| 5 	| 0.503 	| 1 	| 1
-228 	| 0.950 	| 5 	| 0.475 	| 5 	| 0.475 	| 1 	| 1
-229 	| 0.950 	| 3 	| 0.285 	| 7 	| 0.665 	| 1 	| 1
-230 	| 0.950 	| 3 	| 0.285 	| 7 	| 0.665 	| 1 	| 1
-244 	| 0.950 	| 5 	| 0.475 	| 5 	| 0.475 	| 1 	| 1
-245 	| 0.950 	| 5 	| 0.475 	| 5 	| 0.475 	| 1 	| 1
-246 	| 0.805 	| 3 	| 0.302 	| 5 	| 0.503 	| 1 	| 1
-247 	| 0.805 	| 3 	| 0.302 	| 5 	| 0.503 	| 1 	| 1
-248 	| 0.950 	| 5 	| 0.475 	| 5 	| 0.475 	| 1 	| 1
-249 	| 0.950 	| 5 	| 0.475 	| 5 	| 0.475 	| 1 	| 1
-250 	| 0.950 	| 3 	| 0.285 	| 7 	| 0.665 	| 1 	| 1
-264 	| 0.950 	| 1 	| 0.095 	| 9 	| 0.855 	| 1 	| 1
-265 	| 0.805 	| 3 	| 0.302 	| 5 	| 0.503 	| 1 	| 1
-266 	| 0.805 	| 3 	| 0.302 	| 5 	| 0.503 	| 1 	| 1
-267 	| 0.805 	| 3 	| 0.302 	| 5 	| 0.503 	| 1 	| 1
-268 	| 0.950 	| 5 	| 0.475 	| 5 	| 0.475 	| 1 	| 1
-269 	| 0.950 	| 5 	| 0.475 	| 5 	| 0.475 	| 1 	| 1
-270 	| 0.950 	| 3 	| 0.285 	| 7 	| 0.665 	| 1 	| 1
-284 	| 0.950 	| 1 	| 0.095 	| 9 	| 0.855 	| 1 	| 1
-285 	| 0.805 	| 3 	| 0.302 	| 5 	| 0.503 	| 1 	| 1
-286 	| 0.805 	| 3 	| 0.302 	| 5 	| 0.503 	| 1 	| 1
-287 	| 0.805 	| 3 	| 0.302 	| 5 	| 0.503 	| 1 	| 1
-288 	| 0.805 	| 3 	| 0.302 	| 5 	| 0.503 	| 1 	| 1
-289 	| 0.950 	| 5 	| 0.475 	| 5 	| 0.475 	| 1 	| 1
-290 	| 0.950 	| 3 	| 0.285 	| 7 	| 0.665 	| 1 	| 1
-306 	| 0.805 	| 3 	| 0.302 	| 5 	| 0.503 	| 1 	| 1
-307 	| 0.805 	| 3 	| 0.302 	| 5 	| 0.503 	| 1 	| 1
-308 	| 0.805 	| 3 	| 0.302 	| 5 	| 0.503 	| 1 	| 1
+4 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+5 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+6 	| 0.156 	| 2 	| 0.156 	| 0 	| 0.000 	| 0 	| 0
+7 	| 0.156 	| 2 	| 0.156 	| 0 	| 0.000 	| 0 	| 0
+8 	| 0.156 	| 2 	| 0.156 	| 0 	| 0.000 	| 0 	| 0
+9 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+10 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+24 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+25 	| 0.156 	| 2 	| 0.156 	| 0 	| 0.000 	| 0 	| 0
+26 	| 0.156 	| 2 	| 0.156 	| 0 	| 0.000 	| 0 	| 0
+27 	| 0.156 	| 2 	| 0.156 	| 0 	| 0.000 	| 0 	| 0
+28 	| 0.156 	| 2 	| 0.156 	| 0 	| 0.000 	| 0 	| 0
+29 	| 0.156 	| 2 	| 0.156 	| 0 	| 0.000 	| 0 	| 0
+30 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+44 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+45 	| 0.156 	| 2 	| 0.156 	| 0 	| 0.000 	| 0 	| 0
+46 	| 0.156 	| 2 	| 0.156 	| 0 	| 0.000 	| 0 	| 0
+47 	| 0.156 	| 2 	| 0.156 	| 0 	| 0.000 	| 0 	| 0
+48 	| 0.156 	| 2 	| 0.156 	| 0 	| 0.000 	| 0 	| 0
+49 	| 0.156 	| 2 	| 0.156 	| 0 	| 0.000 	| 0 	| 0
+50 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+62 	| 0.503 	| 6 	| 0.503 	| 0 	| 0.000 	| 1 	| 0
+63 	| 0.503 	| 6 	| 0.503 	| 0 	| 0.000 	| 1 	| 0
+64 	| 0.503 	| 6 	| 0.503 	| 0 	| 0.000 	| 1 	| 0
+65 	| 0.156 	| 2 	| 0.156 	| 0 	| 0.000 	| 0 	| 0
+66 	| 0.156 	| 2 	| 0.156 	| 0 	| 0.000 	| 0 	| 0
+67 	| 0.156 	| 2 	| 0.156 	| 0 	| 0.000 	| 0 	| 0
+68 	| 0.156 	| 2 	| 0.156 	| 0 	| 0.000 	| 0 	| 0
+69 	| 0.156 	| 2 	| 0.156 	| 0 	| 0.000 	| 0 	| 0
+70 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+71 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+72 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+81 	| 0.503 	| 6 	| 0.503 	| 0 	| 0.000 	| 1 	| 0
+82 	| 0.503 	| 6 	| 0.503 	| 0 	| 0.000 	| 1 	| 0
+83 	| 0.503 	| 6 	| 0.503 	| 0 	| 0.000 	| 1 	| 0
+84 	| 0.503 	| 6 	| 0.503 	| 0 	| 0.000 	| 1 	| 0
+85 	| 0.503 	| 6 	| 0.503 	| 0 	| 0.000 	| 1 	| 0
+86 	| 0.156 	| 2 	| 0.156 	| 0 	| 0.000 	| 0 	| 0
+87 	| 0.156 	| 2 	| 0.156 	| 0 	| 0.000 	| 0 	| 0
+88 	| 0.156 	| 2 	| 0.156 	| 0 	| 0.000 	| 0 	| 0
+89 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+90 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+91 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+92 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+93 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+100 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+101 	| 0.503 	| 6 	| 0.503 	| 0 	| 0.000 	| 1 	| 0
+102 	| 0.503 	| 6 	| 0.503 	| 0 	| 0.000 	| 1 	| 0
+103 	| 0.503 	| 6 	| 0.503 	| 0 	| 0.000 	| 1 	| 0
+104 	| 0.503 	| 6 	| 0.503 	| 0 	| 0.000 	| 1 	| 0
+105 	| 0.503 	| 6 	| 0.503 	| 0 	| 0.000 	| 1 	| 0
+106 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+107 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+108 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+109 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+110 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+111 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+112 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+113 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+121 	| 0.503 	| 6 	| 0.503 	| 0 	| 0.000 	| 1 	| 0
+122 	| 0.503 	| 6 	| 0.503 	| 0 	| 0.000 	| 1 	| 0
+123 	| 0.503 	| 6 	| 0.503 	| 0 	| 0.000 	| 1 	| 0
+124 	| 0.503 	| 6 	| 0.503 	| 0 	| 0.000 	| 1 	| 0
+125 	| 0.503 	| 6 	| 0.503 	| 0 	| 0.000 	| 1 	| 0
+126 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+127 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+128 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+129 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+130 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+131 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+132 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+133 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+141 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+142 	| 0.503 	| 6 	| 0.503 	| 0 	| 0.000 	| 1 	| 0
+143 	| 0.503 	| 6 	| 0.503 	| 0 	| 0.000 	| 1 	| 0
+144 	| 0.503 	| 6 	| 0.503 	| 0 	| 0.000 	| 1 	| 0
+145 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+146 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+147 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+148 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+149 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+150 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+151 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+152 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+153 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+161 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+162 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+163 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+164 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+165 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+166 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+167 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+168 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+169 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+170 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+171 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+172 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+173 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+182 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+183 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+184 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+185 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+189 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+190 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+191 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+192 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+193 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+194 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+195 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+211 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+212 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+213 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+214 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+215 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+216 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+217 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+231 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+232 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+233 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+234 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+235 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+236 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+237 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+251 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+252 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+253 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+254 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+255 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+256 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+257 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+271 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+272 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+273 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+274 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+275 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+276 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+277 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+291 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+292 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+293 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+294 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+295 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+296 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+297 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+313 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+314 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
+315 	| 0.000 	| 0 	| 0.000 	| 0 	| 0.000 	| 0 	| 0
 
 === Final UAV Summary ===
 [UAVID] 	| [FragsBroadcast] 	| [Coverage] 	| [AvgRSSI] 	| [TimeToComplete]
-401 	| 0 	| 36.500% 	| -69.081 	| 280.690
-402 	| 80 	| 36.500% 	| -69.081 	| 18.091
+401 	| 0 	| 10.500% 	| -69.164 	| 334.820
+402 	| 110 	| 10.500% 	| -69.164 	| 23.986
 
 ======================================
       Simulation Complete

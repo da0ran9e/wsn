@@ -10,6 +10,8 @@ const suspiciousNodeLayer = document.getElementById('suspiciousNodeLayer');
 const uavPathLayer = document.getElementById('uavPathLayer');
 const uavEventLayer = document.getElementById('uavEventLayer');
 const communicationLayer = document.getElementById('communicationLayer');
+const missionTicksOverlay = document.getElementById('missionTicksOverlay');
+const missionEventBanner = document.getElementById('missionEventBanner');
 const resultFileInput = document.getElementById('resultFileInput');
 const toggleGrid = document.getElementById('toggleGrid');
 const toggleHex = document.getElementById('toggleHex');
@@ -55,6 +57,8 @@ const playback = {
   events: [],
   waypointEvents: [],
   communicationLinks: [],
+  missionEvents: [],
+  uavNodeIds: [],
   frameIndex: 0,
   isPlaying: false,
   timer: null,
@@ -492,6 +496,38 @@ function parseCommunicationLinks(text) {
   return links;
 }
 
+function parseUavMissionEvents(text) {
+  const lines = text.split(/\r?\n/);
+  const events = [];
+
+  for (const line of lines) {
+    if (!line.startsWith('[EVENT]')) {
+      continue;
+    }
+    const timeMatch = line.match(/^\[EVENT\]\s*([\d.]+)\s*\|/);
+    if (!timeMatch) {
+      continue;
+    }
+    const time = Number(timeMatch[1]);
+
+    if (line.includes('event=UAV1MissionComplete')) {
+      events.push({ time, uavIndex: 1 });
+    } else if (line.includes('event=UAV2MissionComplete')) {
+      const triggerMatch = line.match(/triggerNodeId=(\d+)/);
+      const confMatch = line.match(/confidence=([\d.]+)/);
+      events.push({
+        time,
+        uavIndex: 2,
+        triggerNodeId: triggerMatch ? Number(triggerMatch[1]) : null,
+        confidence: confMatch ? Number(confMatch[1]) : null,
+      });
+    }
+  }
+
+  events.sort((a, b) => a.time - b.time);
+  return events;
+}
+
 function buildUavEventTracks(waypointEvents) {
   const tracks = new Map();
   for (const ev of waypointEvents) {
@@ -554,7 +590,7 @@ function resolveCommunicationGeometry(communicationLinks, nodes, waypointEvents)
   return resolved;
 }
 
-function buildPlaybackFrames(waypointEvents, communicationLinks) {
+function buildPlaybackFrames(waypointEvents, communicationLinks, missionEvents) {
   const timeSet = new Set();
 
   for (const ev of waypointEvents) {
@@ -563,6 +599,10 @@ function buildPlaybackFrames(waypointEvents, communicationLinks) {
 
   for (const link of communicationLinks) {
     timeSet.add(link.time);
+  }
+
+  for (const me of (missionEvents || [])) {
+    timeSet.add(me.time);
   }
 
   return Array.from(timeSet)
@@ -744,6 +784,14 @@ function renderUavEventFrame() {
   const currentTime = frames[clampedIndex].time;
   const latestByUav = new Map();
 
+  // Determine which UAVs have completed their missions by currentTime
+  const completedMissions = (playback.missionEvents || []).filter((me) => me.time <= currentTime);
+  const completedNodeIdSet = new Set(
+    completedMissions
+      .map((me) => (playback.uavNodeIds || [])[me.uavIndex - 1])
+      .filter((id) => id !== undefined),
+  );
+
   for (const wp of waypointEvents) {
     if (wp.time <= currentTime) {
       latestByUav.set(wp.nodeId, wp);
@@ -753,6 +801,11 @@ function renderUavEventFrame() {
   }
 
   for (const [uavId, ev] of latestByUav) {
+    // Once a UAV mission is completed, stop showing its live event playback.
+    if (completedNodeIdSet.has(uavId)) {
+      continue;
+    }
+
     const p = world.toMapPoint(ev.x, ev.y);
     const colorIndex = playback.uavColorMap.get(uavId) ?? 0;
     const size = NODE_RADIUS * UAV_EVENT_SCALE;
@@ -781,6 +834,36 @@ function renderUavEventFrame() {
     label.setAttribute('class', `uav-event-label uav-event-label-${colorIndex}`);
     label.textContent = `UAV ${uavId}`;
     uavEventLayer.appendChild(label);
+  }
+
+  // Static diamond flag at each mission's completion position
+  for (const me of completedMissions) {
+    if (me.completionX === undefined || me.completionY === undefined) {
+      continue;
+    }
+    const fp = world.toMapPoint(me.completionX, me.completionY);
+    const flagSize = NODE_RADIUS * 1.6;
+    const ci = me.uavIndex - 1;
+
+    const diamond = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+    diamond.setAttribute(
+      'points',
+      [
+        `${fp.x},${fp.y - flagSize}`,
+        `${fp.x + flagSize * 0.6},${fp.y}`,
+        `${fp.x},${fp.y + flagSize}`,
+        `${fp.x - flagSize * 0.6},${fp.y}`,
+      ].join(' '),
+    );
+    diamond.setAttribute('class', `mission-flag-diamond mission-flag-diamond-${ci}`);
+    uavEventLayer.appendChild(diamond);
+
+    const flagLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    flagLabel.setAttribute('x', fp.x + flagSize * 0.75);
+    flagLabel.setAttribute('y', fp.y - flagSize * 0.3);
+    flagLabel.setAttribute('class', `mission-flag-label mission-flag-label-${ci}`);
+    flagLabel.textContent = `✓ UAV${me.uavIndex}`;
+    uavEventLayer.appendChild(flagLabel);
   }
 
   eventFrameLabel.textContent = `Frame: ${clampedIndex + 1}/${frames.length}`;
@@ -831,6 +914,62 @@ function renderCommunicationFrame() {
   }
 }
 
+function renderMissionTicks() {
+  if (!missionTicksOverlay) {
+    return;
+  }
+  missionTicksOverlay.innerHTML = '';
+
+  const frames = playback.events;
+  const missionEvents = playback.missionEvents || [];
+  if (frames.length < 2 || missionEvents.length === 0) {
+    return;
+  }
+
+  for (const me of missionEvents) {
+    const idx = frames.findIndex((f) => f.time === me.time);
+    if (idx < 0) {
+      continue;
+    }
+    const pct = (idx / (frames.length - 1)) * 100;
+    const ci = me.uavIndex - 1;
+
+    const tick = document.createElement('div');
+    tick.className = `mission-tick mission-tick-${ci}`;
+    tick.style.left = `${pct}%`;
+    tick.title = `UAV${me.uavIndex} Mission Complete @ ${me.time.toFixed(3)}s`;
+    missionTicksOverlay.appendChild(tick);
+  }
+}
+
+function updateMissionBanner() {
+  if (!missionEventBanner) {
+    return;
+  }
+  const frames = playback.events;
+  const missionEvents = playback.missionEvents || [];
+  if (missionEvents.length === 0) {
+    missionEventBanner.innerHTML = '';
+    return;
+  }
+
+  const currentTime =
+    frames.length > 0
+      ? frames[Math.max(0, Math.min(playback.frameIndex, frames.length - 1))].time
+      : -1;
+
+  const parts = missionEvents.map((me) => {
+    const reached = currentTime >= me.time;
+    const ci = me.uavIndex - 1;
+    const pendingCls = reached ? '' : ' mission-badge-pending';
+    const icon = reached ? '✓' : '○';
+    const timeStr = reached ? ` @ ${me.time.toFixed(2)}s` : '';
+    return `<span class="mission-badge mission-badge-${ci}${pendingCls}" title="t=${me.time.toFixed(3)}s">${icon} UAV${me.uavIndex} Mission Complete${timeStr}</span>`;
+  });
+
+  missionEventBanner.innerHTML = parts.join('');
+}
+
 function applyUavPathPlaybackStyle() {
   if (playback.isPlaying) {
     uavPathLayer.classList.add('playing');
@@ -848,6 +987,7 @@ function updatePlaybackUi() {
   applyUavPathPlaybackStyle();
   renderCommunicationFrame();
   renderUavEventFrame();
+  updateMissionBanner();
 }
 
 function stopPlayback() {
@@ -931,6 +1071,7 @@ function applyScenarioText(text) {
   const uavPaths = parseUavPaths(text);
   const waypointEvents = parseUavWaypointEvents(text);
   const communicationLinks = parseCommunicationLinks(text);
+  const missionEvents = parseUavMissionEvents(text);
   const cells = buildCellInfo(nodes, config.cellRadius);
   const world = buildWorldMapper(nodes);
 
@@ -951,9 +1092,29 @@ function applyScenarioText(text) {
   playback.world = world;
   playback.waypointEvents = waypointEvents;
   playback.communicationLinks = resolveCommunicationGeometry(communicationLinks, nodes, waypointEvents);
-  playback.events = buildPlaybackFrames(waypointEvents, playback.communicationLinks);
+
+  // Resolve UAV node IDs and completion positions for mission events
+  const uavNodeIds = uavPaths.map((p) => p.uavId);
+  const groundNodeMapForMission = new Map(nodes.map((n) => [n.nodeId, n]));
+  const uavTracksForMission = buildUavEventTracks(waypointEvents);
+  for (const me of missionEvents) {
+    const nodeId = uavNodeIds[me.uavIndex - 1];
+    if (nodeId !== undefined) {
+      me.nodeId = nodeId;
+      const pos = getNodePositionAtTime(nodeId, me.time, groundNodeMapForMission, uavTracksForMission);
+      if (pos) {
+        me.completionX = pos.x;
+        me.completionY = pos.y;
+      }
+    }
+  }
+
+  playback.missionEvents = missionEvents;
+  playback.uavNodeIds = uavNodeIds;
+  playback.events = buildPlaybackFrames(waypointEvents, playback.communicationLinks, missionEvents);
   playback.frameIndex = 0;
   playback.uavColorMap = buildUavColorMap(uavPaths, waypointEvents);
+  renderMissionTicks();
   updatePlaybackUi();
 
   nodeStats.textContent = `Nodes: ${nodes.length} | Cells: ${cells.length} | Suspicious Nodes: ${suspiciousInfo.suspiciousNodes.size} | Suspicious Cells: ${suspiciousInfo.suspiciousCells.size} | UAVs: ${uavPaths.length} | Cell Radius: ${config.cellRadius}m`;

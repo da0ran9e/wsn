@@ -5,12 +5,14 @@
 #include "ground-node-routing.h"
 #include "../packet-header.h"
 #include "../helper/calc-utils.h"
+#include "../node-routing.h"
 #include "cell-cooperation.h"
 #include "ns3/log.h"
 #include "ns3/simulator.h"
 #include "ns3/mobility-model.h"
 #include "ns3/node-list.h"
 #include <algorithm>
+#include <limits>
 #include "../../../../examples/scenarios/scenario4/scenario4-params.h"
 
 namespace ns3 {
@@ -234,6 +236,15 @@ OnGroundNodeReceivePacket(uint32_t nodeId, Ptr<const Packet> packet, double rssi
                         state.fragmentsReceivedFromPeers++;
                     }
                     updated = true;
+
+                    // Early-complete UAV2 mission when suspicious-point node reaches alert threshold.
+                    const uint32_t suspiciousSeedNodeId = GetSuspiciousSeedNodeId();
+                    if (suspiciousSeedNodeId != std::numeric_limits<uint32_t>::max() &&
+                        nodeId == suspiciousSeedNodeId &&
+                        state.confidence >= ::ns3::wsn::scenario4::params::ALERT_THRESHOLD)
+                    {
+                        MarkUav2MissionCompleted(nodeId, state.confidence);
+                    }
                     
                     NS_LOG_INFO("Node " << nodeId << " updated fragment " << fragId 
                                 << " with confidence " << confidence);

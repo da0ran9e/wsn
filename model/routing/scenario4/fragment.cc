@@ -55,7 +55,7 @@ FragmentCollection::UpdateTotalConfidence()
     for (const auto& pair : fragments) {
         sum += pair.second.confidence;
     }
-    totalConfidence = sum / fragments.size();
+    totalConfidence = sum;
 }
 
 FragmentCollection
@@ -146,7 +146,7 @@ GenerateFragments(uint32_t numFragments)
                 << " | totalFragmentSize=" << totalSize << " bytes"
                 << " | masterConfidence=" << masterFileConfidence
                 << " | allocatedConfidence=" << totalConfidence
-                << " | avgConfidence=" << collection.totalConfidence);
+                << " | collectionConfidence=" << collection.totalConfidence);
     
     return collection;
 }

@@ -424,3 +424,119 @@ button:hover {
   border-top: 1px solid var(--line);
   padding-top: 8px;
 }
+
+  /* ── Mission-completion timeline ticks ────────────────────── */
+  .timeline-slider-wrapper {
+    position: relative;
+  }
+
+  .mission-ticks-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .mission-tick {
+    position: absolute;
+    width: 3px;
+    height: 100%;
+    top: 0;
+    transform: translateX(-50%);
+    border-radius: 2px;
+    opacity: 0.88;
+  }
+
+  .mission-tick-0 {
+    background: rgba(74, 144, 226, 0.95);
+    box-shadow: 0 0 5px rgba(74, 144, 226, 0.55);
+  }
+
+  .mission-tick-1 {
+    background: rgba(76, 217, 100, 0.95);
+    box-shadow: 0 0 5px rgba(76, 217, 100, 0.55);
+  }
+
+  /* ── Mission-completion status banner ─────────────────────── */
+  .mission-event-banner {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    min-height: 22px;
+    align-items: center;
+  }
+
+  .mission-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 9px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    transition: opacity 0.25s;
+  }
+
+  .mission-badge-0 {
+    background: rgba(74, 144, 226, 0.14);
+    color: rgba(167, 209, 255, 1);
+    border: 1px solid rgba(74, 144, 226, 0.55);
+  }
+
+  .mission-badge-1 {
+    background: rgba(76, 217, 100, 0.14);
+    color: rgba(150, 255, 165, 1);
+    border: 1px solid rgba(76, 217, 100, 0.55);
+  }
+
+  .mission-badge-pending {
+    opacity: 0.35;
+  }
+
+  /* ── Mission-completion markers on the map (SVG) ──────────── */
+  .mission-complete-ring {
+    fill: none;
+    stroke-width: 2.5;
+    stroke-dasharray: 5 3;
+  }
+
+  .mission-complete-ring-0 {
+    stroke: rgba(74, 144, 226, 1);
+  }
+
+  .mission-complete-ring-1 {
+    stroke: rgba(76, 217, 100, 1);
+  }
+
+  .mission-flag-diamond {
+    stroke-width: 1.5;
+  }
+
+  .mission-flag-diamond-0 {
+    fill: rgba(74, 144, 226, 0.22);
+    stroke: rgba(74, 144, 226, 1);
+  }
+
+  .mission-flag-diamond-1 {
+    fill: rgba(76, 217, 100, 0.22);
+    stroke: rgba(76, 217, 100, 1);
+  }
+
+  .mission-flag-label {
+    font-size: 11px;
+    font-weight: 700;
+    paint-order: stroke;
+    stroke: rgba(6, 12, 25, 0.95);
+    stroke-width: 2.5;
+  }
+
+  .mission-flag-label-0 {
+    fill: rgba(167, 209, 255, 1);
+  }
+
+  .mission-flag-label-1 {
+    fill: rgba(150, 255, 165, 1);
+  }

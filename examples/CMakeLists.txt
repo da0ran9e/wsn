@@ -109,6 +109,27 @@ build_lib_example(
     ${libwsn}
 )
 
+build_lib_example(
+  NAME example5
+  SOURCE_FILES 
+    example5.cc
+    scenarios/scenario4/scenario4-api.cc
+    scenarios/scenario4/scenario4-config.cc
+    scenarios/scenario4/scenario4-scheduler.cc
+    scenarios/scenario4/scenario4-metrics.cc
+    scenarios/scenario4/scenario4-visualizer.cc
+  LIBRARIES_TO_LINK
+    ${libcore}
+    ${libnetwork}
+    ${libmobility}
+    ${libspectrum}
+    ${libantenna}
+    ${libpropagation}
+    ${libinternet}
+    ${libwifi}
+    ${libwsn}
+)
+
 #build_lib_example(
 #  NAME uav-example
 #  SOURCE_FILES uav-example.cc
