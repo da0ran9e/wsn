@@ -1,11 +1,7 @@
 /*
  * Scenario 4 - Clean Architecture with Layered Design
- * 
- * This example demonstrates:
- * - Separated orchestration and routing layers
- * - Base station node with callback communication
- * - Ground node cooperation protocol
- * - UAV waypoint planning and fragment broadcast
+ *
+ * Example5 is currently a copy of example4 for parallel experimentation.
  */
 
 #include "ns3/core-module.h"
@@ -14,12 +10,12 @@
 #include "ns3/wifi-module.h"
 #include "ns3/internet-module.h"
 
-#include "scenarios/scenario4/scenario4-api.h"
-#include "scenarios/scenario4/scenario4-config.h"
-#include "scenarios/scenario4/scenario4-params.h"
-#include "../model/routing/scenario4/ground-node-routing/ground-node-routing.h"
-#include "../model/routing/scenario4/base-station-node/fragment-generator.h"
-#include "../model/routing/scenario4/node-routing.h"
+#include "scenarios/scenario5/scenario5-api.h"
+#include "scenarios/scenario5/scenario5-config.h"
+#include "scenarios/scenario5/scenario5-params.h"
+#include "../model/routing/scenario5/ground-node-routing/ground-node-routing.h"
+#include "../model/routing/scenario5/base-station-node/fragment-generator.h"
+#include "../model/routing/scenario5/node-routing.h"
 
 #include <algorithm>
 #include <fstream>
@@ -28,7 +24,7 @@
 namespace
 {
 void
-WriteScenario4Summary(const std::string& outputPath, const ns3::wsn::scenario4::Scenario4RunConfig& config)
+WriteScenario5Summary(const std::string& outputPath, const ns3::wsn::scenario5::Scenario5RunConfig& config)
 {
     std::ofstream out(outputPath, std::ios::out | std::ios::trunc);
     if (!out.is_open())
@@ -36,11 +32,11 @@ WriteScenario4Summary(const std::string& outputPath, const ns3::wsn::scenario4::
         return;
     }
 
-    const auto& states = ns3::wsn::scenario4::routing::g_groundNetworkPerNode;
-    const auto& suspiciousNodes = ns3::wsn::scenario4::routing::GetSuspiciousNodes();
+    const auto& states = ns3::wsn::scenario5::routing::g_groundNetworkPerNode;
+    const auto& suspiciousNodes = ns3::wsn::scenario5::routing::GetSuspiciousNodes();
 
     out << std::fixed << std::setprecision(3);
-    out << "SCENARIO scenario4\n";
+    out << "SCENARIO scenario5\n";
     out << "RUN seed=" << config.seed << " runId=" << config.runId << "\n";
     out << "\n[CONFIG]\n";
     out << "gridSize=" << config.gridSize << "\n";
@@ -58,33 +54,33 @@ WriteScenario4Summary(const std::string& outputPath, const ns3::wsn::scenario4::
     out << "suspiciousPercent=" << config.suspiciousPercent << "\n";
 
     out << "\n[PARAMS]\n";
-    out << "cellRadius=" << ns3::wsn::scenario4::params::HEX_CELL_RADIUS << "\n";
-    out << "neighborDiscoveryRadius=" << ns3::wsn::scenario4::params::NEIGHBOR_DISCOVERY_RADIUS << "\n";
-    out << "broadcastRadius=" << ns3::wsn::scenario4::params::UAV_BROADCAST_RADIUS << "\n";
-    out << "uav1Speed=" << ns3::wsn::scenario4::params::UAV1_SPEED << "\n";
-    out << "uav1HoverTime=" << ns3::wsn::scenario4::params::UAV1_HOVER_TIME << "\n";
-    out << "uav2Speed=" << ns3::wsn::scenario4::params::UAV2_SPEED << "\n";
-    out << "uav2HoverTime=" << ns3::wsn::scenario4::params::UAV2_HOVER_TIME << "\n";
-    out << "masterFileConfidence=" << ns3::wsn::scenario4::params::DEFAULT_MASTER_FILE_CONFIDENCE << "\n";
+    out << "cellRadius=" << ns3::wsn::scenario5::params::HEX_CELL_RADIUS << "\n";
+    out << "neighborDiscoveryRadius=" << ns3::wsn::scenario5::params::NEIGHBOR_DISCOVERY_RADIUS << "\n";
+    out << "broadcastRadius=" << ns3::wsn::scenario5::params::UAV_BROADCAST_RADIUS << "\n";
+    out << "uav1Speed=" << ns3::wsn::scenario5::params::UAV1_SPEED << "\n";
+    out << "uav1HoverTime=" << ns3::wsn::scenario5::params::UAV1_HOVER_TIME << "\n";
+    out << "uav2Speed=" << ns3::wsn::scenario5::params::UAV2_SPEED << "\n";
+    out << "uav2HoverTime=" << ns3::wsn::scenario5::params::UAV2_HOVER_TIME << "\n";
+    out << "masterFileConfidence=" << ns3::wsn::scenario5::params::DEFAULT_MASTER_FILE_CONFIDENCE << "\n";
 
     out << "\n[NETWORK]\n";
     out << "groundNodes=" << states.size() << "\n";
     out << "suspiciousNodes=" << suspiciousNodes.size() << "\n";
-    out << "uavPaths=" << ns3::wsn::scenario4::routing::GetUavFlightPaths().size() << "\n";
-    out << "generatedFragments=" << ns3::wsn::scenario4::routing::GetBsGeneratedFragments().fragments.size() << "\n";
+    out << "uavPaths=" << ns3::wsn::scenario5::routing::GetUavFlightPaths().size() << "\n";
+    out << "generatedFragments=" << ns3::wsn::scenario5::routing::GetBsGeneratedFragments().fragments.size() << "\n";
 
     out << "\n[MISSION]\n";
-    if (ns3::wsn::scenario4::routing::IsUav1MissionCompleted())
+    if (ns3::wsn::scenario5::routing::IsUav1MissionCompleted())
     {
-        out << "uav1CompletedTime=" << ns3::wsn::scenario4::routing::GetUav1MissionCompletedTime() << "\n";
+        out << "uav1CompletedTime=" << ns3::wsn::scenario5::routing::GetUav1MissionCompletedTime() << "\n";
     }
     else
     {
         out << "uav1CompletedTime=not-completed\n";
     }
-    if (ns3::wsn::scenario4::routing::IsUav2MissionCompleted())
+    if (ns3::wsn::scenario5::routing::IsUav2MissionCompleted())
     {
-        out << "uav2CompletedTime=" << ns3::wsn::scenario4::routing::GetUav2MissionCompletedTime() << "\n";
+        out << "uav2CompletedTime=" << ns3::wsn::scenario5::routing::GetUav2MissionCompletedTime() << "\n";
     }
     else
     {
@@ -94,17 +90,18 @@ WriteScenario4Summary(const std::string& outputPath, const ns3::wsn::scenario4::
 } // namespace
 
 using namespace ns3;
-using namespace ns3::wsn::scenario4;
+using namespace ns3::wsn::scenario5;
 
-NS_LOG_COMPONENT_DEFINE("Example4");
+NS_LOG_COMPONENT_DEFINE("Example5");
 
-int main(int argc, char* argv[])
+int
+main(int argc, char* argv[])
 {
     // ===== Default Configuration =====
-    // Defaults are copied from scenario4-params.h via Scenario4RunConfig.
+    // Defaults are copied from scenario5-params.h via Scenario5RunConfig.
     // CLI values below override those defaults before runtime use.
-    Scenario4RunConfig config;
-    
+    Scenario5RunConfig config;
+
     // ===== CLI Parsing =====
     CommandLine cmd(__FILE__);
     cmd.AddValue("gridSize", "Size of the ground node grid (N x N)", config.gridSize);
@@ -126,54 +123,54 @@ int main(int argc, char* argv[])
     cmd.AddValue("seed", "Random seed for reproducibility", config.seed);
     cmd.AddValue("runId", "Run ID for multiple simulation runs", config.runId);
     cmd.Parse(argc, argv);
-    
+
     // ===== Logging =====
-    LogComponentEnable("Example4", LOG_LEVEL_INFO);
-    LogComponentEnable("Scenario4Api", LOG_LEVEL_INFO);
-    
+    LogComponentEnable("Example5", LOG_LEVEL_INFO);
+    LogComponentEnable("Scenario5Api", LOG_LEVEL_INFO);
+
     // ===== Validate Configuration =====
     std::string errorMsg;
-    if (!config.Validate(errorMsg)) {
+    if (!config.Validate(errorMsg))
+    {
         NS_LOG_ERROR("Configuration validation failed: " << errorMsg);
         return 1;
     }
-    
+
     std::ostringstream resultFilename;
-    resultFilename << "/Users/mophan/Github/ns-3-dev-git-ns-3.46/src/wsn/examples/visualize/results/scenario4_result_"
+    resultFilename << "/Users/mophan/Github/ns-3-dev-git-ns-3.46/src/wsn/examples/visualize/results/scenario5_result_"
                    << config.seed << "_" << config.runId << ".txt";
-    ns3::wsn::scenario4::params::g_resultFileStream = nullptr;
-    
+    ns3::wsn::scenario5::params::g_resultFileStream = nullptr;
+
     // ===== Run Scenario =====
-    NS_LOG_INFO("=== Scenario 4 Starting ===");
-    NS_LOG_INFO("Grid: " << config.gridSize << "x" << config.gridSize 
-                << ", Spacing: " << config.gridSpacing << "m");
+    NS_LOG_INFO("=== Scenario 5 Starting ===");
+    NS_LOG_INFO("Grid: " << config.gridSize << "x" << config.gridSize << ", Spacing: " << config.gridSpacing << "m");
     NS_LOG_INFO("Simulation Time: " << config.simTime << "s");
     NS_LOG_INFO("Fragments: " << config.numFragments);
     NS_LOG_INFO("UAVs: " << config.numUavs);
     NS_LOG_INFO("Seed: " << config.seed << ", Run ID: " << config.runId);
     NS_LOG_INFO("BS Position: (" << config.bsPositionX << ", " << config.bsPositionY << ", " << config.bsPositionZ << ")");
-    NS_LOG_INFO("Params: cellRadius=" << ns3::wsn::scenario4::params::HEX_CELL_RADIUS
-                << ", neighborRadius=" << ns3::wsn::scenario4::params::NEIGHBOR_DISCOVERY_RADIUS
-                << ", broadcastRadius=" << ns3::wsn::scenario4::params::UAV_BROADCAST_RADIUS);
-    
-    Scenario4Runner runner(config);
+    NS_LOG_INFO("Params: cellRadius=" << ns3::wsn::scenario5::params::HEX_CELL_RADIUS
+                << ", neighborRadius=" << ns3::wsn::scenario5::params::NEIGHBOR_DISCOVERY_RADIUS
+                << ", broadcastRadius=" << ns3::wsn::scenario5::params::UAV_BROADCAST_RADIUS);
+
+    Scenario5Runner runner(config);
     runner.Build();
     runner.Schedule();
     runner.Run();
-    
-    NS_LOG_INFO("=== Scenario 4 Complete ===");
-    
-    WriteScenario4Summary(resultFilename.str(), config);
+
+    NS_LOG_INFO("=== Scenario 5 Complete ===");
+
+    WriteScenario5Summary(resultFilename.str(), config);
     NS_LOG_INFO("UAV1 completion time: "
-                << (ns3::wsn::scenario4::routing::IsUav1MissionCompleted()
-                        ? std::to_string(ns3::wsn::scenario4::routing::GetUav1MissionCompletedTime()) + "s"
+                << (ns3::wsn::scenario5::routing::IsUav1MissionCompleted()
+                        ? std::to_string(ns3::wsn::scenario5::routing::GetUav1MissionCompletedTime()) + "s"
                         : std::string("not-completed")));
     NS_LOG_INFO("UAV2 completion time: "
-                << (ns3::wsn::scenario4::routing::IsUav2MissionCompleted()
-                        ? std::to_string(ns3::wsn::scenario4::routing::GetUav2MissionCompletedTime()) + "s"
+                << (ns3::wsn::scenario5::routing::IsUav2MissionCompleted()
+                        ? std::to_string(ns3::wsn::scenario5::routing::GetUav2MissionCompletedTime()) + "s"
                         : std::string("not-completed")));
     NS_LOG_INFO("Results saved to: " << resultFilename.str());
-    
+
     Simulator::Destroy();
     return 0;
 }

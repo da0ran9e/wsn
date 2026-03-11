@@ -2,14 +2,14 @@
  * Scenario 4 - Routing Initialization Interface
  */
 
-#ifndef SCENARIO4_NODE_ROUTING_H
-#define SCENARIO4_NODE_ROUTING_H
+#ifndef SCENARIO5_NODE_ROUTING_H
+#define SCENARIO5_NODE_ROUTING_H
 
 #include <cstdint>
 
 namespace ns3 {
 namespace wsn {
-namespace scenario4 {
+namespace scenario5 {
 namespace routing {
 
 /**
@@ -62,8 +62,8 @@ double GetUav2MissionCompletedTime();
 
 
 } // namespace routing
-} // namespace scenario4
+} // namespace scenario5
 } // namespace wsn
 } // namespace ns3
 
-#endif // SCENARIO4_NODE_ROUTING_H
+#endif // SCENARIO5_NODE_ROUTING_H

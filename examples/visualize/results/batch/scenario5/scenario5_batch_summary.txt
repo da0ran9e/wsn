@@ -1,0 +1,288 @@
+SCENARIO5 AUTORUN REPORT
+
+[CONFIGS]
+rounds=50
+startSeed=1
+startRunId=1
+simTime=200.0
+gridSize=20
+gridSpacing=20.0
+numFragments=10
+numUavs=2
+timeoutSec=180
+buildFirst=false
+extraArgs=-
+
+[PARAMS]
+cellRadius=80.000
+neighborDiscoveryRadius=80.000
+broadcastRadius=50.000
+uav1Speed=80.000
+uav1HoverTime=2.000
+uav2Speed=80.000
+uav2HoverTime=0.000
+masterFileConfidence=0.950
+
+[ROUNDS]
+round=1 seed=1 runId=1
+  durationSec=1.628
+  suspiciousNodes=146
+  uav1CompletedTime=24.600
+  uav2CompletedTime=22.051
+round=2 seed=2 runId=2
+  durationSec=1.385
+  suspiciousNodes=125
+  uav1CompletedTime=49.350
+  uav2CompletedTime=19.251
+round=3 seed=3 runId=3
+  durationSec=1.381
+  suspiciousNodes=143
+  uav1CompletedTime=27.473
+  uav2CompletedTime=29.600
+round=4 seed=4 runId=4
+  durationSec=1.430
+  suspiciousNodes=122
+  uav1CompletedTime=171.659
+  uav2CompletedTime=not-completed
+round=5 seed=5 runId=5
+  durationSec=1.392
+  suspiciousNodes=122
+  uav1CompletedTime=31.618
+  uav2CompletedTime=19.850
+round=6 seed=6 runId=6
+  durationSec=1.387
+  suspiciousNodes=135
+  uav1CompletedTime=not-completed
+  uav2CompletedTime=25.596
+round=7 seed=7 runId=7
+  durationSec=1.423
+  suspiciousNodes=145
+  uav1CompletedTime=not-completed
+  uav2CompletedTime=15.851
+round=8 seed=8 runId=8
+  durationSec=1.480
+  suspiciousNodes=121
+  uav1CompletedTime=136.356
+  uav2CompletedTime=13.927
+round=9 seed=9 runId=9
+  durationSec=1.427
+  suspiciousNodes=144
+  uav1CompletedTime=not-completed
+  uav2CompletedTime=not-completed
+round=10 seed=10 runId=10
+  durationSec=1.388
+  suspiciousNodes=132
+  uav1CompletedTime=92.100
+  uav2CompletedTime=not-completed
+round=11 seed=11 runId=11
+  durationSec=1.419
+  suspiciousNodes=122
+  uav1CompletedTime=not-completed
+  uav2CompletedTime=13.451
+round=12 seed=12 runId=12
+  durationSec=1.403
+  suspiciousNodes=133
+  uav1CompletedTime=not-completed
+  uav2CompletedTime=not-completed
+round=13 seed=13 runId=13
+  durationSec=1.401
+  suspiciousNodes=146
+  uav1CompletedTime=29.100
+  uav2CompletedTime=not-completed
+round=14 seed=14 runId=14
+  durationSec=1.396
+  suspiciousNodes=131
+  uav1CompletedTime=not-completed
+  uav2CompletedTime=19.002
+round=15 seed=15 runId=15
+  durationSec=1.390
+  suspiciousNodes=156
+  uav1CompletedTime=not-completed
+  uav2CompletedTime=not-completed
+round=16 seed=16 runId=16
+  durationSec=1.433
+  suspiciousNodes=142
+  uav1CompletedTime=not-completed
+  uav2CompletedTime=20.000
+round=17 seed=17 runId=17
+  durationSec=1.393
+  suspiciousNodes=147
+  uav1CompletedTime=not-completed
+  uav2CompletedTime=not-completed
+round=18 seed=18 runId=18
+  durationSec=1.436
+  suspiciousNodes=122
+  uav1CompletedTime=189.159
+  uav2CompletedTime=13.451
+round=19 seed=19 runId=19
+  durationSec=1.467
+  suspiciousNodes=122
+  uav1CompletedTime=87.600
+  uav2CompletedTime=not-completed
+round=20 seed=20 runId=20
+  durationSec=1.384
+  suspiciousNodes=127
+  uav1CompletedTime=not-completed
+  uav2CompletedTime=not-completed
+round=21 seed=21 runId=21
+  durationSec=1.428
+  suspiciousNodes=120
+  uav1CompletedTime=42.868
+  uav2CompletedTime=not-completed
+round=22 seed=22 runId=22
+  durationSec=1.449
+  suspiciousNodes=144
+  uav1CompletedTime=163.027
+  uav2CompletedTime=11.402
+round=23 seed=23 runId=23
+  durationSec=1.792
+  suspiciousNodes=132
+  uav1CompletedTime=125.086
+  uav2CompletedTime=20.291
+round=24 seed=24 runId=24
+  durationSec=1.476
+  suspiciousNodes=122
+  uav1CompletedTime=125.850
+  uav2CompletedTime=not-completed
+round=25 seed=25 runId=25
+  durationSec=1.413
+  suspiciousNodes=148
+  uav1CompletedTime=161.111
+  uav2CompletedTime=10.202
+round=26 seed=26 runId=26
+  durationSec=1.438
+  suspiciousNodes=145
+  uav1CompletedTime=48.361
+  uav2CompletedTime=10.202
+round=27 seed=27 runId=27
+  durationSec=1.442
+  suspiciousNodes=122
+  uav1CompletedTime=166.350
+  uav2CompletedTime=not-completed
+round=28 seed=28 runId=28
+  durationSec=1.473
+  suspiciousNodes=122
+  uav1CompletedTime=176.159
+  uav2CompletedTime=not-completed
+round=29 seed=29 runId=29
+  durationSec=1.437
+  suspiciousNodes=143
+  uav1CompletedTime=34.223
+  uav2CompletedTime=23.400
+round=30 seed=30 runId=30
+  durationSec=1.419
+  suspiciousNodes=144
+  uav1CompletedTime=9.924
+  uav2CompletedTime=not-completed
+round=31 seed=31 runId=31
+  durationSec=1.406
+  suspiciousNodes=120
+  uav1CompletedTime=not-completed
+  uav2CompletedTime=15.600
+round=32 seed=32 runId=32
+  durationSec=1.435
+  suspiciousNodes=127
+  uav1CompletedTime=130.317
+  uav2CompletedTime=not-completed
+round=33 seed=33 runId=33
+  durationSec=1.425
+  suspiciousNodes=143
+  uav1CompletedTime=not-completed
+  uav2CompletedTime=not-completed
+round=34 seed=34 runId=34
+  durationSec=1.443
+  suspiciousNodes=143
+  uav1CompletedTime=not-completed
+  uav2CompletedTime=not-completed
+round=35 seed=35 runId=35
+  durationSec=1.417
+  suspiciousNodes=134
+  uav1CompletedTime=not-completed
+  uav2CompletedTime=11.402
+round=36 seed=36 runId=36
+  durationSec=1.424
+  suspiciousNodes=141
+  uav1CompletedTime=70.041
+  uav2CompletedTime=20.497
+round=37 seed=37 runId=37
+  durationSec=1.422
+  suspiciousNodes=145
+  uav1CompletedTime=65.368
+  uav2CompletedTime=not-completed
+round=38 seed=38 runId=38
+  durationSec=1.393
+  suspiciousNodes=130
+  uav1CompletedTime=185.327
+  uav2CompletedTime=27.400
+round=39 seed=39 runId=39
+  durationSec=1.405
+  suspiciousNodes=121
+  uav1CompletedTime=146.368
+  uav2CompletedTime=10.675
+round=40 seed=40 runId=40
+  durationSec=3.045
+  suspiciousNodes=138
+  uav1CompletedTime=not-completed
+  uav2CompletedTime=12.651
+round=41 seed=41 runId=41
+  durationSec=2.418
+  suspiciousNodes=127
+  uav1CompletedTime=134.817
+  uav2CompletedTime=14.996
+round=42 seed=42 runId=42
+  durationSec=1.431
+  suspiciousNodes=158
+  uav1CompletedTime=not-completed
+  uav2CompletedTime=not-completed
+round=43 seed=43 runId=43
+  durationSec=1.422
+  suspiciousNodes=139
+  uav1CompletedTime=43.674
+  uav2CompletedTime=21.691
+round=44 seed=44 runId=44
+  durationSec=1.434
+  suspiciousNodes=137
+  uav1CompletedTime=not-completed
+  uav2CompletedTime=not-completed
+round=45 seed=45 runId=45
+  durationSec=1.403
+  suspiciousNodes=131
+  uav1CompletedTime=not-completed
+  uav2CompletedTime=not-completed
+round=46 seed=46 runId=46
+  durationSec=1.402
+  suspiciousNodes=144
+  uav1CompletedTime=43.674
+  uav2CompletedTime=24.802
+round=47 seed=47 runId=47
+  durationSec=1.437
+  suspiciousNodes=122
+  uav1CompletedTime=157.350
+  uav2CompletedTime=not-completed
+round=48 seed=48 runId=48
+  durationSec=1.442
+  suspiciousNodes=146
+  uav1CompletedTime=42.600
+  uav2CompletedTime=18.251
+round=49 seed=49 runId=49
+  durationSec=1.404
+  suspiciousNodes=120
+  uav1CompletedTime=121.973
+  uav2CompletedTime=14.400
+round=50 seed=50 runId=50
+  durationSec=1.404
+  suspiciousNodes=125
+  uav1CompletedTime=not-completed
+  uav2CompletedTime=9.802
+[CONCLUSION]
+totalRounds=50
+okRounds=50
+failedRounds=0
+uav1CompletionCount=31
+uav2CompletionCount=28
+uav2EarlierCount=18
+uav1EarlierCount=1
+earlierRate=0.947
+uav1MeanCompletionTime=97.85429032258064
+uav2MeanCompletionTime=17.489071428571428
+averageEarlierTime=75.39468421052631

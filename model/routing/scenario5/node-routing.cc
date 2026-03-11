@@ -14,17 +14,17 @@
 #include "ns3/node-list.h"
 #include "ns3/simulator.h"
 #include "ns3/packet.h"
-#include "../../../examples/scenarios/scenario4/scenario4-params.h"
+#include "../../../examples/scenarios/scenario5/scenario5-params.h"
 #include <cmath>
 #include <iomanip>
 #include <limits>
 
 namespace ns3 {
 
-NS_LOG_COMPONENT_DEFINE("Scenario4NodeRouting");
+NS_LOG_COMPONENT_DEFINE("Scenario5NodeRouting");
 
 namespace wsn {
-namespace scenario4 {
+namespace scenario5 {
 namespace routing {
 
 // Global BS instance
@@ -59,9 +59,9 @@ MarkUav2MissionCompleted(uint32_t triggerNodeId, double triggerConfidence)
                 << " | confidence=" << std::fixed << std::setprecision(3) << triggerConfidence
                 << " | t=" << g_uav2MissionCompletedTime << "s");
 
-    if (ns3::wsn::scenario4::params::g_resultFileStream)
+    if (ns3::wsn::scenario5::params::g_resultFileStream)
     {
-        *ns3::wsn::scenario4::params::g_resultFileStream
+        *ns3::wsn::scenario5::params::g_resultFileStream
             << "\n[EVENT] " << g_uav2MissionCompletedTime
             << " | event=UAV2MissionComplete"
             << " | triggerNodeId=" << triggerNodeId
@@ -204,9 +204,9 @@ void InitializeUavFlight()
 
                 // TODO:  in log vào `g_resultFileStream` tại đây
                 // Format: [EVENT] time | event=UAVWaypointArrival | nodeId=... | pos=(x,y,z)
-                if (ns3::wsn::scenario4::params::g_resultFileStream)
+                if (ns3::wsn::scenario5::params::g_resultFileStream)
                 {
-                    *ns3::wsn::scenario4::params::g_resultFileStream
+                    *ns3::wsn::scenario5::params::g_resultFileStream
                         << "\n[EVENT] " << Simulator::Now().GetSeconds()
                         << " | event=UAVWaypointArrival"
                         << " | nodeId=" << uavNodeId
@@ -232,9 +232,9 @@ void InitializeUavFlight()
                         NS_LOG_WARN("[UAV1-MISSION] Completed after leaving suspicious point"
                                     << " | t=" << g_uav1MissionCompletedTime << "s");
 
-                        if (ns3::wsn::scenario4::params::g_resultFileStream)
+                        if (ns3::wsn::scenario5::params::g_resultFileStream)
                         {
-                            *ns3::wsn::scenario4::params::g_resultFileStream
+                            *ns3::wsn::scenario5::params::g_resultFileStream
                                 << "\n[EVENT] " << g_uav1MissionCompletedTime
                                 << " | event=UAV1MissionComplete"
                                 << " | reason=LeftSuspiciousPoint"
@@ -284,7 +284,7 @@ void InitializeUavBroadcast()
     // UAV2 broadcasts from first waypoint until last waypoint
     const double broadcastStartTime = uav2Path.waypoints[0].arrivalTime;
     const double broadcastEndTime = uav2Path.waypoints.back().arrivalTime;
-    const double broadcastInterval = ns3::wsn::scenario4::params::FRAGMENT_BROADCAST_INTERVAL;
+    const double broadcastInterval = ns3::wsn::scenario5::params::FRAGMENT_BROADCAST_INTERVAL;
     
     // Calculate total broadcast duration and number of cycles
     const double totalBroadcastDuration = broadcastEndTime - broadcastStartTime;
@@ -331,9 +331,9 @@ void InitializeUavBroadcast()
                             << " | t=" << Simulator::Now().GetSeconds() << "s");
                 
                 // Log to result file
-                if (ns3::wsn::scenario4::params::g_resultFileStream)
+                if (ns3::wsn::scenario5::params::g_resultFileStream)
                 {
-                    *ns3::wsn::scenario4::params::g_resultFileStream
+                    *ns3::wsn::scenario5::params::g_resultFileStream
                         << "\n[EVENT] " << Simulator::Now().GetSeconds()
                         << " | event=UAVFragmentBroadcast"
                         << " | nodeId=" << uav2NodeId
@@ -352,7 +352,7 @@ void InitializeUavBroadcast()
                 if (!uavMobility) return;
                 
                 Vector uavPos = uavMobility->GetPosition();
-                const double broadcastRadius = ns3::wsn::scenario4::params::UAV_BROADCAST_RADIUS;
+                const double broadcastRadius = ns3::wsn::scenario5::params::UAV_BROADCAST_RADIUS;
                 uint32_t nodesInRange = 0;
                 
                 // Find all ground nodes within broadcast radius
@@ -487,9 +487,9 @@ void InitializeCellCooperationTimeout()
                     << " | skipped=" << skippedCount << " (already cooperated)");
         
         // Log to result file
-        if (ns3::wsn::scenario4::params::g_resultFileStream)
+        if (ns3::wsn::scenario5::params::g_resultFileStream)
         {
-            *ns3::wsn::scenario4::params::g_resultFileStream
+            *ns3::wsn::scenario5::params::g_resultFileStream
                 << "[EVENT] " << Simulator::Now().GetSeconds()
                 << " | event=CellCooperationTimeout"
                 << " | triggeredNodes=" << triggeredCount
@@ -499,6 +499,6 @@ void InitializeCellCooperationTimeout()
 }
 
 } // namespace routing
-} // namespace scenario4
+} // namespace scenario5
 } // namespace wsn
 } // namespace ns3

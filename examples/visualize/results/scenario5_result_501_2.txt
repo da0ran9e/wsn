@@ -1,5 +1,5 @@
-SCENARIO scenario4
-RUN seed=222 runId=1
+SCENARIO scenario5
+RUN seed=501 runId=2
 
 [CONFIG]
 gridSize=20
@@ -28,7 +28,7 @@ masterFileConfidence=0.950
 
 [NETWORK]
 groundNodes=400
-suspiciousNodes=147
+suspiciousNodes=121
 uavPaths=2
 generatedFragments=10
 
