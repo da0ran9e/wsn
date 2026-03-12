@@ -359,7 +359,8 @@ void InitializeUavBroadcast()
                         << std::endl;
                 }
                 
-                // Broadcast fragment to ground nodes within radius
+                // Broadcast fragment through CC2420 MAC/PHY.
+                // Receiver filtering is handled by CC2420 PHY link evaluation.
                 Ptr<Node> uavNode = NodeList::GetNode(uav2NodeId);
                 if (!uavNode) return;
 
@@ -370,65 +371,23 @@ void InitializeUavBroadcast()
                     return;
                 }
                 
-                Ptr<MobilityModel> uavMobility = uavNode->GetObject<MobilityModel>();
-                if (!uavMobility) return;
-                
-                Vector uavPos = uavMobility->GetPosition();
-                const double broadcastRadius = ns3::wsn::scenario4::params::UAV_BROADCAST_RADIUS;
-                uint32_t nodesInRange = 0;
-                
-                // Find all ground nodes within broadcast radius
-                for (uint32_t i = 0; i < NodeList::GetNNodes(); ++i)
-                {
-                    Ptr<Node> groundNode = NodeList::GetNode(i);
-                    if (!groundNode) continue;
-                    
-                    // Skip UAV nodes (they have z > 1.0)
-                    Ptr<MobilityModel> groundMobility = groundNode->GetObject<MobilityModel>();
-                    if (!groundMobility) continue;
-                    
-                    Vector groundPos = groundMobility->GetPosition();
-                    if (groundPos.z > 1.0) continue; // Skip UAVs
-                    
-                    // Check if within broadcast radius
-                    double distance = std::sqrt(
-                        std::pow(uavPos.x - groundPos.x, 2.0) +
-                        std::pow(uavPos.y - groundPos.y, 2.0));
-                    
-                    if (distance <= broadcastRadius)
-                    {
-                        // Create packet with fragment
-                        Ptr<Packet> pkt = Create<Packet>(fragment.size);
-                        
-                        // Add fragment header
-                        FragmentPacket fragHeader;
-                        fragHeader.SetFragmentId(fragmentId);
-                        fragHeader.SetConfidence(fragment.confidence);
-                        fragHeader.SetSourceId(uav2NodeId);
-                        pkt->AddHeader(fragHeader);
-                        
-                        // Add packet type header
-                        PacketHeader typeHeader;
-                        typeHeader.SetType(PACKET_TYPE_FRAGMENT);
-                        pkt->AddHeader(typeHeader);
-                        
-                        Ptr<wsn::Cc2420NetDevice> dstDev = GetCc2420Device(groundNode);
-                        if (!dstDev)
-                        {
-                            continue;
-                        }
+                Ptr<Packet> pkt = Create<Packet>(fragment.size);
 
-                        Mac16Address dstAddr = Mac16Address::ConvertFrom(dstDev->GetAddress());
-                        if (uavDev->Send(pkt, dstAddr, 0))
-                        {
-                            nodesInRange++;
-                        }
-                    }
+                FragmentPacket fragHeader;
+                fragHeader.SetFragmentId(fragmentId);
+                fragHeader.SetConfidence(fragment.confidence);
+                fragHeader.SetSourceId(uav2NodeId);
+                pkt->AddHeader(fragHeader);
+
+                PacketHeader typeHeader;
+                typeHeader.SetType(PACKET_TYPE_FRAGMENT);
+                pkt->AddHeader(typeHeader);
+
+                if (!uavDev->Send(pkt, Mac16Address("FF:FF"), 0))
+                {
+                    NS_LOG_WARN("[UAV-BROADCAST] Broadcast send failed for UAV " << uav2NodeId
+                                << " fragment=" << fragmentId);
                 }
-                
-                NS_LOG_DEBUG("[UAV-BROADCAST] Fragment " << fragmentId 
-                            << " delivered to " << nodesInRange << " ground nodes"
-                            << " | radius=" << broadcastRadius << "m");
             });
             
             currentTime += broadcastInterval;

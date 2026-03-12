@@ -71,50 +71,22 @@ BroadcastOneRound(uint32_t uavNodeId, uint32_t round)
         return;
     }
 
-    Vector up = uavMobility->GetPosition();
-
     const Fragment* selectedFragment = GetFragmentByRound(round);
 
-    for (auto& [nodeId, state] : g_groundNetworkPerNode)
-    {
-        Ptr<Node> gn = NodeList::GetNode(nodeId);
-        if (!gn)
-        {
-            continue;
-        }
-        Ptr<MobilityModel> gm = gn->GetObject<MobilityModel>();
-        if (!gm)
-        {
-            continue;
-        }
+    Ptr<Packet> p = Create<Packet>();
+    FragmentPacket f;
+    const uint32_t fragmentId = selectedFragment ? selectedFragment->fragmentId : (round % 16);
+    const double confidence = selectedFragment ? selectedFragment->confidence : 0.5;
+    f.SetFragmentId(fragmentId);
+    f.SetSourceId(uavNodeId);
+    f.SetConfidence(confidence);
 
-        Vector gp = gm->GetPosition();
-        double d = helper::CalculateDistance(up.x, up.y, gp.x, gp.y);
+    PacketHeader h;
+    h.SetType(PACKET_TYPE_FRAGMENT);
 
-        Ptr<wsn::Cc2420NetDevice> dstDev = GetCc2420Device(gn);
-        if (!dstDev)
-        {
-            continue;
-        }
-
-        Mac16Address dstAddr = Mac16Address::ConvertFrom(dstDev->GetAddress());
-
-        Ptr<Packet> p = Create<Packet>();
-        FragmentPacket f;
-        const uint32_t fragmentId = selectedFragment ? selectedFragment->fragmentId : (round % 16);
-        const double confidence = selectedFragment ? selectedFragment->confidence
-                               : std::max(0.05, 0.9 - 0.01 * d);
-        f.SetFragmentId(fragmentId);
-        f.SetSourceId(uavNodeId);
-        f.SetConfidence(confidence);
-
-        PacketHeader h;
-        h.SetType(PACKET_TYPE_FRAGMENT);
-
-        p->AddHeader(f);
-        p->AddHeader(h);
-        uavDev->Send(p, dstAddr, 0);
-    }
+    p->AddHeader(f);
+    p->AddHeader(h);
+    uavDev->Send(p, Mac16Address("FF:FF"), 0);
 
     if (round + 1 < kMaxBroadcastRounds)
     {
