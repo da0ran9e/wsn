@@ -19,6 +19,7 @@
 #include "ns3/traced-callback.h"
 #include "ns3/nstime.h"
 #include "ns3/packet.h"
+#include "ns3/random-variable-stream.h"
 
 #include <vector>
 #include <map>
@@ -347,6 +348,24 @@ class Cc2420Phy : public SpectrumPhy
     double m_rxSensitivityDbm;
     double m_noiseFloorDbm;
     double m_ccaThresholdDbm;
+
+    // Air-to-ground path loss model parameters
+    double m_pathLossRefDistM;
+    double m_pathLossRefLossDb;
+    double m_pathLossExpLos;
+    double m_pathLossExpMixed;
+    double m_pathLossExpNlos;
+    double m_shadowingSigmaLosDb;
+    double m_shadowingSigmaMixedDb;
+    double m_shadowingSigmaNlosDb;
+    double m_elevLosThreshDeg;
+    double m_elevMixedThreshDeg;
+    bool m_enableShadowing;
+
+    // Shadowing random generators
+    Ptr<NormalRandomVariable> m_shadowingLosRng;
+    Ptr<NormalRandomVariable> m_shadowingMixedRng;
+    Ptr<NormalRandomVariable> m_shadowingNlosRng;
 
     // State machine
     PhyState m_currentState;

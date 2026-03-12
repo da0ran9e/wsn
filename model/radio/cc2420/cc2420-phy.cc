@@ -12,8 +12,10 @@
 #include "ns3/mobility-model.h"
 #include "ns3/antenna-model.h"
 #include "ns3/double.h"
+#include "ns3/boolean.h"
 #include "ns3/net-device.h"
 #include "ns3/spectrum-channel.h"
+#include "ns3/random-variable-stream.h"
 
 namespace ns3
 {
@@ -53,7 +55,62 @@ Cc2420Phy::GetTypeId()
                       "CCA threshold in dBm",
                       DoubleValue(-77.0),
                       MakeDoubleAccessor(&Cc2420Phy::m_ccaThresholdDbm),
-                      MakeDoubleChecker<double>());
+                      MakeDoubleChecker<double>())
+        .AddAttribute("PathLossReferenceDistance",
+                      "Reference distance d0 for log-distance model (m)",
+                      DoubleValue(1.0),
+                      MakeDoubleAccessor(&Cc2420Phy::m_pathLossRefDistM),
+                      MakeDoubleChecker<double>(0.1))
+        .AddAttribute("PathLossReferenceLoss",
+                      "Reference path loss PL0 at d0 (dB)",
+                      DoubleValue(40.05),
+                      MakeDoubleAccessor(&Cc2420Phy::m_pathLossRefLossDb),
+                      MakeDoubleChecker<double>(0.0))
+        .AddAttribute("PathLossExponentLos",
+                      "Path loss exponent for high-elevation LoS profile",
+                      DoubleValue(2.0),
+                      MakeDoubleAccessor(&Cc2420Phy::m_pathLossExpLos),
+                      MakeDoubleChecker<double>(1.0))
+        .AddAttribute("PathLossExponentMixed",
+                      "Path loss exponent for mixed elevation profile",
+                      DoubleValue(2.5),
+                      MakeDoubleAccessor(&Cc2420Phy::m_pathLossExpMixed),
+                      MakeDoubleChecker<double>(1.0))
+        .AddAttribute("PathLossExponentNlos",
+                      "Path loss exponent for low-elevation NLoS profile",
+                      DoubleValue(3.0),
+                      MakeDoubleAccessor(&Cc2420Phy::m_pathLossExpNlos),
+                      MakeDoubleChecker<double>(1.0))
+        .AddAttribute("ShadowingSigmaLos",
+                      "Shadowing sigma for LoS profile (dB)",
+                      DoubleValue(4.0),
+                      MakeDoubleAccessor(&Cc2420Phy::m_shadowingSigmaLosDb),
+                      MakeDoubleChecker<double>(0.0))
+        .AddAttribute("ShadowingSigmaMixed",
+                      "Shadowing sigma for mixed profile (dB)",
+                      DoubleValue(6.0),
+                      MakeDoubleAccessor(&Cc2420Phy::m_shadowingSigmaMixedDb),
+                      MakeDoubleChecker<double>(0.0))
+        .AddAttribute("ShadowingSigmaNlos",
+                      "Shadowing sigma for NLoS profile (dB)",
+                      DoubleValue(8.0),
+                      MakeDoubleAccessor(&Cc2420Phy::m_shadowingSigmaNlosDb),
+                      MakeDoubleChecker<double>(0.0))
+        .AddAttribute("ElevationLosThreshold",
+                      "Elevation threshold for LoS profile (deg)",
+                      DoubleValue(40.0),
+                      MakeDoubleAccessor(&Cc2420Phy::m_elevLosThreshDeg),
+                      MakeDoubleChecker<double>(0.0, 90.0))
+        .AddAttribute("ElevationMixedThreshold",
+                      "Elevation threshold for mixed profile (deg)",
+                      DoubleValue(20.0),
+                      MakeDoubleAccessor(&Cc2420Phy::m_elevMixedThreshDeg),
+                      MakeDoubleChecker<double>(0.0, 90.0))
+        .AddAttribute("EnableShadowing",
+                      "Enable log-normal shadowing term",
+                      BooleanValue(true),
+                      MakeBooleanAccessor(&Cc2420Phy::m_enableShadowing),
+                      MakeBooleanChecker());
     return tid;
 }
 
@@ -62,6 +119,17 @@ Cc2420Phy::Cc2420Phy()
       m_rxSensitivityDbm(-95.0),
       m_noiseFloorDbm(-100.0),
       m_ccaThresholdDbm(-77.0),
+            m_pathLossRefDistM(1.0),
+            m_pathLossRefLossDb(40.05),
+            m_pathLossExpLos(2.0),
+            m_pathLossExpMixed(2.5),
+            m_pathLossExpNlos(3.0),
+            m_shadowingSigmaLosDb(4.0),
+            m_shadowingSigmaMixedDb(6.0),
+            m_shadowingSigmaNlosDb(8.0),
+            m_elevLosThreshDeg(40.0),
+            m_elevMixedThreshDeg(20.0),
+            m_enableShadowing(true),
       m_currentState(PHY_SLEEP),
       m_pendingState(PHY_SLEEP),
       m_totalPowerDbm(-100.0),
@@ -70,6 +138,18 @@ Cc2420Phy::Cc2420Phy()
       m_previousState(PHY_SLEEP)
 {
     NS_LOG_FUNCTION(this);
+
+        m_shadowingLosRng = CreateObject<NormalRandomVariable>();
+        m_shadowingMixedRng = CreateObject<NormalRandomVariable>();
+        m_shadowingNlosRng = CreateObject<NormalRandomVariable>();
+
+        m_shadowingLosRng->SetAttribute("Mean", DoubleValue(0.0));
+        m_shadowingMixedRng->SetAttribute("Mean", DoubleValue(0.0));
+        m_shadowingNlosRng->SetAttribute("Mean", DoubleValue(0.0));
+
+        m_shadowingLosRng->SetAttribute("Variance", DoubleValue(m_shadowingSigmaLosDb * m_shadowingSigmaLosDb));
+        m_shadowingMixedRng->SetAttribute("Variance", DoubleValue(m_shadowingSigmaMixedDb * m_shadowingSigmaMixedDb));
+        m_shadowingNlosRng->SetAttribute("Variance", DoubleValue(m_shadowingSigmaNlosDb * m_shadowingSigmaNlosDb));
 }
 
 Cc2420Phy::~Cc2420Phy()
@@ -242,14 +322,50 @@ Cc2420Phy::EvaluateReceptionFrom(Ptr<Cc2420Phy> txPhy, double& rssiDbm, uint8_t&
         return false;
     }
 
-    // Temporary PHY propagation model (to be replaced by full Spectrum RX path)
-    constexpr double kReferenceLossDb = 46.6776; // FSPL at 2.4 GHz, 1m
-    constexpr double kPathLossExponent = 3.0;
+    const Vector txPos = txPhy->GetMobility()->GetPosition();
+    const Vector rxPos = m_mobility->GetPosition();
 
-    const double distance = m_mobility->GetDistanceFrom(txPhy->GetMobility());
-    const double distanceForLoss = std::max(1.0, distance);
+    const double dx = txPos.x - rxPos.x;
+    const double dy = txPos.y - rxPos.y;
+    const double dz = txPos.z - rxPos.z;
+    const double horizontalDistance = std::sqrt(dx * dx + dy * dy);
+    const double distance3D = std::sqrt(horizontalDistance * horizontalDistance + dz * dz);
+    const double distanceForLoss = std::max(m_pathLossRefDistM, distance3D);
+
+    const double kRadToDeg = 180.0 / std::acos(-1.0);
+    const double elevDeg =
+        (horizontalDistance > 1e-9)
+            ? (std::atan2(std::abs(dz), horizontalDistance) * kRadToDeg)
+            : 90.0;
+
+    double pathLossExponent = m_pathLossExpNlos;
+    Ptr<NormalRandomVariable> shadowingRng = m_shadowingNlosRng;
+    double sigmaDb = m_shadowingSigmaNlosDb;
+
+    if (elevDeg >= m_elevLosThreshDeg)
+    {
+        pathLossExponent = m_pathLossExpLos;
+        shadowingRng = m_shadowingLosRng;
+        sigmaDb = m_shadowingSigmaLosDb;
+    }
+    else if (elevDeg >= m_elevMixedThreshDeg)
+    {
+        pathLossExponent = m_pathLossExpMixed;
+        shadowingRng = m_shadowingMixedRng;
+        sigmaDb = m_shadowingSigmaMixedDb;
+    }
+
+    double shadowingDb = 0.0;
+    if (m_enableShadowing && shadowingRng)
+    {
+        shadowingRng->SetAttribute("Variance", DoubleValue(sigmaDb * sigmaDb));
+        shadowingDb = shadowingRng->GetValue();
+    }
+
     const double pathLossDb =
-        kReferenceLossDb + 10.0 * kPathLossExponent * std::log10(distanceForLoss);
+        m_pathLossRefLossDb +
+        10.0 * pathLossExponent * std::log10(distanceForLoss / m_pathLossRefDistM) +
+        shadowingDb;
 
     rssiDbm = txPhy->GetTxPower() - pathLossDb;
     if (rssiDbm < m_rxSensitivityDbm)

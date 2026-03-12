@@ -1265,32 +1265,32 @@ Step 8: Finalize Ground Node States
   All node states finalized
 
 [SUSPICIOUS-POINT] seedPos.x seedPos.y
-[SUSPICIOUS-POINT] 240 260
+[SUSPICIOUS-POINT] 20 360
 [SUSPICIOUS-REGION] nodeId1 nodeId2 ... (Cell: cell1 cell2 ...)
-[SUSPICIOUS-REGION]  180 181 186 187 188 193 194 195 200 201 202 203 204 205 206 207 208 209 210 211 212 213 214 215 216 217 220 221 222 223 224 225 226 227 228 229 230 231 232 233 234 235 236 237 240 241 242 243 244 245 246 247 248 249 250 251 252 253 254 255 256 257 260 261 262 263 264 265 266 267 268 269 270 271 272 273 274 275 276 277 280 281 282 283 284 285 286 287 288 289 290 291 292 293 294 295 296 297 300 301 306 307 308 313 314 315 316 317 318 319 320 334 335 336 337 338 339 354 355 356 357 358 359 374 375 376 377 378 379 394 395 396 397 398 399 (Cells:  19999 20000 20001 30001)
+[SUSPICIOUS-REGION]  180 181 186 187 188 200 201 202 203 204 205 206 207 208 209 210 220 221 222 223 224 225 226 227 228 229 230 240 241 242 243 244 245 246 247 248 249 250 260 261 262 263 264 265 266 267 268 269 270 280 281 282 283 284 285 286 287 288 289 290 300 301 302 303 304 305 306 307 308 309 310 311 312 320 321 322 323 324 325 326 327 328 329 330 331 332 333 340 341 342 343 344 345 346 347 348 349 350 351 352 353 360 361 362 363 364 365 366 367 368 369 370 371 372 373 380 381 382 383 384 385 386 387 388 389 390 391 392 393 (Cells:  19999 20000 29998 29999 30000)
 Step 9: Select Suspicious Region
-  Suspicious nodes: 135
-  Coverage: 33.8%
-  Node IDs: 180 181 186 187 188 193 194 195 200 201 202 203 204 205 206 207 208 209 210 211 212 213 214 215 216 217 220 221 222 223 224 225 226 227 228 229 230 231 232 233 234 235 236 237 240 241 242 243 244 245 246 247 248 249 250 251 252 253 254 255 256 257 260 261 262 263 264 265 266 267 268 269 270 271 272 273 274 275 276 277 280 281 282 283 284 285 286 287 288 289 290 291 292 293 294 295 296 297 300 301 306 307 308 313 314 315 316 317 318 319 320 334 335 336 337 338 339 354 355 356 357 358 359 374 375 376 377 378 379 394 395 396 397 398 399 
+  Suspicious nodes: 129
+  Coverage: 32.2%
+  Node IDs: 180 181 186 187 188 200 201 202 203 204 205 206 207 208 209 210 220 221 222 223 224 225 226 227 228 229 230 240 241 242 243 244 245 246 247 248 249 250 260 261 262 263 264 265 266 267 268 269 270 280 281 282 283 284 285 286 287 288 289 290 300 301 302 303 304 305 306 307 308 309 310 311 312 320 321 322 323 324 325 326 327 328 329 330 331 332 333 340 341 342 343 344 345 346 347 348 349 350 351 352 353 360 361 362 363 364 365 366 367 368 369 370 371 372 373 380 381 382 383 384 385 386 387 388 389 390 391 392 393 
 
-[FRAGMENTS] 168654(0.076) 254289(0.115) 258334(0.117) 110123(0.050) 202616(0.092) 281373(0.127) 208339(0.094) 281555(0.128) 225257(0.102) 106612(0.048)
+[FRAGMENTS] 197135(0.089) 296491(0.134) 116076(0.053) 264056(0.120) 222458(0.101) 285289(0.129) 241258(0.109) 156435(0.071) 115653(0.052) 202301(0.092)
 Step 10: Generate Fragments
   Total fragments: 10
   Total confidence: 0.950
 
 [UAV-PATH] uav2NodeId strategy totalDistance totalTime flightSpeed hoverTime avgSpeed broadcastRadius coverage waypoints: (x1, y1) (x2, y2) ...
-[UAV-PATH] 402 strategy=GreedySetCover totalDistance=2206.1m totalTime=27.6s flightSpeed=80.0m/s hoverTime=0.0s avgSpeed=80.0m/s broadcastRadius=50.0m coverage=135/135 waypoints: (40.0,240.0) (140.0,240.0) (240.0,240.0) (320.0,320.0) (320.0,220.0) (360.0,340.0) (160.0,300.0) (140.0,220.0) (40.0,200.0) (40.0,280.0) (280.0,340.0) (240.0,200.0) (260.0,240.0) (300.0,340.0) (140.0,300.0) (20.0,300.0)
-[UAV-PATH] 401 strategy=GreedyNearestNeighbor totalDistance=3259.8m totalTime=310.7s flightSpeed=80.0m/s hoverTime=2.0s avgSpeed=80.0m/s waypoints: (0.0,180.0) (20.0,180.0) (20.0,200.0) (0.0,200.0) (0.0,220.0) (20.0,220.0) (40.0,220.0) (40.0,200.0) (60.0,200.0) (80.0,200.0) (100.0,200.0) (120.0,200.0) (120.0,180.0) (140.0,180.0) (160.0,180.0) (160.0,200.0) (140.0,200.0) (140.0,220.0) (120.0,220.0) (100.0,220.0) (80.0,220.0) (60.0,220.0) (60.0,240.0) (40.0,240.0) (20.0,240.0) (0.0,240.0) (0.0,260.0) (20.0,260.0) (40.0,260.0) (60.0,260.0) (80.0,260.0) (80.0,240.0) (100.0,240.0) (120.0,240.0) (140.0,240.0) (160.0,240.0) (160.0,220.0) (180.0,220.0) (180.0,200.0) (200.0,200.0) (220.0,200.0) (240.0,200.0) (260.0,200.0) (260.0,180.0) (280.0,180.0) (300.0,180.0) (300.0,200.0) (280.0,200.0) (280.0,220.0) (260.0,220.0) (240.0,220.0) (220.0,220.0) (200.0,220.0) (200.0,240.0) (180.0,240.0) (180.0,260.0) (160.0,260.0) (140.0,260.0) (120.0,260.0) (100.0,260.0) (100.0,280.0) (80.0,280.0) (60.0,280.0) (40.0,280.0) (20.0,280.0) (0.0,280.0) (0.0,300.0) (20.0,300.0) (0.0,320.0) (120.0,300.0) (120.0,280.0) (140.0,280.0) (160.0,280.0) (180.0,280.0) (200.0,280.0) (200.0,260.0) (220.0,260.0) (220.0,240.0) (240.0,240.0) (260.0,240.0) (280.0,240.0) (300.0,240.0) (300.0,220.0) (320.0,220.0) (320.0,200.0) (340.0,200.0) (340.0,220.0) (340.0,240.0) (320.0,240.0) (320.0,260.0) (300.0,260.0) (280.0,260.0) (260.0,260.0) (240.0,260.0) (240.0,280.0) (220.0,280.0) (260.0,280.0) (280.0,280.0) (300.0,280.0) (320.0,280.0) (340.0,280.0) (340.0,260.0) (340.0,300.0) (320.0,300.0) (300.0,300.0) (280.0,300.0) (260.0,300.0) (280.0,320.0) (300.0,320.0) (320.0,320.0) (340.0,320.0) (360.0,320.0) (360.0,300.0) (380.0,300.0) (380.0,320.0) (380.0,340.0) (360.0,340.0) (340.0,340.0) (320.0,340.0) (300.0,340.0) (280.0,340.0) (280.0,360.0) (300.0,360.0) (320.0,360.0) (340.0,360.0) (360.0,360.0) (380.0,360.0) (380.0,380.0) (360.0,380.0) (340.0,380.0) (320.0,380.0) (300.0,380.0) (280.0,380.0) (160.0,300.0) (140.0,300.0)
+[UAV-PATH] 402 strategy=GreedySetCover totalDistance=1673.7m totalTime=20.9s flightSpeed=80.0m/s hoverTime=0.0s avgSpeed=80.0m/s broadcastRadius=50.0m coverage=129/129 waypoints: (40.0,240.0) (140.0,240.0) (140.0,340.0) (40.0,340.0) (220.0,340.0) (200.0,240.0) (120.0,200.0) (100.0,260.0) (40.0,200.0) (20.0,260.0) (80.0,340.0) (160.0,340.0) (220.0,360.0) (40.0,360.0)
+[UAV-PATH] 401 strategy=GreedyNearestNeighbor totalDistance=2877.3m totalTime=294.0s flightSpeed=80.0m/s hoverTime=2.0s avgSpeed=80.0m/s waypoints: (0.0,180.0) (20.0,180.0) (20.0,200.0) (0.0,200.0) (0.0,220.0) (20.0,220.0) (40.0,220.0) (40.0,200.0) (60.0,200.0) (80.0,200.0) (100.0,200.0) (120.0,200.0) (120.0,180.0) (140.0,180.0) (160.0,180.0) (160.0,200.0) (140.0,200.0) (140.0,220.0) (120.0,220.0) (100.0,220.0) (80.0,220.0) (60.0,220.0) (60.0,240.0) (40.0,240.0) (20.0,240.0) (0.0,240.0) (0.0,260.0) (20.0,260.0) (40.0,260.0) (60.0,260.0) (80.0,260.0) (80.0,240.0) (100.0,240.0) (120.0,240.0) (140.0,240.0) (160.0,240.0) (160.0,220.0) (180.0,220.0) (180.0,200.0) (200.0,200.0) (200.0,220.0) (200.0,240.0) (180.0,240.0) (180.0,260.0) (160.0,260.0) (140.0,260.0) (120.0,260.0) (100.0,260.0) (100.0,280.0) (80.0,280.0) (60.0,280.0) (40.0,280.0) (20.0,280.0) (0.0,280.0) (0.0,300.0) (20.0,300.0) (40.0,300.0) (60.0,300.0) (80.0,300.0) (100.0,300.0) (120.0,300.0) (120.0,280.0) (140.0,280.0) (160.0,280.0) (180.0,280.0) (200.0,280.0) (200.0,260.0) (200.0,300.0) (180.0,300.0) (160.0,300.0) (140.0,300.0) (140.0,320.0) (120.0,320.0) (100.0,320.0) (80.0,320.0) (60.0,320.0) (40.0,320.0) (20.0,320.0) (0.0,320.0) (0.0,340.0) (20.0,340.0) (40.0,340.0) (60.0,340.0) (80.0,340.0) (100.0,340.0) (120.0,340.0) (140.0,340.0) (160.0,340.0) (160.0,320.0) (180.0,320.0) (200.0,320.0) (220.0,320.0) (220.0,300.0) (240.0,300.0) (240.0,320.0) (260.0,320.0) (260.0,340.0) (240.0,340.0) (220.0,340.0) (200.0,340.0) (180.0,340.0) (180.0,360.0) (160.0,360.0) (140.0,360.0) (120.0,360.0) (100.0,360.0) (80.0,360.0) (60.0,360.0) (40.0,360.0) (20.0,360.0) (0.0,360.0) (0.0,380.0) (20.0,380.0) (40.0,380.0) (60.0,380.0) (80.0,380.0) (100.0,380.0) (120.0,380.0) (140.0,380.0) (160.0,380.0) (180.0,380.0) (200.0,380.0) (200.0,360.0) (220.0,360.0) (240.0,360.0) (260.0,360.0) (260.0,380.0) (240.0,380.0) (220.0,380.0)
 Step 11: Plan UAV Flight Paths
   Total UAVs: 2
   UAV 401:
-    Waypoints: 135
-    Total time: 310.7s
-    Total distance: 3259.8m
+    Waypoints: 129
+    Total time: 294.0s
+    Total distance: 2877.3m
   UAV 402:
-    Waypoints: 16
-    Total time: 27.6s
-    Total distance: 2206.1m
+    Waypoints: 14
+    Total time: 20.9s
+    Total distance: 1673.7m
 
 === Base Station Initialization Complete ===
 End Time: 0.0s
@@ -1300,898 +1300,890 @@ End Time: 0.0s
 
 [EVENT] 9.7 | event=UAVWaypointArrival | nodeId=402 | pos=(40.0,240.0,20.0)
 
-[EVENT] 9.8 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=0 | cycle=1 | confidence=0.076 | size=168654
-402-R-221(0) 402-R-222(0) 402-R-223(0) 402-R-241(0) 402-R-242(0) 402-R-243(0) 402-R-261(0) 402-R-262(0) 402-R-263(0) 
-[EVENT] 9.996 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=1 | cycle=1 | confidence=0.115 | size=254289
-402-R-221(1) 402-R-222(1) 402-R-223(1) 402-R-241(1) 402-R-242(1) 402-R-243(1) 402-R-261(1) 402-R-262(1) 402-R-263(1) 
-[EVENT] 10.196 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=2 | cycle=1 | confidence=0.117 | size=258334
+[EVENT] 9.8 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=0 | cycle=1 | confidence=0.089 | size=197135
+402-R-6(0) 402-R-43(0) 402-R-104(0) 402-R-125(0) 402-R-143(0) 402-R-145(0) 402-R-150(0) 402-R-161(0) 402-R-162(0) 402-R-164(0) 402-R-181(0) 402-R-183(0) 402-R-191(0) 402-R-200(0) 402-R-201(0) 402-R-202(0) 402-R-203(0) 402-R-204(0) 402-R-207(0) 402-R-220(0) 402-R-221(0) 402-R-222(0) 402-R-223(0) 402-R-224(0) 402-R-240(0) 402-R-241(0) 402-R-242(0) 402-R-243(0) 402-R-244(0) 402-R-260(0) 402-R-261(0) 402-R-262(0) 402-R-263(0) 402-R-264(0) 402-R-265(0) 402-R-266(0) 402-R-280(0) 402-R-281(0) 402-R-282(0) 402-R-283(0) 402-R-284(0) 402-R-300(0) 402-R-301(0) 402-R-302(0) 402-R-303(0) 402-R-306(0) 402-R-307(0) 402-R-308(0) 402-R-313(0) 402-R-321(0) 402-R-324(0) 402-R-344(0) 402-R-381(0) 
+[EVENT] 9.996 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=1 | cycle=1 | confidence=0.134 | size=296491
+402-R-140(1) 402-R-141(1) 402-R-142(1) 402-R-144(1) 402-R-160(1) 402-R-161(1) 402-R-163(1) 402-R-164(1) 402-R-165(1) 402-R-166(1) 402-R-168(1) 402-R-173(1) 402-R-180(1) 402-R-187(1) 402-R-188(1) 402-R-200(1) 402-R-201(1) 402-R-202(1) 402-R-203(1) 402-R-205(1) 402-R-208(1) 402-R-220(1) 402-R-221(1) 402-R-222(1) 402-R-223(1) 402-R-224(1) 402-R-226(1) 402-R-228(1) 402-R-237(1) 402-R-240(1) 402-R-241(1) 402-R-242(1) 402-R-243(1) 402-R-244(1) 402-R-245(1) 402-R-246(1) 402-R-248(1) 402-R-260(1) 402-R-261(1) 402-R-262(1) 402-R-263(1) 402-R-264(1) 402-R-265(1) 402-R-281(1) 402-R-282(1) 402-R-283(1) 402-R-285(1) 402-R-286(1) 402-R-302(1) 402-R-303(1) 402-R-306(1) 402-R-321(1) 402-R-322(1) 402-R-323(1) 402-R-325(1) 402-R-340(1) 402-R-344(1) 402-R-365(1) 402-R-367(1) 
+[EVENT] 10.196 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=2 | cycle=1 | confidence=0.053 | size=116076
 
-[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=221 | cellId=19999 | confidence=0.192 | fragments=0 1 
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=6 | cellId=1 | confidence=0.089 | fragments=0 
 
-[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=222 | cellId=19999 | confidence=0.192 | fragments=0 1 
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=43 | cellId=0 | confidence=0.089 | fragments=0 
+141-S-104(1) 
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=104 | cellId=10000 | confidence=0.224 | fragments=0 1 
+104-S-125(1) 
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=125 | cellId=10000 | confidence=0.224 | fragments=0 1 
+104-S-143(1) 
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=143 | cellId=10000 | confidence=0.224 | fragments=0 1 
+104-S-145(1) 
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=145 | cellId=10000 | confidence=0.224 | fragments=0 1 
+168-S-150(1) 
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=150 | cellId=10001 | confidence=0.224 | fragments=0 1 
 
-[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=223 | cellId=19999 | confidence=0.192 | fragments=0 1 
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=161 | cellId=10000 | confidence=0.224 | fragments=0 1 
+104-S-162(1) 
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=162 | cellId=10000 | confidence=0.224 | fragments=0 1 
 
-[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=241 | cellId=19999 | confidence=0.192 | fragments=0 1 
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=164 | cellId=10000 | confidence=0.224 | fragments=0 1 
+180-S-181(1) 
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=181 | cellId=19999 | confidence=0.224 | fragments=0 1 
+104-S-183(1) 
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=183 | cellId=10000 | confidence=0.224 | fragments=0 1 
+150-S-191(1) 
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=191 | cellId=10001 | confidence=0.224 | fragments=0 1 
 
-[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=242 | cellId=19999 | confidence=0.192 | fragments=0 1 
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=200 | cellId=19999 | confidence=0.224 | fragments=0 1 
 
-[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=243 | cellId=19999 | confidence=0.192 | fragments=0 1 
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=201 | cellId=19999 | confidence=0.224 | fragments=0 1 
 
-[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=261 | cellId=19999 | confidence=0.192 | fragments=0 1 
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=202 | cellId=19999 | confidence=0.224 | fragments=0 1 
 
-[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=262 | cellId=19999 | confidence=0.192 | fragments=0 1 
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=203 | cellId=19999 | confidence=0.224 | fragments=0 1 
+187-S-204(1) 
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=204 | cellId=20000 | confidence=0.224 | fragments=0 1 
+187-S-207(1) 
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=207 | cellId=20000 | confidence=0.224 | fragments=0 1 
 
-[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=263 | cellId=19999 | confidence=0.192 | fragments=0 1 
-402-R-221(2) 402-R-222(2) 402-R-223(2) 402-R-241(2) 402-R-242(2) 402-R-243(2) 402-R-261(2) 402-R-262(2) 402-R-263(2) 
-[EVENT] 10.396 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=3 | cycle=1 | confidence=0.050 | size=110123
-402-R-221(3) 402-R-222(3) 402-R-223(3) 402-R-241(3) 402-R-242(3) 402-R-243(3) 402-R-261(3) 402-R-262(3) 402-R-263(3) 
-[EVENT] 10.596 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=4 | cycle=1 | confidence=0.092 | size=202616
-402-R-221(4) 402-R-222(4) 402-R-223(4) 402-R-241(4) 402-R-242(4) 402-R-243(4) 402-R-261(4) 402-R-262(4) 402-R-263(4) 
-[EVENT] 10.796 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=5 | cycle=1 | confidence=0.127 | size=281373
-402-R-221(5) 402-R-222(5) 402-R-223(5) 402-R-241(5) 402-R-242(5) 402-R-243(5) 402-R-261(5) 402-R-262(5) 402-R-263(5) 
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=220 | cellId=19999 | confidence=0.224 | fragments=0 1 
+
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=221 | cellId=19999 | confidence=0.224 | fragments=0 1 
+
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=222 | cellId=19999 | confidence=0.224 | fragments=0 1 
+
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=223 | cellId=19999 | confidence=0.224 | fragments=0 1 
+
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=224 | cellId=20000 | confidence=0.224 | fragments=0 1 
+
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=240 | cellId=19999 | confidence=0.224 | fragments=0 1 
+
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=241 | cellId=19999 | confidence=0.224 | fragments=0 1 
+
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=242 | cellId=19999 | confidence=0.224 | fragments=0 1 
+
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=243 | cellId=19999 | confidence=0.224 | fragments=0 1 
+
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=244 | cellId=20000 | confidence=0.224 | fragments=0 1 
+
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=260 | cellId=19999 | confidence=0.224 | fragments=0 1 
+
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=261 | cellId=19999 | confidence=0.224 | fragments=0 1 
+
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=262 | cellId=19999 | confidence=0.224 | fragments=0 1 
+
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=263 | cellId=19999 | confidence=0.224 | fragments=0 1 
+
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=264 | cellId=20000 | confidence=0.224 | fragments=0 1 
+
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=265 | cellId=20000 | confidence=0.224 | fragments=0 1 
+187-S-266(1) 
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=266 | cellId=20000 | confidence=0.224 | fragments=0 1 
+180-S-280(1) 
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=280 | cellId=19999 | confidence=0.224 | fragments=0 1 
+
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=281 | cellId=19999 | confidence=0.224 | fragments=0 1 
+
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=282 | cellId=19999 | confidence=0.224 | fragments=0 1 
+
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=283 | cellId=19999 | confidence=0.224 | fragments=0 1 
+187-S-284(1) 
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=284 | cellId=20000 | confidence=0.224 | fragments=0 1 
+180-S-300(1) 
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=300 | cellId=19999 | confidence=0.224 | fragments=0 1 
+180-S-301(1) 
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=301 | cellId=19999 | confidence=0.224 | fragments=0 1 
+
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=302 | cellId=29999 | confidence=0.224 | fragments=0 1 
+
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=303 | cellId=29999 | confidence=0.224 | fragments=0 1 
+
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=306 | cellId=20000 | confidence=0.224 | fragments=0 1 
+187-S-307(1) 
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=307 | cellId=20000 | confidence=0.224 | fragments=0 1 
+187-S-308(1) 
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=308 | cellId=20000 | confidence=0.224 | fragments=0 1 
+237-S-313(1) 
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=313 | cellId=20001 | confidence=0.224 | fragments=0 1 
+
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=321 | cellId=29999 | confidence=0.224 | fragments=0 1 
+302-S-324(1) 
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=324 | cellId=29999 | confidence=0.224 | fragments=0 1 
+
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=344 | cellId=29999 | confidence=0.224 | fragments=0 1 
+302-S-381(1) 
+[EVENT] 10.196 | event=RequestFragmentSharing | nodeId=381 | cellId=29999 | confidence=0.224 | fragments=0 1 
+402-R-7(2) 402-R-69(2) 402-R-91(2) 402-R-103(2) 402-R-129(2) 402-R-161(2) 402-R-163(2) 402-R-166(2) 402-R-167(2) 402-R-181(2) 402-R-183(2) 402-R-184(2) 402-R-186(2) 402-R-187(2) 402-R-188(2) 402-R-200(2) 402-R-201(2) 402-R-202(2) 402-R-203(2) 402-R-204(2) 402-R-205(2) 402-R-220(2) 402-R-221(2) 402-R-222(2) 402-R-223(2) 402-R-224(2) 402-R-225(2) 402-R-240(2) 402-R-241(2) 402-R-242(2) 402-R-243(2) 402-R-244(2) 402-R-248(2) 402-R-249(2) 402-R-260(2) 402-R-261(2) 402-R-262(2) 402-R-263(2) 402-R-264(2) 402-R-267(2) 402-R-281(2) 402-R-282(2) 402-R-283(2) 402-R-284(2) 402-R-289(2) 402-R-300(2) 402-R-301(2) 402-R-303(2) 402-R-305(2) 402-R-307(2) 402-R-310(2) 402-R-323(2) 402-R-325(2) 402-R-343(2) 402-R-345(2) 402-R-353(2) 402-R-360(2) 402-R-387(2) 
+[EVENT] 10.396 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=3 | cycle=1 | confidence=0.120 | size=264056
+
+[EVENT] 10.396 | event=RequestFragmentSharing | nodeId=140 | cellId=9999 | confidence=0.134 | fragments=1 
+103-S-141(2) 104-S-141(0) 
+[EVENT] 10.396 | event=RequestFragmentSharing | nodeId=141 | cellId=10000 | confidence=0.276 | fragments=0 1 2 
+103-S-142(2) 104-S-142(0) 
+[EVENT] 10.396 | event=RequestFragmentSharing | nodeId=142 | cellId=10000 | confidence=0.276 | fragments=0 1 2 
+103-S-144(2) 104-S-144(0) 
+[EVENT] 10.396 | event=RequestFragmentSharing | nodeId=144 | cellId=10000 | confidence=0.276 | fragments=0 1 2 
+
+[EVENT] 10.396 | event=RequestFragmentSharing | nodeId=160 | cellId=9999 | confidence=0.134 | fragments=1 
+104-S-163(0) 
+[EVENT] 10.396 | event=RequestFragmentSharing | nodeId=163 | cellId=10000 | confidence=0.276 | fragments=0 1 2 
+103-S-165(2) 104-S-165(0) 
+[EVENT] 10.396 | event=RequestFragmentSharing | nodeId=165 | cellId=10000 | confidence=0.276 | fragments=0 1 2 
+104-S-166(0) 
+[EVENT] 10.396 | event=RequestFragmentSharing | nodeId=166 | cellId=10000 | confidence=0.276 | fragments=0 1 2 
+69-S-168(2) 150-S-168(0) 
+[EVENT] 10.396 | event=RequestFragmentSharing | nodeId=168 | cellId=10001 | confidence=0.276 | fragments=0 1 2 
+69-S-173(2) 150-S-173(0) 
+[EVENT] 10.396 | event=RequestFragmentSharing | nodeId=173 | cellId=10001 | confidence=0.276 | fragments=0 1 2 
+181-S-180(0) 181-S-180(2) 
+[EVENT] 10.396 | event=RequestFragmentSharing | nodeId=180 | cellId=19999 | confidence=0.276 | fragments=0 1 2 
+204-S-187(0) 
+[EVENT] 10.396 | event=RequestFragmentSharing | nodeId=187 | cellId=20000 | confidence=0.276 | fragments=0 1 2 
+187-S-188(0) 
+[EVENT] 10.396 | event=RequestFragmentSharing | nodeId=188 | cellId=20000 | confidence=0.276 | fragments=0 1 2 
+187-S-205(0) 
+[EVENT] 10.396 | event=RequestFragmentSharing | nodeId=205 | cellId=20000 | confidence=0.276 | fragments=0 1 2 
+186-S-208(2) 187-S-208(0) 
+[EVENT] 10.396 | event=RequestFragmentSharing | nodeId=208 | cellId=20000 | confidence=0.276 | fragments=0 1 2 
+186-S-226(2) 187-S-226(0) 
+[EVENT] 10.396 | event=RequestFragmentSharing | nodeId=226 | cellId=20000 | confidence=0.276 | fragments=0 1 2 
+186-S-228(2) 187-S-228(0) 
+[EVENT] 10.396 | event=RequestFragmentSharing | nodeId=228 | cellId=20000 | confidence=0.276 | fragments=0 1 2 
+313-S-237(0) 
+[EVENT] 10.396 | event=RequestFragmentSharing | nodeId=237 | cellId=20001 | confidence=0.224 | fragments=0 1 
+186-S-245(2) 187-S-245(0) 
+[EVENT] 10.396 | event=RequestFragmentSharing | nodeId=245 | cellId=20000 | confidence=0.276 | fragments=0 1 2 
+186-S-246(2) 187-S-246(0) 
+[EVENT] 10.396 | event=RequestFragmentSharing | nodeId=246 | cellId=20000 | confidence=0.276 | fragments=0 1 2 
+187-S-248(0) 
+[EVENT] 10.396 | event=RequestFragmentSharing | nodeId=248 | cellId=20000 | confidence=0.276 | fragments=0 1 2 
+186-S-285(2) 187-S-285(0) 
+[EVENT] 10.396 | event=RequestFragmentSharing | nodeId=285 | cellId=20000 | confidence=0.276 | fragments=0 1 2 
+186-S-286(2) 187-S-286(0) 
+[EVENT] 10.396 | event=RequestFragmentSharing | nodeId=286 | cellId=20000 | confidence=0.276 | fragments=0 1 2 
+302-S-322(0) 303-S-322(2) 
+[EVENT] 10.396 | event=RequestFragmentSharing | nodeId=322 | cellId=29999 | confidence=0.276 | fragments=0 1 2 
+302-S-323(0) 
+[EVENT] 10.396 | event=RequestFragmentSharing | nodeId=323 | cellId=29999 | confidence=0.276 | fragments=0 1 2 
+302-S-325(0) 
+[EVENT] 10.396 | event=RequestFragmentSharing | nodeId=325 | cellId=29999 | confidence=0.276 | fragments=0 1 2 
+302-S-340(0) 303-S-340(2) 
+[EVENT] 10.396 | event=RequestFragmentSharing | nodeId=340 | cellId=29999 | confidence=0.276 | fragments=0 1 2 
+302-S-365(0) 303-S-365(2) 
+[EVENT] 10.396 | event=RequestFragmentSharing | nodeId=365 | cellId=29999 | confidence=0.276 | fragments=0 1 2 
+310-S-367(2) 
+[EVENT] 10.396 | event=RequestFragmentSharing | nodeId=367 | cellId=30000 | confidence=0.187 | fragments=1 2 
+402-R-101(3) 402-R-111(3) 402-R-145(3) 402-R-160(3) 402-R-161(3) 402-R-163(3) 402-R-167(3) 402-R-168(3) 402-R-180(3) 402-R-181(3) 402-R-182(3) 402-R-184(3) 402-R-187(3) 402-R-192(3) 402-R-194(3) 402-R-200(3) 402-R-201(3) 402-R-202(3) 402-R-203(3) 402-R-204(3) 402-R-206(3) 402-R-220(3) 402-R-221(3) 402-R-222(3) 402-R-223(3) 402-R-224(3) 402-R-225(3) 402-R-226(3) 402-R-240(3) 402-R-241(3) 402-R-242(3) 402-R-243(3) 402-R-244(3) 402-R-245(3) 402-R-260(3) 402-R-261(3) 402-R-262(3) 402-R-263(3) 402-R-264(3) 402-R-265(3) 402-R-266(3) 402-R-267(3) 402-R-268(3) 402-R-280(3) 402-R-281(3) 402-R-282(3) 402-R-283(3) 402-R-284(3) 402-R-286(3) 402-R-292(3) 402-R-302(3) 402-R-303(3) 402-R-304(3) 402-R-323(3) 402-R-324(3) 402-R-341(3) 402-R-356(3) 402-R-357(3) 402-R-362(3) 402-R-380(3) 402-R-382(3) 402-R-385(3) 
+[EVENT] 10.596 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=4 | cycle=1 | confidence=0.101 | size=222458
+6-S-7(0) 
+[EVENT] 10.596 | event=RequestFragmentSharing | nodeId=7 | cellId=1 | confidence=0.142 | fragments=0 2 
+111-S-69(3) 150-S-69(0) 150-S-69(1) 
+[EVENT] 10.596 | event=RequestFragmentSharing | nodeId=69 | cellId=10001 | confidence=0.396 | fragments=0 1 2 3 
+69-S-91(0) 69-S-91(1) 69-S-91(3) 
+[EVENT] 10.596 | event=RequestFragmentSharing | nodeId=91 | cellId=10001 | confidence=0.396 | fragments=0 1 2 3 
+101-S-103(3) 104-S-103(0) 104-S-103(1) 
+[EVENT] 10.596 | event=RequestFragmentSharing | nodeId=103 | cellId=10000 | confidence=0.396 | fragments=0 1 2 3 
+69-S-129(0) 69-S-129(1) 69-S-129(3) 
+[EVENT] 10.596 | event=RequestFragmentSharing | nodeId=129 | cellId=10001 | confidence=0.396 | fragments=0 1 2 3 
+69-S-167(0) 69-S-167(1) 
+[EVENT] 10.596 | event=RequestFragmentSharing | nodeId=167 | cellId=10001 | confidence=0.396 | fragments=0 1 2 3 
+103-S-184(0) 103-S-184(1) 
+[EVENT] 10.596 | event=RequestFragmentSharing | nodeId=184 | cellId=10000 | confidence=0.396 | fragments=0 1 2 3 
+187-S-186(0) 187-S-186(1) 187-S-186(3) 
+[EVENT] 10.596 | event=RequestFragmentSharing | nodeId=186 | cellId=20000 | confidence=0.396 | fragments=0 1 2 3 
+186-S-225(0) 186-S-225(1) 
+[EVENT] 10.596 | event=RequestFragmentSharing | nodeId=225 | cellId=20000 | confidence=0.396 | fragments=0 1 2 3 
+186-S-249(0) 186-S-249(1) 186-S-249(3) 
+[EVENT] 10.596 | event=RequestFragmentSharing | nodeId=249 | cellId=20000 | confidence=0.396 | fragments=0 1 2 3 
+186-S-267(0) 186-S-267(1) 
+[EVENT] 10.596 | event=RequestFragmentSharing | nodeId=267 | cellId=20000 | confidence=0.396 | fragments=0 1 2 3 
+186-S-289(0) 186-S-289(1) 186-S-289(3) 
+[EVENT] 10.596 | event=RequestFragmentSharing | nodeId=289 | cellId=20000 | confidence=0.396 | fragments=0 1 2 3 
+302-S-305(0) 302-S-305(1) 302-S-305(3) 
+[EVENT] 10.596 | event=RequestFragmentSharing | nodeId=305 | cellId=29999 | confidence=0.396 | fragments=0 1 2 3 
+367-S-310(1) 
+[EVENT] 10.596 | event=RequestFragmentSharing | nodeId=310 | cellId=30000 | confidence=0.187 | fragments=1 2 
+302-S-343(0) 302-S-343(1) 302-S-343(3) 
+[EVENT] 10.596 | event=RequestFragmentSharing | nodeId=343 | cellId=29999 | confidence=0.396 | fragments=0 1 2 3 
+302-S-345(0) 302-S-345(1) 302-S-345(3) 
+[EVENT] 10.596 | event=RequestFragmentSharing | nodeId=345 | cellId=29999 | confidence=0.396 | fragments=0 1 2 3 
+310-S-353(1) 
+[EVENT] 10.596 | event=RequestFragmentSharing | nodeId=353 | cellId=30000 | confidence=0.187 | fragments=1 2 
+380-S-360(3) 
+[EVENT] 10.596 | event=RequestFragmentSharing | nodeId=360 | cellId=29998 | confidence=0.172 | fragments=2 3 
+310-S-387(1) 
+[EVENT] 10.596 | event=RequestFragmentSharing | nodeId=387 | cellId=30000 | confidence=0.187 | fragments=1 2 
+402-R-9(4) 402-R-25(4) 402-R-84(4) 402-R-104(4) 402-R-120(4) 402-R-123(4) 402-R-124(4) 402-R-129(4) 402-R-144(4) 402-R-180(4) 402-R-181(4) 402-R-193(4) 402-R-201(4) 402-R-202(4) 402-R-203(4) 402-R-204(4) 402-R-205(4) 402-R-210(4) 402-R-220(4) 402-R-221(4) 402-R-222(4) 402-R-223(4) 402-R-224(4) 402-R-225(4) 402-R-230(4) 402-R-240(4) 402-R-241(4) 402-R-242(4) 402-R-243(4) 402-R-244(4) 402-R-245(4) 402-R-246(4) 402-R-260(4) 402-R-261(4) 402-R-262(4) 402-R-263(4) 402-R-264(4) 402-R-269(4) 402-R-272(4) 402-R-280(4) 402-R-281(4) 402-R-282(4) 402-R-283(4) 402-R-286(4) 402-R-287(4) 402-R-293(4) 402-R-300(4) 402-R-303(4) 402-R-322(4) 402-R-340(4) 402-R-342(4) 402-R-348(4) 402-R-383(4) 402-R-396(4) 
+[EVENT] 10.796 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=5 | cycle=1 | confidence=0.129 | size=285289
+84-S-101(4) 103-S-101(0) 103-S-101(1) 103-S-101(2) 
+[EVENT] 10.796 | event=RequestFragmentSharing | nodeId=101 | cellId=10000 | confidence=0.497 | fragments=0 1 2 3 4 
+69-S-111(0) 69-S-111(1) 69-S-111(2) 129-S-111(4) 
+[EVENT] 10.796 | event=RequestFragmentSharing | nodeId=111 | cellId=10001 | confidence=0.497 | fragments=0 1 2 3 4 
+84-S-182(4) 101-S-182(0) 101-S-182(1) 101-S-182(2) 
+[EVENT] 10.796 | event=RequestFragmentSharing | nodeId=182 | cellId=10000 | confidence=0.497 | fragments=0 1 2 3 4 
+69-S-192(0) 69-S-192(1) 69-S-192(2) 111-S-192(4) 
+[EVENT] 10.796 | event=RequestFragmentSharing | nodeId=192 | cellId=10001 | confidence=0.497 | fragments=0 1 2 3 4 
+193-S-194(4) 237-S-194(0) 237-S-194(1) 
+[EVENT] 10.796 | event=RequestFragmentSharing | nodeId=194 | cellId=20001 | confidence=0.444 | fragments=0 1 3 4 
+186-S-206(0) 186-S-206(1) 186-S-206(2) 204-S-206(4) 
+[EVENT] 10.796 | event=RequestFragmentSharing | nodeId=206 | cellId=20000 | confidence=0.497 | fragments=0 1 2 3 4 
+186-S-268(0) 186-S-268(1) 186-S-268(2) 204-S-268(4) 
+[EVENT] 10.796 | event=RequestFragmentSharing | nodeId=268 | cellId=20000 | confidence=0.497 | fragments=0 1 2 3 4 
+193-S-292(4) 194-S-292(0) 194-S-292(1) 
+[EVENT] 10.796 | event=RequestFragmentSharing | nodeId=292 | cellId=20001 | confidence=0.444 | fragments=0 1 3 4 
+302-S-304(0) 302-S-304(1) 303-S-304(2) 303-S-304(4) 
+[EVENT] 10.796 | event=RequestFragmentSharing | nodeId=304 | cellId=29999 | confidence=0.497 | fragments=0 1 2 3 4 
+302-S-341(0) 302-S-341(1) 303-S-341(2) 303-S-341(4) 
+[EVENT] 10.796 | event=RequestFragmentSharing | nodeId=341 | cellId=29999 | confidence=0.497 | fragments=0 1 2 3 4 
+396-S-356(4) 
+[EVENT] 10.796 | event=RequestFragmentSharing | nodeId=356 | cellId=30001 | confidence=0.220 | fragments=3 4 
+356-S-357(4) 
+[EVENT] 10.796 | event=RequestFragmentSharing | nodeId=357 | cellId=30001 | confidence=0.220 | fragments=3 4 
+302-S-362(0) 302-S-362(1) 303-S-362(2) 303-S-362(4) 
+[EVENT] 10.796 | event=RequestFragmentSharing | nodeId=362 | cellId=29999 | confidence=0.497 | fragments=0 1 2 3 4 
+360-S-380(2) 
+[EVENT] 10.796 | event=RequestFragmentSharing | nodeId=380 | cellId=29998 | confidence=0.172 | fragments=2 3 
+302-S-382(0) 302-S-382(1) 303-S-382(2) 303-S-382(4) 
+[EVENT] 10.796 | event=RequestFragmentSharing | nodeId=382 | cellId=29999 | confidence=0.497 | fragments=0 1 2 3 4 
+302-S-385(0) 302-S-385(1) 303-S-385(2) 303-S-385(4) 
+[EVENT] 10.796 | event=RequestFragmentSharing | nodeId=385 | cellId=29999 | confidence=0.497 | fragments=0 1 2 3 4 
+402-R-2(5) 402-R-52(5) 402-R-82(5) 402-R-87(5) 402-R-142(5) 402-R-164(5) 402-R-180(5) 402-R-183(5) 402-R-201(5) 402-R-202(5) 402-R-203(5) 402-R-204(5) 402-R-206(5) 402-R-220(5) 402-R-221(5) 402-R-222(5) 402-R-223(5) 402-R-224(5) 402-R-226(5) 402-R-228(5) 402-R-240(5) 402-R-241(5) 402-R-242(5) 402-R-243(5) 402-R-244(5) 402-R-246(5) 402-R-260(5) 402-R-261(5) 402-R-262(5) 402-R-263(5) 402-R-264(5) 402-R-269(5) 402-R-273(5) 402-R-281(5) 402-R-282(5) 402-R-283(5) 402-R-284(5) 402-R-286(5) 402-R-287(5) 402-R-288(5) 402-R-300(5) 402-R-302(5) 402-R-303(5) 402-R-304(5) 402-R-322(5) 402-R-323(5) 402-R-346(5) 402-R-361(5) 402-R-363(5) 402-R-364(5) 402-R-368(5) 
 [EVENT] 10.946 | event=UAVWaypointArrival | nodeId=402 | pos=(140.000,240.000,20.000)
 
-[EVENT] 10.996 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=6 | cycle=1 | confidence=0.094 | size=208339
-402-R-226(6) 402-R-227(6) 402-R-228(6) 402-R-246(6) 402-R-247(6) 402-R-248(6) 402-R-266(6) 402-R-267(6) 402-R-268(6) 
+[EVENT] 10.996 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=6 | cycle=1 | confidence=0.109 | size=241258
+6-S-9(0) 7-S-9(2) 
+[EVENT] 10.996 | event=RequestFragmentSharing | nodeId=9 | cellId=1 | confidence=0.243 | fragments=0 2 4 
+6-S-25(0) 7-S-25(2) 
+[EVENT] 10.996 | event=RequestFragmentSharing | nodeId=25 | cellId=1 | confidence=0.243 | fragments=0 2 4 
+82-S-84(5) 101-S-84(0) 101-S-84(1) 101-S-84(2) 101-S-84(3) 
+[EVENT] 10.996 | event=RequestFragmentSharing | nodeId=84 | cellId=10000 | confidence=0.626 | fragments=0 1 2 3 4 5 
+140-S-120(1) 160-S-120(3) 
+[EVENT] 10.996 | event=RequestFragmentSharing | nodeId=120 | cellId=9999 | confidence=0.355 | fragments=1 3 4 
+82-S-123(5) 84-S-123(0) 84-S-123(1) 84-S-123(2) 84-S-123(3) 
+[EVENT] 10.996 | event=RequestFragmentSharing | nodeId=123 | cellId=10000 | confidence=0.626 | fragments=0 1 2 3 4 5 
+82-S-124(5) 84-S-124(0) 84-S-124(1) 84-S-124(2) 84-S-124(3) 
+[EVENT] 10.996 | event=RequestFragmentSharing | nodeId=124 | cellId=10000 | confidence=0.626 | fragments=0 1 2 3 4 5 
+194-S-193(0) 194-S-193(1) 194-S-193(3) 273-S-193(5) 
+[EVENT] 10.996 | event=RequestFragmentSharing | nodeId=193 | cellId=20001 | confidence=0.573 | fragments=0 1 3 4 5 
+186-S-210(0) 186-S-210(1) 186-S-210(2) 186-S-210(3) 204-S-210(5) 
+[EVENT] 10.996 | event=RequestFragmentSharing | nodeId=210 | cellId=20000 | confidence=0.626 | fragments=0 1 2 3 4 5 
+186-S-230(0) 186-S-230(1) 186-S-230(2) 186-S-230(3) 204-S-230(5) 
+[EVENT] 10.996 | event=RequestFragmentSharing | nodeId=230 | cellId=20000 | confidence=0.626 | fragments=0 1 2 3 4 5 
+186-S-269(0) 186-S-269(1) 186-S-269(2) 186-S-269(3) 
+[EVENT] 10.996 | event=RequestFragmentSharing | nodeId=269 | cellId=20000 | confidence=0.626 | fragments=0 1 2 3 4 5 
+193-S-272(0) 193-S-272(1) 193-S-272(3) 193-S-272(5) 
+[EVENT] 10.996 | event=RequestFragmentSharing | nodeId=272 | cellId=20001 | confidence=0.573 | fragments=0 1 3 4 5 
+186-S-287(0) 186-S-287(1) 186-S-287(2) 186-S-287(3) 
+[EVENT] 10.996 | event=RequestFragmentSharing | nodeId=287 | cellId=20000 | confidence=0.626 | fragments=0 1 2 3 4 5 
+193-S-293(0) 193-S-293(1) 193-S-293(3) 193-S-293(5) 
+[EVENT] 10.996 | event=RequestFragmentSharing | nodeId=293 | cellId=20001 | confidence=0.573 | fragments=0 1 3 4 5 
+302-S-342(0) 302-S-342(1) 302-S-342(3) 302-S-342(5) 303-S-342(2) 
+[EVENT] 10.996 | event=RequestFragmentSharing | nodeId=342 | cellId=29999 | confidence=0.626 | fragments=0 1 2 3 4 5 
+310-S-348(1) 310-S-348(2) 368-S-348(5) 
+[EVENT] 10.996 | event=RequestFragmentSharing | nodeId=348 | cellId=30000 | confidence=0.417 | fragments=1 2 4 5 
+302-S-383(0) 302-S-383(1) 302-S-383(3) 302-S-383(5) 303-S-383(2) 
+[EVENT] 10.996 | event=RequestFragmentSharing | nodeId=383 | cellId=29999 | confidence=0.626 | fragments=0 1 2 3 4 5 
+356-S-396(3) 
+[EVENT] 10.996 | event=RequestFragmentSharing | nodeId=396 | cellId=30001 | confidence=0.220 | fragments=3 4 
+402-R-68(6) 402-R-83(6) 402-R-86(6) 402-R-89(6) 402-R-101(6) 402-R-103(6) 402-R-126(6) 402-R-143(6) 402-R-157(6) 402-R-163(6) 402-R-164(6) 402-R-165(6) 402-R-172(6) 402-R-184(6) 402-R-187(6) 402-R-196(6) 402-R-203(6) 402-R-206(6) 402-R-207(6) 402-R-208(6) 402-R-209(6) 402-R-210(6) 402-R-224(6) 402-R-225(6) 402-R-226(6) 402-R-227(6) 402-R-228(6) 402-R-229(6) 402-R-243(6) 402-R-244(6) 402-R-245(6) 402-R-246(6) 402-R-247(6) 402-R-248(6) 402-R-249(6) 402-R-263(6) 402-R-265(6) 402-R-266(6) 402-R-267(6) 402-R-268(6) 402-R-269(6) 402-R-272(6) 402-R-280(6) 402-R-283(6) 402-R-284(6) 402-R-285(6) 402-R-286(6) 402-R-287(6) 402-R-288(6) 402-R-302(6) 402-R-303(6) 402-R-307(6) 402-R-309(6) 402-R-323(6) 402-R-325(6) 402-R-326(6) 402-R-329(6) 402-R-343(6) 402-R-344(6) 402-R-366(6) 402-R-369(6) 402-R-390(6) 
 [EVENT] 11.067 | event=UAVWaypointArrival | nodeId=401 | pos=(20.000,180.000,20.000)
 
-[EVENT] 11.196 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=7 | cycle=1 | confidence=0.128 | size=281555
-402-R-226(7) 402-R-227(7) 402-R-228(7) 402-R-246(7) 402-R-247(7) 402-R-248(7) 402-R-266(7) 402-R-267(7) 402-R-268(7) 
-[EVENT] 11.396 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=8 | cycle=1 | confidence=0.102 | size=225257
+[EVENT] 11.196 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=7 | cycle=1 | confidence=0.071 | size=156435
+43-S-2(0) 
+[EVENT] 11.196 | event=RequestFragmentSharing | nodeId=2 | cellId=0 | confidence=0.219 | fragments=0 5 
 
-[EVENT] 11.396 | event=RequestFragmentSharing | nodeId=226 | cellId=20000 | confidence=0.222 | fragments=6 7 
+[EVENT] 11.196 | event=RequestFragmentSharing | nodeId=52 | cellId=2 | confidence=0.129 | fragments=5 
+83-S-82(6) 84-S-82(0) 84-S-82(1) 84-S-82(2) 84-S-82(3) 84-S-82(4) 
+[EVENT] 11.196 | event=RequestFragmentSharing | nodeId=82 | cellId=10000 | confidence=0.735 | fragments=0 1 2 3 4 5 6 
+69-S-87(0) 69-S-87(1) 69-S-87(2) 69-S-87(3) 89-S-87(6) 111-S-87(4) 
+[EVENT] 11.196 | event=RequestFragmentSharing | nodeId=87 | cellId=10001 | confidence=0.735 | fragments=0 1 2 3 4 5 6 
+193-S-273(0) 193-S-273(1) 193-S-273(3) 193-S-273(4) 272-S-273(6) 
+[EVENT] 11.196 | event=RequestFragmentSharing | nodeId=273 | cellId=20001 | confidence=0.683 | fragments=0 1 3 4 5 6 
+186-S-288(0) 186-S-288(1) 186-S-288(2) 186-S-288(3) 204-S-288(4) 
+[EVENT] 11.196 | event=RequestFragmentSharing | nodeId=288 | cellId=20000 | confidence=0.735 | fragments=0 1 2 3 4 5 6 
+302-S-346(0) 302-S-346(1) 302-S-346(3) 302-S-346(6) 303-S-346(2) 303-S-346(4) 
+[EVENT] 11.196 | event=RequestFragmentSharing | nodeId=346 | cellId=29999 | confidence=0.735 | fragments=0 1 2 3 4 5 6 
+302-S-361(0) 302-S-361(1) 302-S-361(3) 302-S-361(6) 303-S-361(2) 303-S-361(4) 
+[EVENT] 11.196 | event=RequestFragmentSharing | nodeId=361 | cellId=29999 | confidence=0.735 | fragments=0 1 2 3 4 5 6 
+302-S-363(0) 302-S-363(1) 302-S-363(3) 302-S-363(6) 303-S-363(2) 303-S-363(4) 
+[EVENT] 11.196 | event=RequestFragmentSharing | nodeId=363 | cellId=29999 | confidence=0.735 | fragments=0 1 2 3 4 5 6 
+302-S-364(0) 302-S-364(1) 302-S-364(3) 302-S-364(6) 303-S-364(2) 303-S-364(4) 
+[EVENT] 11.196 | event=RequestFragmentSharing | nodeId=364 | cellId=29999 | confidence=0.735 | fragments=0 1 2 3 4 5 6 
+309-S-368(6) 310-S-368(1) 310-S-368(2) 348-S-368(4) 
+[EVENT] 11.196 | event=RequestFragmentSharing | nodeId=368 | cellId=30000 | confidence=0.526 | fragments=1 2 4 5 6 
+402-R-3(7) 402-R-7(7) 402-R-86(7) 402-R-103(7) 402-R-108(7) 402-R-141(7) 402-R-149(7) 402-R-153(7) 402-R-158(7) 402-R-169(7) 402-R-170(7) 402-R-184(7) 402-R-185(7) 402-R-188(7) 402-R-190(7) 402-R-191(7) 402-R-195(7) 402-R-203(7) 402-R-206(7) 402-R-207(7) 402-R-208(7) 402-R-209(7) 402-R-215(7) 402-R-225(7) 402-R-226(7) 402-R-227(7) 402-R-228(7) 402-R-229(7) 402-R-230(7) 402-R-244(7) 402-R-245(7) 402-R-246(7) 402-R-247(7) 402-R-248(7) 402-R-249(7) 402-R-252(7) 402-R-264(7) 402-R-265(7) 402-R-266(7) 402-R-267(7) 402-R-268(7) 402-R-269(7) 402-R-284(7) 402-R-285(7) 402-R-286(7) 402-R-287(7) 402-R-288(7) 402-R-289(7) 402-R-292(7) 402-R-293(7) 402-R-295(7) 402-R-304(7) 402-R-312(7) 402-R-323(7) 402-R-327(7) 402-R-328(7) 402-R-329(7) 402-R-345(7) 402-R-346(7) 402-R-350(7) 402-R-367(7) 402-R-387(7) 402-R-393(7) 
+[EVENT] 11.396 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=8 | cycle=1 | confidence=0.052 | size=115653
+6-S-68(0) 7-S-68(2) 7-S-68(7) 9-S-68(4) 
+[EVENT] 11.396 | event=RequestFragmentSharing | nodeId=68 | cellId=1 | confidence=0.423 | fragments=0 2 4 6 7 
+82-S-83(0) 82-S-83(1) 82-S-83(2) 82-S-83(3) 82-S-83(4) 82-S-83(5) 86-S-83(7) 
+[EVENT] 11.396 | event=RequestFragmentSharing | nodeId=83 | cellId=10000 | confidence=0.806 | fragments=0 1 2 3 4 5 6 7 
+82-S-86(0) 82-S-86(1) 82-S-86(2) 82-S-86(3) 82-S-86(4) 82-S-86(5) 
+[EVENT] 11.396 | event=RequestFragmentSharing | nodeId=86 | cellId=10000 | confidence=0.806 | fragments=0 1 2 3 4 5 6 7 
+69-S-89(0) 69-S-89(1) 69-S-89(2) 69-S-89(3) 87-S-89(4) 87-S-89(5) 108-S-89(7) 
+[EVENT] 11.396 | event=RequestFragmentSharing | nodeId=89 | cellId=10001 | confidence=0.806 | fragments=0 1 2 3 4 5 6 7 
+82-S-126(0) 82-S-126(1) 82-S-126(2) 82-S-126(3) 82-S-126(4) 82-S-126(5) 83-S-126(7) 
+[EVENT] 11.396 | event=RequestFragmentSharing | nodeId=126 | cellId=10000 | confidence=0.806 | fragments=0 1 2 3 4 5 6 7 
+158-S-157(7) 
+[EVENT] 11.396 | event=RequestFragmentSharing | nodeId=157 | cellId=10002 | confidence=0.180 | fragments=6 7 
+69-S-172(0) 69-S-172(1) 69-S-172(2) 69-S-172(3) 87-S-172(4) 87-S-172(5) 89-S-172(7) 
+[EVENT] 11.396 | event=RequestFragmentSharing | nodeId=172 | cellId=10001 | confidence=0.806 | fragments=0 1 2 3 4 5 6 7 
+157-S-196(7) 
+[EVENT] 11.396 | event=RequestFragmentSharing | nodeId=196 | cellId=10002 | confidence=0.180 | fragments=6 7 
+186-S-209(0) 186-S-209(1) 186-S-209(2) 186-S-209(3) 204-S-209(4) 204-S-209(5) 
+[EVENT] 11.396 | event=RequestFragmentSharing | nodeId=209 | cellId=20000 | confidence=0.806 | fragments=0 1 2 3 4 5 6 7 
+186-S-227(0) 186-S-227(1) 186-S-227(2) 186-S-227(3) 204-S-227(4) 204-S-227(5) 
+[EVENT] 11.396 | event=RequestFragmentSharing | nodeId=227 | cellId=20000 | confidence=0.806 | fragments=0 1 2 3 4 5 6 7 
+186-S-229(0) 186-S-229(1) 186-S-229(2) 186-S-229(3) 204-S-229(4) 204-S-229(5) 
+[EVENT] 11.396 | event=RequestFragmentSharing | nodeId=229 | cellId=20000 | confidence=0.806 | fragments=0 1 2 3 4 5 6 7 
+186-S-247(0) 186-S-247(1) 186-S-247(2) 186-S-247(3) 204-S-247(4) 204-S-247(5) 
+[EVENT] 11.396 | event=RequestFragmentSharing | nodeId=247 | cellId=20000 | confidence=0.806 | fragments=0 1 2 3 4 5 6 7 
+310-S-309(1) 310-S-309(2) 312-S-309(7) 348-S-309(4) 348-S-309(5) 
+[EVENT] 11.396 | event=RequestFragmentSharing | nodeId=309 | cellId=30000 | confidence=0.597 | fragments=1 2 4 5 6 7 
+302-S-326(0) 302-S-326(1) 302-S-326(3) 302-S-326(5) 303-S-326(2) 303-S-326(4) 304-S-326(7) 
+[EVENT] 11.396 | event=RequestFragmentSharing | nodeId=326 | cellId=29999 | confidence=0.806 | fragments=0 1 2 3 4 5 6 7 
+309-S-329(1) 309-S-329(2) 309-S-329(4) 309-S-329(5) 
+[EVENT] 11.396 | event=RequestFragmentSharing | nodeId=329 | cellId=30000 | confidence=0.597 | fragments=1 2 4 5 6 7 
+302-S-366(0) 302-S-366(1) 302-S-366(3) 302-S-366(5) 303-S-366(2) 303-S-366(4) 304-S-366(7) 
+[EVENT] 11.396 | event=RequestFragmentSharing | nodeId=366 | cellId=29999 | confidence=0.806 | fragments=0 1 2 3 4 5 6 7 
+309-S-369(1) 309-S-369(2) 309-S-369(4) 309-S-369(5) 309-S-369(7) 
+[EVENT] 11.396 | event=RequestFragmentSharing | nodeId=369 | cellId=30000 | confidence=0.597 | fragments=1 2 4 5 6 7 
+309-S-390(1) 309-S-390(2) 309-S-390(4) 309-S-390(5) 309-S-390(7) 
+[EVENT] 11.396 | event=RequestFragmentSharing | nodeId=390 | cellId=30000 | confidence=0.597 | fragments=1 2 4 5 6 7 
+402-R-54(8) 402-R-68(8) 402-R-86(8) 402-R-128(8) 402-R-154(8) 402-R-162(8) 402-R-169(8) 402-R-180(8) 402-R-187(8) 402-R-188(8) 402-R-192(8) 402-R-205(8) 402-R-206(8) 402-R-207(8) 402-R-208(8) 402-R-209(8) 402-R-210(8) 402-R-224(8) 402-R-225(8) 402-R-226(8) 402-R-227(8) 402-R-228(8) 402-R-229(8) 402-R-230(8) 402-R-245(8) 402-R-246(8) 402-R-247(8) 402-R-248(8) 402-R-249(8) 402-R-253(8) 402-R-265(8) 402-R-266(8) 402-R-267(8) 402-R-268(8) 402-R-282(8) 402-R-285(8) 402-R-286(8) 402-R-287(8) 402-R-288(8) 402-R-289(8) 402-R-290(8) 402-R-294(8) 402-R-303(8) 402-R-305(8) 402-R-306(8) 402-R-308(8) 402-R-310(8) 402-R-325(8) 402-R-330(8) 402-R-353(8) 402-R-354(8) 402-R-366(8) 402-R-367(8) 
+[EVENT] 11.596 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=9 | cycle=1 | confidence=0.092 | size=202301
+2-S-3(0) 2-S-3(5) 
+[EVENT] 11.596 | event=RequestFragmentSharing | nodeId=3 | cellId=0 | confidence=0.289 | fragments=0 5 7 
+69-S-108(0) 69-S-108(1) 69-S-108(2) 69-S-108(3) 87-S-108(4) 87-S-108(5) 87-S-108(6) 128-S-108(8) 
+[EVENT] 11.596 | event=RequestFragmentSharing | nodeId=108 | cellId=10001 | confidence=0.858 | fragments=0 1 2 3 4 5 6 7 8 
+69-S-149(0) 69-S-149(1) 69-S-149(2) 69-S-149(3) 87-S-149(4) 87-S-149(5) 87-S-149(6) 108-S-149(8) 
+[EVENT] 11.596 | event=RequestFragmentSharing | nodeId=149 | cellId=10001 | confidence=0.858 | fragments=0 1 2 3 4 5 6 7 8 
+69-S-153(0) 69-S-153(1) 69-S-153(2) 69-S-153(3) 87-S-153(4) 87-S-153(5) 87-S-153(6) 108-S-153(8) 
+[EVENT] 11.596 | event=RequestFragmentSharing | nodeId=153 | cellId=10001 | confidence=0.858 | fragments=0 1 2 3 4 5 6 7 8 
+154-S-158(8) 157-S-158(6) 
+[EVENT] 11.596 | event=RequestFragmentSharing | nodeId=158 | cellId=10002 | confidence=0.233 | fragments=6 7 8 
+69-S-169(0) 69-S-169(1) 69-S-169(2) 69-S-169(3) 87-S-169(4) 87-S-169(5) 87-S-169(6) 
+[EVENT] 11.596 | event=RequestFragmentSharing | nodeId=169 | cellId=10001 | confidence=0.858 | fragments=0 1 2 3 4 5 6 7 8 
+69-S-170(0) 69-S-170(1) 69-S-170(2) 69-S-170(3) 87-S-170(4) 87-S-170(5) 87-S-170(6) 108-S-170(8) 
+[EVENT] 11.596 | event=RequestFragmentSharing | nodeId=170 | cellId=10001 | confidence=0.858 | fragments=0 1 2 3 4 5 6 7 8 
+82-S-185(0) 82-S-185(1) 82-S-185(2) 82-S-185(3) 82-S-185(4) 82-S-185(5) 82-S-185(6) 86-S-185(8) 
+[EVENT] 11.596 | event=RequestFragmentSharing | nodeId=185 | cellId=10000 | confidence=0.858 | fragments=0 1 2 3 4 5 6 7 8 
+69-S-190(0) 69-S-190(1) 69-S-190(2) 69-S-190(3) 87-S-190(4) 87-S-190(5) 87-S-190(6) 108-S-190(8) 
+[EVENT] 11.596 | event=RequestFragmentSharing | nodeId=190 | cellId=10001 | confidence=0.858 | fragments=0 1 2 3 4 5 6 7 8 
+193-S-195(0) 193-S-195(1) 193-S-195(3) 193-S-195(4) 193-S-195(5) 253-S-195(8) 272-S-195(6) 
+[EVENT] 11.596 | event=RequestFragmentSharing | nodeId=195 | cellId=20001 | confidence=0.806 | fragments=0 1 3 4 5 6 7 8 
+193-S-215(0) 193-S-215(1) 193-S-215(3) 193-S-215(4) 193-S-215(5) 195-S-215(6) 195-S-215(8) 
+[EVENT] 11.596 | event=RequestFragmentSharing | nodeId=215 | cellId=20001 | confidence=0.806 | fragments=0 1 3 4 5 6 7 8 
+193-S-252(0) 193-S-252(1) 193-S-252(3) 193-S-252(4) 193-S-252(5) 195-S-252(6) 195-S-252(8) 
+[EVENT] 11.596 | event=RequestFragmentSharing | nodeId=252 | cellId=20001 | confidence=0.806 | fragments=0 1 3 4 5 6 7 8 
+193-S-295(0) 193-S-295(1) 193-S-295(3) 193-S-295(4) 193-S-295(5) 195-S-295(6) 195-S-295(8) 
+[EVENT] 11.596 | event=RequestFragmentSharing | nodeId=295 | cellId=20001 | confidence=0.806 | fragments=0 1 3 4 5 6 7 8 
+309-S-312(1) 309-S-312(2) 309-S-312(4) 309-S-312(5) 309-S-312(6) 310-S-312(8) 
+[EVENT] 11.596 | event=RequestFragmentSharing | nodeId=312 | cellId=30000 | confidence=0.649 | fragments=1 2 4 5 6 7 8 
+309-S-327(1) 309-S-327(2) 309-S-327(4) 309-S-327(5) 309-S-327(6) 310-S-327(8) 
+[EVENT] 11.596 | event=RequestFragmentSharing | nodeId=327 | cellId=30000 | confidence=0.649 | fragments=1 2 4 5 6 7 8 
+309-S-328(1) 309-S-328(2) 309-S-328(4) 309-S-328(5) 309-S-328(6) 310-S-328(8) 
+[EVENT] 11.596 | event=RequestFragmentSharing | nodeId=328 | cellId=30000 | confidence=0.649 | fragments=1 2 4 5 6 7 8 
+309-S-350(1) 309-S-350(2) 309-S-350(4) 309-S-350(5) 309-S-350(6) 310-S-350(8) 
+[EVENT] 11.596 | event=RequestFragmentSharing | nodeId=350 | cellId=30000 | confidence=0.649 | fragments=1 2 4 5 6 7 8 
+309-S-393(1) 309-S-393(2) 309-S-393(4) 309-S-393(5) 309-S-393(6) 310-S-393(8) 
+[EVENT] 11.596 | event=RequestFragmentSharing | nodeId=393 | cellId=30000 | confidence=0.649 | fragments=1 2 4 5 6 7 8 
+402-R-26(9) 402-R-36(9) 402-R-64(9) 402-R-78(9) 402-R-89(9) 402-R-104(9) 402-R-106(9) 402-R-114(9) 402-R-129(9) 402-R-143(9) 402-R-150(9) 402-R-152(9) 402-R-154(9) 402-R-176(9) 402-R-185(9) 402-R-186(9) 402-R-204(9) 402-R-206(9) 402-R-207(9) 402-R-208(9) 402-R-209(9) 402-R-212(9) 402-R-222(9) 402-R-225(9) 402-R-226(9) 402-R-227(9) 402-R-228(9) 402-R-229(9) 402-R-230(9) 402-R-234(9) 402-R-242(9) 402-R-243(9) 402-R-245(9) 402-R-246(9) 402-R-247(9) 402-R-248(9) 402-R-249(9) 402-R-252(9) 402-R-263(9) 402-R-265(9) 402-R-266(9) 402-R-267(9) 402-R-268(9) 402-R-269(9) 402-R-270(9) 402-R-271(9) 402-R-273(9) 402-R-282(9) 402-R-285(9) 402-R-286(9) 402-R-287(9) 402-R-288(9) 402-R-289(9) 402-R-290(9) 402-R-304(9) 402-R-306(9) 402-R-310(9) 402-R-326(9) 402-R-332(9) 402-R-346(9) 402-R-347(9) 402-R-349(9) 402-R-384(9) 
+[EVENT] 11.796 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=0 | cycle=2 | confidence=0.089 | size=197135
+36-S-54(9) 52-S-54(5) 
+[EVENT] 11.796 | event=RequestFragmentSharing | nodeId=54 | cellId=2 | confidence=0.273 | fragments=5 8 9 
+69-S-128(0) 69-S-128(1) 69-S-128(2) 69-S-128(3) 87-S-128(4) 87-S-128(5) 87-S-128(6) 89-S-128(7) 89-S-128(9) 
+[EVENT] 11.796 | event=RequestFragmentSharing | nodeId=128 | cellId=10001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+157-S-154(6) 157-S-154(7) 
+[EVENT] 11.796 | event=RequestFragmentSharing | nodeId=154 | cellId=10002 | confidence=0.324 | fragments=6 7 8 9 
+193-S-253(0) 193-S-253(1) 193-S-253(3) 193-S-253(4) 193-S-253(5) 195-S-253(6) 195-S-253(7) 212-S-253(9) 
+[EVENT] 11.796 | event=RequestFragmentSharing | nodeId=253 | cellId=20001 | confidence=0.897 | fragments=0 1 3 4 5 6 7 8 9 
+186-S-290(0) 186-S-290(1) 186-S-290(2) 186-S-290(3) 187-S-290(6) 188-S-290(7) 204-S-290(4) 204-S-290(5) 
+[EVENT] 11.796 | event=RequestFragmentSharing | nodeId=290 | cellId=20000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+193-S-294(0) 193-S-294(1) 193-S-294(3) 193-S-294(4) 193-S-294(5) 195-S-294(6) 195-S-294(7) 212-S-294(9) 
+[EVENT] 11.796 | event=RequestFragmentSharing | nodeId=294 | cellId=20001 | confidence=0.897 | fragments=0 1 3 4 5 6 7 8 9 
+309-S-330(1) 309-S-330(2) 309-S-330(4) 309-S-330(5) 309-S-330(6) 309-S-330(7) 310-S-330(9) 
+[EVENT] 11.796 | event=RequestFragmentSharing | nodeId=330 | cellId=30000 | confidence=0.741 | fragments=1 2 4 5 6 7 8 9 
+356-S-354(3) 356-S-354(4) 
+[EVENT] 11.796 | event=RequestFragmentSharing | nodeId=354 | cellId=30001 | confidence=0.273 | fragments=3 4 8 
+402-R-67(0) 402-R-70(0) 402-R-83(0) 402-R-105(0) 402-R-121(0) 402-R-126(0) 402-R-137(0) 402-R-143(0) 402-R-148(0) 402-R-158(0) 402-R-166(0) 402-R-167(0) 402-R-169(0) 402-R-174(0) 402-R-184(0) 402-R-185(0) 402-R-186(0) 402-R-188(0) 402-R-190(0) 402-R-192(0) 402-R-204(0) 402-R-206(0) 402-R-207(0) 402-R-208(0) 402-R-209(0) 402-R-220(0) 402-R-223(0) 402-R-224(0) 402-R-225(0) 402-R-226(0) 402-R-227(0) 402-R-228(0) 402-R-229(0) 402-R-237(0) 402-R-243(0) 402-R-244(0) 402-R-245(0) 402-R-246(0) 402-R-247(0) 402-R-248(0) 402-R-249(0) 402-R-250(0) 402-R-251(0) 402-R-252(0) 402-R-255(0) 402-R-262(0) 402-R-263(0) 402-R-264(0) 402-R-265(0) 402-R-266(0) 402-R-267(0) 402-R-268(0) 402-R-269(0) 402-R-270(0) 402-R-272(0) 402-R-276(0) 402-R-277(0) 402-R-285(0) 402-R-286(0) 402-R-287(0) 402-R-288(0) 402-R-294(0) 402-R-304(0) 402-R-306(0) 402-R-307(0) 402-R-309(0) 402-R-310(0) 402-R-316(0) 402-R-328(0) 402-R-329(0) 402-R-330(0) 402-R-348(0) 402-R-371(0) 402-R-384(0) 402-R-389(0) 402-R-390(0) 
+[EVENT] 11.996 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=1 | cycle=2 | confidence=0.134 | size=296491
+6-S-26(0) 7-S-26(2) 7-S-26(7) 9-S-26(4) 68-S-26(6) 68-S-26(8) 
+[EVENT] 11.996 | event=RequestFragmentSharing | nodeId=26 | cellId=1 | confidence=0.567 | fragments=0 2 4 6 7 8 9 
+52-S-36(5) 54-S-36(8) 
+[EVENT] 11.996 | event=RequestFragmentSharing | nodeId=36 | cellId=2 | confidence=0.273 | fragments=5 8 9 
+82-S-64(0) 82-S-64(1) 82-S-64(2) 82-S-64(3) 82-S-64(4) 82-S-64(5) 82-S-64(6) 83-S-64(7) 86-S-64(8) 
+[EVENT] 11.996 | event=RequestFragmentSharing | nodeId=64 | cellId=10000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+137-S-78(0) 154-S-78(6) 154-S-78(7) 154-S-78(8) 
+[EVENT] 11.996 | event=RequestFragmentSharing | nodeId=78 | cellId=10002 | confidence=0.413 | fragments=0 6 7 8 9 
+64-S-106(0) 64-S-106(1) 64-S-106(2) 64-S-106(3) 64-S-106(4) 64-S-106(5) 64-S-106(6) 64-S-106(7) 64-S-106(8) 
+[EVENT] 11.996 | event=RequestFragmentSharing | nodeId=106 | cellId=10000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+78-S-114(0) 78-S-114(6) 78-S-114(7) 78-S-114(8) 
+[EVENT] 11.996 | event=RequestFragmentSharing | nodeId=114 | cellId=10002 | confidence=0.413 | fragments=0 6 7 8 9 
+69-S-152(0) 69-S-152(1) 69-S-152(2) 69-S-152(3) 87-S-152(4) 87-S-152(5) 87-S-152(6) 89-S-152(7) 108-S-152(8) 
+[EVENT] 11.996 | event=RequestFragmentSharing | nodeId=152 | cellId=10001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+78-S-176(0) 78-S-176(6) 78-S-176(7) 78-S-176(8) 
+[EVENT] 11.996 | event=RequestFragmentSharing | nodeId=176 | cellId=10002 | confidence=0.413 | fragments=0 6 7 8 9 
+193-S-212(0) 193-S-212(1) 193-S-212(3) 193-S-212(4) 193-S-212(5) 195-S-212(6) 195-S-212(7) 195-S-212(8) 
+[EVENT] 11.996 | event=RequestFragmentSharing | nodeId=212 | cellId=20001 | confidence=0.897 | fragments=0 1 3 4 5 6 7 8 9 
+193-S-234(0) 193-S-234(1) 193-S-234(3) 193-S-234(4) 193-S-234(5) 195-S-234(6) 195-S-234(7) 195-S-234(8) 
+[EVENT] 11.996 | event=RequestFragmentSharing | nodeId=234 | cellId=20001 | confidence=0.897 | fragments=0 1 3 4 5 6 7 8 9 
+186-S-270(1) 186-S-270(2) 186-S-270(3) 187-S-270(6) 187-S-270(8) 188-S-270(7) 204-S-270(4) 204-S-270(5) 
+[EVENT] 11.996 | event=RequestFragmentSharing | nodeId=270 | cellId=20000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+193-S-271(0) 193-S-271(1) 193-S-271(3) 193-S-271(4) 193-S-271(5) 195-S-271(6) 195-S-271(7) 195-S-271(8) 
+[EVENT] 11.996 | event=RequestFragmentSharing | nodeId=271 | cellId=20001 | confidence=0.897 | fragments=0 1 3 4 5 6 7 8 9 
+309-S-332(0) 309-S-332(1) 309-S-332(2) 309-S-332(4) 309-S-332(5) 309-S-332(6) 309-S-332(7) 310-S-332(8) 
+[EVENT] 11.996 | event=RequestFragmentSharing | nodeId=332 | cellId=30000 | confidence=0.830 | fragments=0 1 2 4 5 6 7 8 9 
+309-S-347(0) 309-S-347(1) 309-S-347(2) 309-S-347(4) 309-S-347(5) 309-S-347(6) 309-S-347(7) 310-S-347(8) 
+[EVENT] 11.996 | event=RequestFragmentSharing | nodeId=347 | cellId=30000 | confidence=0.830 | fragments=0 1 2 4 5 6 7 8 9 
+309-S-349(0) 309-S-349(1) 309-S-349(2) 309-S-349(4) 309-S-349(5) 309-S-349(6) 309-S-349(7) 310-S-349(8) 
+[EVENT] 11.996 | event=RequestFragmentSharing | nodeId=349 | cellId=30000 | confidence=0.830 | fragments=0 1 2 4 5 6 7 8 9 
+302-S-384(1) 302-S-384(3) 302-S-384(5) 302-S-384(6) 303-S-384(2) 303-S-384(4) 303-S-384(8) 304-S-384(7) 
+[EVENT] 11.996 | event=RequestFragmentSharing | nodeId=384 | cellId=29999 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+402-R-28(1) 402-R-71(1) 402-R-83(1) 402-R-108(1) 402-R-130(1) 402-R-135(1) 402-R-150(1) 402-R-155(1) 402-R-168(1) 402-R-169(1) 402-R-174(1) 402-R-177(1) 402-R-186(1) 402-R-187(1) 402-R-188(1) 402-R-202(1) 402-R-203(1) 402-R-204(1) 402-R-206(1) 402-R-207(1) 402-R-208(1) 402-R-209(1) 402-R-219(1) 402-R-225(1) 402-R-226(1) 402-R-227(1) 402-R-228(1) 402-R-229(1) 402-R-235(1) 402-R-241(1) 402-R-245(1) 402-R-246(1) 402-R-247(1) 402-R-248(1) 402-R-249(1) 402-R-252(1) 402-R-256(1) 402-R-263(1) 402-R-265(1) 402-R-266(1) 402-R-267(1) 402-R-268(1) 402-R-269(1) 402-R-270(1) 402-R-271(1) 402-R-278(1) 402-R-283(1) 402-R-286(1) 402-R-287(1) 402-R-288(1) 402-R-289(1) 402-R-290(1) 402-R-291(1) 402-R-305(1) 402-R-308(1) 402-R-309(1) 402-R-311(1) 402-R-314(1) 402-R-326(1) 402-R-329(1) 402-R-340(1) 402-R-343(1) 402-R-350(1) 402-R-368(1) 402-R-369(1) 
+[EVENT] 12.196 | event=UAVWaypointArrival | nodeId=402 | pos=(140.000,340.000,20.000)
 
-[EVENT] 11.396 | event=RequestFragmentSharing | nodeId=227 | cellId=20000 | confidence=0.222 | fragments=6 7 
+[EVENT] 12.196 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=2 | cycle=2 | confidence=0.053 | size=116076
+7-S-67(2) 7-S-67(7) 9-S-67(4) 26-S-67(6) 26-S-67(8) 26-S-67(9) 28-S-67(1) 
+[EVENT] 12.196 | event=RequestFragmentSharing | nodeId=67 | cellId=1 | confidence=0.701 | fragments=0 1 2 4 6 7 8 9 
+69-S-70(1) 69-S-70(2) 69-S-70(3) 87-S-70(4) 87-S-70(5) 87-S-70(6) 89-S-70(7) 89-S-70(9) 108-S-70(8) 
+[EVENT] 12.196 | event=RequestFragmentSharing | nodeId=70 | cellId=10001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+64-S-105(1) 64-S-105(2) 64-S-105(3) 64-S-105(4) 64-S-105(5) 64-S-105(6) 64-S-105(7) 64-S-105(8) 64-S-105(9) 
+[EVENT] 12.196 | event=RequestFragmentSharing | nodeId=105 | cellId=10000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+64-S-121(1) 64-S-121(2) 64-S-121(3) 64-S-121(4) 64-S-121(5) 64-S-121(6) 64-S-121(7) 64-S-121(8) 64-S-121(9) 
+[EVENT] 12.196 | event=RequestFragmentSharing | nodeId=121 | cellId=10000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+78-S-137(6) 78-S-137(7) 78-S-137(8) 78-S-137(9) 135-S-137(1) 
+[EVENT] 12.196 | event=RequestFragmentSharing | nodeId=137 | cellId=10002 | confidence=0.548 | fragments=0 1 6 7 8 9 
+69-S-148(1) 69-S-148(2) 69-S-148(3) 70-S-148(4) 70-S-148(5) 70-S-148(6) 70-S-148(7) 70-S-148(8) 70-S-148(9) 
+[EVENT] 12.196 | event=RequestFragmentSharing | nodeId=148 | cellId=10001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+78-S-174(6) 78-S-174(7) 78-S-174(8) 78-S-174(9) 
+[EVENT] 12.196 | event=RequestFragmentSharing | nodeId=174 | cellId=10002 | confidence=0.548 | fragments=0 1 6 7 8 9 
+186-S-250(1) 186-S-250(2) 186-S-250(3) 186-S-250(9) 187-S-250(6) 187-S-250(8) 188-S-250(7) 204-S-250(4) 204-S-250(5) 
+[EVENT] 12.196 | event=RequestFragmentSharing | nodeId=250 | cellId=20000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+193-S-251(1) 193-S-251(3) 193-S-251(4) 193-S-251(5) 195-S-251(6) 195-S-251(7) 195-S-251(8) 212-S-251(9) 
+[EVENT] 12.196 | event=RequestFragmentSharing | nodeId=251 | cellId=20001 | confidence=0.897 | fragments=0 1 3 4 5 6 7 8 9 
+193-S-255(1) 193-S-255(3) 193-S-255(4) 193-S-255(5) 195-S-255(6) 195-S-255(7) 195-S-255(8) 212-S-255(9) 
+[EVENT] 12.196 | event=RequestFragmentSharing | nodeId=255 | cellId=20001 | confidence=0.897 | fragments=0 1 3 4 5 6 7 8 9 
+193-S-276(1) 193-S-276(3) 193-S-276(4) 193-S-276(5) 195-S-276(6) 195-S-276(7) 195-S-276(8) 212-S-276(9) 
+[EVENT] 12.196 | event=RequestFragmentSharing | nodeId=276 | cellId=20001 | confidence=0.897 | fragments=0 1 3 4 5 6 7 8 9 
+193-S-277(1) 193-S-277(3) 193-S-277(4) 193-S-277(5) 195-S-277(6) 195-S-277(7) 195-S-277(8) 212-S-277(9) 
+[EVENT] 12.196 | event=RequestFragmentSharing | nodeId=277 | cellId=20001 | confidence=0.897 | fragments=0 1 3 4 5 6 7 8 9 
+354-S-316(3) 354-S-316(4) 354-S-316(8) 
+[EVENT] 12.196 | event=RequestFragmentSharing | nodeId=316 | cellId=30001 | confidence=0.362 | fragments=0 3 4 8 
+309-S-371(1) 309-S-371(2) 309-S-371(4) 309-S-371(5) 309-S-371(6) 309-S-371(7) 310-S-371(8) 310-S-371(9) 
+[EVENT] 12.196 | event=RequestFragmentSharing | nodeId=371 | cellId=30000 | confidence=0.830 | fragments=0 1 2 4 5 6 7 8 9 
+309-S-389(1) 309-S-389(2) 309-S-389(4) 309-S-389(5) 309-S-389(6) 309-S-389(7) 310-S-389(8) 310-S-389(9) 
+[EVENT] 12.196 | event=RequestFragmentSharing | nodeId=389 | cellId=30000 | confidence=0.830 | fragments=0 1 2 4 5 6 7 8 9 
+402-R-64(2) 402-R-172(2) 402-R-202(2) 402-R-220(2) 402-R-225(2) 402-R-226(2) 402-R-227(2) 402-R-247(2) 402-R-252(2) 402-R-263(2) 402-R-266(2) 402-R-287(2) 402-R-296(2) 402-R-301(2) 402-R-303(2) 402-R-304(2) 402-R-306(2) 402-R-307(2) 402-R-308(2) 402-R-324(2) 402-R-325(2) 402-R-326(2) 402-R-327(2) 402-R-328(2) 402-R-329(2) 402-R-331(2) 402-R-344(2) 402-R-345(2) 402-R-346(2) 402-R-347(2) 402-R-348(2) 402-R-349(2) 402-R-350(2) 402-R-352(2) 402-R-361(2) 402-R-363(2) 402-R-365(2) 402-R-366(2) 402-R-367(2) 402-R-368(2) 402-R-369(2) 402-R-370(2) 402-R-371(2) 402-R-372(2) 402-R-374(2) 402-R-386(2) 402-R-387(2) 402-R-388(2) 402-R-389(2) 
+[EVENT] 12.396 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=3 | cycle=2 | confidence=0.120 | size=264056
+6-S-28(0) 7-S-28(2) 7-S-28(7) 9-S-28(4) 26-S-28(6) 26-S-28(8) 26-S-28(9) 
+[EVENT] 12.396 | event=RequestFragmentSharing | nodeId=28 | cellId=1 | confidence=0.701 | fragments=0 1 2 4 6 7 8 9 
+69-S-71(0) 69-S-71(2) 69-S-71(3) 70-S-71(4) 70-S-71(5) 70-S-71(6) 70-S-71(7) 70-S-71(8) 70-S-71(9) 
+[EVENT] 12.396 | event=RequestFragmentSharing | nodeId=71 | cellId=10001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+69-S-130(0) 69-S-130(2) 69-S-130(3) 70-S-130(4) 70-S-130(5) 70-S-130(6) 70-S-130(7) 70-S-130(8) 70-S-130(9) 
+[EVENT] 12.396 | event=RequestFragmentSharing | nodeId=130 | cellId=10001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+78-S-135(0) 78-S-135(6) 78-S-135(7) 78-S-135(8) 78-S-135(9) 
+[EVENT] 12.396 | event=RequestFragmentSharing | nodeId=135 | cellId=10002 | confidence=0.548 | fragments=0 1 6 7 8 9 
+78-S-155(0) 78-S-155(6) 78-S-155(7) 78-S-155(8) 78-S-155(9) 
+[EVENT] 12.396 | event=RequestFragmentSharing | nodeId=155 | cellId=10002 | confidence=0.548 | fragments=0 1 6 7 8 9 
+78-S-177(0) 78-S-177(6) 78-S-177(7) 78-S-177(8) 78-S-177(9) 
+[EVENT] 12.396 | event=RequestFragmentSharing | nodeId=177 | cellId=10002 | confidence=0.548 | fragments=0 1 6 7 8 9 
 
-[EVENT] 11.396 | event=RequestFragmentSharing | nodeId=228 | cellId=20000 | confidence=0.222 | fragments=6 7 
+[EVENT] 12.396 | event=RequestFragmentSharing | nodeId=219 | cellId=20002 | confidence=0.134 | fragments=1 
+193-S-235(0) 193-S-235(3) 193-S-235(4) 193-S-235(5) 195-S-235(6) 195-S-235(7) 195-S-235(8) 212-S-235(9) 252-S-235(2) 
+[EVENT] 12.396 | event=RequestFragmentSharing | nodeId=235 | cellId=20001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+193-S-256(0) 193-S-256(3) 193-S-256(4) 193-S-256(5) 195-S-256(6) 195-S-256(7) 195-S-256(8) 212-S-256(9) 235-S-256(2) 
+[EVENT] 12.396 | event=RequestFragmentSharing | nodeId=256 | cellId=20001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
 
-[EVENT] 11.396 | event=RequestFragmentSharing | nodeId=246 | cellId=20000 | confidence=0.222 | fragments=6 7 
-
-[EVENT] 11.396 | event=RequestFragmentSharing | nodeId=247 | cellId=20000 | confidence=0.222 | fragments=6 7 
-
-[EVENT] 11.396 | event=RequestFragmentSharing | nodeId=248 | cellId=20000 | confidence=0.222 | fragments=6 7 
-
-[EVENT] 11.396 | event=RequestFragmentSharing | nodeId=266 | cellId=20000 | confidence=0.222 | fragments=6 7 
-
-[EVENT] 11.396 | event=RequestFragmentSharing | nodeId=267 | cellId=20000 | confidence=0.222 | fragments=6 7 
-
-[EVENT] 11.396 | event=RequestFragmentSharing | nodeId=268 | cellId=20000 | confidence=0.222 | fragments=6 7 
-402-R-226(8) 402-R-227(8) 402-R-228(8) 402-R-246(8) 402-R-247(8) 402-R-248(8) 402-R-266(8) 402-R-267(8) 402-R-268(8) 
-[EVENT] 11.596 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=9 | cycle=1 | confidence=0.048 | size=106612
-402-R-226(9) 402-R-227(9) 402-R-228(9) 402-R-246(9) 402-R-247(9) 402-R-248(9) 402-R-266(9) 402-R-267(9) 402-R-268(9) 
-[EVENT] 11.796 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=0 | cycle=2 | confidence=0.076 | size=168654
-402-R-226(0) 402-R-227(0) 402-R-228(0) 402-R-246(0) 402-R-247(0) 402-R-248(0) 402-R-266(0) 402-R-267(0) 402-R-268(0) 
-[EVENT] 11.996 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=1 | cycle=2 | confidence=0.115 | size=254289
-402-R-226(1) 402-R-227(1) 402-R-228(1) 402-R-246(1) 402-R-247(1) 402-R-248(1) 402-R-266(1) 402-R-267(1) 402-R-268(1) 
-[EVENT] 12.196 | event=UAVWaypointArrival | nodeId=402 | pos=(240.000,240.000,20.000)
-
-[EVENT] 12.196 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=2 | cycle=2 | confidence=0.117 | size=258334
-402-R-231(2) 402-R-232(2) 402-R-233(2) 402-R-251(2) 402-R-252(2) 402-R-253(2) 402-R-271(2) 402-R-272(2) 402-R-273(2) 
-[EVENT] 12.396 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=3 | cycle=2 | confidence=0.050 | size=110123
-402-R-231(3) 402-R-232(3) 402-R-233(3) 402-R-251(3) 402-R-252(3) 402-R-253(3) 402-R-271(3) 402-R-272(3) 402-R-273(3) 
-[EVENT] 12.596 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=4 | cycle=2 | confidence=0.092 | size=202616
-
-[EVENT] 12.596 | event=RequestFragmentSharing | nodeId=231 | cellId=20001 | confidence=0.167 | fragments=2 3 
-
-[EVENT] 12.596 | event=RequestFragmentSharing | nodeId=232 | cellId=20001 | confidence=0.167 | fragments=2 3 
-
-[EVENT] 12.596 | event=RequestFragmentSharing | nodeId=233 | cellId=20001 | confidence=0.167 | fragments=2 3 
-
-[EVENT] 12.596 | event=RequestFragmentSharing | nodeId=251 | cellId=20001 | confidence=0.167 | fragments=2 3 
-
-[EVENT] 12.596 | event=RequestFragmentSharing | nodeId=252 | cellId=20001 | confidence=0.167 | fragments=2 3 
-
-[EVENT] 12.596 | event=RequestFragmentSharing | nodeId=253 | cellId=20001 | confidence=0.167 | fragments=2 3 
-
-[EVENT] 12.596 | event=RequestFragmentSharing | nodeId=271 | cellId=20001 | confidence=0.167 | fragments=2 3 
-
-[EVENT] 12.596 | event=RequestFragmentSharing | nodeId=272 | cellId=20001 | confidence=0.167 | fragments=2 3 
-
-[EVENT] 12.596 | event=RequestFragmentSharing | nodeId=273 | cellId=20001 | confidence=0.167 | fragments=2 3 
-402-R-231(4) 402-R-232(4) 402-R-233(4) 402-R-251(4) 402-R-252(4) 402-R-253(4) 402-R-271(4) 402-R-272(4) 402-R-273(4) 
-[EVENT] 12.796 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=5 | cycle=2 | confidence=0.127 | size=281373
-402-R-231(5) 402-R-232(5) 402-R-233(5) 402-R-251(5) 402-R-252(5) 402-R-253(5) 402-R-271(5) 402-R-272(5) 402-R-273(5) 
-[EVENT] 12.996 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=6 | cycle=2 | confidence=0.094 | size=208339
-402-R-231(6) 402-R-232(6) 402-R-233(6) 402-R-251(6) 402-R-252(6) 402-R-253(6) 402-R-271(6) 402-R-272(6) 402-R-273(6) 
-[EVENT] 13.196 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=7 | cycle=2 | confidence=0.128 | size=281555
-402-R-231(7) 402-R-232(7) 402-R-233(7) 402-R-251(7) 402-R-252(7) 402-R-253(7) 402-R-271(7) 402-R-272(7) 402-R-273(7) 
+[EVENT] 12.396 | event=RequestFragmentSharing | nodeId=278 | cellId=20002 | confidence=0.134 | fragments=1 
+193-S-291(0) 193-S-291(3) 193-S-291(4) 193-S-291(5) 195-S-291(6) 195-S-291(7) 195-S-291(8) 212-S-291(9) 235-S-291(2) 
+[EVENT] 12.396 | event=RequestFragmentSharing | nodeId=291 | cellId=20001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+309-S-311(0) 309-S-311(2) 309-S-311(4) 309-S-311(5) 309-S-311(6) 309-S-311(7) 310-S-311(8) 310-S-311(9) 
+[EVENT] 12.396 | event=RequestFragmentSharing | nodeId=311 | cellId=30000 | confidence=0.830 | fragments=0 1 2 4 5 6 7 8 9 
+193-S-314(0) 193-S-314(3) 193-S-314(4) 193-S-314(5) 195-S-314(6) 195-S-314(7) 195-S-314(8) 212-S-314(9) 235-S-314(2) 
+[EVENT] 12.396 | event=RequestFragmentSharing | nodeId=314 | cellId=20001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+402-R-111(3) 402-R-174(3) 402-R-180(3) 402-R-189(3) 402-R-200(3) 402-R-207(3) 402-R-214(3) 402-R-237(3) 402-R-246(3) 402-R-263(3) 402-R-265(3) 402-R-266(3) 402-R-267(3) 402-R-268(3) 402-R-270(3) 402-R-286(3) 402-R-287(3) 402-R-292(3) 402-R-304(3) 402-R-305(3) 402-R-306(3) 402-R-307(3) 402-R-308(3) 402-R-309(3) 402-R-315(3) 402-R-321(3) 402-R-323(3) 402-R-325(3) 402-R-326(3) 402-R-327(3) 402-R-328(3) 402-R-329(3) 402-R-345(3) 402-R-346(3) 402-R-347(3) 402-R-348(3) 402-R-349(3) 402-R-350(3) 402-R-352(3) 402-R-353(3) 402-R-362(3) 402-R-365(3) 402-R-366(3) 402-R-367(3) 402-R-368(3) 402-R-369(3) 402-R-375(3) 402-R-377(3) 402-R-383(3) 402-R-386(3) 402-R-387(3) 402-R-388(3) 402-R-390(3) 402-R-396(3) 
+[EVENT] 12.596 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=4 | cycle=2 | confidence=0.101 | size=222458
+193-S-296(0) 193-S-296(1) 193-S-296(3) 193-S-296(4) 193-S-296(5) 195-S-296(6) 195-S-296(7) 195-S-296(8) 212-S-296(9) 
+[EVENT] 12.596 | event=RequestFragmentSharing | nodeId=296 | cellId=20001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+309-S-331(0) 309-S-331(1) 309-S-331(3) 309-S-331(4) 309-S-331(5) 309-S-331(6) 309-S-331(7) 310-S-331(8) 310-S-331(9) 
+[EVENT] 12.596 | event=RequestFragmentSharing | nodeId=331 | cellId=30000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+309-S-352(0) 309-S-352(1) 309-S-352(4) 309-S-352(5) 309-S-352(6) 309-S-352(7) 310-S-352(8) 310-S-352(9) 
+[EVENT] 12.596 | event=RequestFragmentSharing | nodeId=352 | cellId=30000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+309-S-370(0) 309-S-370(1) 309-S-370(3) 309-S-370(4) 309-S-370(5) 309-S-370(6) 309-S-370(7) 310-S-370(8) 310-S-370(9) 
+[EVENT] 12.596 | event=RequestFragmentSharing | nodeId=370 | cellId=30000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+309-S-372(0) 309-S-372(1) 309-S-372(3) 309-S-372(4) 309-S-372(5) 309-S-372(6) 309-S-372(7) 310-S-372(8) 310-S-372(9) 
+[EVENT] 12.596 | event=RequestFragmentSharing | nodeId=372 | cellId=30000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+316-S-374(0) 316-S-374(3) 316-S-374(4) 316-S-374(8) 
+[EVENT] 12.596 | event=RequestFragmentSharing | nodeId=374 | cellId=30001 | confidence=0.415 | fragments=0 2 3 4 8 
+302-S-386(0) 302-S-386(1) 302-S-386(5) 302-S-386(6) 303-S-386(4) 303-S-386(8) 304-S-386(7) 304-S-386(9) 
+[EVENT] 12.596 | event=RequestFragmentSharing | nodeId=386 | cellId=29999 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+309-S-388(0) 309-S-388(1) 309-S-388(4) 309-S-388(5) 309-S-388(6) 309-S-388(7) 310-S-388(8) 310-S-388(9) 
+[EVENT] 12.596 | event=RequestFragmentSharing | nodeId=388 | cellId=30000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+402-R-147(4) 402-R-153(4) 402-R-199(4) 402-R-209(4) 402-R-212(4) 402-R-220(4) 402-R-222(4) 402-R-227(4) 402-R-229(4) 402-R-231(4) 402-R-244(4) 402-R-264(4) 402-R-266(4) 402-R-268(4) 402-R-269(4) 402-R-271(4) 402-R-281(4) 402-R-286(4) 402-R-287(4) 402-R-288(4) 402-R-298(4) 402-R-301(4) 402-R-302(4) 402-R-305(4) 402-R-306(4) 402-R-307(4) 402-R-308(4) 402-R-312(4) 402-R-323(4) 402-R-325(4) 402-R-326(4) 402-R-327(4) 402-R-328(4) 402-R-329(4) 402-R-341(4) 402-R-344(4) 402-R-345(4) 402-R-346(4) 402-R-347(4) 402-R-348(4) 402-R-349(4) 402-R-350(4) 402-R-353(4) 402-R-363(4) 402-R-364(4) 402-R-365(4) 402-R-366(4) 402-R-367(4) 402-R-368(4) 402-R-369(4) 402-R-370(4) 402-R-372(4) 402-R-383(4) 402-R-384(4) 402-R-386(4) 402-R-387(4) 402-R-388(4) 402-R-389(4) 402-R-394(4) 
+[EVENT] 12.796 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=5 | cycle=2 | confidence=0.129 | size=285289
+69-S-189(0) 69-S-189(1) 69-S-189(2) 70-S-189(4) 70-S-189(5) 70-S-189(6) 70-S-189(7) 70-S-189(8) 70-S-189(9) 
+[EVENT] 12.796 | event=RequestFragmentSharing | nodeId=189 | cellId=10001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+193-S-214(0) 193-S-214(1) 193-S-214(4) 193-S-214(5) 195-S-214(6) 195-S-214(7) 195-S-214(8) 212-S-214(9) 235-S-214(2) 
+[EVENT] 12.796 | event=RequestFragmentSharing | nodeId=214 | cellId=20001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+193-S-315(0) 193-S-315(1) 193-S-315(4) 193-S-315(5) 195-S-315(6) 195-S-315(7) 195-S-315(8) 212-S-315(9) 214-S-315(2) 
+[EVENT] 12.796 | event=RequestFragmentSharing | nodeId=315 | cellId=20001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+316-S-375(0) 316-S-375(4) 316-S-375(8) 374-S-375(2) 
+[EVENT] 12.796 | event=RequestFragmentSharing | nodeId=375 | cellId=30001 | confidence=0.415 | fragments=0 2 3 4 8 
+316-S-377(0) 316-S-377(4) 316-S-377(8) 374-S-377(2) 
+[EVENT] 12.796 | event=RequestFragmentSharing | nodeId=377 | cellId=30001 | confidence=0.415 | fragments=0 2 3 4 8 
+402-R-140(5) 402-R-188(5) 402-R-190(5) 402-R-241(5) 402-R-242(5) 402-R-252(5) 402-R-263(5) 402-R-266(5) 402-R-268(5) 402-R-269(5) 402-R-270(5) 402-R-275(5) 402-R-280(5) 402-R-286(5) 402-R-288(5) 402-R-289(5) 402-R-290(5) 402-R-302(5) 402-R-303(5) 402-R-305(5) 402-R-306(5) 402-R-307(5) 402-R-308(5) 402-R-309(5) 402-R-313(5) 402-R-314(5) 402-R-315(5) 402-R-317(5) 402-R-322(5) 402-R-325(5) 402-R-326(5) 402-R-327(5) 402-R-328(5) 402-R-329(5) 402-R-330(5) 402-R-342(5) 402-R-343(5) 402-R-345(5) 402-R-346(5) 402-R-347(5) 402-R-348(5) 402-R-349(5) 402-R-350(5) 402-R-351(5) 402-R-363(5) 402-R-365(5) 402-R-366(5) 402-R-367(5) 402-R-368(5) 402-R-369(5) 402-R-370(5) 402-R-373(5) 402-R-381(5) 402-R-384(5) 402-R-385(5) 402-R-386(5) 402-R-387(5) 402-R-388(5) 402-R-389(5) 402-R-390(5) 402-R-392(5) 402-R-397(5) 
+[EVENT] 12.996 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=6 | cycle=2 | confidence=0.109 | size=241258
+69-S-147(0) 69-S-147(1) 69-S-147(2) 69-S-147(3) 70-S-147(5) 70-S-147(6) 70-S-147(7) 70-S-147(8) 70-S-147(9) 
+[EVENT] 12.996 | event=RequestFragmentSharing | nodeId=147 | cellId=10001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+78-S-199(0) 78-S-199(6) 78-S-199(7) 78-S-199(8) 78-S-199(9) 135-S-199(1) 174-S-199(3) 
+[EVENT] 12.996 | event=RequestFragmentSharing | nodeId=199 | cellId=10002 | confidence=0.768 | fragments=0 1 3 4 6 7 8 9 
+193-S-231(0) 193-S-231(1) 193-S-231(3) 193-S-231(5) 195-S-231(6) 195-S-231(7) 195-S-231(8) 212-S-231(9) 214-S-231(2) 
+[EVENT] 12.996 | event=RequestFragmentSharing | nodeId=231 | cellId=20001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+219-S-298(1) 
+[EVENT] 12.996 | event=RequestFragmentSharing | nodeId=298 | cellId=20002 | confidence=0.235 | fragments=1 4 
+316-S-394(0) 316-S-394(3) 316-S-394(8) 317-S-394(5) 374-S-394(2) 
+[EVENT] 12.996 | event=RequestFragmentSharing | nodeId=394 | cellId=30001 | confidence=0.544 | fragments=0 2 3 4 5 8 
+402-R-108(6) 402-R-146(6) 402-R-177(6) 402-R-185(6) 402-R-206(6) 402-R-230(6) 402-R-243(6) 402-R-247(6) 402-R-253(6) 402-R-266(6) 402-R-267(6) 402-R-269(6) 402-R-285(6) 402-R-288(6) 402-R-301(6) 402-R-304(6) 402-R-306(6) 402-R-307(6) 402-R-308(6) 402-R-309(6) 402-R-310(6) 402-R-311(6) 402-R-321(6) 402-R-323(6) 402-R-325(6) 402-R-326(6) 402-R-327(6) 402-R-328(6) 402-R-329(6) 402-R-330(6) 402-R-331(6) 402-R-344(6) 402-R-345(6) 402-R-346(6) 402-R-347(6) 402-R-348(6) 402-R-349(6) 402-R-352(6) 402-R-353(6) 402-R-362(6) 402-R-364(6) 402-R-365(6) 402-R-366(6) 402-R-367(6) 402-R-368(6) 402-R-369(6) 402-R-371(6) 402-R-373(6) 402-R-374(6) 402-R-383(6) 402-R-385(6) 402-R-386(6) 402-R-387(6) 402-R-388(6) 402-R-389(6) 402-R-394(6) 
+[EVENT] 13.196 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=7 | cycle=2 | confidence=0.071 | size=156435
+193-S-275(0) 193-S-275(1) 193-S-275(3) 193-S-275(4) 195-S-275(6) 195-S-275(7) 195-S-275(8) 212-S-275(9) 214-S-275(2) 
+[EVENT] 13.196 | event=RequestFragmentSharing | nodeId=275 | cellId=20001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+316-S-317(0) 316-S-317(3) 316-S-317(4) 316-S-317(8) 374-S-317(2) 374-S-317(6) 
+[EVENT] 13.196 | event=RequestFragmentSharing | nodeId=317 | cellId=30001 | confidence=0.653 | fragments=0 2 3 4 5 6 8 
+309-S-351(0) 309-S-351(1) 309-S-351(2) 309-S-351(3) 309-S-351(4) 309-S-351(6) 309-S-351(7) 310-S-351(8) 310-S-351(9) 
+[EVENT] 13.196 | event=RequestFragmentSharing | nodeId=351 | cellId=30000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+309-S-373(0) 309-S-373(1) 309-S-373(2) 309-S-373(3) 309-S-373(4) 309-S-373(7) 310-S-373(8) 310-S-373(9) 
+[EVENT] 13.196 | event=RequestFragmentSharing | nodeId=373 | cellId=30000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+309-S-392(0) 309-S-392(1) 309-S-392(2) 309-S-392(3) 309-S-392(4) 309-S-392(6) 309-S-392(7) 310-S-392(8) 310-S-392(9) 
+[EVENT] 13.196 | event=RequestFragmentSharing | nodeId=392 | cellId=30000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+316-S-397(0) 316-S-397(3) 316-S-397(4) 316-S-397(8) 317-S-397(2) 317-S-397(6) 
+[EVENT] 13.196 | event=RequestFragmentSharing | nodeId=397 | cellId=30001 | confidence=0.653 | fragments=0 2 3 4 5 6 8 
+402-R-17(7) 402-R-86(7) 402-R-141(7) 402-R-144(7) 402-R-146(7) 402-R-164(7) 402-R-167(7) 402-R-171(7) 402-R-182(7) 402-R-205(7) 402-R-223(7) 402-R-224(7) 402-R-230(7) 402-R-245(7) 402-R-247(7) 402-R-268(7) 402-R-269(7) 402-R-270(7) 402-R-271(7) 402-R-272(7) 402-R-287(7) 402-R-289(7) 402-R-293(7) 402-R-304(7) 402-R-305(7) 402-R-306(7) 402-R-307(7) 402-R-308(7) 402-R-310(7) 402-R-311(7) 402-R-322(7) 402-R-325(7) 402-R-326(7) 402-R-327(7) 402-R-328(7) 402-R-329(7) 402-R-330(7) 402-R-331(7) 402-R-343(7) 402-R-345(7) 402-R-346(7) 402-R-347(7) 402-R-348(7) 402-R-349(7) 402-R-350(7) 
+[EVENT] 13.196 | event=UAV2MissionComplete | triggerNodeId=361 | confidence=0.806
+402-R-361(7) 402-R-365(7) 402-R-366(7) 402-R-367(7) 402-R-368(7) 402-R-369(7) 402-R-371(7) 402-R-372(7) 402-R-373(7) 402-R-384(7) 402-R-386(7) 402-R-387(7) 402-R-388(7) 402-R-389(7) 402-R-390(7) 402-R-391(7) 
 [EVENT] 13.317 | event=UAVWaypointArrival | nodeId=401 | pos=(20.000,200.000,20.000)
+64-S-146(0) 64-S-146(1) 64-S-146(2) 64-S-146(3) 64-S-146(4) 64-S-146(5) 64-S-146(8) 64-S-146(9) 
+[EVENT] 13.396 | event=RequestFragmentSharing | nodeId=146 | cellId=10000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
 
-[EVENT] 13.396 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=8 | cycle=2 | confidence=0.102 | size=225257
-402-R-231(8) 402-R-232(8) 402-R-233(8) 402-R-251(8) 402-R-252(8) 402-R-253(8) 402-R-271(8) 402-R-272(8) 402-R-273(8) 
-[EVENT] 13.596 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=9 | cycle=2 | confidence=0.048 | size=106612
-402-R-231(9) 402-R-232(9) 402-R-233(9) 402-R-251(9) 402-R-252(9) 402-R-253(9) 402-R-271(9) 
-[EVENT] 13.596 | event=UAV2MissionComplete | triggerNodeId=272 | confidence=0.758
-402-R-272(9) 402-R-273(9) 
-[EVENT] 13.610 | event=UAVWaypointArrival | nodeId=402 | pos=(320.000,320.000,20.000)
-
-[EVENT] 14.860 | event=UAVWaypointArrival | nodeId=402 | pos=(320.000,220.000,20.000)
+[EVENT] 13.446 | event=UAVWaypointArrival | nodeId=402 | pos=(40.000,340.000,20.000)
+36-S-17(5) 36-S-17(8) 36-S-17(9) 
+[EVENT] 13.596 | event=RequestFragmentSharing | nodeId=17 | cellId=2 | confidence=0.344 | fragments=5 7 8 9 
+69-S-171(0) 69-S-171(1) 69-S-171(2) 69-S-171(3) 70-S-171(4) 70-S-171(5) 70-S-171(6) 70-S-171(8) 70-S-171(9) 
+[EVENT] 13.596 | event=RequestFragmentSharing | nodeId=171 | cellId=10001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+309-S-391(0) 309-S-391(1) 309-S-391(2) 309-S-391(3) 309-S-391(4) 309-S-391(5) 309-S-391(6) 310-S-391(8) 310-S-391(9) 
+[EVENT] 13.596 | event=RequestFragmentSharing | nodeId=391 | cellId=30000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
 
 [EVENT] 15.567 | event=UAVWaypointArrival | nodeId=401 | pos=(0.000,200.000,20.000)
 
-[EVENT] 16.442 | event=UAVWaypointArrival | nodeId=402 | pos=(360.000,340.000,20.000)
+[EVENT] 15.696 | event=UAVWaypointArrival | nodeId=402 | pos=(220.000,340.000,20.000)
+
+[EVENT] 16.971 | event=UAVWaypointArrival | nodeId=402 | pos=(200.000,240.000,20.000)
 
 [EVENT] 17.817 | event=UAVWaypointArrival | nodeId=401 | pos=(0.000,220.000,20.000)
 
-[EVENT] 18.991 | event=UAVWaypointArrival | nodeId=402 | pos=(160.000,300.000,20.000)
+[EVENT] 18.089 | event=UAVWaypointArrival | nodeId=402 | pos=(120.000,200.000,20.000)
 
-[EVENT] 20.022 | event=UAVWaypointArrival | nodeId=402 | pos=(140.000,220.000,20.000)
+[EVENT] 18.880 | event=UAVWaypointArrival | nodeId=402 | pos=(100.000,260.000,20.000)
+
+[EVENT] 19.940 | event=UAVWaypointArrival | nodeId=402 | pos=(40.000,200.000,20.000)
 
 [EVENT] 20.067 | event=UAVWaypointArrival | nodeId=401 | pos=(20.000,220.000,20.000)
 
-[EVENT] 21.297 | event=UAVWaypointArrival | nodeId=402 | pos=(40.000,200.000,20.000)
+[EVENT] 20.731 | event=UAVWaypointArrival | nodeId=402 | pos=(20.000,260.000,20.000)
 
-[EVENT] 22.297 | event=UAVWaypointArrival | nodeId=402 | pos=(40.000,280.000,20.000)
+[EVENT] 21.981 | event=UAVWaypointArrival | nodeId=402 | pos=(80.000,340.000,20.000)
 
 [EVENT] 22.317 | event=UAVWaypointArrival | nodeId=401 | pos=(40.000,220.000,20.000)
 
+[EVENT] 22.981 | event=UAVWaypointArrival | nodeId=402 | pos=(160.000,340.000,20.000)
+
+[EVENT] 23.771 | event=UAVWaypointArrival | nodeId=402 | pos=(220.000,360.000,20.000)
+
 [EVENT] 24.567 | event=UAVWaypointArrival | nodeId=401 | pos=(40.000,200.000,20.000)
 
-[EVENT] 25.389 | event=UAVWaypointArrival | nodeId=402 | pos=(280.000,340.000,20.000)
+[EVENT] 26.021 | event=UAVWaypointArrival | nodeId=402 | pos=(40.000,360.000,20.000)
+2-S-0(0) 2-S-0(5) 3-S-0(7) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=0 | cellId=0 | confidence=0.289 | fragments=0 5 7 
+0-S-1(0) 0-S-1(5) 0-S-1(7) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=1 | cellId=0 | confidence=0.289 | fragments=0 5 7 
+6-S-4(0) 7-S-4(2) 7-S-4(7) 9-S-4(4) 26-S-4(6) 26-S-4(8) 26-S-4(9) 28-S-4(1) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=4 | cellId=1 | confidence=0.701 | fragments=0 1 2 4 6 7 8 9 
+4-S-5(0) 4-S-5(1) 4-S-5(2) 4-S-5(4) 4-S-5(6) 4-S-5(7) 4-S-5(8) 4-S-5(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=5 | cellId=1 | confidence=0.701 | fragments=0 1 2 4 6 7 8 9 
+4-S-8(0) 4-S-8(1) 4-S-8(2) 4-S-8(4) 4-S-8(6) 4-S-8(7) 4-S-8(8) 4-S-8(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=8 | cellId=1 | confidence=0.701 | fragments=0 1 2 4 6 7 8 9 
+4-S-10(0) 4-S-10(1) 4-S-10(2) 4-S-10(4) 4-S-10(6) 4-S-10(7) 4-S-10(8) 4-S-10(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=10 | cellId=1 | confidence=0.701 | fragments=0 1 2 4 6 7 8 9 
+17-S-11(5) 17-S-11(7) 17-S-11(8) 17-S-11(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=11 | cellId=2 | confidence=0.344 | fragments=5 7 8 9 
+11-S-12(5) 11-S-12(7) 11-S-12(8) 11-S-12(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=12 | cellId=2 | confidence=0.344 | fragments=5 7 8 9 
+11-S-13(5) 11-S-13(7) 11-S-13(8) 11-S-13(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=13 | cellId=2 | confidence=0.344 | fragments=5 7 8 9 
+11-S-14(5) 11-S-14(7) 11-S-14(8) 11-S-14(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=14 | cellId=2 | confidence=0.344 | fragments=5 7 8 9 
+11-S-15(5) 11-S-15(7) 11-S-15(8) 11-S-15(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=15 | cellId=2 | confidence=0.344 | fragments=5 7 8 9 
+11-S-16(5) 11-S-16(7) 11-S-16(8) 11-S-16(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=16 | cellId=2 | confidence=0.344 | fragments=5 7 8 9 
+
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=18 | cellId=3 | confidence=0.000 | fragments=
+
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=19 | cellId=3 | confidence=0.000 | fragments=
+0-S-20(0) 0-S-20(5) 0-S-20(7) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=20 | cellId=0 | confidence=0.289 | fragments=0 5 7 
+0-S-21(0) 0-S-21(5) 0-S-21(7) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=21 | cellId=0 | confidence=0.289 | fragments=0 5 7 
+0-S-22(0) 0-S-22(5) 0-S-22(7) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=22 | cellId=0 | confidence=0.289 | fragments=0 5 7 
+0-S-23(0) 0-S-23(5) 0-S-23(7) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=23 | cellId=0 | confidence=0.289 | fragments=0 5 7 
+4-S-24(0) 4-S-24(1) 4-S-24(2) 4-S-24(4) 4-S-24(6) 4-S-24(7) 4-S-24(8) 4-S-24(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=24 | cellId=1 | confidence=0.701 | fragments=0 1 2 4 6 7 8 9 
+4-S-27(0) 4-S-27(1) 4-S-27(2) 4-S-27(4) 4-S-27(6) 4-S-27(7) 4-S-27(8) 4-S-27(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=27 | cellId=1 | confidence=0.701 | fragments=0 1 2 4 6 7 8 9 
+4-S-29(0) 4-S-29(1) 4-S-29(2) 4-S-29(4) 4-S-29(6) 4-S-29(7) 4-S-29(8) 4-S-29(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=29 | cellId=1 | confidence=0.701 | fragments=0 1 2 4 6 7 8 9 
+4-S-30(0) 4-S-30(1) 4-S-30(2) 4-S-30(4) 4-S-30(6) 4-S-30(7) 4-S-30(8) 4-S-30(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=30 | cellId=1 | confidence=0.701 | fragments=0 1 2 4 6 7 8 9 
+11-S-31(5) 11-S-31(7) 11-S-31(8) 11-S-31(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=31 | cellId=2 | confidence=0.344 | fragments=5 7 8 9 
+11-S-32(5) 11-S-32(7) 11-S-32(8) 11-S-32(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=32 | cellId=2 | confidence=0.344 | fragments=5 7 8 9 
+11-S-33(5) 11-S-33(7) 11-S-33(8) 11-S-33(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=33 | cellId=2 | confidence=0.344 | fragments=5 7 8 9 
+11-S-34(5) 11-S-34(7) 11-S-34(8) 11-S-34(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=34 | cellId=2 | confidence=0.344 | fragments=5 7 8 9 
+11-S-35(5) 11-S-35(7) 11-S-35(8) 11-S-35(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=35 | cellId=2 | confidence=0.344 | fragments=5 7 8 9 
+11-S-37(5) 11-S-37(7) 11-S-37(8) 11-S-37(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=37 | cellId=2 | confidence=0.344 | fragments=5 7 8 9 
+
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=38 | cellId=3 | confidence=0.000 | fragments=
+
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=39 | cellId=3 | confidence=0.000 | fragments=
+0-S-40(0) 0-S-40(5) 0-S-40(7) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=40 | cellId=0 | confidence=0.289 | fragments=0 5 7 
+0-S-41(0) 0-S-41(5) 0-S-41(7) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=41 | cellId=0 | confidence=0.289 | fragments=0 5 7 
+0-S-42(0) 0-S-42(5) 0-S-42(7) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=42 | cellId=0 | confidence=0.289 | fragments=0 5 7 
+4-S-44(0) 4-S-44(1) 4-S-44(2) 4-S-44(4) 4-S-44(6) 4-S-44(7) 4-S-44(8) 4-S-44(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=44 | cellId=1 | confidence=0.701 | fragments=0 1 2 4 6 7 8 9 
+4-S-45(0) 4-S-45(1) 4-S-45(2) 4-S-45(4) 4-S-45(6) 4-S-45(7) 4-S-45(8) 4-S-45(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=45 | cellId=1 | confidence=0.701 | fragments=0 1 2 4 6 7 8 9 
+4-S-46(0) 4-S-46(1) 4-S-46(2) 4-S-46(4) 4-S-46(6) 4-S-46(7) 4-S-46(8) 4-S-46(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=46 | cellId=1 | confidence=0.701 | fragments=0 1 2 4 6 7 8 9 
+4-S-47(0) 4-S-47(1) 4-S-47(2) 4-S-47(4) 4-S-47(6) 4-S-47(7) 4-S-47(8) 4-S-47(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=47 | cellId=1 | confidence=0.701 | fragments=0 1 2 4 6 7 8 9 
+4-S-48(0) 4-S-48(1) 4-S-48(2) 4-S-48(4) 4-S-48(6) 4-S-48(7) 4-S-48(8) 4-S-48(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=48 | cellId=1 | confidence=0.701 | fragments=0 1 2 4 6 7 8 9 
+4-S-49(0) 4-S-49(1) 4-S-49(2) 4-S-49(4) 4-S-49(6) 4-S-49(7) 4-S-49(8) 4-S-49(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=49 | cellId=1 | confidence=0.701 | fragments=0 1 2 4 6 7 8 9 
+4-S-50(0) 4-S-50(1) 4-S-50(2) 4-S-50(4) 4-S-50(6) 4-S-50(7) 4-S-50(8) 4-S-50(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=50 | cellId=1 | confidence=0.701 | fragments=0 1 2 4 6 7 8 9 
+11-S-51(5) 11-S-51(7) 11-S-51(8) 11-S-51(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=51 | cellId=2 | confidence=0.344 | fragments=5 7 8 9 
+11-S-53(5) 11-S-53(7) 11-S-53(8) 11-S-53(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=53 | cellId=2 | confidence=0.344 | fragments=5 7 8 9 
+11-S-55(5) 11-S-55(7) 11-S-55(8) 11-S-55(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=55 | cellId=2 | confidence=0.344 | fragments=5 7 8 9 
+11-S-56(5) 11-S-56(7) 11-S-56(8) 11-S-56(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=56 | cellId=2 | confidence=0.344 | fragments=5 7 8 9 
+11-S-57(5) 11-S-57(7) 11-S-57(8) 11-S-57(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=57 | cellId=2 | confidence=0.344 | fragments=5 7 8 9 
+
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=58 | cellId=3 | confidence=0.000 | fragments=
+
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=59 | cellId=3 | confidence=0.000 | fragments=
+0-S-60(0) 0-S-60(5) 0-S-60(7) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=60 | cellId=0 | confidence=0.289 | fragments=0 5 7 
+0-S-61(0) 0-S-61(5) 0-S-61(7) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=61 | cellId=0 | confidence=0.289 | fragments=0 5 7 
+64-S-62(0) 64-S-62(1) 64-S-62(2) 64-S-62(3) 64-S-62(4) 64-S-62(5) 64-S-62(6) 64-S-62(7) 64-S-62(8) 64-S-62(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=62 | cellId=10000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+62-S-63(0) 62-S-63(1) 62-S-63(2) 62-S-63(3) 62-S-63(4) 62-S-63(5) 62-S-63(6) 62-S-63(7) 62-S-63(8) 62-S-63(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=63 | cellId=10000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+62-S-65(0) 62-S-65(1) 62-S-65(2) 62-S-65(3) 62-S-65(4) 62-S-65(5) 62-S-65(6) 62-S-65(7) 62-S-65(8) 62-S-65(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=65 | cellId=10000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+4-S-66(0) 4-S-66(1) 4-S-66(2) 4-S-66(4) 4-S-66(6) 4-S-66(7) 4-S-66(8) 4-S-66(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=66 | cellId=1 | confidence=0.701 | fragments=0 1 2 4 6 7 8 9 
+69-S-72(0) 69-S-72(1) 69-S-72(2) 69-S-72(3) 70-S-72(4) 70-S-72(5) 70-S-72(6) 70-S-72(7) 70-S-72(8) 70-S-72(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=72 | cellId=10001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+11-S-73(5) 11-S-73(7) 11-S-73(8) 11-S-73(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=73 | cellId=2 | confidence=0.344 | fragments=5 7 8 9 
+11-S-74(5) 11-S-74(7) 11-S-74(8) 11-S-74(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=74 | cellId=2 | confidence=0.344 | fragments=5 7 8 9 
+11-S-75(5) 11-S-75(7) 11-S-75(8) 11-S-75(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=75 | cellId=2 | confidence=0.344 | fragments=5 7 8 9 
+78-S-76(0) 78-S-76(6) 78-S-76(7) 78-S-76(8) 78-S-76(9) 135-S-76(1) 174-S-76(3) 199-S-76(4) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=76 | cellId=10002 | confidence=0.768 | fragments=0 1 3 4 6 7 8 9 
+76-S-77(0) 76-S-77(1) 76-S-77(3) 76-S-77(4) 76-S-77(6) 76-S-77(7) 76-S-77(8) 76-S-77(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=77 | cellId=10002 | confidence=0.768 | fragments=0 1 3 4 6 7 8 9 
+76-S-79(0) 76-S-79(1) 76-S-79(3) 76-S-79(4) 76-S-79(6) 76-S-79(7) 76-S-79(8) 76-S-79(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=79 | cellId=10002 | confidence=0.768 | fragments=0 1 3 4 6 7 8 9 
+0-S-80(0) 0-S-80(5) 0-S-80(7) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=80 | cellId=0 | confidence=0.289 | fragments=0 5 7 
+62-S-81(0) 62-S-81(1) 62-S-81(2) 62-S-81(3) 62-S-81(4) 62-S-81(5) 62-S-81(6) 62-S-81(7) 62-S-81(8) 62-S-81(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=81 | cellId=10000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+62-S-85(0) 62-S-85(1) 62-S-85(2) 62-S-85(3) 62-S-85(4) 62-S-85(5) 62-S-85(6) 62-S-85(7) 62-S-85(8) 62-S-85(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=85 | cellId=10000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+69-S-88(0) 69-S-88(1) 69-S-88(2) 69-S-88(3) 70-S-88(4) 70-S-88(5) 70-S-88(6) 70-S-88(7) 70-S-88(8) 70-S-88(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=88 | cellId=10001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+69-S-90(0) 69-S-90(1) 69-S-90(2) 69-S-90(3) 70-S-90(4) 70-S-90(5) 70-S-90(6) 70-S-90(7) 70-S-90(8) 70-S-90(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=90 | cellId=10001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+69-S-92(0) 69-S-92(1) 69-S-92(2) 69-S-92(3) 70-S-92(4) 70-S-92(5) 70-S-92(6) 70-S-92(7) 70-S-92(8) 70-S-92(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=92 | cellId=10001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+69-S-93(0) 69-S-93(1) 69-S-93(2) 69-S-93(3) 70-S-93(4) 70-S-93(5) 70-S-93(6) 70-S-93(7) 70-S-93(8) 70-S-93(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=93 | cellId=10001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+76-S-94(0) 76-S-94(1) 76-S-94(3) 76-S-94(4) 76-S-94(6) 76-S-94(7) 76-S-94(8) 76-S-94(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=94 | cellId=10002 | confidence=0.768 | fragments=0 1 3 4 6 7 8 9 
+76-S-95(0) 76-S-95(1) 76-S-95(3) 76-S-95(4) 76-S-95(6) 76-S-95(7) 76-S-95(8) 76-S-95(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=95 | cellId=10002 | confidence=0.768 | fragments=0 1 3 4 6 7 8 9 
+76-S-96(0) 76-S-96(1) 76-S-96(3) 76-S-96(4) 76-S-96(6) 76-S-96(7) 76-S-96(8) 76-S-96(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=96 | cellId=10002 | confidence=0.768 | fragments=0 1 3 4 6 7 8 9 
+76-S-97(0) 76-S-97(1) 76-S-97(3) 76-S-97(4) 76-S-97(6) 76-S-97(7) 76-S-97(8) 76-S-97(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=97 | cellId=10002 | confidence=0.768 | fragments=0 1 3 4 6 7 8 9 
+76-S-98(0) 76-S-98(1) 76-S-98(3) 76-S-98(4) 76-S-98(6) 76-S-98(7) 76-S-98(8) 76-S-98(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=98 | cellId=10002 | confidence=0.768 | fragments=0 1 3 4 6 7 8 9 
+76-S-99(0) 76-S-99(1) 76-S-99(3) 76-S-99(4) 76-S-99(6) 76-S-99(7) 76-S-99(8) 76-S-99(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=99 | cellId=10002 | confidence=0.768 | fragments=0 1 3 4 6 7 8 9 
+62-S-100(0) 62-S-100(1) 62-S-100(2) 62-S-100(3) 62-S-100(4) 62-S-100(5) 62-S-100(6) 62-S-100(7) 62-S-100(8) 62-S-100(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=100 | cellId=10000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+62-S-102(0) 62-S-102(1) 62-S-102(2) 62-S-102(3) 62-S-102(4) 62-S-102(5) 62-S-102(6) 62-S-102(7) 62-S-102(8) 62-S-102(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=102 | cellId=10000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+69-S-107(0) 69-S-107(1) 69-S-107(2) 69-S-107(3) 70-S-107(4) 70-S-107(5) 70-S-107(6) 70-S-107(7) 70-S-107(8) 70-S-107(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=107 | cellId=10001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+69-S-109(0) 69-S-109(1) 69-S-109(2) 69-S-109(3) 70-S-109(4) 70-S-109(5) 70-S-109(6) 70-S-109(7) 70-S-109(8) 70-S-109(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=109 | cellId=10001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+69-S-110(0) 69-S-110(1) 69-S-110(2) 69-S-110(3) 70-S-110(4) 70-S-110(5) 70-S-110(6) 70-S-110(7) 70-S-110(8) 70-S-110(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=110 | cellId=10001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+69-S-112(0) 69-S-112(1) 69-S-112(2) 69-S-112(3) 70-S-112(4) 70-S-112(5) 70-S-112(6) 70-S-112(7) 70-S-112(8) 70-S-112(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=112 | cellId=10001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+69-S-113(0) 69-S-113(1) 69-S-113(2) 69-S-113(3) 70-S-113(4) 70-S-113(5) 70-S-113(6) 70-S-113(7) 70-S-113(8) 70-S-113(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=113 | cellId=10001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+76-S-115(0) 76-S-115(1) 76-S-115(3) 76-S-115(4) 76-S-115(6) 76-S-115(7) 76-S-115(8) 76-S-115(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=115 | cellId=10002 | confidence=0.768 | fragments=0 1 3 4 6 7 8 9 
+76-S-116(0) 76-S-116(1) 76-S-116(3) 76-S-116(4) 76-S-116(6) 76-S-116(7) 76-S-116(8) 76-S-116(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=116 | cellId=10002 | confidence=0.768 | fragments=0 1 3 4 6 7 8 9 
+76-S-117(0) 76-S-117(1) 76-S-117(3) 76-S-117(4) 76-S-117(6) 76-S-117(7) 76-S-117(8) 76-S-117(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=117 | cellId=10002 | confidence=0.768 | fragments=0 1 3 4 6 7 8 9 
+76-S-118(0) 76-S-118(1) 76-S-118(3) 76-S-118(4) 76-S-118(6) 76-S-118(7) 76-S-118(8) 76-S-118(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=118 | cellId=10002 | confidence=0.768 | fragments=0 1 3 4 6 7 8 9 
+76-S-119(0) 76-S-119(1) 76-S-119(3) 76-S-119(4) 76-S-119(6) 76-S-119(7) 76-S-119(8) 76-S-119(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=119 | cellId=10002 | confidence=0.768 | fragments=0 1 3 4 6 7 8 9 
+62-S-122(0) 62-S-122(1) 62-S-122(2) 62-S-122(3) 62-S-122(4) 62-S-122(5) 62-S-122(6) 62-S-122(7) 62-S-122(8) 62-S-122(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=122 | cellId=10000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+69-S-127(0) 69-S-127(1) 69-S-127(2) 69-S-127(3) 70-S-127(4) 70-S-127(5) 70-S-127(6) 70-S-127(7) 70-S-127(8) 70-S-127(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=127 | cellId=10001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+69-S-131(0) 69-S-131(1) 69-S-131(2) 69-S-131(3) 70-S-131(4) 70-S-131(5) 70-S-131(6) 70-S-131(7) 70-S-131(8) 70-S-131(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=131 | cellId=10001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+69-S-132(0) 69-S-132(1) 69-S-132(2) 69-S-132(3) 70-S-132(4) 70-S-132(5) 70-S-132(6) 70-S-132(7) 70-S-132(8) 70-S-132(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=132 | cellId=10001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+69-S-133(0) 69-S-133(1) 69-S-133(2) 69-S-133(3) 70-S-133(4) 70-S-133(5) 70-S-133(6) 70-S-133(7) 70-S-133(8) 70-S-133(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=133 | cellId=10001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+76-S-134(0) 76-S-134(1) 76-S-134(3) 76-S-134(4) 76-S-134(6) 76-S-134(7) 76-S-134(8) 76-S-134(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=134 | cellId=10002 | confidence=0.768 | fragments=0 1 3 4 6 7 8 9 
+76-S-136(0) 76-S-136(1) 76-S-136(3) 76-S-136(4) 76-S-136(6) 76-S-136(7) 76-S-136(8) 76-S-136(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=136 | cellId=10002 | confidence=0.768 | fragments=0 1 3 4 6 7 8 9 
+76-S-138(0) 76-S-138(1) 76-S-138(3) 76-S-138(4) 76-S-138(6) 76-S-138(7) 76-S-138(8) 76-S-138(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=138 | cellId=10002 | confidence=0.768 | fragments=0 1 3 4 6 7 8 9 
+76-S-139(0) 76-S-139(1) 76-S-139(3) 76-S-139(4) 76-S-139(6) 76-S-139(7) 76-S-139(8) 76-S-139(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=139 | cellId=10002 | confidence=0.768 | fragments=0 1 3 4 6 7 8 9 
+69-S-151(0) 69-S-151(1) 69-S-151(2) 69-S-151(3) 70-S-151(4) 70-S-151(5) 70-S-151(6) 70-S-151(7) 70-S-151(8) 70-S-151(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=151 | cellId=10001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+76-S-156(0) 76-S-156(1) 76-S-156(3) 76-S-156(4) 76-S-156(6) 76-S-156(7) 76-S-156(8) 76-S-156(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=156 | cellId=10002 | confidence=0.768 | fragments=0 1 3 4 6 7 8 9 
+76-S-159(0) 76-S-159(1) 76-S-159(3) 76-S-159(4) 76-S-159(6) 76-S-159(7) 76-S-159(8) 76-S-159(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=159 | cellId=10002 | confidence=0.768 | fragments=0 1 3 4 6 7 8 9 
+76-S-175(0) 76-S-175(1) 76-S-175(3) 76-S-175(4) 76-S-175(6) 76-S-175(7) 76-S-175(8) 76-S-175(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=175 | cellId=10002 | confidence=0.768 | fragments=0 1 3 4 6 7 8 9 
+76-S-178(0) 76-S-178(1) 76-S-178(3) 76-S-178(4) 76-S-178(6) 76-S-178(7) 76-S-178(8) 76-S-178(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=178 | cellId=10002 | confidence=0.768 | fragments=0 1 3 4 6 7 8 9 
+76-S-179(0) 76-S-179(1) 76-S-179(3) 76-S-179(4) 76-S-179(6) 76-S-179(7) 76-S-179(8) 76-S-179(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=179 | cellId=10002 | confidence=0.768 | fragments=0 1 3 4 6 7 8 9 
+76-S-197(0) 76-S-197(1) 76-S-197(3) 76-S-197(4) 76-S-197(6) 76-S-197(7) 76-S-197(8) 76-S-197(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=197 | cellId=10002 | confidence=0.768 | fragments=0 1 3 4 6 7 8 9 
+76-S-198(0) 76-S-198(1) 76-S-198(3) 76-S-198(4) 76-S-198(6) 76-S-198(7) 76-S-198(8) 76-S-198(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=198 | cellId=10002 | confidence=0.768 | fragments=0 1 3 4 6 7 8 9 
+193-S-211(0) 193-S-211(1) 193-S-211(3) 193-S-211(4) 193-S-211(5) 195-S-211(6) 195-S-211(7) 195-S-211(8) 212-S-211(9) 214-S-211(2) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=211 | cellId=20001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+193-S-213(0) 193-S-213(1) 193-S-213(3) 193-S-213(4) 193-S-213(5) 195-S-213(6) 195-S-213(7) 195-S-213(8) 211-S-213(2) 211-S-213(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=213 | cellId=20001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+193-S-216(0) 193-S-216(1) 193-S-216(3) 193-S-216(4) 193-S-216(5) 195-S-216(6) 195-S-216(7) 195-S-216(8) 211-S-216(2) 211-S-216(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=216 | cellId=20001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+193-S-217(0) 193-S-217(1) 193-S-217(3) 193-S-217(4) 193-S-217(5) 195-S-217(6) 195-S-217(7) 195-S-217(8) 211-S-217(2) 211-S-217(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=217 | cellId=20001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+219-S-218(1) 298-S-218(4) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=218 | cellId=20002 | confidence=0.235 | fragments=1 4 
+193-S-232(0) 193-S-232(1) 193-S-232(3) 193-S-232(4) 193-S-232(5) 195-S-232(6) 195-S-232(7) 195-S-232(8) 211-S-232(2) 211-S-232(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=232 | cellId=20001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+193-S-233(0) 193-S-233(1) 193-S-233(3) 193-S-233(4) 193-S-233(5) 195-S-233(6) 195-S-233(7) 195-S-233(8) 211-S-233(2) 211-S-233(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=233 | cellId=20001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+193-S-236(0) 193-S-236(1) 193-S-236(3) 193-S-236(4) 193-S-236(5) 195-S-236(6) 195-S-236(7) 195-S-236(8) 211-S-236(2) 211-S-236(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=236 | cellId=20001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+218-S-238(1) 218-S-238(4) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=238 | cellId=20002 | confidence=0.235 | fragments=1 4 
+218-S-239(1) 218-S-239(4) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=239 | cellId=20002 | confidence=0.235 | fragments=1 4 
+193-S-254(0) 193-S-254(1) 193-S-254(3) 193-S-254(4) 193-S-254(5) 195-S-254(6) 195-S-254(7) 195-S-254(8) 211-S-254(2) 211-S-254(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=254 | cellId=20001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+193-S-257(0) 193-S-257(1) 193-S-257(3) 193-S-257(4) 193-S-257(5) 195-S-257(6) 195-S-257(7) 195-S-257(8) 211-S-257(2) 211-S-257(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=257 | cellId=20001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+218-S-258(1) 218-S-258(4) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=258 | cellId=20002 | confidence=0.235 | fragments=1 4 
+218-S-259(1) 218-S-259(4) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=259 | cellId=20002 | confidence=0.235 | fragments=1 4 
+193-S-274(0) 193-S-274(1) 193-S-274(3) 193-S-274(4) 193-S-274(5) 195-S-274(6) 195-S-274(7) 195-S-274(8) 211-S-274(2) 211-S-274(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=274 | cellId=20001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+218-S-279(1) 218-S-279(4) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=279 | cellId=20002 | confidence=0.235 | fragments=1 4 
+193-S-297(0) 193-S-297(1) 193-S-297(3) 193-S-297(4) 193-S-297(5) 195-S-297(6) 195-S-297(7) 195-S-297(8) 211-S-297(2) 211-S-297(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=297 | cellId=20001 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+218-S-299(1) 218-S-299(4) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=299 | cellId=20002 | confidence=0.235 | fragments=1 4 
+316-S-318(0) 316-S-318(3) 316-S-318(4) 316-S-318(8) 317-S-318(2) 317-S-318(5) 317-S-318(6) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=318 | cellId=30001 | confidence=0.653 | fragments=0 2 3 4 5 6 8 
+316-S-319(0) 316-S-319(3) 316-S-319(4) 316-S-319(8) 317-S-319(2) 317-S-319(5) 317-S-319(6) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=319 | cellId=30001 | confidence=0.653 | fragments=0 2 3 4 5 6 8 
+180-S-320(0) 180-S-320(1) 180-S-320(2) 180-S-320(3) 180-S-320(4) 180-S-320(5) 180-S-320(8) 203-S-320(6) 203-S-320(7) 222-S-320(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=320 | cellId=19999 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+309-S-333(0) 309-S-333(1) 309-S-333(2) 309-S-333(3) 309-S-333(4) 309-S-333(5) 309-S-333(6) 309-S-333(7) 310-S-333(8) 310-S-333(9) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=333 | cellId=30000 | confidence=0.950 | fragments=0 1 2 3 4 5 6 7 8 9 
+316-S-334(0) 316-S-334(3) 316-S-334(4) 316-S-334(8) 317-S-334(2) 317-S-334(5) 317-S-334(6) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=334 | cellId=30001 | confidence=0.653 | fragments=0 2 3 4 5 6 8 
+316-S-335(0) 316-S-335(3) 316-S-335(4) 316-S-335(8) 317-S-335(2) 317-S-335(5) 317-S-335(6) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=335 | cellId=30001 | confidence=0.653 | fragments=0 2 3 4 5 6 8 
+316-S-336(0) 316-S-336(3) 316-S-336(4) 316-S-336(8) 317-S-336(2) 317-S-336(5) 317-S-336(6) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=336 | cellId=30001 | confidence=0.653 | fragments=0 2 3 4 5 6 8 
+316-S-337(0) 316-S-337(3) 316-S-337(4) 316-S-337(8) 317-S-337(2) 317-S-337(5) 317-S-337(6) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=337 | cellId=30001 | confidence=0.653 | fragments=0 2 3 4 5 6 8 
+316-S-338(0) 316-S-338(3) 316-S-338(4) 316-S-338(8) 317-S-338(2) 317-S-338(5) 317-S-338(6) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=338 | cellId=30001 | confidence=0.653 | fragments=0 2 3 4 5 6 8 
+316-S-339(0) 316-S-339(3) 316-S-339(4) 316-S-339(8) 317-S-339(2) 317-S-339(5) 317-S-339(6) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=339 | cellId=30001 | confidence=0.653 | fragments=0 2 3 4 5 6 8 
+316-S-355(0) 316-S-355(3) 316-S-355(4) 316-S-355(8) 317-S-355(2) 317-S-355(5) 317-S-355(6) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=355 | cellId=30001 | confidence=0.653 | fragments=0 2 3 4 5 6 8 
+316-S-358(0) 316-S-358(3) 316-S-358(4) 316-S-358(8) 317-S-358(2) 317-S-358(5) 317-S-358(6) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=358 | cellId=30001 | confidence=0.653 | fragments=0 2 3 4 5 6 8 
+316-S-359(0) 316-S-359(3) 316-S-359(4) 316-S-359(8) 317-S-359(2) 317-S-359(5) 317-S-359(6) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=359 | cellId=30001 | confidence=0.653 | fragments=0 2 3 4 5 6 8 
+316-S-376(0) 316-S-376(3) 316-S-376(4) 316-S-376(8) 317-S-376(2) 317-S-376(5) 317-S-376(6) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=376 | cellId=30001 | confidence=0.653 | fragments=0 2 3 4 5 6 8 
+316-S-378(0) 316-S-378(3) 316-S-378(4) 316-S-378(8) 317-S-378(2) 317-S-378(5) 317-S-378(6) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=378 | cellId=30001 | confidence=0.653 | fragments=0 2 3 4 5 6 8 
+316-S-379(0) 316-S-379(3) 316-S-379(4) 316-S-379(8) 317-S-379(2) 317-S-379(5) 317-S-379(6) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=379 | cellId=30001 | confidence=0.653 | fragments=0 2 3 4 5 6 8 
+316-S-395(0) 316-S-395(3) 316-S-395(4) 316-S-395(8) 317-S-395(2) 317-S-395(5) 317-S-395(6) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=395 | cellId=30001 | confidence=0.653 | fragments=0 2 3 4 5 6 8 
+316-S-398(0) 316-S-398(3) 316-S-398(4) 316-S-398(8) 317-S-398(2) 317-S-398(5) 317-S-398(6) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=398 | cellId=30001 | confidence=0.653 | fragments=0 2 3 4 5 6 8 
+316-S-399(0) 316-S-399(3) 316-S-399(4) 316-S-399(8) 317-S-399(2) 317-S-399(5) 317-S-399(6) 
+[EVENT] 26.221 | event=RequestFragmentSharing | nodeId=399 | cellId=30001 | confidence=0.653 | fragments=0 2 3 4 5 6 8 
+[EVENT] 26.221 | event=CellCooperationTimeout | triggeredNodes=139
 
 [EVENT] 26.817 | event=UAVWaypointArrival | nodeId=401 | pos=(60.000,200.000,20.000)
 
-[EVENT] 27.209 | event=UAVWaypointArrival | nodeId=402 | pos=(240.000,200.000,20.000)
-
-[EVENT] 27.768 | event=UAVWaypointArrival | nodeId=402 | pos=(260.000,240.000,20.000)
-
 [EVENT] 29.067 | event=UAVWaypointArrival | nodeId=401 | pos=(80.000,200.000,20.000)
 
-[EVENT] 29.114 | event=UAVWaypointArrival | nodeId=402 | pos=(300.000,340.000,20.000)
-
-[EVENT] 31.176 | event=UAVWaypointArrival | nodeId=402 | pos=(140.000,300.000,20.000)
-
 [EVENT] 31.317 | event=UAVWaypointArrival | nodeId=401 | pos=(100.000,200.000,20.000)
-
-[EVENT] 32.676 | event=UAVWaypointArrival | nodeId=402 | pos=(20.000,300.000,20.000)
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=0 | cellId=0 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=1 | cellId=0 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=2 | cellId=0 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=3 | cellId=0 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=4 | cellId=1 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=5 | cellId=1 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=6 | cellId=1 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=7 | cellId=1 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=8 | cellId=1 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=9 | cellId=1 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=10 | cellId=1 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=11 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=12 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=13 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=14 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=15 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=16 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=17 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=18 | cellId=3 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=19 | cellId=3 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=20 | cellId=0 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=21 | cellId=0 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=22 | cellId=0 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=23 | cellId=0 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=24 | cellId=1 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=25 | cellId=1 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=26 | cellId=1 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=27 | cellId=1 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=28 | cellId=1 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=29 | cellId=1 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=30 | cellId=1 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=31 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=32 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=33 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=34 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=35 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=36 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=37 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=38 | cellId=3 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=39 | cellId=3 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=40 | cellId=0 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=41 | cellId=0 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=42 | cellId=0 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=43 | cellId=0 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=44 | cellId=1 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=45 | cellId=1 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=46 | cellId=1 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=47 | cellId=1 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=48 | cellId=1 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=49 | cellId=1 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=50 | cellId=1 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=51 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=52 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=53 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=54 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=55 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=56 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=57 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=58 | cellId=3 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=59 | cellId=3 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=60 | cellId=0 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=61 | cellId=0 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=62 | cellId=10000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=63 | cellId=10000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=64 | cellId=10000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=65 | cellId=10000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=66 | cellId=1 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=67 | cellId=1 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=68 | cellId=1 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=69 | cellId=10001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=70 | cellId=10001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=71 | cellId=10001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=72 | cellId=10001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=73 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=74 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=75 | cellId=2 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=76 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=77 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=78 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=79 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=80 | cellId=0 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=81 | cellId=10000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=82 | cellId=10000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=83 | cellId=10000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=84 | cellId=10000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=85 | cellId=10000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=86 | cellId=10000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=87 | cellId=10001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=88 | cellId=10001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=89 | cellId=10001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=90 | cellId=10001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=91 | cellId=10001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=92 | cellId=10001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=93 | cellId=10001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=94 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=95 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=96 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=97 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=98 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=99 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=100 | cellId=10000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=101 | cellId=10000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=102 | cellId=10000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=103 | cellId=10000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=104 | cellId=10000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=105 | cellId=10000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=106 | cellId=10000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=107 | cellId=10001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=108 | cellId=10001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=109 | cellId=10001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=110 | cellId=10001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=111 | cellId=10001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=112 | cellId=10001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=113 | cellId=10001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=114 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=115 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=116 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=117 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=118 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=119 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=120 | cellId=9999 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=121 | cellId=10000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=122 | cellId=10000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=123 | cellId=10000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=124 | cellId=10000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=125 | cellId=10000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=126 | cellId=10000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=127 | cellId=10001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=128 | cellId=10001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=129 | cellId=10001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=130 | cellId=10001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=131 | cellId=10001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=132 | cellId=10001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=133 | cellId=10001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=134 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=135 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=136 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=137 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=138 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=139 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=140 | cellId=9999 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=141 | cellId=10000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=142 | cellId=10000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=143 | cellId=10000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=144 | cellId=10000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=145 | cellId=10000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=146 | cellId=10000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=147 | cellId=10001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=148 | cellId=10001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=149 | cellId=10001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=150 | cellId=10001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=151 | cellId=10001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=152 | cellId=10001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=153 | cellId=10001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=154 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=155 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=156 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=157 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=158 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=159 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=160 | cellId=9999 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=161 | cellId=10000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=162 | cellId=10000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=163 | cellId=10000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=164 | cellId=10000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=165 | cellId=10000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=166 | cellId=10000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=167 | cellId=10001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=168 | cellId=10001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=169 | cellId=10001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=170 | cellId=10001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=171 | cellId=10001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=172 | cellId=10001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=173 | cellId=10001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=174 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=175 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=176 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=177 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=178 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=179 | cellId=10002 | confidence=0.000 | fragments=
-221-S-180(0) 221-S-180(1) 221-S-180(2) 221-S-180(3) 221-S-180(4) 221-S-180(5) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=180 | cellId=19999 | confidence=0.578 | fragments=0 1 2 3 4 5 
-180-S-181(0) 180-S-181(1) 180-S-181(2) 180-S-181(3) 180-S-181(4) 180-S-181(5) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=181 | cellId=19999 | confidence=0.578 | fragments=0 1 2 3 4 5 
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=182 | cellId=10000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=183 | cellId=10000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=184 | cellId=10000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=185 | cellId=10000 | confidence=0.000 | fragments=
-226-S-186(0) 226-S-186(1) 226-S-186(6) 226-S-186(7) 226-S-186(8) 226-S-186(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=186 | cellId=20000 | confidence=0.564 | fragments=0 1 6 7 8 9 
-186-S-187(0) 186-S-187(1) 186-S-187(6) 186-S-187(7) 186-S-187(8) 186-S-187(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=187 | cellId=20000 | confidence=0.564 | fragments=0 1 6 7 8 9 
-186-S-188(0) 186-S-188(1) 186-S-188(6) 186-S-188(7) 186-S-188(8) 186-S-188(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=188 | cellId=20000 | confidence=0.564 | fragments=0 1 6 7 8 9 
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=189 | cellId=10001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=190 | cellId=10001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=191 | cellId=10001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=192 | cellId=10001 | confidence=0.000 | fragments=
-231-S-193(2) 231-S-193(3) 231-S-193(4) 231-S-193(5) 231-S-193(6) 231-S-193(7) 231-S-193(8) 231-S-193(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=193 | cellId=20001 | confidence=0.758 | fragments=2 3 4 5 6 7 8 9 
-193-S-194(2) 193-S-194(3) 193-S-194(4) 193-S-194(5) 193-S-194(6) 193-S-194(7) 193-S-194(8) 193-S-194(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=194 | cellId=20001 | confidence=0.758 | fragments=2 3 4 5 6 7 8 9 
-193-S-195(2) 193-S-195(3) 193-S-195(4) 193-S-195(5) 193-S-195(6) 193-S-195(7) 193-S-195(8) 193-S-195(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=195 | cellId=20001 | confidence=0.758 | fragments=2 3 4 5 6 7 8 9 
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=196 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=197 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=198 | cellId=10002 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=199 | cellId=10002 | confidence=0.000 | fragments=
-180-S-200(0) 180-S-200(1) 180-S-200(2) 180-S-200(3) 180-S-200(4) 180-S-200(5) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=200 | cellId=19999 | confidence=0.578 | fragments=0 1 2 3 4 5 
-180-S-201(0) 180-S-201(1) 180-S-201(2) 180-S-201(3) 180-S-201(4) 180-S-201(5) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=201 | cellId=19999 | confidence=0.578 | fragments=0 1 2 3 4 5 
-180-S-202(0) 180-S-202(1) 180-S-202(2) 180-S-202(3) 180-S-202(4) 180-S-202(5) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=202 | cellId=19999 | confidence=0.578 | fragments=0 1 2 3 4 5 
-180-S-203(0) 180-S-203(1) 180-S-203(2) 180-S-203(3) 180-S-203(4) 180-S-203(5) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=203 | cellId=19999 | confidence=0.578 | fragments=0 1 2 3 4 5 
-186-S-204(0) 186-S-204(1) 186-S-204(6) 186-S-204(7) 186-S-204(8) 186-S-204(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=204 | cellId=20000 | confidence=0.564 | fragments=0 1 6 7 8 9 
-186-S-205(0) 186-S-205(1) 186-S-205(6) 186-S-205(7) 186-S-205(8) 186-S-205(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=205 | cellId=20000 | confidence=0.564 | fragments=0 1 6 7 8 9 
-186-S-206(0) 186-S-206(1) 186-S-206(6) 186-S-206(7) 186-S-206(8) 186-S-206(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=206 | cellId=20000 | confidence=0.564 | fragments=0 1 6 7 8 9 
-186-S-207(0) 186-S-207(1) 186-S-207(6) 186-S-207(7) 186-S-207(8) 186-S-207(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=207 | cellId=20000 | confidence=0.564 | fragments=0 1 6 7 8 9 
-186-S-208(0) 186-S-208(1) 186-S-208(6) 186-S-208(7) 186-S-208(8) 186-S-208(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=208 | cellId=20000 | confidence=0.564 | fragments=0 1 6 7 8 9 
-186-S-209(0) 186-S-209(1) 186-S-209(6) 186-S-209(7) 186-S-209(8) 186-S-209(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=209 | cellId=20000 | confidence=0.564 | fragments=0 1 6 7 8 9 
-186-S-210(0) 186-S-210(1) 186-S-210(6) 186-S-210(7) 186-S-210(8) 186-S-210(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=210 | cellId=20000 | confidence=0.564 | fragments=0 1 6 7 8 9 
-193-S-211(2) 193-S-211(3) 193-S-211(4) 193-S-211(5) 193-S-211(6) 193-S-211(7) 193-S-211(8) 193-S-211(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=211 | cellId=20001 | confidence=0.758 | fragments=2 3 4 5 6 7 8 9 
-193-S-212(2) 193-S-212(3) 193-S-212(4) 193-S-212(5) 193-S-212(6) 193-S-212(7) 193-S-212(8) 193-S-212(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=212 | cellId=20001 | confidence=0.758 | fragments=2 3 4 5 6 7 8 9 
-193-S-213(2) 193-S-213(3) 193-S-213(4) 193-S-213(5) 193-S-213(6) 193-S-213(7) 193-S-213(8) 193-S-213(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=213 | cellId=20001 | confidence=0.758 | fragments=2 3 4 5 6 7 8 9 
-193-S-214(2) 193-S-214(3) 193-S-214(4) 193-S-214(5) 193-S-214(6) 193-S-214(7) 193-S-214(8) 193-S-214(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=214 | cellId=20001 | confidence=0.758 | fragments=2 3 4 5 6 7 8 9 
-193-S-215(2) 193-S-215(3) 193-S-215(4) 193-S-215(5) 193-S-215(6) 193-S-215(7) 193-S-215(8) 193-S-215(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=215 | cellId=20001 | confidence=0.758 | fragments=2 3 4 5 6 7 8 9 
-193-S-216(2) 193-S-216(3) 193-S-216(4) 193-S-216(5) 193-S-216(6) 193-S-216(7) 193-S-216(8) 193-S-216(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=216 | cellId=20001 | confidence=0.758 | fragments=2 3 4 5 6 7 8 9 
-193-S-217(2) 193-S-217(3) 193-S-217(4) 193-S-217(5) 193-S-217(6) 193-S-217(7) 193-S-217(8) 193-S-217(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=217 | cellId=20001 | confidence=0.758 | fragments=2 3 4 5 6 7 8 9 
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=218 | cellId=20002 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=219 | cellId=20002 | confidence=0.000 | fragments=
-180-S-220(0) 180-S-220(1) 180-S-220(2) 180-S-220(3) 180-S-220(4) 180-S-220(5) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=220 | cellId=19999 | confidence=0.578 | fragments=0 1 2 3 4 5 
-186-S-224(0) 186-S-224(1) 186-S-224(6) 186-S-224(7) 186-S-224(8) 186-S-224(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=224 | cellId=20000 | confidence=0.564 | fragments=0 1 6 7 8 9 
-186-S-225(0) 186-S-225(1) 186-S-225(6) 186-S-225(7) 186-S-225(8) 186-S-225(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=225 | cellId=20000 | confidence=0.564 | fragments=0 1 6 7 8 9 
-186-S-229(0) 186-S-229(1) 186-S-229(6) 186-S-229(7) 186-S-229(8) 186-S-229(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=229 | cellId=20000 | confidence=0.564 | fragments=0 1 6 7 8 9 
-186-S-230(0) 186-S-230(1) 186-S-230(6) 186-S-230(7) 186-S-230(8) 186-S-230(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=230 | cellId=20000 | confidence=0.564 | fragments=0 1 6 7 8 9 
-193-S-234(2) 193-S-234(3) 193-S-234(4) 193-S-234(5) 193-S-234(6) 193-S-234(7) 193-S-234(8) 193-S-234(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=234 | cellId=20001 | confidence=0.758 | fragments=2 3 4 5 6 7 8 9 
-193-S-235(2) 193-S-235(3) 193-S-235(4) 193-S-235(5) 193-S-235(6) 193-S-235(7) 193-S-235(8) 193-S-235(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=235 | cellId=20001 | confidence=0.758 | fragments=2 3 4 5 6 7 8 9 
-193-S-236(2) 193-S-236(3) 193-S-236(4) 193-S-236(5) 193-S-236(6) 193-S-236(7) 193-S-236(8) 193-S-236(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=236 | cellId=20001 | confidence=0.758 | fragments=2 3 4 5 6 7 8 9 
-193-S-237(2) 193-S-237(3) 193-S-237(4) 193-S-237(5) 193-S-237(6) 193-S-237(7) 193-S-237(8) 193-S-237(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=237 | cellId=20001 | confidence=0.758 | fragments=2 3 4 5 6 7 8 9 
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=238 | cellId=20002 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=239 | cellId=20002 | confidence=0.000 | fragments=
-180-S-240(0) 180-S-240(1) 180-S-240(2) 180-S-240(3) 180-S-240(4) 180-S-240(5) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=240 | cellId=19999 | confidence=0.578 | fragments=0 1 2 3 4 5 
-186-S-244(0) 186-S-244(1) 186-S-244(6) 186-S-244(7) 186-S-244(8) 186-S-244(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=244 | cellId=20000 | confidence=0.564 | fragments=0 1 6 7 8 9 
-186-S-245(0) 186-S-245(1) 186-S-245(6) 186-S-245(7) 186-S-245(8) 186-S-245(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=245 | cellId=20000 | confidence=0.564 | fragments=0 1 6 7 8 9 
-186-S-249(0) 186-S-249(1) 186-S-249(6) 186-S-249(7) 186-S-249(8) 186-S-249(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=249 | cellId=20000 | confidence=0.564 | fragments=0 1 6 7 8 9 
-186-S-250(0) 186-S-250(1) 186-S-250(6) 186-S-250(7) 186-S-250(8) 186-S-250(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=250 | cellId=20000 | confidence=0.564 | fragments=0 1 6 7 8 9 
-193-S-254(2) 193-S-254(3) 193-S-254(4) 193-S-254(5) 193-S-254(6) 193-S-254(7) 193-S-254(8) 193-S-254(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=254 | cellId=20001 | confidence=0.758 | fragments=2 3 4 5 6 7 8 9 
-193-S-255(2) 193-S-255(3) 193-S-255(4) 193-S-255(5) 193-S-255(6) 193-S-255(7) 193-S-255(8) 193-S-255(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=255 | cellId=20001 | confidence=0.758 | fragments=2 3 4 5 6 7 8 9 
-193-S-256(2) 193-S-256(3) 193-S-256(4) 193-S-256(5) 193-S-256(6) 193-S-256(7) 193-S-256(8) 193-S-256(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=256 | cellId=20001 | confidence=0.758 | fragments=2 3 4 5 6 7 8 9 
-193-S-257(2) 193-S-257(3) 193-S-257(4) 193-S-257(5) 193-S-257(6) 193-S-257(7) 193-S-257(8) 193-S-257(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=257 | cellId=20001 | confidence=0.758 | fragments=2 3 4 5 6 7 8 9 
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=258 | cellId=20002 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=259 | cellId=20002 | confidence=0.000 | fragments=
-180-S-260(0) 180-S-260(1) 180-S-260(2) 180-S-260(3) 180-S-260(4) 180-S-260(5) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=260 | cellId=19999 | confidence=0.578 | fragments=0 1 2 3 4 5 
-186-S-264(0) 186-S-264(1) 186-S-264(6) 186-S-264(7) 186-S-264(8) 186-S-264(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=264 | cellId=20000 | confidence=0.564 | fragments=0 1 6 7 8 9 
-186-S-265(0) 186-S-265(1) 186-S-265(6) 186-S-265(7) 186-S-265(8) 186-S-265(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=265 | cellId=20000 | confidence=0.564 | fragments=0 1 6 7 8 9 
-186-S-269(0) 186-S-269(1) 186-S-269(6) 186-S-269(7) 186-S-269(8) 186-S-269(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=269 | cellId=20000 | confidence=0.564 | fragments=0 1 6 7 8 9 
-186-S-270(0) 186-S-270(1) 186-S-270(6) 186-S-270(7) 186-S-270(8) 186-S-270(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=270 | cellId=20000 | confidence=0.564 | fragments=0 1 6 7 8 9 
-193-S-274(2) 193-S-274(3) 193-S-274(4) 193-S-274(5) 193-S-274(6) 193-S-274(7) 193-S-274(8) 193-S-274(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=274 | cellId=20001 | confidence=0.758 | fragments=2 3 4 5 6 7 8 9 
-193-S-275(2) 193-S-275(3) 193-S-275(4) 193-S-275(5) 193-S-275(6) 193-S-275(7) 193-S-275(8) 193-S-275(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=275 | cellId=20001 | confidence=0.758 | fragments=2 3 4 5 6 7 8 9 
-193-S-276(2) 193-S-276(3) 193-S-276(4) 193-S-276(5) 193-S-276(6) 193-S-276(7) 193-S-276(8) 193-S-276(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=276 | cellId=20001 | confidence=0.758 | fragments=2 3 4 5 6 7 8 9 
-193-S-277(2) 193-S-277(3) 193-S-277(4) 193-S-277(5) 193-S-277(6) 193-S-277(7) 193-S-277(8) 193-S-277(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=277 | cellId=20001 | confidence=0.758 | fragments=2 3 4 5 6 7 8 9 
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=278 | cellId=20002 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=279 | cellId=20002 | confidence=0.000 | fragments=
-180-S-280(0) 180-S-280(1) 180-S-280(2) 180-S-280(3) 180-S-280(4) 180-S-280(5) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=280 | cellId=19999 | confidence=0.578 | fragments=0 1 2 3 4 5 
-180-S-281(0) 180-S-281(1) 180-S-281(2) 180-S-281(3) 180-S-281(4) 180-S-281(5) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=281 | cellId=19999 | confidence=0.578 | fragments=0 1 2 3 4 5 
-180-S-282(0) 180-S-282(1) 180-S-282(2) 180-S-282(3) 180-S-282(4) 180-S-282(5) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=282 | cellId=19999 | confidence=0.578 | fragments=0 1 2 3 4 5 
-180-S-283(0) 180-S-283(1) 180-S-283(2) 180-S-283(3) 180-S-283(4) 180-S-283(5) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=283 | cellId=19999 | confidence=0.578 | fragments=0 1 2 3 4 5 
-186-S-284(0) 186-S-284(1) 186-S-284(6) 186-S-284(7) 186-S-284(8) 186-S-284(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=284 | cellId=20000 | confidence=0.564 | fragments=0 1 6 7 8 9 
-186-S-285(0) 186-S-285(1) 186-S-285(6) 186-S-285(7) 186-S-285(8) 186-S-285(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=285 | cellId=20000 | confidence=0.564 | fragments=0 1 6 7 8 9 
-186-S-286(0) 186-S-286(1) 186-S-286(6) 186-S-286(7) 186-S-286(8) 186-S-286(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=286 | cellId=20000 | confidence=0.564 | fragments=0 1 6 7 8 9 
-186-S-287(0) 186-S-287(1) 186-S-287(6) 186-S-287(7) 186-S-287(8) 186-S-287(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=287 | cellId=20000 | confidence=0.564 | fragments=0 1 6 7 8 9 
-186-S-288(0) 186-S-288(1) 186-S-288(6) 186-S-288(7) 186-S-288(8) 186-S-288(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=288 | cellId=20000 | confidence=0.564 | fragments=0 1 6 7 8 9 
-186-S-289(0) 186-S-289(1) 186-S-289(6) 186-S-289(7) 186-S-289(8) 186-S-289(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=289 | cellId=20000 | confidence=0.564 | fragments=0 1 6 7 8 9 
-186-S-290(0) 186-S-290(1) 186-S-290(6) 186-S-290(7) 186-S-290(8) 186-S-290(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=290 | cellId=20000 | confidence=0.564 | fragments=0 1 6 7 8 9 
-193-S-291(2) 193-S-291(3) 193-S-291(4) 193-S-291(5) 193-S-291(6) 193-S-291(7) 193-S-291(8) 193-S-291(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=291 | cellId=20001 | confidence=0.758 | fragments=2 3 4 5 6 7 8 9 
-193-S-292(2) 193-S-292(3) 193-S-292(4) 193-S-292(5) 193-S-292(6) 193-S-292(7) 193-S-292(8) 193-S-292(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=292 | cellId=20001 | confidence=0.758 | fragments=2 3 4 5 6 7 8 9 
-193-S-293(2) 193-S-293(3) 193-S-293(4) 193-S-293(5) 193-S-293(6) 193-S-293(7) 193-S-293(8) 193-S-293(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=293 | cellId=20001 | confidence=0.758 | fragments=2 3 4 5 6 7 8 9 
-193-S-294(2) 193-S-294(3) 193-S-294(4) 193-S-294(5) 193-S-294(6) 193-S-294(7) 193-S-294(8) 193-S-294(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=294 | cellId=20001 | confidence=0.758 | fragments=2 3 4 5 6 7 8 9 
-193-S-295(2) 193-S-295(3) 193-S-295(4) 193-S-295(5) 193-S-295(6) 193-S-295(7) 193-S-295(8) 193-S-295(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=295 | cellId=20001 | confidence=0.758 | fragments=2 3 4 5 6 7 8 9 
-193-S-296(2) 193-S-296(3) 193-S-296(4) 193-S-296(5) 193-S-296(6) 193-S-296(7) 193-S-296(8) 193-S-296(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=296 | cellId=20001 | confidence=0.758 | fragments=2 3 4 5 6 7 8 9 
-193-S-297(2) 193-S-297(3) 193-S-297(4) 193-S-297(5) 193-S-297(6) 193-S-297(7) 193-S-297(8) 193-S-297(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=297 | cellId=20001 | confidence=0.758 | fragments=2 3 4 5 6 7 8 9 
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=298 | cellId=20002 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=299 | cellId=20002 | confidence=0.000 | fragments=
-180-S-300(0) 180-S-300(1) 180-S-300(2) 180-S-300(3) 180-S-300(4) 180-S-300(5) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=300 | cellId=19999 | confidence=0.578 | fragments=0 1 2 3 4 5 
-180-S-301(0) 180-S-301(1) 180-S-301(2) 180-S-301(3) 180-S-301(4) 180-S-301(5) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=301 | cellId=19999 | confidence=0.578 | fragments=0 1 2 3 4 5 
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=302 | cellId=29999 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=303 | cellId=29999 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=304 | cellId=29999 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=305 | cellId=29999 | confidence=0.000 | fragments=
-186-S-306(0) 186-S-306(1) 186-S-306(6) 186-S-306(7) 186-S-306(8) 186-S-306(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=306 | cellId=20000 | confidence=0.564 | fragments=0 1 6 7 8 9 
-186-S-307(0) 186-S-307(1) 186-S-307(6) 186-S-307(7) 186-S-307(8) 186-S-307(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=307 | cellId=20000 | confidence=0.564 | fragments=0 1 6 7 8 9 
-186-S-308(0) 186-S-308(1) 186-S-308(6) 186-S-308(7) 186-S-308(8) 186-S-308(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=308 | cellId=20000 | confidence=0.564 | fragments=0 1 6 7 8 9 
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=309 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=310 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=311 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=312 | cellId=30000 | confidence=0.000 | fragments=
-193-S-313(2) 193-S-313(3) 193-S-313(4) 193-S-313(5) 193-S-313(6) 193-S-313(7) 193-S-313(8) 193-S-313(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=313 | cellId=20001 | confidence=0.758 | fragments=2 3 4 5 6 7 8 9 
-193-S-314(2) 193-S-314(3) 193-S-314(4) 193-S-314(5) 193-S-314(6) 193-S-314(7) 193-S-314(8) 193-S-314(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=314 | cellId=20001 | confidence=0.758 | fragments=2 3 4 5 6 7 8 9 
-193-S-315(2) 193-S-315(3) 193-S-315(4) 193-S-315(5) 193-S-315(6) 193-S-315(7) 193-S-315(8) 193-S-315(9) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=315 | cellId=20001 | confidence=0.758 | fragments=2 3 4 5 6 7 8 9 
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=316 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=317 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=318 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=319 | cellId=30001 | confidence=0.000 | fragments=
-180-S-320(0) 180-S-320(1) 180-S-320(2) 180-S-320(3) 180-S-320(4) 180-S-320(5) 
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=320 | cellId=19999 | confidence=0.578 | fragments=0 1 2 3 4 5 
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=321 | cellId=29999 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=322 | cellId=29999 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=323 | cellId=29999 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=324 | cellId=29999 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=325 | cellId=29999 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=326 | cellId=29999 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=327 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=328 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=329 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=330 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=331 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=332 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=333 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=334 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=335 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=336 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=337 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=338 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=339 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=340 | cellId=29999 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=341 | cellId=29999 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=342 | cellId=29999 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=343 | cellId=29999 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=344 | cellId=29999 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=345 | cellId=29999 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=346 | cellId=29999 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=347 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=348 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=349 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=350 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=351 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=352 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=353 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=354 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=355 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=356 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=357 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=358 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=359 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=360 | cellId=29998 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=361 | cellId=29999 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=362 | cellId=29999 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=363 | cellId=29999 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=364 | cellId=29999 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=365 | cellId=29999 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=366 | cellId=29999 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=367 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=368 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=369 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=370 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=371 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=372 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=373 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=374 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=375 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=376 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=377 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=378 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=379 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=380 | cellId=29998 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=381 | cellId=29999 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=382 | cellId=29999 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=383 | cellId=29999 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=384 | cellId=29999 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=385 | cellId=29999 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=386 | cellId=29999 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=387 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=388 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=389 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=390 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=391 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=392 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=393 | cellId=30000 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=394 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=395 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=396 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=397 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=398 | cellId=30001 | confidence=0.000 | fragments=
-
-[EVENT] 32.876 | event=RequestFragmentSharing | nodeId=399 | cellId=30001 | confidence=0.000 | fragments=
-[EVENT] 32.876 | event=CellCooperationTimeout | triggeredNodes=373
 
 [EVENT] 33.567 | event=UAVWaypointArrival | nodeId=401 | pos=(120.000,200.000,20.000)
 
@@ -2251,197 +2243,185 @@ End Time: 0.0s
 
 [EVENT] 96.567 | event=UAVWaypointArrival | nodeId=401 | pos=(200.000,200.000,20.000)
 
-[EVENT] 98.817 | event=UAVWaypointArrival | nodeId=401 | pos=(220.000,200.000,20.000)
+[EVENT] 98.817 | event=UAVWaypointArrival | nodeId=401 | pos=(200.000,220.000,20.000)
 
-[EVENT] 101.067 | event=UAVWaypointArrival | nodeId=401 | pos=(240.000,200.000,20.000)
+[EVENT] 101.067 | event=UAVWaypointArrival | nodeId=401 | pos=(200.000,240.000,20.000)
 
-[EVENT] 103.317 | event=UAVWaypointArrival | nodeId=401 | pos=(260.000,200.000,20.000)
+[EVENT] 103.317 | event=UAVWaypointArrival | nodeId=401 | pos=(180.000,240.000,20.000)
 
-[EVENT] 105.567 | event=UAVWaypointArrival | nodeId=401 | pos=(260.000,180.000,20.000)
+[EVENT] 105.567 | event=UAVWaypointArrival | nodeId=401 | pos=(180.000,260.000,20.000)
 
-[EVENT] 107.817 | event=UAVWaypointArrival | nodeId=401 | pos=(280.000,180.000,20.000)
+[EVENT] 107.817 | event=UAVWaypointArrival | nodeId=401 | pos=(160.000,260.000,20.000)
 
-[EVENT] 110.067 | event=UAVWaypointArrival | nodeId=401 | pos=(300.000,180.000,20.000)
+[EVENT] 110.067 | event=UAVWaypointArrival | nodeId=401 | pos=(140.000,260.000,20.000)
 
-[EVENT] 112.317 | event=UAVWaypointArrival | nodeId=401 | pos=(300.000,200.000,20.000)
+[EVENT] 112.317 | event=UAVWaypointArrival | nodeId=401 | pos=(120.000,260.000,20.000)
 
-[EVENT] 114.567 | event=UAVWaypointArrival | nodeId=401 | pos=(280.000,200.000,20.000)
+[EVENT] 114.567 | event=UAVWaypointArrival | nodeId=401 | pos=(100.000,260.000,20.000)
 
-[EVENT] 116.817 | event=UAVWaypointArrival | nodeId=401 | pos=(280.000,220.000,20.000)
+[EVENT] 116.817 | event=UAVWaypointArrival | nodeId=401 | pos=(100.000,280.000,20.000)
 
-[EVENT] 119.067 | event=UAVWaypointArrival | nodeId=401 | pos=(260.000,220.000,20.000)
+[EVENT] 119.067 | event=UAVWaypointArrival | nodeId=401 | pos=(80.000,280.000,20.000)
 
-[EVENT] 121.317 | event=UAVWaypointArrival | nodeId=401 | pos=(240.000,220.000,20.000)
+[EVENT] 121.317 | event=UAVWaypointArrival | nodeId=401 | pos=(60.000,280.000,20.000)
 
-[EVENT] 123.567 | event=UAVWaypointArrival | nodeId=401 | pos=(220.000,220.000,20.000)
+[EVENT] 123.567 | event=UAVWaypointArrival | nodeId=401 | pos=(40.000,280.000,20.000)
 
-[EVENT] 125.817 | event=UAVWaypointArrival | nodeId=401 | pos=(200.000,220.000,20.000)
+[EVENT] 125.817 | event=UAVWaypointArrival | nodeId=401 | pos=(20.000,280.000,20.000)
 
-[EVENT] 128.067 | event=UAVWaypointArrival | nodeId=401 | pos=(200.000,240.000,20.000)
+[EVENT] 128.067 | event=UAVWaypointArrival | nodeId=401 | pos=(0.000,280.000,20.000)
 
-[EVENT] 130.317 | event=UAVWaypointArrival | nodeId=401 | pos=(180.000,240.000,20.000)
+[EVENT] 130.317 | event=UAVWaypointArrival | nodeId=401 | pos=(0.000,300.000,20.000)
 
-[EVENT] 132.567 | event=UAVWaypointArrival | nodeId=401 | pos=(180.000,260.000,20.000)
+[EVENT] 132.567 | event=UAVWaypointArrival | nodeId=401 | pos=(20.000,300.000,20.000)
 
-[EVENT] 134.817 | event=UAVWaypointArrival | nodeId=401 | pos=(160.000,260.000,20.000)
+[EVENT] 134.817 | event=UAVWaypointArrival | nodeId=401 | pos=(40.000,300.000,20.000)
 
-[EVENT] 137.067 | event=UAVWaypointArrival | nodeId=401 | pos=(140.000,260.000,20.000)
+[EVENT] 137.067 | event=UAVWaypointArrival | nodeId=401 | pos=(60.000,300.000,20.000)
 
-[EVENT] 139.317 | event=UAVWaypointArrival | nodeId=401 | pos=(120.000,260.000,20.000)
+[EVENT] 139.317 | event=UAVWaypointArrival | nodeId=401 | pos=(80.000,300.000,20.000)
 
-[EVENT] 141.567 | event=UAVWaypointArrival | nodeId=401 | pos=(100.000,260.000,20.000)
+[EVENT] 141.567 | event=UAVWaypointArrival | nodeId=401 | pos=(100.000,300.000,20.000)
 
-[EVENT] 143.817 | event=UAVWaypointArrival | nodeId=401 | pos=(100.000,280.000,20.000)
+[EVENT] 143.817 | event=UAVWaypointArrival | nodeId=401 | pos=(120.000,300.000,20.000)
 
-[EVENT] 146.067 | event=UAVWaypointArrival | nodeId=401 | pos=(80.000,280.000,20.000)
+[EVENT] 146.067 | event=UAVWaypointArrival | nodeId=401 | pos=(120.000,280.000,20.000)
 
-[EVENT] 148.317 | event=UAVWaypointArrival | nodeId=401 | pos=(60.000,280.000,20.000)
+[EVENT] 148.317 | event=UAVWaypointArrival | nodeId=401 | pos=(140.000,280.000,20.000)
 
-[EVENT] 150.567 | event=UAVWaypointArrival | nodeId=401 | pos=(40.000,280.000,20.000)
+[EVENT] 150.567 | event=UAVWaypointArrival | nodeId=401 | pos=(160.000,280.000,20.000)
 
-[EVENT] 152.817 | event=UAVWaypointArrival | nodeId=401 | pos=(20.000,280.000,20.000)
+[EVENT] 152.817 | event=UAVWaypointArrival | nodeId=401 | pos=(180.000,280.000,20.000)
 
-[EVENT] 155.067 | event=UAVWaypointArrival | nodeId=401 | pos=(0.000,280.000,20.000)
+[EVENT] 155.067 | event=UAVWaypointArrival | nodeId=401 | pos=(200.000,280.000,20.000)
 
-[EVENT] 157.317 | event=UAVWaypointArrival | nodeId=401 | pos=(0.000,300.000,20.000)
+[EVENT] 157.317 | event=UAVWaypointArrival | nodeId=401 | pos=(200.000,260.000,20.000)
 
-[EVENT] 159.567 | event=UAVWaypointArrival | nodeId=401 | pos=(20.000,300.000,20.000)
+[EVENT] 159.817 | event=UAVWaypointArrival | nodeId=401 | pos=(200.000,300.000,20.000)
 
-[EVENT] 161.920 | event=UAVWaypointArrival | nodeId=401 | pos=(0.000,320.000,20.000)
+[EVENT] 162.067 | event=UAVWaypointArrival | nodeId=401 | pos=(180.000,300.000,20.000)
 
-[EVENT] 165.441 | event=UAVWaypointArrival | nodeId=401 | pos=(120.000,300.000,20.000)
+[EVENT] 164.317 | event=UAVWaypointArrival | nodeId=401 | pos=(160.000,300.000,20.000)
 
-[EVENT] 167.691 | event=UAVWaypointArrival | nodeId=401 | pos=(120.000,280.000,20.000)
+[EVENT] 166.567 | event=UAVWaypointArrival | nodeId=401 | pos=(140.000,300.000,20.000)
 
-[EVENT] 169.941 | event=UAVWaypointArrival | nodeId=401 | pos=(140.000,280.000,20.000)
+[EVENT] 168.817 | event=UAVWaypointArrival | nodeId=401 | pos=(140.000,320.000,20.000)
 
-[EVENT] 172.191 | event=UAVWaypointArrival | nodeId=401 | pos=(160.000,280.000,20.000)
+[EVENT] 171.067 | event=UAVWaypointArrival | nodeId=401 | pos=(120.000,320.000,20.000)
 
-[EVENT] 174.441 | event=UAVWaypointArrival | nodeId=401 | pos=(180.000,280.000,20.000)
+[EVENT] 173.317 | event=UAVWaypointArrival | nodeId=401 | pos=(100.000,320.000,20.000)
 
-[EVENT] 176.691 | event=UAVWaypointArrival | nodeId=401 | pos=(200.000,280.000,20.000)
+[EVENT] 175.567 | event=UAVWaypointArrival | nodeId=401 | pos=(80.000,320.000,20.000)
 
-[EVENT] 178.941 | event=UAVWaypointArrival | nodeId=401 | pos=(200.000,260.000,20.000)
+[EVENT] 177.817 | event=UAVWaypointArrival | nodeId=401 | pos=(60.000,320.000,20.000)
 
-[EVENT] 181.191 | event=UAVWaypointArrival | nodeId=401 | pos=(220.000,260.000,20.000)
+[EVENT] 180.067 | event=UAVWaypointArrival | nodeId=401 | pos=(40.000,320.000,20.000)
 
-[EVENT] 183.441 | event=UAVWaypointArrival | nodeId=401 | pos=(220.000,240.000,20.000)
+[EVENT] 182.317 | event=UAVWaypointArrival | nodeId=401 | pos=(20.000,320.000,20.000)
 
-[EVENT] 185.691 | event=UAVWaypointArrival | nodeId=401 | pos=(240.000,240.000,20.000)
+[EVENT] 184.567 | event=UAVWaypointArrival | nodeId=401 | pos=(0.000,320.000,20.000)
 
-[EVENT] 187.941 | event=UAVWaypointArrival | nodeId=401 | pos=(260.000,240.000,20.000)
+[EVENT] 186.817 | event=UAVWaypointArrival | nodeId=401 | pos=(0.000,340.000,20.000)
 
-[EVENT] 190.191 | event=UAVWaypointArrival | nodeId=401 | pos=(280.000,240.000,20.000)
+[EVENT] 189.067 | event=UAVWaypointArrival | nodeId=401 | pos=(20.000,340.000,20.000)
 
-[EVENT] 192.441 | event=UAVWaypointArrival | nodeId=401 | pos=(300.000,240.000,20.000)
+[EVENT] 191.317 | event=UAVWaypointArrival | nodeId=401 | pos=(40.000,340.000,20.000)
 
-[EVENT] 194.691 | event=UAVWaypointArrival | nodeId=401 | pos=(300.000,220.000,20.000)
+[EVENT] 193.567 | event=UAVWaypointArrival | nodeId=401 | pos=(60.000,340.000,20.000)
 
-[EVENT] 196.941 | event=UAVWaypointArrival | nodeId=401 | pos=(320.000,220.000,20.000)
+[EVENT] 195.817 | event=UAVWaypointArrival | nodeId=401 | pos=(80.000,340.000,20.000)
 
-[EVENT] 199.191 | event=UAVWaypointArrival | nodeId=401 | pos=(320.000,200.000,20.000)
+[EVENT] 198.067 | event=UAVWaypointArrival | nodeId=401 | pos=(100.000,340.000,20.000)
 
-[EVENT] 201.441 | event=UAVWaypointArrival | nodeId=401 | pos=(340.000,200.000,20.000)
+[EVENT] 200.317 | event=UAVWaypointArrival | nodeId=401 | pos=(120.000,340.000,20.000)
 
-[EVENT] 203.691 | event=UAVWaypointArrival | nodeId=401 | pos=(340.000,220.000,20.000)
+[EVENT] 202.567 | event=UAVWaypointArrival | nodeId=401 | pos=(140.000,340.000,20.000)
 
-[EVENT] 205.941 | event=UAVWaypointArrival | nodeId=401 | pos=(340.000,240.000,20.000)
+[EVENT] 204.817 | event=UAVWaypointArrival | nodeId=401 | pos=(160.000,340.000,20.000)
 
-[EVENT] 208.191 | event=UAVWaypointArrival | nodeId=401 | pos=(320.000,240.000,20.000)
+[EVENT] 207.067 | event=UAVWaypointArrival | nodeId=401 | pos=(160.000,320.000,20.000)
 
-[EVENT] 210.441 | event=UAVWaypointArrival | nodeId=401 | pos=(320.000,260.000,20.000)
+[EVENT] 209.317 | event=UAVWaypointArrival | nodeId=401 | pos=(180.000,320.000,20.000)
 
-[EVENT] 212.691 | event=UAVWaypointArrival | nodeId=401 | pos=(300.000,260.000,20.000)
+[EVENT] 211.567 | event=UAVWaypointArrival | nodeId=401 | pos=(200.000,320.000,20.000)
 
-[EVENT] 214.941 | event=UAVWaypointArrival | nodeId=401 | pos=(280.000,260.000,20.000)
+[EVENT] 213.817 | event=UAVWaypointArrival | nodeId=401 | pos=(220.000,320.000,20.000)
 
-[EVENT] 217.191 | event=UAVWaypointArrival | nodeId=401 | pos=(260.000,260.000,20.000)
+[EVENT] 216.067 | event=UAVWaypointArrival | nodeId=401 | pos=(220.000,300.000,20.000)
 
-[EVENT] 219.441 | event=UAVWaypointArrival | nodeId=401 | pos=(240.000,260.000,20.000)
+[EVENT] 218.317 | event=UAVWaypointArrival | nodeId=401 | pos=(240.000,300.000,20.000)
 
-[EVENT] 221.691 | event=UAVWaypointArrival | nodeId=401 | pos=(240.000,280.000,20.000)
+[EVENT] 220.567 | event=UAVWaypointArrival | nodeId=401 | pos=(240.000,320.000,20.000)
 
-[EVENT] 221.691 | event=UAV1MissionComplete | reason=LeftSuspiciousPoint
+[EVENT] 222.817 | event=UAVWaypointArrival | nodeId=401 | pos=(260.000,320.000,20.000)
 
-[EVENT] 223.941 | event=UAVWaypointArrival | nodeId=401 | pos=(220.000,280.000,20.000)
+[EVENT] 225.067 | event=UAVWaypointArrival | nodeId=401 | pos=(260.000,340.000,20.000)
 
-[EVENT] 226.441 | event=UAVWaypointArrival | nodeId=401 | pos=(260.000,280.000,20.000)
+[EVENT] 227.317 | event=UAVWaypointArrival | nodeId=401 | pos=(240.000,340.000,20.000)
 
-[EVENT] 228.691 | event=UAVWaypointArrival | nodeId=401 | pos=(280.000,280.000,20.000)
+[EVENT] 229.567 | event=UAVWaypointArrival | nodeId=401 | pos=(220.000,340.000,20.000)
 
-[EVENT] 230.941 | event=UAVWaypointArrival | nodeId=401 | pos=(300.000,280.000,20.000)
+[EVENT] 231.817 | event=UAVWaypointArrival | nodeId=401 | pos=(200.000,340.000,20.000)
 
-[EVENT] 233.191 | event=UAVWaypointArrival | nodeId=401 | pos=(320.000,280.000,20.000)
+[EVENT] 234.067 | event=UAVWaypointArrival | nodeId=401 | pos=(180.000,340.000,20.000)
 
-[EVENT] 235.441 | event=UAVWaypointArrival | nodeId=401 | pos=(340.000,280.000,20.000)
+[EVENT] 236.317 | event=UAVWaypointArrival | nodeId=401 | pos=(180.000,360.000,20.000)
 
-[EVENT] 237.691 | event=UAVWaypointArrival | nodeId=401 | pos=(340.000,260.000,20.000)
+[EVENT] 238.567 | event=UAVWaypointArrival | nodeId=401 | pos=(160.000,360.000,20.000)
 
-[EVENT] 240.191 | event=UAVWaypointArrival | nodeId=401 | pos=(340.000,300.000,20.000)
+[EVENT] 240.817 | event=UAVWaypointArrival | nodeId=401 | pos=(140.000,360.000,20.000)
 
-[EVENT] 242.441 | event=UAVWaypointArrival | nodeId=401 | pos=(320.000,300.000,20.000)
+[EVENT] 243.067 | event=UAVWaypointArrival | nodeId=401 | pos=(120.000,360.000,20.000)
 
-[EVENT] 244.691 | event=UAVWaypointArrival | nodeId=401 | pos=(300.000,300.000,20.000)
+[EVENT] 245.317 | event=UAVWaypointArrival | nodeId=401 | pos=(100.000,360.000,20.000)
 
-[EVENT] 246.941 | event=UAVWaypointArrival | nodeId=401 | pos=(280.000,300.000,20.000)
+[EVENT] 247.567 | event=UAVWaypointArrival | nodeId=401 | pos=(80.000,360.000,20.000)
 
-[EVENT] 249.191 | event=UAVWaypointArrival | nodeId=401 | pos=(260.000,300.000,20.000)
+[EVENT] 249.817 | event=UAVWaypointArrival | nodeId=401 | pos=(60.000,360.000,20.000)
 
-[EVENT] 251.544 | event=UAVWaypointArrival | nodeId=401 | pos=(280.000,320.000,20.000)
+[EVENT] 252.067 | event=UAVWaypointArrival | nodeId=401 | pos=(40.000,360.000,20.000)
 
-[EVENT] 253.794 | event=UAVWaypointArrival | nodeId=401 | pos=(300.000,320.000,20.000)
+[EVENT] 254.317 | event=UAVWaypointArrival | nodeId=401 | pos=(20.000,360.000,20.000)
 
-[EVENT] 256.044 | event=UAVWaypointArrival | nodeId=401 | pos=(320.000,320.000,20.000)
+[EVENT] 256.567 | event=UAVWaypointArrival | nodeId=401 | pos=(0.000,360.000,20.000)
 
-[EVENT] 258.294 | event=UAVWaypointArrival | nodeId=401 | pos=(340.000,320.000,20.000)
+[EVENT] 256.567 | event=UAV1MissionComplete | reason=LeftSuspiciousPoint
 
-[EVENT] 260.544 | event=UAVWaypointArrival | nodeId=401 | pos=(360.000,320.000,20.000)
+[EVENT] 258.817 | event=UAVWaypointArrival | nodeId=401 | pos=(0.000,380.000,20.000)
 
-[EVENT] 262.794 | event=UAVWaypointArrival | nodeId=401 | pos=(360.000,300.000,20.000)
+[EVENT] 261.067 | event=UAVWaypointArrival | nodeId=401 | pos=(20.000,380.000,20.000)
 
-[EVENT] 265.044 | event=UAVWaypointArrival | nodeId=401 | pos=(380.000,300.000,20.000)
+[EVENT] 263.317 | event=UAVWaypointArrival | nodeId=401 | pos=(40.000,380.000,20.000)
 
-[EVENT] 267.294 | event=UAVWaypointArrival | nodeId=401 | pos=(380.000,320.000,20.000)
+[EVENT] 265.567 | event=UAVWaypointArrival | nodeId=401 | pos=(60.000,380.000,20.000)
 
-[EVENT] 269.544 | event=UAVWaypointArrival | nodeId=401 | pos=(380.000,340.000,20.000)
+[EVENT] 267.817 | event=UAVWaypointArrival | nodeId=401 | pos=(80.000,380.000,20.000)
 
-[EVENT] 271.794 | event=UAVWaypointArrival | nodeId=401 | pos=(360.000,340.000,20.000)
+[EVENT] 270.067 | event=UAVWaypointArrival | nodeId=401 | pos=(100.000,380.000,20.000)
 
-[EVENT] 274.044 | event=UAVWaypointArrival | nodeId=401 | pos=(340.000,340.000,20.000)
+[EVENT] 272.317 | event=UAVWaypointArrival | nodeId=401 | pos=(120.000,380.000,20.000)
 
-[EVENT] 276.294 | event=UAVWaypointArrival | nodeId=401 | pos=(320.000,340.000,20.000)
+[EVENT] 274.567 | event=UAVWaypointArrival | nodeId=401 | pos=(140.000,380.000,20.000)
 
-[EVENT] 278.544 | event=UAVWaypointArrival | nodeId=401 | pos=(300.000,340.000,20.000)
+[EVENT] 276.817 | event=UAVWaypointArrival | nodeId=401 | pos=(160.000,380.000,20.000)
 
-[EVENT] 280.794 | event=UAVWaypointArrival | nodeId=401 | pos=(280.000,340.000,20.000)
+[EVENT] 279.067 | event=UAVWaypointArrival | nodeId=401 | pos=(180.000,380.000,20.000)
 
-[EVENT] 283.044 | event=UAVWaypointArrival | nodeId=401 | pos=(280.000,360.000,20.000)
+[EVENT] 281.317 | event=UAVWaypointArrival | nodeId=401 | pos=(200.000,380.000,20.000)
 
-[EVENT] 285.294 | event=UAVWaypointArrival | nodeId=401 | pos=(300.000,360.000,20.000)
+[EVENT] 283.567 | event=UAVWaypointArrival | nodeId=401 | pos=(200.000,360.000,20.000)
 
-[EVENT] 287.544 | event=UAVWaypointArrival | nodeId=401 | pos=(320.000,360.000,20.000)
+[EVENT] 285.817 | event=UAVWaypointArrival | nodeId=401 | pos=(220.000,360.000,20.000)
 
-[EVENT] 289.794 | event=UAVWaypointArrival | nodeId=401 | pos=(340.000,360.000,20.000)
+[EVENT] 288.067 | event=UAVWaypointArrival | nodeId=401 | pos=(240.000,360.000,20.000)
 
-[EVENT] 292.044 | event=UAVWaypointArrival | nodeId=401 | pos=(360.000,360.000,20.000)
+[EVENT] 290.317 | event=UAVWaypointArrival | nodeId=401 | pos=(260.000,360.000,20.000)
 
-[EVENT] 294.294 | event=UAVWaypointArrival | nodeId=401 | pos=(380.000,360.000,20.000)
+[EVENT] 292.567 | event=UAVWaypointArrival | nodeId=401 | pos=(260.000,380.000,20.000)
 
-[EVENT] 296.544 | event=UAVWaypointArrival | nodeId=401 | pos=(380.000,380.000,20.000)
+[EVENT] 294.817 | event=UAVWaypointArrival | nodeId=401 | pos=(240.000,380.000,20.000)
 
-[EVENT] 298.794 | event=UAVWaypointArrival | nodeId=401 | pos=(360.000,380.000,20.000)
-
-[EVENT] 301.044 | event=UAVWaypointArrival | nodeId=401 | pos=(340.000,380.000,20.000)
-
-[EVENT] 303.294 | event=UAVWaypointArrival | nodeId=401 | pos=(320.000,380.000,20.000)
-
-[EVENT] 305.544 | event=UAVWaypointArrival | nodeId=401 | pos=(300.000,380.000,20.000)
-
-[EVENT] 307.794 | event=UAVWaypointArrival | nodeId=401 | pos=(280.000,380.000,20.000)
-
-[EVENT] 311.597 | event=UAVWaypointArrival | nodeId=401 | pos=(160.000,300.000,20.000)
-
-[EVENT] 313.847 | event=UAVWaypointArrival | nodeId=401 | pos=(140.000,300.000,20.000)
+[EVENT] 297.067 | event=UAVWaypointArrival | nodeId=401 | pos=(220.000,380.000,20.000)
 
 
 === SCENARIO4 SUMMARY ===
@@ -2475,10 +2455,10 @@ masterFileConfidence=0.950
 
 [NETWORK]
 groundNodes=400
-suspiciousNodes=135
+suspiciousNodes=129
 uavPaths=2
 generatedFragments=10
 
 [MISSION]
-uav1CompletedTime=221.691
-uav2CompletedTime=13.596
+uav1CompletedTime=256.567
+uav2CompletedTime=13.196

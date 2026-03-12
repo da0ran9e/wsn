@@ -9,6 +9,8 @@
 #include "ns3/log.h"
 #include "ns3/simulator.h"
 #include "ns3/random-variable-stream.h"
+#include "ns3/net-device.h"
+#include "ns3/node.h"
 
 #include <algorithm>
 #include <vector>
@@ -157,7 +159,13 @@ Cc2420Mac::McpsDataRequest(Ptr<Packet> packet, Mac16Address destAddr, bool reque
         }
 
         Ptr<Packet> rxCopy = packet->Copy();
-        Simulator::ScheduleNow([peer, rxCopy, src, rssiDbm, lqi]() {
+        uint32_t rxContext = Simulator::NO_CONTEXT;
+        if (peer->m_phy && peer->m_phy->GetDevice() && peer->m_phy->GetDevice()->GetNode())
+        {
+            rxContext = peer->m_phy->GetDevice()->GetNode()->GetId();
+        }
+
+        auto rxDispatch = [peer, rxCopy, src, rssiDbm, lqi]() {
             peer->EmitDebugTrace("RxDispatchFromPeer", rxCopy);
             peer->FrameReceptionCallback(rxCopy, rssiDbm, lqi);
             if (!peer->m_mcpsDataIndicationCallback.IsNull())
@@ -165,7 +173,16 @@ Cc2420Mac::McpsDataRequest(Ptr<Packet> packet, Mac16Address destAddr, bool reque
                 peer->EmitDebugTrace("McpsDataIndication", rxCopy);
                 peer->m_mcpsDataIndicationCallback(rxCopy, src, rssiDbm);
             }
-        });
+        };
+
+        if (rxContext != Simulator::NO_CONTEXT)
+        {
+            Simulator::ScheduleWithContext(rxContext, Seconds(0), rxDispatch);
+        }
+        else
+        {
+            Simulator::ScheduleNow(rxDispatch);
+        }
     }
 
     if (!m_mcpsDataConfirmCallback.IsNull())
