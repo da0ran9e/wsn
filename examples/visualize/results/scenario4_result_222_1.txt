@@ -4,7 +4,7 @@ RUN seed=222 runId=1
 [CONFIG]
 gridSize=20
 gridSpacing=20.000
-simTime=10.000
+simTime=640.000
 startupPhaseDuration=5.000
 fragmentBroadcastInterval=0.200
 numFragments=10
@@ -33,5 +33,5 @@ uavPaths=2
 generatedFragments=10
 
 [MISSION]
-uav1CompletedTime=not-completed
-uav2CompletedTime=not-completed
+uav1CompletedTime=308.361
+uav2CompletedTime=18.202
