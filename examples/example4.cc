@@ -30,7 +30,7 @@ namespace
 void
 WriteScenario4Summary(const std::string& outputPath, const ns3::wsn::scenario4::Scenario4RunConfig& config)
 {
-    std::ofstream out(outputPath, std::ios::out | std::ios::trunc);
+    std::ofstream out(outputPath, std::ios::out | std::ios::app);
     if (!out.is_open())
     {
         return;
@@ -39,6 +39,7 @@ WriteScenario4Summary(const std::string& outputPath, const ns3::wsn::scenario4::
     const auto& states = ns3::wsn::scenario4::routing::g_groundNetworkPerNode;
     const auto& suspiciousNodes = ns3::wsn::scenario4::routing::GetSuspiciousNodes();
 
+    out << "\n\n=== SCENARIO4 SUMMARY ===\n";
     out << std::fixed << std::setprecision(3);
     out << "SCENARIO scenario4\n";
     out << "RUN seed=" << config.seed << " runId=" << config.runId << "\n";
@@ -141,7 +142,14 @@ int main(int argc, char* argv[])
     std::ostringstream resultFilename;
     resultFilename << "/Users/mophan/Github/ns-3-dev-git-ns-3.46/src/wsn/examples/visualize/results/scenario4_result_"
                    << config.seed << "_" << config.runId << ".txt";
-    ns3::wsn::scenario4::params::g_resultFileStream = nullptr;
+
+    std::ofstream resultStream(resultFilename.str(), std::ios::out | std::ios::trunc);
+    if (!resultStream.is_open())
+    {
+        NS_LOG_ERROR("Failed to open result log file: " << resultFilename.str());
+        return 1;
+    }
+    ns3::wsn::scenario4::params::g_resultFileStream = &resultStream;
     
     // ===== Run Scenario =====
     NS_LOG_INFO("=== Scenario 4 Starting ===");
@@ -160,6 +168,11 @@ int main(int argc, char* argv[])
     runner.Build();
     runner.Schedule();
     runner.Run();
+
+    // Close event log stream before writing summary section.
+    resultStream.flush();
+    ns3::wsn::scenario4::params::g_resultFileStream = nullptr;
+    resultStream.close();
     
     NS_LOG_INFO("=== Scenario 4 Complete ===");
     

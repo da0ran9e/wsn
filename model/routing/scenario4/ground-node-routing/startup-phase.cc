@@ -2,6 +2,8 @@
 #include "ground-node-routing.h"
 #include "../packet-header.h"
 #include "../helper/calc-utils.h"
+#include "../../../radio/cc2420/cc2420-net-device.h"
+#include "ns3/mac16-address.h"
 #include "ns3/log.h"
 #include "ns3/mobility-model.h"
 #include "ns3/node-list.h"
@@ -15,6 +17,19 @@ NS_LOG_COMPONENT_DEFINE("Scenario4StartupPhase");
 namespace wsn {
 namespace scenario4 {
 namespace routing {
+
+namespace
+{
+Ptr<wsn::Cc2420NetDevice>
+GetCc2420Device(Ptr<Node> node)
+{
+    if (!node || node->GetNDevices() == 0)
+    {
+        return nullptr;
+    }
+    return DynamicCast<wsn::Cc2420NetDevice>(node->GetDevice(0));
+}
+}
 
 void
 RunStartupPhase()
@@ -75,7 +90,7 @@ RunStartupPhase()
         }
     }
 
-    // 2) Exchange startup packets among neighbors (simulated local delivery)
+    // 2) Exchange startup packets among neighbors through CC2420 stack
     for (const auto& [srcId, srcState] : g_groundNetworkPerNode)
     {
         Ptr<Node> srcNode = NodeList::GetNode(srcId);
@@ -90,6 +105,12 @@ RunStartupPhase()
         }
 
         Vector srcPos = srcMob->GetPosition();
+        Ptr<wsn::Cc2420NetDevice> srcDev = GetCc2420Device(srcNode);
+        if (!srcDev)
+        {
+            continue;
+        }
+
         for (uint32_t dstId : srcState.neighbors)
         {
             Ptr<Node> dstNode = NodeList::GetNode(dstId);
@@ -105,8 +126,15 @@ RunStartupPhase()
 
             Vector dstPos = dstMob->GetPosition();
             double dist = helper::CalculateDistance(srcPos.x, srcPos.y, dstPos.x, dstPos.y);
-            double syntheticRssi = -45.0 - 0.15 * dist;
-            g_groundNetworkPerNode[srcId].neighborRssi[dstId] = syntheticRssi;
+            (void)dist;
+
+            Ptr<wsn::Cc2420NetDevice> dstDev = GetCc2420Device(dstNode);
+            if (!dstDev)
+            {
+                continue;
+            }
+
+            Mac16Address dstAddr = Mac16Address::ConvertFrom(dstDev->GetAddress());
 
             Ptr<Packet> p = Create<Packet>();
             StartupPhasePacket startup;
@@ -119,8 +147,7 @@ RunStartupPhase()
 
             p->AddHeader(startup);
             p->AddHeader(base);
-
-            OnGroundNodeReceivePacket(dstId, p, syntheticRssi);
+            srcDev->Send(p, dstAddr, 0);
         }
     }
 

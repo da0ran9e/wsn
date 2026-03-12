@@ -122,6 +122,14 @@ extern bool g_hasLatestTopologySnapshot;
 void InitializeGroundNodeRouting(NodeContainer nodes, uint32_t numFragments);
 
 /**
+ * Attach CC2420 MAC RX callbacks for all ground nodes.
+ *
+ * Packets received through CC2420 MAC will be forwarded to
+ * OnGroundNodeReceivePacket() with measured RSSI.
+ */
+void AttachGroundRxCallbacks(NodeContainer nodes);
+
+/**
  * Handle packet reception on ground node.
  * 
  * \param nodeId Receiving node ID

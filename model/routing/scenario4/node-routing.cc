@@ -9,6 +9,8 @@
 #include "ground-node-routing/ground-node-routing.h"
 #include "ground-node-routing/cell-cooperation.h"
 #include "packet-header.h"
+#include "../../radio/cc2420/cc2420-net-device.h"
+#include "ns3/mac16-address.h"
 #include "ns3/log.h"
 #include "ns3/mobility-model.h"
 #include "ns3/node-list.h"
@@ -34,6 +36,19 @@ static bool g_uav1MissionCompleted = false;
 static double g_uav1MissionCompletedTime = -1.0;
 static bool g_uav2MissionCompleted = false;
 static double g_uav2MissionCompletedTime = -1.0;
+
+namespace
+{
+Ptr<wsn::Cc2420NetDevice>
+GetCc2420Device(Ptr<Node> node)
+{
+    if (!node || node->GetNDevices() == 0)
+    {
+        return nullptr;
+    }
+    return DynamicCast<wsn::Cc2420NetDevice>(node->GetDevice(0));
+}
+}
 
 void InitializeBaseStation(uint32_t nodeId)
 {
@@ -347,6 +362,13 @@ void InitializeUavBroadcast()
                 // Broadcast fragment to ground nodes within radius
                 Ptr<Node> uavNode = NodeList::GetNode(uav2NodeId);
                 if (!uavNode) return;
+
+                Ptr<wsn::Cc2420NetDevice> uavDev = GetCc2420Device(uavNode);
+                if (!uavDev)
+                {
+                    NS_LOG_WARN("[UAV-BROADCAST] UAV node " << uav2NodeId << " has no Cc2420NetDevice");
+                    return;
+                }
                 
                 Ptr<MobilityModel> uavMobility = uavNode->GetObject<MobilityModel>();
                 if (!uavMobility) return;
@@ -390,16 +412,17 @@ void InitializeUavBroadcast()
                         typeHeader.SetType(PACKET_TYPE_FRAGMENT);
                         pkt->AddHeader(typeHeader);
                         
-                        // Calculate RSSI based on distance (simplified path loss model)
-                        // RSSI = TxPower - PathLoss
-                        // PathLoss = 40 + 20*log10(distance) for 2.4GHz
-                        double pathLoss = 40.0 + 20.0 * std::log10(std::max(1.0, distance));
-                        double txPower = 0.0; // 0 dBm
-                        double rssi = txPower - pathLoss;
-                        
-                        // Deliver packet to ground node
-                        OnGroundNodeReceivePacket(groundNode->GetId(), pkt, rssi);
-                        nodesInRange++;
+                        Ptr<wsn::Cc2420NetDevice> dstDev = GetCc2420Device(groundNode);
+                        if (!dstDev)
+                        {
+                            continue;
+                        }
+
+                        Mac16Address dstAddr = Mac16Address::ConvertFrom(dstDev->GetAddress());
+                        if (uavDev->Send(pkt, dstAddr, 0))
+                        {
+                            nodesInRange++;
+                        }
                     }
                 }
                 

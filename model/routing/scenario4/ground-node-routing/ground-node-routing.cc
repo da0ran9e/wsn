@@ -7,6 +7,8 @@
 #include "../helper/calc-utils.h"
 #include "../node-routing.h"
 #include "cell-cooperation.h"
+#include "../../../radio/cc2420/cc2420-net-device.h"
+#include "../../../radio/cc2420/cc2420-mac.h"
 #include "ns3/log.h"
 #include "ns3/simulator.h"
 #include "ns3/mobility-model.h"
@@ -27,6 +29,44 @@ namespace routing {
 std::map<uint32_t, GroundNetworkState> g_groundNetworkPerNode;
 GlobalTopology g_latestTopologySnapshot;
 bool g_hasLatestTopologySnapshot = false;
+
+namespace
+{
+void
+HandleGroundMacIndication(uint32_t nodeId,
+                          Ptr<Packet> packet,
+                          Mac16Address source,
+                          double rssiDbm)
+{
+    (void)source;
+    OnGroundNodeReceivePacket(nodeId, packet, rssiDbm);
+}
+
+void
+AttachGroundRxCallback(Ptr<Node> node)
+{
+    if (!node || node->GetNDevices() == 0)
+    {
+        return;
+    }
+
+    Ptr<::ns3::wsn::Cc2420NetDevice> cc2420Dev =
+        DynamicCast<::ns3::wsn::Cc2420NetDevice>(node->GetDevice(0));
+    if (!cc2420Dev)
+    {
+        return;
+    }
+
+    Ptr<::ns3::wsn::Cc2420Mac> mac = cc2420Dev->GetMac();
+    if (!mac)
+    {
+        return;
+    }
+
+    mac->SetMcpsDataIndicationCallback(
+        MakeBoundCallback(&HandleGroundMacIndication, node->GetId()));
+}
+}
 
 void
 InitializeGroundNodeRouting(NodeContainer nodes, uint32_t numFragments)
@@ -117,6 +157,15 @@ InitializeGroundNodeRouting(NodeContainer nodes, uint32_t numFragments)
     }
     
     NS_LOG_INFO("Ground node routing initialized for " << nodes.GetN() << " nodes");
+}
+
+void
+AttachGroundRxCallbacks(NodeContainer nodes)
+{
+    for (uint32_t i = 0; i < nodes.GetN(); ++i)
+    {
+        AttachGroundRxCallback(nodes.Get(i));
+    }
 }
 
 void

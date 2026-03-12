@@ -11,8 +11,7 @@
 #include "ns3/simulator.h"
 #include "ns3/mobility-helper.h"
 #include "ns3/constant-position-mobility-model.h"
-#include "ns3/yans-wifi-helper.h"
-#include "ns3/internet-stack-helper.h"
+#include "../../../helper/cc2420-helper.h"
 
 namespace ns3 {
 
@@ -24,6 +23,7 @@ namespace scenario4 {
 // External functions from routing layer (implemented in wsn module)
 namespace routing {
     extern void InitializeGroundNodeRouting(NodeContainer nodes, uint32_t numFragments);
+    extern void AttachGroundRxCallbacks(NodeContainer nodes);
     extern void SendTopologyToBS();
     extern void InitializeBaseStation(uint32_t nodeId);
     extern void InitializeUavRouting(Ptr<Node> uavNode);
@@ -144,41 +144,22 @@ void
 Scenario4Runner::InstallProtocolStack()
 {
     NS_LOG_FUNCTION(this);
-    
-    // WiFi configuration (placeholder - will integrate with routing layer)
-    YansWifiChannelHelper wifiChannel = YansWifiChannelHelper::Default();
-    YansWifiPhyHelper wifiPhy;
-    wifiPhy.SetChannel(wifiChannel.Create());
-    
-    WifiHelper wifi;
-    wifi.SetStandard(WIFI_STANDARD_80211b);
-    
-    WifiMacHelper wifiMac;
-    wifiMac.SetType("ns3::AdhocWifiMac");
-    
-    // Install on ground nodes
-    NetDeviceContainer groundDevices = wifi.Install(wifiPhy, wifiMac, m_groundNodes);
-    
-    // Install on BS (for control plane, though it uses callbacks)
-    NetDeviceContainer bsDevice = wifi.Install(wifiPhy, wifiMac, m_bsNode);
 
-    // Install on UAVs if already created
-    NetDeviceContainer uavDevice;
+    Cc2420Helper cc2420;
+    Ptr<SingleModelSpectrumChannel> channel = cc2420.CreateChannel();
+    cc2420.SetChannel(channel);
+
+    NetDeviceContainer groundDevices = cc2420.Install(m_groundNodes);
+    (void)groundDevices;
+    cc2420.Install(m_bsNode);
     if (m_uavNodes.GetN() > 0)
     {
-        uavDevice = wifi.Install(wifiPhy, wifiMac, m_uavNodes);
+        cc2420.Install(m_uavNodes);
     }
-    
-    // Internet stack
-    InternetStackHelper internet;
-    internet.Install(m_groundNodes);
-    internet.Install(m_bsNode);
-    if (m_uavNodes.GetN() > 0)
-    {
-        internet.Install(m_uavNodes);
-    }
-    
-    NS_LOG_INFO("Protocol stack installed");
+
+    routing::AttachGroundRxCallbacks(m_groundNodes);
+
+    NS_LOG_INFO("CC2420 protocol stack installed");
 }
 
 void

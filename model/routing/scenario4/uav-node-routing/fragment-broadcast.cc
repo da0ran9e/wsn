@@ -3,6 +3,8 @@
 #include "../helper/calc-utils.h"
 #include "../ground-node-routing/ground-node-routing.h"
 #include "../base-station-node/fragment-generator.h"
+#include "../../../radio/cc2420/cc2420-net-device.h"
+#include "ns3/mac16-address.h"
 #include "ns3/simulator.h"
 #include "ns3/packet.h"
 #include "ns3/node-list.h"
@@ -38,6 +40,16 @@ GetFragmentByRound(uint32_t round)
     return &(it->second);
 }
 
+Ptr<wsn::Cc2420NetDevice>
+GetCc2420Device(Ptr<Node> node)
+{
+    if (!node || node->GetNDevices() == 0)
+    {
+        return nullptr;
+    }
+    return DynamicCast<wsn::Cc2420NetDevice>(node->GetDevice(0));
+}
+
 void
 BroadcastOneRound(uint32_t uavNodeId, uint32_t round)
 {
@@ -49,6 +61,12 @@ BroadcastOneRound(uint32_t uavNodeId, uint32_t round)
 
     Ptr<MobilityModel> uavMobility = uav->GetObject<MobilityModel>();
     if (!uavMobility)
+    {
+        return;
+    }
+
+    Ptr<wsn::Cc2420NetDevice> uavDev = GetCc2420Device(uav);
+    if (!uavDev)
     {
         return;
     }
@@ -72,7 +90,14 @@ BroadcastOneRound(uint32_t uavNodeId, uint32_t round)
 
         Vector gp = gm->GetPosition();
         double d = helper::CalculateDistance(up.x, up.y, gp.x, gp.y);
-        double syntheticRssi = -55.0 - 0.12 * d;
+
+        Ptr<wsn::Cc2420NetDevice> dstDev = GetCc2420Device(gn);
+        if (!dstDev)
+        {
+            continue;
+        }
+
+        Mac16Address dstAddr = Mac16Address::ConvertFrom(dstDev->GetAddress());
 
         Ptr<Packet> p = Create<Packet>();
         FragmentPacket f;
@@ -88,7 +113,7 @@ BroadcastOneRound(uint32_t uavNodeId, uint32_t round)
 
         p->AddHeader(f);
         p->AddHeader(h);
-        OnGroundNodeReceivePacket(nodeId, p, syntheticRssi);
+        uavDev->Send(p, dstAddr, 0);
     }
 
     if (round + 1 < kMaxBroadcastRounds)
