@@ -20,6 +20,7 @@
 #include "ns3/nstime.h"
 #include "ns3/packet.h"
 #include "ns3/random-variable-stream.h"
+#include "cc2420-error-model.h"
 
 #include <vector>
 #include <map>
@@ -226,6 +227,19 @@ class Cc2420Phy : public SpectrumPhy
     Ptr<propagation::Cc2420SpectrumPropagationLossModel> GetPropagationLossModel() const;
 
     /**
+     * @brief Attach a BER/PER error model.
+     *
+     * The error model is applied in EvaluateReceptionFrom() after the path-loss
+     * check.  Pass nullptr to disable BER-based drops entirely.
+     */
+    void SetErrorModel(Ptr<Cc2420ErrorModel> model);
+
+    /**
+     * @brief Get the currently attached BER/PER error model.
+     */
+    Ptr<Cc2420ErrorModel> GetErrorModel() const;
+
+    /**
      * @brief Evaluate whether this PHY can receive from a TX PHY
      *
      * This helper provides temporary PHY-side propagation estimation while
@@ -236,7 +250,10 @@ class Cc2420Phy : public SpectrumPhy
      * @param lqi output LQI [0..255]
      * @return true if frame is receivable (RSSI above sensitivity)
      */
-    bool EvaluateReceptionFrom(Ptr<Cc2420Phy> txPhy, double& rssiDbm, uint8_t& lqi) const;
+    bool EvaluateReceptionFrom(Ptr<Cc2420Phy> txPhy,
+                               double& rssiDbm,
+                               uint8_t& lqi,
+                               uint32_t packetSizeBytes = 0);
 
     // =============================================================================
     // Callback Types
@@ -383,6 +400,9 @@ class Cc2420Phy : public SpectrumPhy
 
     // External propagation interaction model (separated module)
     Ptr<propagation::Cc2420SpectrumPropagationLossModel> m_propagationLossModel;
+
+    // BER / PER error model — applied after path-loss check
+    Ptr<Cc2420ErrorModel> m_errorModel;
 
     // State machine
     PhyState m_currentState;

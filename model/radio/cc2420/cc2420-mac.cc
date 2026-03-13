@@ -153,7 +153,8 @@ Cc2420Mac::McpsDataRequest(Ptr<Packet> packet, Mac16Address destAddr, bool reque
         double rssiDbm = -80.0;
         uint8_t lqi = 255;
 
-        if (!(m_phy && peer->m_phy && peer->m_phy->EvaluateReceptionFrom(m_phy, rssiDbm, lqi)))
+        if (!(m_phy && peer->m_phy &&
+              peer->m_phy->EvaluateReceptionFrom(m_phy, rssiDbm, lqi, packet->GetSize())))
         {
             continue;
         }

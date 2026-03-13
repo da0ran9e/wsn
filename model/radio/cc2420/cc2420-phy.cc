@@ -153,6 +153,9 @@ Cc2420Phy::Cc2420Phy()
         m_shadowingNlosRng->SetAttribute("Variance", DoubleValue(m_shadowingSigmaNlosDb * m_shadowingSigmaNlosDb));
 
         m_propagationLossModel = CreateObject<propagation::Cc2420SpectrumPropagationLossModel>();
+
+        // Create a default error model (enabled by default)
+        m_errorModel = CreateObject<Cc2420ErrorModel>();
 }
 
 Cc2420Phy::~Cc2420Phy()
@@ -325,8 +328,23 @@ Cc2420Phy::GetPropagationLossModel() const
     return m_propagationLossModel;
 }
 
+void
+Cc2420Phy::SetErrorModel(Ptr<Cc2420ErrorModel> model)
+{
+    m_errorModel = model;
+}
+
+Ptr<Cc2420ErrorModel>
+Cc2420Phy::GetErrorModel() const
+{
+    return m_errorModel;
+}
+
 bool
-Cc2420Phy::EvaluateReceptionFrom(Ptr<Cc2420Phy> txPhy, double& rssiDbm, uint8_t& lqi) const
+Cc2420Phy::EvaluateReceptionFrom(Ptr<Cc2420Phy> txPhy,
+                                  double& rssiDbm,
+                                  uint8_t& lqi,
+                                  uint32_t packetSizeBytes)
 {
     // Default outputs for safety
     rssiDbm = m_noiseFloorDbm;
@@ -400,6 +418,29 @@ Cc2420Phy::EvaluateReceptionFrom(Ptr<Cc2420Phy> txPhy, double& rssiDbm, uint8_t&
     const double snrDb = rssiDbm - m_noiseFloorDbm;
     const double snrClamped = std::max(0.0, std::min(30.0, snrDb));
     lqi = static_cast<uint8_t>(std::round((snrClamped / 30.0) * 255.0));
+
+    // ── BER / PER stochastic drop ────────────────────────────────────────────
+    // Even though RSSI is above sensitivity, the channel can still corrupt
+    // individual bits.  At low SNR a packet large enough to carry an image
+    // fragment has a non-trivial probability of containing at least one bad bit.
+    //
+    // packetSizeBytes == 0 means the caller did not provide size; skip the check
+    // to preserve backward compatibility.
+    if (m_errorModel && m_errorModel->IsEnabled() && packetSizeBytes > 0)
+    {
+        const double ber = m_errorModel->GetBer(snrDb);
+        const double per = m_errorModel->GetPer(ber, packetSizeBytes);
+        if (m_errorModel->PacketIsLost(per))
+        {
+            NS_LOG_DEBUG("[ErrorModel] packet lost: SNR=" << snrDb
+                         << " dB, BER=" << ber
+                         << ", PER=" << per
+                         << ", size=" << packetSizeBytes << " B");
+            lqi = 0;
+            return false;
+        }
+    }
+
     return true;
 }
 
