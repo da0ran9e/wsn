@@ -12,6 +12,9 @@
 #include "ns3/mobility-helper.h"
 #include "ns3/constant-position-mobility-model.h"
 #include "../../../helper/cc2420-helper.h"
+#include "../../../model/radio/cc2420/cc2420-net-device.h"
+#include "../../../model/radio/cc2420/cc2420-phy.h"
+#include "../../../model/propagation/cc2420-spectrum-propagation-loss-model.h"
 
 namespace ns3 {
 
@@ -150,11 +153,55 @@ Scenario4Runner::InstallProtocolStack()
     cc2420.SetChannel(channel);
 
     NetDeviceContainer groundDevices = cc2420.Install(m_groundNodes);
-    (void)groundDevices;
-    cc2420.Install(m_bsNode);
+    NetDeviceContainer bsDevices = cc2420.Install(m_bsNode);
     if (m_uavNodes.GetN() > 0)
     {
-        cc2420.Install(m_uavNodes);
+        NetDeviceContainer uavDevices = cc2420.Install(m_uavNodes);
+
+        Ptr<propagation::Cc2420SpectrumPropagationLossModel> propagationModel =
+            CreateObject<propagation::Cc2420SpectrumPropagationLossModel>();
+
+        auto bindPropagation = [&propagationModel](const NetDeviceContainer& devices) {
+            for (uint32_t i = 0; i < devices.GetN(); ++i)
+            {
+                Ptr<wsn::Cc2420NetDevice> dev = DynamicCast<wsn::Cc2420NetDevice>(devices.Get(i));
+                if (!dev)
+                {
+                    continue;
+                }
+                Ptr<wsn::Cc2420Phy> phy = dev->GetPhy();
+                if (phy)
+                {
+                    phy->SetPropagationLossModel(propagationModel);
+                }
+            }
+        };
+
+        bindPropagation(groundDevices);
+        bindPropagation(bsDevices);
+        bindPropagation(uavDevices);
+    }
+    else
+    {
+        Ptr<propagation::Cc2420SpectrumPropagationLossModel> propagationModel =
+            CreateObject<propagation::Cc2420SpectrumPropagationLossModel>();
+
+        for (uint32_t i = 0; i < groundDevices.GetN(); ++i)
+        {
+            Ptr<wsn::Cc2420NetDevice> dev = DynamicCast<wsn::Cc2420NetDevice>(groundDevices.Get(i));
+            if (dev && dev->GetPhy())
+            {
+                dev->GetPhy()->SetPropagationLossModel(propagationModel);
+            }
+        }
+        for (uint32_t i = 0; i < bsDevices.GetN(); ++i)
+        {
+            Ptr<wsn::Cc2420NetDevice> dev = DynamicCast<wsn::Cc2420NetDevice>(bsDevices.Get(i));
+            if (dev && dev->GetPhy())
+            {
+                dev->GetPhy()->SetPropagationLossModel(propagationModel);
+            }
+        }
     }
 
     routing::AttachGroundRxCallbacks(m_groundNodes);

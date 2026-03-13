@@ -8,6 +8,7 @@
 #include "ns3/type-id.h"
 
 #include <cmath>
+#include <algorithm>
 
 namespace ns3 {
 namespace wsn {
@@ -32,18 +33,33 @@ Cc2420SpectrumPropagationLossModel::GetTypeId()
                                           DoubleValue(40.05),
                                           MakeDoubleAccessor(&Cc2420SpectrumPropagationLossModel::m_refLossDb),
                                           MakeDoubleChecker<double>(0.0))
+                            .AddAttribute("GroundHeightThreshold",
+                                          "Altitude threshold (m) to classify node as airborne",
+                                          DoubleValue(2.0),
+                                          MakeDoubleAccessor(&Cc2420SpectrumPropagationLossModel::m_groundHeightThresholdM),
+                                          MakeDoubleChecker<double>(0.0))
+                            .AddAttribute("PathLossExponentGroundGround",
+                                          "Path loss exponent for ground-ground links",
+                                          DoubleValue(3.2),
+                                          MakeDoubleAccessor(&Cc2420SpectrumPropagationLossModel::m_pathLossExpGroundGround),
+                                          MakeDoubleChecker<double>(1.0))
+                            .AddAttribute("ShadowingSigmaGroundGround",
+                                          "Shadowing sigma for ground-ground links (dB)",
+                                          DoubleValue(7.0),
+                                          MakeDoubleAccessor(&Cc2420SpectrumPropagationLossModel::m_shadowingSigmaGroundGroundDb),
+                                          MakeDoubleChecker<double>(0.0))
                             .AddAttribute("PathLossExponentLos",
-                                          "Path loss exponent for high-elevation LoS profile",
+                                          "Path loss exponent for air-ground high-elevation LoS profile",
                                           DoubleValue(2.0),
                                           MakeDoubleAccessor(&Cc2420SpectrumPropagationLossModel::m_pathLossExpLos),
                                           MakeDoubleChecker<double>(1.0))
                             .AddAttribute("PathLossExponentMixed",
-                                          "Path loss exponent for mixed profile",
+                                          "Path loss exponent for air-ground mixed profile",
                                           DoubleValue(2.5),
                                           MakeDoubleAccessor(&Cc2420SpectrumPropagationLossModel::m_pathLossExpMixed),
                                           MakeDoubleChecker<double>(1.0))
                             .AddAttribute("PathLossExponentNlos",
-                                          "Path loss exponent for low-elevation NLoS profile",
+                                          "Path loss exponent for air-ground low-elevation NLoS profile",
                                           DoubleValue(3.0),
                                           MakeDoubleAccessor(&Cc2420SpectrumPropagationLossModel::m_pathLossExpNlos),
                                           MakeDoubleChecker<double>(1.0))
@@ -83,6 +99,9 @@ Cc2420SpectrumPropagationLossModel::GetTypeId()
 Cc2420SpectrumPropagationLossModel::Cc2420SpectrumPropagationLossModel()
     : m_refDistM(1.0),
       m_refLossDb(40.05),
+  m_groundHeightThresholdM(2.0),
+  m_pathLossExpGroundGround(3.2),
+  m_shadowingSigmaGroundGroundDb(7.0),
       m_pathLossExpLos(2.0),
       m_pathLossExpMixed(2.5),
       m_pathLossExpNlos(3.0),
@@ -96,48 +115,63 @@ Cc2420SpectrumPropagationLossModel::Cc2420SpectrumPropagationLossModel()
   m_shadowingLosRng = CreateObject<NormalRandomVariable>();
   m_shadowingMixedRng = CreateObject<NormalRandomVariable>();
   m_shadowingNlosRng = CreateObject<NormalRandomVariable>();
+  m_shadowingGroundGroundRng = CreateObject<NormalRandomVariable>();
 
   m_shadowingLosRng->SetAttribute("Mean", DoubleValue(0.0));
   m_shadowingMixedRng->SetAttribute("Mean", DoubleValue(0.0));
   m_shadowingNlosRng->SetAttribute("Mean", DoubleValue(0.0));
+  m_shadowingGroundGroundRng->SetAttribute("Mean", DoubleValue(0.0));
 
   m_shadowingLosRng->SetAttribute("Variance", DoubleValue(m_shadowingSigmaLosDb * m_shadowingSigmaLosDb));
   m_shadowingMixedRng->SetAttribute("Variance", DoubleValue(m_shadowingSigmaMixedDb * m_shadowingSigmaMixedDb));
   m_shadowingNlosRng->SetAttribute("Variance", DoubleValue(m_shadowingSigmaNlosDb * m_shadowingSigmaNlosDb));
+  m_shadowingGroundGroundRng->SetAttribute("Variance", DoubleValue(m_shadowingSigmaGroundGroundDb * m_shadowingSigmaGroundGroundDb));
 }
 
 Cc2420SpectrumPropagationLossModel::~Cc2420SpectrumPropagationLossModel()
 {
 }
 
-Ptr<SpectrumValue>
-Cc2420SpectrumPropagationLossModel::DoCalcRxPowerSpectralDensity(Ptr<const SpectrumValue> txPsd,
-                                                                  Ptr<const MobilityModel> a,
-                                                                  Ptr<const MobilityModel> b) const
+double
+Cc2420SpectrumPropagationLossModel::ComputePathLossDb(Ptr<const MobilityModel> txMobility,
+                                                       Ptr<const MobilityModel> rxMobility) const
 {
-  if (!a || !b || !txPsd)
+  if (!txMobility || !rxMobility)
   {
-    return Create<SpectrumValue>(*txPsd);
+    return 1e9;
   }
 
-  const Vector aPos = a->GetPosition();
-  const Vector bPos = b->GetPosition();
+  const Vector txPos = txMobility->GetPosition();
+  const Vector rxPos = rxMobility->GetPosition();
 
-  const double dx = aPos.x - bPos.x;
-  const double dy = aPos.y - bPos.y;
-  const double dz = aPos.z - bPos.z;
+  const double dx = txPos.x - rxPos.x;
+  const double dy = txPos.y - rxPos.y;
+  const double dz = txPos.z - rxPos.z;
   const double horizontalDistance = std::sqrt(dx * dx + dy * dy);
   const double distance3D = std::sqrt(horizontalDistance * horizontalDistance + dz * dz);
   const double distanceForLoss = std::max(m_refDistM, distance3D);
 
+  const bool txAirborne = std::abs(txPos.z) > m_groundHeightThresholdM;
+  const bool rxAirborne = std::abs(rxPos.z) > m_groundHeightThresholdM;
+  const bool isGroundGround = !txAirborne && !rxAirborne;
+
   const double kRadToDeg = 180.0 / std::acos(-1.0);
-  const double elevDeg = (horizontalDistance > 1e-9) ? (std::atan2(std::abs(dz), horizontalDistance) * kRadToDeg) : 90.0;
+  const double elevDeg =
+      (horizontalDistance > 1e-9)
+          ? (std::atan2(std::abs(dz), horizontalDistance) * kRadToDeg)
+          : 90.0;
 
   double pathLossExponent = m_pathLossExpNlos;
   Ptr<NormalRandomVariable> shadowingRng = m_shadowingNlosRng;
   double sigmaDb = m_shadowingSigmaNlosDb;
 
-  if (elevDeg >= m_elevLosThreshDeg)
+  if (isGroundGround)
+  {
+    pathLossExponent = m_pathLossExpGroundGround;
+    shadowingRng = m_shadowingGroundGroundRng;
+    sigmaDb = m_shadowingSigmaGroundGroundDb;
+  }
+  else if (elevDeg >= m_elevLosThreshDeg)
   {
     pathLossExponent = m_pathLossExpLos;
     shadowingRng = m_shadowingLosRng;
@@ -157,19 +191,74 @@ Cc2420SpectrumPropagationLossModel::DoCalcRxPowerSpectralDensity(Ptr<const Spect
     shadowingDb = shadowingRng->GetValue();
   }
 
-  const double pathLossDb = m_refLossDb + 10.0 * pathLossExponent * std::log10(distanceForLoss / m_refDistM) + shadowingDb;
+  return m_refLossDb + 10.0 * pathLossExponent * std::log10(distanceForLoss / m_refDistM) +
+         shadowingDb;
+}
+
+double
+Cc2420SpectrumPropagationLossModel::CalcRxPowerDbm(double txPowerDbm,
+                                                    Ptr<const MobilityModel> txMobility,
+                                                    Ptr<const MobilityModel> rxMobility) const
+{
+  const double pathLossDb = ComputePathLossDb(txMobility, rxMobility);
+  if (pathLossDb > 1e8)
+  {
+    return -1e9;
+  }
+  return txPowerDbm - pathLossDb;
+}
+
+Ptr<SpectrumValue>
+Cc2420SpectrumPropagationLossModel::DoCalcRxPowerSpectralDensity(Ptr<const SpectrumSignalParameters> params,
+                                                                  Ptr<const MobilityModel> a,
+                                                                  Ptr<const MobilityModel> b) const
+{
+  if (!params)
+  {
+    return nullptr;
+  }
+
+  Ptr<const SpectrumValue> txPsd = params->psd;
+  if (!txPsd)
+  {
+    return nullptr;
+  }
+
+  if (!a || !b)
+  {
+    return Create<SpectrumValue>(*txPsd);
+  }
+  const double pathLossDb = ComputePathLossDb(a, b);
 
   // Scale PSD by path loss (linear factor)
   const double scale = std::pow(10.0, -pathLossDb / 10.0);
 
   Ptr<SpectrumValue> rv = Create<SpectrumValue>(*txPsd);
-  // Multiply each bin by scale
-  for (size_t i = 0; i < rv->size(); ++i)
-  {
-    (*rv)[i] *= scale;
-  }
+  (*rv) *= scale;
 
   return rv;
+}
+
+int64_t
+Cc2420SpectrumPropagationLossModel::DoAssignStreams(int64_t stream)
+{
+  if (m_shadowingLosRng)
+  {
+    m_shadowingLosRng->SetStream(stream++);
+  }
+  if (m_shadowingMixedRng)
+  {
+    m_shadowingMixedRng->SetStream(stream++);
+  }
+  if (m_shadowingNlosRng)
+  {
+    m_shadowingNlosRng->SetStream(stream++);
+  }
+  if (m_shadowingGroundGroundRng)
+  {
+    m_shadowingGroundGroundRng->SetStream(stream++);
+  }
+  return 4;
 }
 
 } // namespace propagation

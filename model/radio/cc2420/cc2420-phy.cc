@@ -5,6 +5,7 @@
  */
 
 #include "cc2420-phy.h"
+#include "../../propagation/cc2420-spectrum-propagation-loss-model.h"
 
 #include "ns3/log.h"
 #include "ns3/simulator.h"
@@ -150,6 +151,8 @@ Cc2420Phy::Cc2420Phy()
         m_shadowingLosRng->SetAttribute("Variance", DoubleValue(m_shadowingSigmaLosDb * m_shadowingSigmaLosDb));
         m_shadowingMixedRng->SetAttribute("Variance", DoubleValue(m_shadowingSigmaMixedDb * m_shadowingSigmaMixedDb));
         m_shadowingNlosRng->SetAttribute("Variance", DoubleValue(m_shadowingSigmaNlosDb * m_shadowingSigmaNlosDb));
+
+        m_propagationLossModel = CreateObject<propagation::Cc2420SpectrumPropagationLossModel>();
 }
 
 Cc2420Phy::~Cc2420Phy()
@@ -310,6 +313,18 @@ Cc2420Phy::GetRxSensitivity() const
     return m_rxSensitivityDbm;
 }
 
+void
+Cc2420Phy::SetPropagationLossModel(Ptr<propagation::Cc2420SpectrumPropagationLossModel> model)
+{
+    m_propagationLossModel = model;
+}
+
+Ptr<propagation::Cc2420SpectrumPropagationLossModel>
+Cc2420Phy::GetPropagationLossModel() const
+{
+    return m_propagationLossModel;
+}
+
 bool
 Cc2420Phy::EvaluateReceptionFrom(Ptr<Cc2420Phy> txPhy, double& rssiDbm, uint8_t& lqi) const
 {
@@ -322,52 +337,61 @@ Cc2420Phy::EvaluateReceptionFrom(Ptr<Cc2420Phy> txPhy, double& rssiDbm, uint8_t&
         return false;
     }
 
-    const Vector txPos = txPhy->GetMobility()->GetPosition();
-    const Vector rxPos = m_mobility->GetPosition();
-
-    const double dx = txPos.x - rxPos.x;
-    const double dy = txPos.y - rxPos.y;
-    const double dz = txPos.z - rxPos.z;
-    const double horizontalDistance = std::sqrt(dx * dx + dy * dy);
-    const double distance3D = std::sqrt(horizontalDistance * horizontalDistance + dz * dz);
-    const double distanceForLoss = std::max(m_pathLossRefDistM, distance3D);
-
-    const double kRadToDeg = 180.0 / std::acos(-1.0);
-    const double elevDeg =
-        (horizontalDistance > 1e-9)
-            ? (std::atan2(std::abs(dz), horizontalDistance) * kRadToDeg)
-            : 90.0;
-
-    double pathLossExponent = m_pathLossExpNlos;
-    Ptr<NormalRandomVariable> shadowingRng = m_shadowingNlosRng;
-    double sigmaDb = m_shadowingSigmaNlosDb;
-
-    if (elevDeg >= m_elevLosThreshDeg)
+    if (m_propagationLossModel)
     {
-        pathLossExponent = m_pathLossExpLos;
-        shadowingRng = m_shadowingLosRng;
-        sigmaDb = m_shadowingSigmaLosDb;
+        rssiDbm = m_propagationLossModel->CalcRxPowerDbm(
+            txPhy->GetTxPower(), txPhy->GetMobility(), m_mobility);
     }
-    else if (elevDeg >= m_elevMixedThreshDeg)
+    else
     {
-        pathLossExponent = m_pathLossExpMixed;
-        shadowingRng = m_shadowingMixedRng;
-        sigmaDb = m_shadowingSigmaMixedDb;
+        // Fallback to previous internal model if module is not attached.
+        const Vector txPos = txPhy->GetMobility()->GetPosition();
+        const Vector rxPos = m_mobility->GetPosition();
+
+        const double dx = txPos.x - rxPos.x;
+        const double dy = txPos.y - rxPos.y;
+        const double dz = txPos.z - rxPos.z;
+        const double horizontalDistance = std::sqrt(dx * dx + dy * dy);
+        const double distance3D = std::sqrt(horizontalDistance * horizontalDistance + dz * dz);
+        const double distanceForLoss = std::max(m_pathLossRefDistM, distance3D);
+
+        const double kRadToDeg = 180.0 / std::acos(-1.0);
+        const double elevDeg =
+            (horizontalDistance > 1e-9)
+                ? (std::atan2(std::abs(dz), horizontalDistance) * kRadToDeg)
+                : 90.0;
+
+        double pathLossExponent = m_pathLossExpNlos;
+        Ptr<NormalRandomVariable> shadowingRng = m_shadowingNlosRng;
+        double sigmaDb = m_shadowingSigmaNlosDb;
+
+        if (elevDeg >= m_elevLosThreshDeg)
+        {
+            pathLossExponent = m_pathLossExpLos;
+            shadowingRng = m_shadowingLosRng;
+            sigmaDb = m_shadowingSigmaLosDb;
+        }
+        else if (elevDeg >= m_elevMixedThreshDeg)
+        {
+            pathLossExponent = m_pathLossExpMixed;
+            shadowingRng = m_shadowingMixedRng;
+            sigmaDb = m_shadowingSigmaMixedDb;
+        }
+
+        double shadowingDb = 0.0;
+        if (m_enableShadowing && shadowingRng)
+        {
+            shadowingRng->SetAttribute("Variance", DoubleValue(sigmaDb * sigmaDb));
+            shadowingDb = shadowingRng->GetValue();
+        }
+
+        const double pathLossDb =
+            m_pathLossRefLossDb +
+            10.0 * pathLossExponent * std::log10(distanceForLoss / m_pathLossRefDistM) +
+            shadowingDb;
+
+        rssiDbm = txPhy->GetTxPower() - pathLossDb;
     }
-
-    double shadowingDb = 0.0;
-    if (m_enableShadowing && shadowingRng)
-    {
-        shadowingRng->SetAttribute("Variance", DoubleValue(sigmaDb * sigmaDb));
-        shadowingDb = shadowingRng->GetValue();
-    }
-
-    const double pathLossDb =
-        m_pathLossRefLossDb +
-        10.0 * pathLossExponent * std::log10(distanceForLoss / m_pathLossRefDistM) +
-        shadowingDb;
-
-    rssiDbm = txPhy->GetTxPower() - pathLossDb;
     if (rssiDbm < m_rxSensitivityDbm)
     {
         return false;

@@ -35,6 +35,10 @@ class NetDevice;
 
 namespace wsn
 {
+namespace propagation
+{
+class Cc2420SpectrumPropagationLossModel;
+}
 
 /**
  * @ingroup cc2420
@@ -212,6 +216,16 @@ class Cc2420Phy : public SpectrumPhy
     double GetRxSensitivity() const;
 
     /**
+     * Set propagation interaction model used by PHY fast-path reception evaluation.
+     */
+    void SetPropagationLossModel(Ptr<propagation::Cc2420SpectrumPropagationLossModel> model);
+
+    /**
+     * Get current propagation interaction model used by PHY.
+     */
+    Ptr<propagation::Cc2420SpectrumPropagationLossModel> GetPropagationLossModel() const;
+
+    /**
      * @brief Evaluate whether this PHY can receive from a TX PHY
      *
      * This helper provides temporary PHY-side propagation estimation while
@@ -366,6 +380,9 @@ class Cc2420Phy : public SpectrumPhy
     Ptr<NormalRandomVariable> m_shadowingLosRng;
     Ptr<NormalRandomVariable> m_shadowingMixedRng;
     Ptr<NormalRandomVariable> m_shadowingNlosRng;
+
+    // External propagation interaction model (separated module)
+    Ptr<propagation::Cc2420SpectrumPropagationLossModel> m_propagationLossModel;
 
     // State machine
     PhyState m_currentState;
