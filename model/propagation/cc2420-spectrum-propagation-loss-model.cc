@@ -92,7 +92,32 @@ Cc2420SpectrumPropagationLossModel::GetTypeId()
                                           "Enable log-normal shadowing term",
                                           BooleanValue(true),
                                           MakeBooleanAccessor(&Cc2420SpectrumPropagationLossModel::m_enableShadowing),
-                                          MakeBooleanChecker());
+                                          MakeBooleanChecker())
+                            .AddAttribute("EnableFastFading",
+                                          "Enable per-packet Ricean/Rayleigh fast fading term",
+                                          BooleanValue(true),
+                                          MakeBooleanAccessor(&Cc2420SpectrumPropagationLossModel::m_enableFastFading),
+                                          MakeBooleanChecker())
+                            .AddAttribute("KFactorLoS",
+                                          "Ricean K-factor (linear) for air-ground LoS links (elev > threshold)",
+                                          DoubleValue(15.0),
+                                          MakeDoubleAccessor(&Cc2420SpectrumPropagationLossModel::m_kFactorLoS),
+                                          MakeDoubleChecker<double>(0.0))
+                            .AddAttribute("KFactorMixed",
+                                          "Ricean K-factor (linear) for air-ground mixed links",
+                                          DoubleValue(6.0),
+                                          MakeDoubleAccessor(&Cc2420SpectrumPropagationLossModel::m_kFactorMixed),
+                                          MakeDoubleChecker<double>(0.0))
+                            .AddAttribute("KFactorNLoS",
+                                          "Ricean K-factor (linear) for NLoS links; 0 = Rayleigh",
+                                          DoubleValue(0.0),
+                                          MakeDoubleAccessor(&Cc2420SpectrumPropagationLossModel::m_kFactorNLoS),
+                                          MakeDoubleChecker<double>(0.0))
+                            .AddAttribute("KFactorGround",
+                                          "Ricean K-factor (linear) for ground-ground links; 0 = Rayleigh",
+                                          DoubleValue(0.0),
+                                          MakeDoubleAccessor(&Cc2420SpectrumPropagationLossModel::m_kFactorGround),
+                                          MakeDoubleChecker<double>(0.0));
   return tid;
 }
 
@@ -110,7 +135,12 @@ Cc2420SpectrumPropagationLossModel::Cc2420SpectrumPropagationLossModel()
       m_shadowingSigmaNlosDb(8.0),
       m_elevLosThreshDeg(40.0),
       m_elevMixedThreshDeg(20.0),
-      m_enableShadowing(true)
+      m_enableShadowing(true),
+      m_enableFastFading(true),
+      m_kFactorLoS(15.0),
+      m_kFactorMixed(6.0),
+      m_kFactorNLoS(0.0),
+      m_kFactorGround(0.0)
 {
   m_shadowingLosRng = CreateObject<NormalRandomVariable>();
   m_shadowingMixedRng = CreateObject<NormalRandomVariable>();
@@ -126,6 +156,17 @@ Cc2420SpectrumPropagationLossModel::Cc2420SpectrumPropagationLossModel()
   m_shadowingMixedRng->SetAttribute("Variance", DoubleValue(m_shadowingSigmaMixedDb * m_shadowingSigmaMixedDb));
   m_shadowingNlosRng->SetAttribute("Variance", DoubleValue(m_shadowingSigmaNlosDb * m_shadowingSigmaNlosDb));
   m_shadowingGroundGroundRng->SetAttribute("Variance", DoubleValue(m_shadowingSigmaGroundGroundDb * m_shadowingSigmaGroundGroundDb));
+
+  // Fast fading RNGs — variance is set per-call based on K-factor.
+  m_fastFadingLosRng    = CreateObject<NormalRandomVariable>();
+  m_fastFadingMixedRng  = CreateObject<NormalRandomVariable>();
+  m_fastFadingNlosRng   = CreateObject<NormalRandomVariable>();
+  m_fastFadingGroundRng = CreateObject<NormalRandomVariable>();
+
+  m_fastFadingLosRng->SetAttribute("Mean",    DoubleValue(0.0));
+  m_fastFadingMixedRng->SetAttribute("Mean",  DoubleValue(0.0));
+  m_fastFadingNlosRng->SetAttribute("Mean",   DoubleValue(0.0));
+  m_fastFadingGroundRng->SetAttribute("Mean", DoubleValue(0.0));
 }
 
 Cc2420SpectrumPropagationLossModel::~Cc2420SpectrumPropagationLossModel()
@@ -200,8 +241,34 @@ Cc2420SpectrumPropagationLossModel::ComputePathLossDbFromPositions(const Vector&
     shadowingDb = shadowingRng->GetValue();
   }
 
+  // Fast fading — Ricean (K > 0) or Rayleigh (K = 0) modelled as Gaussian in dB.
+  // σ_K = 5.57 / sqrt(1 + K):  K=0  → 5.57 dB (Rayleigh),
+  //                              K=6  → 2.10 dB (partial LoS),
+  //                              K=15 → 1.39 dB (strong LoS).
+  // Not applied on the contact-window prediction path (includeShadowing == false).
+  double fastFadingDb = 0.0;
+  if (includeShadowing && m_enableFastFading)
+  {
+    const double kFactor = isGroundGround            ? m_kFactorGround
+                         : (elevDeg >= m_elevLosThreshDeg)   ? m_kFactorLoS
+                         : (elevDeg >= m_elevMixedThreshDeg) ? m_kFactorMixed
+                         : m_kFactorNLoS;
+
+    Ptr<NormalRandomVariable> fastRng = isGroundGround            ? m_fastFadingGroundRng
+                                      : (elevDeg >= m_elevLosThreshDeg)   ? m_fastFadingLosRng
+                                      : (elevDeg >= m_elevMixedThreshDeg) ? m_fastFadingMixedRng
+                                      : m_fastFadingNlosRng;
+
+    if (fastRng)
+    {
+      const double sigmaFastDb = 5.57 / std::sqrt(1.0 + kFactor);
+      fastRng->SetAttribute("Variance", DoubleValue(sigmaFastDb * sigmaFastDb));
+      fastFadingDb = fastRng->GetValue();
+    }
+  }
+
   return m_refLossDb + 10.0 * pathLossExponent * std::log10(distanceForLoss / m_refDistM) +
-         shadowingDb;
+         shadowingDb + fastFadingDb;
 }
 
 double
@@ -281,7 +348,23 @@ Cc2420SpectrumPropagationLossModel::DoAssignStreams(int64_t stream)
   {
     m_shadowingGroundGroundRng->SetStream(stream++);
   }
-  return 4;
+  if (m_fastFadingLosRng)
+  {
+    m_fastFadingLosRng->SetStream(stream++);
+  }
+  if (m_fastFadingMixedRng)
+  {
+    m_fastFadingMixedRng->SetStream(stream++);
+  }
+  if (m_fastFadingNlosRng)
+  {
+    m_fastFadingNlosRng->SetStream(stream++);
+  }
+  if (m_fastFadingGroundRng)
+  {
+    m_fastFadingGroundRng->SetStream(stream++);
+  }
+  return 8;
 }
 
 } // namespace propagation

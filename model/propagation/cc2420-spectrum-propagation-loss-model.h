@@ -64,11 +64,25 @@ private:
   double m_elevMixedThreshDeg;
   bool m_enableShadowing;
 
+  // Fast fading (Ricean/Rayleigh per elevation profile)
+  // σ_K = 5.57 / sqrt(1 + K) dB  (Rayleigh K=0 → 5.57 dB, strong LoS K=15 → 1.39 dB)
+  bool m_enableFastFading;
+  double m_kFactorLoS;          // Ricean K-factor for LoS links  (linear, not dB)
+  double m_kFactorMixed;        // Ricean K-factor for mixed links
+  double m_kFactorNLoS;         // K=0 → Rayleigh
+  double m_kFactorGround;       // K=0 → Rayleigh for ground–ground
+
   // RNGs for shadowing
   mutable Ptr<NormalRandomVariable> m_shadowingLosRng;
   mutable Ptr<NormalRandomVariable> m_shadowingMixedRng;
   mutable Ptr<NormalRandomVariable> m_shadowingNlosRng;
   mutable Ptr<NormalRandomVariable> m_shadowingGroundGroundRng;
+
+  // RNGs for fast fading (one per elevation profile, sampled per packet)
+  mutable Ptr<NormalRandomVariable> m_fastFadingLosRng;
+  mutable Ptr<NormalRandomVariable> m_fastFadingMixedRng;
+  mutable Ptr<NormalRandomVariable> m_fastFadingNlosRng;
+  mutable Ptr<NormalRandomVariable> m_fastFadingGroundRng;
 };
 
 } // namespace propagation
