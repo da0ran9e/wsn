@@ -5,6 +5,7 @@
  */
 
 #include "cc2420-mac.h"
+#include "cc2420-contact-window-model.h"
 
 #include "ns3/log.h"
 #include "ns3/simulator.h"
@@ -13,6 +14,7 @@
 #include "ns3/node.h"
 
 #include <algorithm>
+#include <sstream>
 #include <vector>
 
 namespace ns3
@@ -54,6 +56,8 @@ Cc2420Mac::Cc2420Mac()
       m_txFailureCount(0)
 {
     NS_LOG_FUNCTION(this);
+
+    m_contactWindowModel = CreateObject<Cc2420ContactWindowModel>();
 
     // Initialize MAC config with defaults
     m_config.panId = 0;
@@ -136,6 +140,19 @@ Cc2420Mac::McpsDataRequest(Ptr<Packet> packet, Mac16Address destAddr, bool reque
     const bool isBroadcast = (destAddr == Mac16Address("FF:FF"));
     const Mac16Address src = m_config.shortAddress;
 
+    auto getNodeIdFromPhy = [](Ptr<Cc2420Phy> phy) -> uint32_t {
+        if (!phy || !phy->GetDevice() || !phy->GetDevice()->GetNode())
+        {
+            return 0;
+        }
+        return phy->GetDevice()->GetNode()->GetId();
+    };
+
+    const uint32_t srcNodeId = getNodeIdFromPhy(m_phy);
+
+    // Accumulate contact-window drops; emit a single summary after the peer loop.
+    std::vector<uint32_t> contactDropDsts;
+
     for (Cc2420Mac* peer : g_allMacs)
     {
         if (peer == nullptr || peer == this)
@@ -149,6 +166,24 @@ Cc2420Mac::McpsDataRequest(Ptr<Packet> packet, Mac16Address destAddr, bool reque
             continue;
         }
 
+        const uint32_t dstNodeId = getNodeIdFromPhy(peer->m_phy);
+
+        auto makeDropEvent = [&](const std::string& reason) {
+            std::ostringstream oss;
+            oss << srcNodeId << "-D-" << dstNodeId
+                << "|" << reason
+                << "|srcAddr=" << src
+                << "|dstAddr=" << peerCfg.shortAddress;
+            return oss.str();
+        };
+
+        if (m_contactWindowModel &&
+            !m_contactWindowModel->HasContactForPacket(m_phy, peer->m_phy, packet->GetSize()))
+        {
+            contactDropDsts.push_back(dstNodeId);
+            continue;
+        }
+
         // PHY decides link viability and reports RSSI/LQI.
         double rssiDbm = -80.0;
         uint8_t lqi = 255;
@@ -156,6 +191,7 @@ Cc2420Mac::McpsDataRequest(Ptr<Packet> packet, Mac16Address destAddr, bool reque
         if (!(m_phy && peer->m_phy &&
               peer->m_phy->EvaluateReceptionFrom(m_phy, rssiDbm, lqi, packet->GetSize())))
         {
+            EmitDebugTrace(makeDropEvent("DropPhyReject"), packet);
             continue;
         }
 
@@ -184,6 +220,25 @@ Cc2420Mac::McpsDataRequest(Ptr<Packet> packet, Mac16Address destAddr, bool reque
         {
             Simulator::ScheduleNow(rxDispatch);
         }
+    }
+
+    // Emit a single aggregated summary event for all contact-window drops.
+    if (!contactDropDsts.empty())
+    {
+        std::ostringstream oss;
+        oss << srcNodeId << "-D-*|DropContactWindowSummary"
+            << "|srcAddr=" << src
+            << "|dropCount=" << contactDropDsts.size()
+            << "|dsts=";
+        for (std::size_t i = 0; i < contactDropDsts.size(); ++i)
+        {
+            if (i > 0)
+            {
+                oss << ',';
+            }
+            oss << contactDropDsts[i];
+        }
+        EmitDebugTrace(oss.str(), packet);
     }
 
     if (!m_mcpsDataConfirmCallback.IsNull())

@@ -144,6 +144,15 @@ Cc2420SpectrumPropagationLossModel::ComputePathLossDb(Ptr<const MobilityModel> t
   const Vector txPos = txMobility->GetPosition();
   const Vector rxPos = rxMobility->GetPosition();
 
+  return ComputePathLossDbFromPositions(txPos, rxPos, true);
+}
+
+double
+Cc2420SpectrumPropagationLossModel::ComputePathLossDbFromPositions(const Vector& txPos,
+                                                                   const Vector& rxPos,
+                                                                   bool includeShadowing) const
+{
+
   const double dx = txPos.x - rxPos.x;
   const double dy = txPos.y - rxPos.y;
   const double dz = txPos.z - rxPos.z;
@@ -185,7 +194,7 @@ Cc2420SpectrumPropagationLossModel::ComputePathLossDb(Ptr<const MobilityModel> t
   }
 
   double shadowingDb = 0.0;
-  if (m_enableShadowing && shadowingRng)
+  if (includeShadowing && m_enableShadowing && shadowingRng)
   {
     shadowingRng->SetAttribute("Variance", DoubleValue(sigmaDb * sigmaDb));
     shadowingDb = shadowingRng->GetValue();
@@ -201,6 +210,20 @@ Cc2420SpectrumPropagationLossModel::CalcRxPowerDbm(double txPowerDbm,
                                                     Ptr<const MobilityModel> rxMobility) const
 {
   const double pathLossDb = ComputePathLossDb(txMobility, rxMobility);
+  if (pathLossDb > 1e8)
+  {
+    return -1e9;
+  }
+  return txPowerDbm - pathLossDb;
+}
+
+double
+Cc2420SpectrumPropagationLossModel::CalcRxPowerDbmFromPositions(double txPowerDbm,
+                                                                const Vector& txPosition,
+                                                                const Vector& rxPosition,
+                                                                bool includeShadowing) const
+{
+  const double pathLossDb = ComputePathLossDbFromPositions(txPosition, rxPosition, includeShadowing);
   if (pathLossDb > 1e8)
   {
     return -1e9;

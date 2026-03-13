@@ -15,8 +15,11 @@
 #include "ns3/double.h"
 #include "ns3/boolean.h"
 #include "ns3/net-device.h"
+#include "ns3/node.h"
 #include "ns3/spectrum-channel.h"
 #include "ns3/random-variable-stream.h"
+
+#include <sstream>
 
 namespace ns3
 {
@@ -355,6 +358,23 @@ Cc2420Phy::EvaluateReceptionFrom(Ptr<Cc2420Phy> txPhy,
         return false;
     }
 
+    auto getNodeIdFromPhy = [](Ptr<const Cc2420Phy> phy) -> uint32_t {
+        if (!phy || !phy->GetDevice() || !phy->GetDevice()->GetNode())
+        {
+            return 0;
+        }
+        return phy->GetDevice()->GetNode()->GetId();
+    };
+
+    const uint32_t srcNodeId = getNodeIdFromPhy(txPhy);
+    const uint32_t dstNodeId = getNodeIdFromPhy(this);
+
+    auto emitDrop = [&](const std::string& reason) {
+        std::ostringstream oss;
+        oss << srcNodeId << "-D-" << dstNodeId << "|" << reason;
+        EmitDebugTrace(oss.str(), nullptr);
+    };
+
     if (m_propagationLossModel)
     {
         rssiDbm = m_propagationLossModel->CalcRxPowerDbm(
@@ -412,6 +432,7 @@ Cc2420Phy::EvaluateReceptionFrom(Ptr<Cc2420Phy> txPhy,
     }
     if (rssiDbm < m_rxSensitivityDbm)
     {
+        emitDrop("RxDropBelowSensitivity");
         return false;
     }
 
@@ -436,6 +457,7 @@ Cc2420Phy::EvaluateReceptionFrom(Ptr<Cc2420Phy> txPhy,
                          << " dB, BER=" << ber
                          << ", PER=" << per
                          << ", size=" << packetSizeBytes << " B");
+            emitDrop("RxDropBer");
             lqi = 0;
             return false;
         }

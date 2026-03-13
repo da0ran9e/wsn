@@ -16,6 +16,7 @@
 #include "ns3/node-list.h"
 #include "ns3/simulator.h"
 #include "ns3/packet.h"
+#include "ns3/waypoint-mobility-model.h"
 #include "../../../examples/scenarios/scenario4/scenario4-params.h"
 #include <cmath>
 #include <iomanip>
@@ -180,6 +181,8 @@ void InitializeUavFlight()
             NS_LOG_WARN("[UAV-FLIGHT] UAV node " << uavNodeId << " has no MobilityModel");
             continue;
         }
+
+        Ptr<WaypointMobilityModel> waypointMobility = DynamicCast<WaypointMobilityModel>(mobility);
         
         NS_LOG_INFO("[UAV-FLIGHT] Scheduling " << path.waypoints.size() 
                     << " waypoints for UAV " << uavNodeId
@@ -192,6 +195,12 @@ void InitializeUavFlight()
             const bool isUav1 = (uavNodeId == uav1NodeId);
             const bool hasPreviousWaypoint = (i > 0);
             const Waypoint prevWp = hasPreviousWaypoint ? path.waypoints[i - 1] : wp;
+
+            if (waypointMobility)
+            {
+                waypointMobility->AddWaypoint(
+                    ns3::Waypoint(Simulator::Now() + Seconds(wp.arrivalTime), wp.position));
+            }
             
             // Schedule position update at waypoint arrival time
             Simulator::Schedule(Seconds(wp.arrivalTime),
@@ -208,13 +217,12 @@ void InitializeUavFlight()
                 
                 Ptr<MobilityModel> mob = node->GetObject<MobilityModel>();
                 if (!mob) return;
-                
-                // Set UAV position to waypoint
-                mob->SetPosition(wp.position);
+
+                const Vector actualPos = mob->GetPosition();
                 
                 NS_LOG_INFO("[UAV-FLIGHT] UAV " << uavNodeId 
                             << " arrived at waypoint " << (i + 1)
-                            << " | pos=(" << wp.position.x << "," << wp.position.y << "," << wp.position.z << ")"
+                            << " | pos=(" << actualPos.x << "," << actualPos.y << "," << actualPos.z << ")"
                             << " | t=" << Simulator::Now().GetSeconds() << "s");
 
                 // TODO:  in log vào `g_resultFileStream` tại đây
@@ -225,7 +233,7 @@ void InitializeUavFlight()
                         << "\n[EVENT] " << Simulator::Now().GetSeconds()
                         << " | event=UAVWaypointArrival"
                         << " | nodeId=" << uavNodeId
-                        << " | pos=(" << wp.position.x << "," << wp.position.y << "," << wp.position.z << ")"
+                        << " | pos=(" << actualPos.x << "," << actualPos.y << "," << actualPos.z << ")"
                         << std::endl;
                 }
 

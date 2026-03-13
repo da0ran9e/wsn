@@ -25,6 +25,16 @@ public:
                         Ptr<const MobilityModel> txMobility,
                         Ptr<const MobilityModel> rxMobility) const;
 
+  /**
+   * Compute received power (dBm) from TX power and explicit endpoint positions.
+   * Used by contact-window prediction to estimate whether the link will remain
+   * receivable long enough to finish the current packet.
+   */
+  double CalcRxPowerDbmFromPositions(double txPowerDbm,
+                                     const Vector& txPosition,
+                                     const Vector& rxPosition,
+                                     bool includeShadowing = false) const;
+
 private:
   // SpectrumPropagationLossModel override
   virtual Ptr<SpectrumValue> DoCalcRxPowerSpectralDensity(Ptr<const SpectrumSignalParameters> params,
@@ -34,6 +44,9 @@ private:
 
   double ComputePathLossDb(Ptr<const MobilityModel> txMobility,
                            Ptr<const MobilityModel> rxMobility) const;
+  double ComputePathLossDbFromPositions(const Vector& txPosition,
+                                        const Vector& rxPosition,
+                                        bool includeShadowing) const;
 
   // Configuration attributes
   double m_refDistM;

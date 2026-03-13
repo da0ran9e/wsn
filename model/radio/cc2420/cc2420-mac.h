@@ -29,6 +29,8 @@ namespace ns3
 namespace wsn
 {
 
+class Cc2420ContactWindowModel;
+
 /**
  * @ingroup cc2420
  *
@@ -244,6 +246,7 @@ class Cc2420Mac : public Object
 
     // Layer references
     Ptr<Cc2420Phy> m_phy;
+    Ptr<Cc2420ContactWindowModel> m_contactWindowModel;
 
     // MAC configuration
     MacConfig m_config;

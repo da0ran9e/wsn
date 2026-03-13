@@ -18,6 +18,7 @@ build_lib(
     model/radio/cc2420/cc2420-net-device.cc
     model/radio/cc2420/cc2420-energy-model.cc
     model/radio/cc2420/cc2420-error-model.cc
+    model/radio/cc2420/cc2420-contact-window-model.cc
     model/propagation/cc2420-spectrum-propagation-loss-model.cc
     model/mobility/wsn-mobility-model.cc
     model/objects/resource-manager.cc
@@ -104,6 +105,7 @@ build_lib(
     model/radio/cc2420/cc2420-net-device.h
     model/radio/cc2420/cc2420-energy-model.h
     model/radio/cc2420/cc2420-error-model.h
+    model/radio/cc2420/cc2420-contact-window-model.h
     model/propagation/cc2420-spectrum-propagation-loss-model.h
     model/mobility/wsn-mobility-model.h
     model/objects/resource-manager.h

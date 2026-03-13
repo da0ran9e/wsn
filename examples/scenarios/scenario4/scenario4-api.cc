@@ -11,6 +11,8 @@
 #include "ns3/simulator.h"
 #include "ns3/mobility-helper.h"
 #include "ns3/constant-position-mobility-model.h"
+#include "ns3/waypoint-mobility-model.h"
+#include "ns3/callback.h"
 #include "../../../helper/cc2420-helper.h"
 #include "../../../model/radio/cc2420/cc2420-net-device.h"
 #include "../../../model/radio/cc2420/cc2420-phy.h"
@@ -22,6 +24,73 @@ NS_LOG_COMPONENT_DEFINE("Scenario4Api");
 
 namespace wsn {
 namespace scenario4 {
+
+namespace
+{
+void
+HandleRadioDebugTrace(Ptr<wsn::Cc2420NetDevice> dev,
+                      std::string eventName,
+                      Ptr<const Packet> packet)
+{
+    if (!dev || !ns3::wsn::scenario4::params::g_resultFileStream)
+    {
+        return;
+    }
+
+    const uint32_t packetSize = packet ? packet->GetSize() : 0u;
+    const uint32_t nodeId = dev->GetNode() ? dev->GetNode()->GetId() : 0u;
+
+    std::string link = std::to_string(nodeId) + "-D-?";
+    std::string reason;
+    std::string meta;
+
+    const std::size_t firstBar = eventName.find('|');
+    if (firstBar != std::string::npos)
+    {
+        std::string head = eventName.substr(0, firstBar);
+        if (head.rfind("MAC::", 0) == 0 || head.rfind("PHY::", 0) == 0)
+        {
+            head = head.substr(5);
+        }
+
+        if (head.find("-D-") != std::string::npos)
+        {
+            link = head;
+        }
+
+        const std::size_t secondBar = eventName.find('|', firstBar + 1);
+        if (secondBar != std::string::npos)
+        {
+            reason = eventName.substr(firstBar + 1, secondBar - firstBar - 1);
+            meta = eventName.substr(secondBar + 1);
+        }
+        else
+        {
+            reason = eventName.substr(firstBar + 1);
+        }
+    }
+
+    // Keep only the aggregated contact-window summary (one line per TX attempt).
+    if (reason != "DropContactWindowSummary")
+    {
+        return;
+    }
+
+    *ns3::wsn::scenario4::params::g_resultFileStream
+        << "\n[EVENT] " << Simulator::Now().GetSeconds()
+        << " | event=ContactDrop"
+        << " | link=" << link
+        << " | packetSize=" << packetSize;
+
+    if (!meta.empty())
+    {
+        *ns3::wsn::scenario4::params::g_resultFileStream
+            << " | " << meta;
+    }
+
+    *ns3::wsn::scenario4::params::g_resultFileStream << std::endl;
+}
+} // namespace
 
 // External functions from routing layer (implemented in wsn module)
 namespace routing {
@@ -130,11 +199,10 @@ Scenario4Runner::BuildUavNodes()
     for (uint32_t i = 0; i < m_uavNodes.GetN(); ++i)
     {
         Ptr<Node> uav = m_uavNodes.Get(i);
-        Ptr<MobilityModel> uavMobility = CreateObject<ConstantPositionMobilityModel>();
-        uavMobility->SetPosition(Vector(
-            m_config.bsPositionX,
-            m_config.bsPositionY,
-            m_config.uavAltitude));
+        Ptr<WaypointMobilityModel> uavMobility = CreateObject<WaypointMobilityModel>();
+        uavMobility->AddWaypoint(ns3::Waypoint(
+            Seconds(0.0),
+            Vector(m_config.bsPositionX, m_config.bsPositionY, m_config.uavAltitude)));
         uav->AggregateObject(uavMobility);
     }
 
@@ -174,6 +242,9 @@ Scenario4Runner::InstallProtocolStack()
                 {
                     phy->SetPropagationLossModel(propagationModel);
                 }
+
+                // dev->SetDebugPacketTraceCallback(
+                //     MakeBoundCallback(&HandleRadioDebugTrace, dev));
             }
         };
 
@@ -192,6 +263,8 @@ Scenario4Runner::InstallProtocolStack()
             if (dev && dev->GetPhy())
             {
                 dev->GetPhy()->SetPropagationLossModel(propagationModel);
+                // dev->SetDebugPacketTraceCallback(
+                //     MakeBoundCallback(&HandleRadioDebugTrace, dev));
             }
         }
         for (uint32_t i = 0; i < bsDevices.GetN(); ++i)
@@ -200,6 +273,8 @@ Scenario4Runner::InstallProtocolStack()
             if (dev && dev->GetPhy())
             {
                 dev->GetPhy()->SetPropagationLossModel(propagationModel);
+                // dev->SetDebugPacketTraceCallback(
+                //     MakeBoundCallback(&HandleRadioDebugTrace, dev));
             }
         }
     }
