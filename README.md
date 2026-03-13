@@ -1,7 +1,9 @@
 # wsn
-Place this repo folder into ns-3-dev-git/src
-Script: 
+## For MacOS/Ubuntu
+Place this repo folder into `ns-3-dev-git/src`
+- Script: 
 ```bash
+sudo apt-get update
 sudo apt install -y gcc g++ python3 python3-pip python3-setuptools git \
     mercurial qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools \
     gdb valgrind gsl-bin libgsl-dev flex bison \
@@ -13,4 +15,9 @@ sudo apt install -y gcc g++ python3 python3-pip python3-setuptools git \
 
 ./ns3 configure --enable-examples --enable-modules=wsn
 ./ns3 build
+```
+
+## for Windows:
+```bash
+wsl --install
 ```
