@@ -1229,15 +1229,20 @@ PlanUavFlightPathsForBsInit()
             totalDistance2 += helper::CalculateDistance(prevPos2.x, prevPos2.y, wp.position.x, wp.position.y);
             prevPos2 = wp.position;
         }
-        
-        NS_LOG_INFO("[BS-UAV-PATH] UAV2 coverage-based path planned"
-                    << " | waypoints=" << path2.waypoints.size()
-                    << " | covered=" << coveredNodes.size() << "/" << suspiciousNodePositions.size()
-                    << " | totalTime=" << std::fixed << std::setprecision(1) << path2.totalTime << "s"
-                    << " | totalDistance=" << totalDistance2 << "m"
-                    << " | flightSpeed=" << uav2Speed << "m/s"
-                    << " | hoverTime=" << uav2HoverTime << "s/waypoint"
-                    << " | avgSpeed=" << (totalDistance2 / std::max(0.001, path2.totalTime - path2.waypoints.size() * uav2HoverTime)) << "m/s");
+
+        double avgDenom1 = path1.totalTime - path1.waypoints.size() * uav1HoverTime;
+        if (avgDenom1 <= 0.0)
+        {
+            avgDenom1 = 0.001; // small epsilon to avoid divide-by-zero
+        }
+
+        NS_LOG_INFO("[BS-UAV-PATH] UAV1 path planned"
+                    << " | waypoints=" << path1.waypoints.size()
+                    << " | totalTime=" << std::fixed << std::setprecision(1) << path1.totalTime << "s"
+                    << " | totalDistance=" << totalDistance1 << "m"
+                    << " | flightSpeed=" << uav1Speed << "m/s"
+                    << " | hoverTime=" << uav1HoverTime << "s/waypoint"
+                    << " | avgSpeed=" << (totalDistance1 / avgDenom1) << "m/s");
         
         // Log UAV2 to file
         if (ns3::wsn::scenario4::params::g_resultFileStream)
@@ -1274,7 +1279,7 @@ PlanUavFlightPathsForBsInit()
             << " totalTime=" << path1.totalTime << "s"
             << " flightSpeed=" << uav1Speed << "m/s"
             << " hoverTime=" << uav1HoverTime << "s"
-            << " avgSpeed=" << (totalDistance1 / (path1.totalTime - path1.waypoints.size() * uav1HoverTime)) << "m/s"
+            << " avgSpeed=" << (totalDistance1 / avgDenom1) << "m/s"
             << " waypoints:";
         for (const auto& wp : path1.waypoints)
         {
