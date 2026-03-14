@@ -49,6 +49,25 @@ Toàn bộ module `src/wsn` được xây dựng từ đầu trên nền ns-3 3.
 
 ---
 
+## Project Phases
+
+Để rõ ràng hoá lộ trình phát triển và ưu tiên công việc, báo cáo này chia công việc thành ba giai đoạn chính:
+
+- **Giai đoạn 1 — MVP cho CC2420 & cơ chế truyền khi di chuyển**:
+     - Xây dựng phiên bản MVP của `Cc2420` (PHY/MAC/NetDevice/Energy) đủ để các node truyền và nhận khi đang di chuyển.
+     - Mục tiêu: đảm bảo node có thể gửi/nhận broadcast trong môi trường động (UAV và ground nodes di chuyển) để kiểm tra tính năng mạng cơ bản và logic routing trước khi đầu tư vào fidelity vật lý.
+
+- **Giai đoạn 2 — Khung kịch bản cho bài toán chính**:
+     - Xây dựng và chuẩn hoá các kịch bản (Scenario1..Scenario5), helper, và tooling (autorun, param sweep) phục vụ thí nghiệm chính (fragment broadcast, BS orchestration, cell formation).
+     - Mục tiêu: reproducible experiments, scripting để chạy batch experiments, và baseline metrics cho routing/mission-level evaluation.
+
+- **Giai đoạn 3 — Mô phỏng tính chất vật lý thực tế**:
+     - Nâng cấp PHY lên spectrum-aware (SpectrumPhy integration), hoàn thiện interference accumulation, SINR→BER/PER error models, fading/Doppler nếu cần, và propagation model theo elevation (air‑ground) với shadowing.
+     - Mục tiêu: đạt fidelity vật lý đủ để nghiên cứu tác động của interference, altitude policies, và chính xác hoá PER/LQI cho các kết luận nghiên cứu.
+
+Giai đoạn phát triển nên thực hiện theo thứ tự trên: hoàn thành giai đoạn 1 để có nền tảng thử nghiệm nhanh, rồi mở rộng kịch bản và tooling (giai đoạn 2), sau đó đầu tư vào fidelity vật lý (giai đoạn 3) khi các kịch bản và metric đã ổn định.
+
+
 ## 2. Project Context
 
 ### 2.1. Bài toán nghiên cứu
@@ -111,96 +130,81 @@ src/wsn/
 
 ## 3. CC2420 Radio Implementation
 
-### 3.1. Bối cảnh
+Phần này được chia làm hai phần nhỏ để tách rõ các kết quả đã có trong giai đoạn đầu (MVP) và các thành phần cần bổ sung khi nâng fidelity vật lý.
 
-CC2420 là chip radio IEEE 802.15.4 2.4 GHz dùng phổ biến trong nút cảm biến thực tế (TelosB, MicaZ). ns-3 không có CC2420-specific implementation; chỉ có LR-WPAN generic.
+### 3.A — Phase 1: MVP CC2420 (early-stage implementations)
 
-Xây dựng CC2420 riêng vì:
-- Cần energy model gắn đúng hardware CC2420.
-- Cần state machine phản ánh đúng hardware transitions.
-- Cần RF parameters theo datasheet (TX power, RX sensitivity, CCA threshold).
-- Có reference tốt từ Castalia simulator (`/refs/Castalia`).
+#### 3.A.1. Bối cảnh
 
-### 3.2. Các file đã triển khai
+CC2420 là chip radio IEEE 802.15.4 2.4 GHz (TelosB, MicaZ). Việc xây module CC2420 riêng nhằm đáp ứng các yêu cầu hardware‑specific: energy model, trạng thái phần cứng, và RF parameters theo datasheet.
+
+#### 3.A.2. Các file đã triển khai (MVP)
 
 `src/wsn/model/radio/cc2420/`:
 
 | File | Nội dung |
 |---|---|
-| `cc2420-phy.h/.cc` | PHY layer, 6-state machine, SpectrumPhy interface |
-| `cc2420-mac.h/.cc` | MAC layer, CSMA-CA parameters, frame RX/TX |
-| `cc2420-net-device.h/.cc` | ns-3 NetDevice interface, binding Node/Channel/MAC |
-| `cc2420-energy-model.h/.cc` | Energy consumption per state |
+| `cc2420-phy.h/.cc` | PHY layer skeleton, state machine, SpectrumPhy interface hooks |
+| `cc2420-mac.h/.cc` | MAC layer cơ bản, CSMA-CA parameters, frame RX/TX handlers |
+| `cc2420-net-device.h/.cc` | ns-3 NetDevice interface binding Node/Channel/MAC |
+| `cc2420-energy-model.h/.cc` | Energy consumption per state (datasheet values) |
 | `cc2420-header.h/.cc` | Frame header serialization |
 | `cc2420-trailer.h/.cc` | Frame trailer (FCS) |
 
-### 3.3. PHY Layer
+#### 3.A.3. PHY (MVP features)
 
-**Đã triển khai**:
-- State machine 6 trạng thái: `SLEEP`, `IDLE`, `RX`, `TX`, `CCA`, `SWITCHING`
-- SpectrumPhy interface đầy đủ: `SetChannel()`, `SetDevice()`, `SetMobility()`, `SetAntenna()`, `StartRx()`
-- RF parameters theo datasheet:
-  - TX Power: 0 dBm max, configurable
-  - RX Sensitivity: −95 dBm
-  - Noise Floor: −100 dBm
-  - CCA Threshold: −77 dBm
-- Debug callbacks và trace hooks
-- Energy state mapping per state
+Đã có trong MVP:
+- State machine cơ bản: `SLEEP`, `IDLE`, `RX`, `TX`, `CCA`, `SWITCHING`.
+- TypeId attributes: `TxPower`, `RxSensitivity`, `NoiseFloor`, `CCAThreshold`, và các tham số path-loss tham khảo.
+- SpectrumPhy interface được khai báo (`SetChannel()`, `SetDevice()`, `SetMobility()`, `SetAntenna()`, `StartRx()`), nhưng xử lý tín hiệu còn là stub ở nhiều chỗ.
+- Debug trace hooks và mapping energy/state đã có.
 
-**Còn là stub / TODO**:
-- `StartRx()` signal processing: chưa tính RSSI/SNR tích lũy
-- `SetState()` chưa validate full transition matrix
-- CCA algorithm: trả hardcoded true
-- SNR → BER conversion (Castalia có lookup table chi tiết)
-- Collision detection: mới dùng simple 6 dB rule
+Những hạng mục MVP còn là TODO nhưng không ngăn các thử nghiệm kịch bản cơ bản:
+- `StartRx()` detailed signal processing (đang là stub).
+- `SetState()` validation matrix và một số logic state transition.
 
-### 3.4. MAC Layer
+#### 3.A.4. MAC và helper
 
-**Đã triển khai**:
-- State machine 6 trạng thái: `IDLE`, `CSMA_BACKOFF`, `CCA`, `SENDING`, `ACK_PENDING`, `FRAME_RECEPTION`
-- IEEE 802.15.4 config: PAN ID, Short Address, backoff params (`macMinBE=3`, `macMaxBE=5`, `macMaxCSMABackoffs=4`, `macMaxFrameRetries=3`)
-- `McpsDataRequest()`: accept và dispatch packet đến peers
-- `FrameReceptionCallback()`: nhận packet từ peers
-- TX/RX callbacks cho upper layer
-- Statistics: `m_txCount`, `m_rxCount`, `m_txFailureCount`
-- TX queue
+MAC MVP cung cấp:
+- Basic CSMA state machine, TX queue, callbacks, và thống kê.
+- Một số chi tiết (full backoff timing, ACK handling) còn thiếu nhưng không chặn kịch bản nghiên cứu hiện tại.
 
-**Còn là stub**:
-- Full CSMA-CA backoff với real timing
-- ACK handling complete
-- GTS / superframe (không cần cho nghiên cứu hiện tại)
+CC2420 helper (`src/wsn/helper/cc2420-helper.h/.cc`) hỗ trợ tạo NetDevice cho node container.
 
-### 3.5. Energy Model
+#### 3.A.5. Energy & verification
 
-Energy consumption theo CC2420 datasheet:
+Energy theo datasheet (tóm tắt): Sleep 1.4 mW, Idle/RX/CCA 62 mW, TX(0 dBm) ≈ 52.2 mW.
 
-| State | Power |
-|---|---|
-| Sleep | 1.4 mW |
-| Idle | 62 mW |
-| RX | 62 mW |
-| TX (0 dBm) | 52.2 mW |
-| CCA | 62 mW |
+Verification: `src/wsn/examples/cc2420-example.cc` chạy ~23 test; MVP hiện pass ~19/23 (các test liên quan RX processing chưa hoàn thiện).
 
-### 3.6. CC2420 Helper
+#### 3.A.6. Trạng thái tổng thể (sau Phase 1)
 
-`src/wsn/helper/cc2420-helper.h/.cc`:
-- `SetupCc2420Devices(nodes, channel, txPower, rxSensitivity)` → `NetDeviceContainer`
-- Tạo và cài CC2420 cho toàn bộ node container trong một lần gọi.
+MVP status: CC2420 ~50% functional — đủ cho packet-level scenarios, mission-level metrics, và framework validation.
 
-### 3.7. Verification test
+### 3.B — Phase 3: Physical-fidelity components (spectrum & BER)
 
-`src/wsn/examples/cc2420-example.cc`:
-- 23 test cases cho CC2420 module
-- Kiểm tra PHY/MAC creation, CSMA params, spectrum channel integration, RF calculations (path loss, RSSI, SNR, LQI, link viability)
-- Hiện pass 19/23 tests (4 test liên quan đến RX processing chưa hoàn thiện)
+Phần này liệt kê các thành phần cần thiết khi nâng fidelity PHY để mô phỏng interference, BER và các hiệu ứng tần-số/thời-gian.
 
-### 3.8. Trạng thái tổng thể
+#### 3.B.1. Mục tiêu
 
-CC2420 ở mức ~50% functional:
-- Đủ cho basic packet count và scenario testing.
-- Chưa đủ cho detailed radio performance analysis (SNR curves, BER, collision probability modeling).
-- **Phù hợp với mục tiêu nghiên cứu hiện tại**: mission completion time metrics không yêu cầu chi tiết radio PHY.
+- Spectrum-aware PHY: tích hợp đầy đủ với `SpectrumChannel` để nhận `SpectrumSignalParameters` (PSD), quản lý interference PSD theo bin, và tính SINR chính xác theo băng tần.
+- Error model: chuyển SINR → BER → PER theo modulation/coding của IEEE 802.15.4 (O‑QPSK/DSSS) hoặc bảng tra cứu (Castalia-like).
+- Propagation model spectrum-aware: trả `SpectrumValue` (PSD) cho mỗi receiver, bao gồm log‑distance + elevation-dependent exponent + log-normal shadowing.
+- Optional: small‑scale fading (Rician/Nakagami) và Doppler nếu UAV tốc độ khiến hiệu ứng này đáng kể.
+
+#### 3.B.2. Các hạng mục cần triển khai
+
+- Hoàn thiện `Cc2420Phy::StartRx()`, `ProcessSignalStart()`, `ProcessSignalEnd()`, `UpdateInterference()` để quản lý received-signal list, cộng/loại PSD interference, và quyết định reception success tại EndRx.
+- Viết `Cc2420ErrorModel` (SINR→BER/PER) hoặc tích hợp một error-model hiện có với tham số phù hợp cho 802.15.4.
+- Cài đặt `SpectrumPropagationLossModel` chuyên dụng (vd. `Cc2420SpectrumPropagationLossModel`) để chuyển từ tx PSD → rx PSD theo distance/elevation/shadowing. (Một phiên bản đầu đã được thêm vào `src/wsn/model/propagation/`.)
+- Thiết kế test/unit cho validation: PSD→dBm mapping, SINR→PER curves, và reproducibility kiểm tra seed/runId.
+
+#### 3.B.3. Tại sao tách Phase 3 riêng
+
+Việc thực hiện Phase 3 yêu cầu mức công việc và kiểm chứng lớn hơn (bin-wise PSD math, timing overlap handling, validation BER curves). Để không chậm tiến độ nghiên cứu, phương án hợp lý là:
+
+1. Hoàn tất Phase 1 để có nền tảng running experiments nhanh.
+2. Sau khi kịch bản và metrics ổn định (Phase 2), chuyển đầu tư vào Phase 3 để cải thiện fidelity vật lý và phân tích radio‑level.
 
 ---
 
