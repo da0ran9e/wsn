@@ -103,7 +103,10 @@ Lý thuyết:
 
 Trong code:
 - **Chưa có Doppler tường minh** (không có symbol-level Doppler process)
-- Tác động mobility hiện vào qua: projected geometry + fading sampling per packet
+- Đã đưa coherence-time vào contact gating dưới dạng margin penalty xấp xỉ:
+  - $f_{D,max} \approx (v_{rel}/c)\,f_c$
+  - $T_c \approx 0.423/f_{D,max}$
+  - nếu $t_{airtime}/T_c > 1$ thì cộng penalty margin (có cap)
 
 Mức triển khai: **Một phần (gián tiếp), chưa explicit time-correlated Doppler model**
 
@@ -139,8 +142,8 @@ Mức triển khai: **Một phần (gián tiếp), chưa explicit time-correlate
 | Fast fading (Ricean/Rayleigh) | Đã có (xấp xỉ per-packet) | Cùng tinh thần measurement về fading variability, nhưng chưa time-correlation đầy đủ (Cai 2019; Lyu 2023) |
 | PER theo SNR và payload | Đã có | Phù hợp với nhu cầu đo/đánh giá reliability theo packet-level; hiện dùng analytic model thay vì curve-fit đo đạc |
 | Contact-time viability theo chuyển động | Đã có | Là triển khai kỹ thuật rất hữu ích cho UAV mobility; không mâu thuẫn với literature A2G |
-| LoS probability model $p_{LoS}(h,d)$ | Chưa có (hiện deterministic threshold) | Paper LoS-probability cho thấy đây là hướng mở rộng mạnh (Duggal 2023) |
-| Antenna heading/pattern effect | Chưa có trong propagation hiện tại | Paper thực nghiệm cho thấy ảnh hưởng heading/antenna đáng kể (Shafafi 2023) |
+| LoS probability model $p_{LoS}(h,d)$ | Đã có mode tùy chọn (stochastic theo elevation) + mode deterministic cũ | Bám theo hướng LoS-probability của literature; dùng logistic approximation để giữ nhẹ (Duggal 2023; Khawaja 2018) |
+| Antenna heading/pattern effect | Đã có bản nhẹ (optional heading-mismatch penalty); chưa có full 3D pattern | Phù hợp hướng thực nghiệm về ảnh hưởng heading, ở mức proxy đơn giản (Shafafi 2023) |
 | Doppler explicit/time-correlated fading | Chưa có | Measurement papers có phân tích Doppler spread/time variation (Cai 2019; Lyu 2023) |
 
 ---
@@ -149,7 +152,9 @@ Mức triển khai: **Một phần (gián tiếp), chưa explicit time-correlate
 
 1) **LoS selection**
 - Lý thuyết/measurement: thường stochastic hoặc tham số hóa theo geometry
-- Hiện tại: dùng ngưỡng elevation cứng (`ElevationLosThreshold`, `ElevationMixedThreshold`)
+- Hiện tại: có cả hai mode
+  - deterministic threshold (`ElevationLosThreshold`, `ElevationMixedThreshold`) — mặc định
+  - stochastic pLoS theo logistic elevation model (`EnableStochasticLos`, `LosProbabilityA`, `LosProbabilityB`)
 
 2) **Fading dynamics theo thời gian**
 - Lý thuyết/measurement: có non-stationary/time-correlation, Doppler spread
@@ -157,7 +162,7 @@ Mức triển khai: **Một phần (gián tiếp), chưa explicit time-correlate
 
 3) **Antenna orientation**
 - Lý thuyết/measurement: heading/pattern ảnh hưởng lớn
-- Hiện tại: propagation model chưa đưa orientation-dependent gain vào link budget
+- Hiện tại: đã có bản nhẹ theo heading-mismatch penalty (tùy chọn), nhưng chưa phải full 3D gain pattern
 
 4) **PER calibration theo đo đạc**
 - Lý thuyết thực nghiệm: có thể fit trực tiếp SNR→PER theo campaign
@@ -180,20 +185,63 @@ Mức triển khai: **Một phần (gián tiếp), chưa explicit time-correlate
 
 ---
 
-## E. Ưu tiên triển khai nhanh (high value, low effort)
+## E. Trạng thái triển khai nhanh (high value, low effort)
 
-1) **Optional stochastic LoS mode**
+1) **Optional stochastic LoS mode** ✅
 - Giữ mode deterministic hiện tại làm default
-- Thêm mode `p_LOS` để chọn profile LoS/NLoS theo xác suất
+- Đã thêm mode `p_LOS` theo công thức logistic (tùy chọn)
 
-2) **Contact-window margin theo vận tốc**
-- Bổ sung penalty margin khi coherence-time nhỏ hơn packet airtime
+2) **Contact-window margin theo vận tốc** ✅
+- Đã bổ sung penalty margin khi coherence-time nhỏ hơn packet airtime
 
-3) **Trace PHY chi tiết hơn**
-- Ghi `snrDb`, `ber`, `per` vào debug trace khi drop để dễ hiệu chỉnh với paper
+3) **Trace PHY chi tiết hơn** ✅
+- Đã ghi `snrDb`, `ber`, `per` (và ngưỡng liên quan) vào PHY drop trace
 
-4) **Antenna heading scalar penalty (bản nhẹ)**
-- Chưa cần full 3D pattern, chỉ cần factor suy hao theo heading mismatch để bắt đầu
+4) **Antenna heading scalar penalty (bản nhẹ)** ✅
+- Đã thêm mode tùy chọn: suy hao phụ thuộc mismatch giữa vector vận tốc TX và hướng LOS
+- Full 3D antenna pattern vẫn là bước nâng cao tiếp theo
+
+---
+
+## G. Công thức nghiên cứu đã đưa trực tiếp vào triển khai
+
+1) **LoS probability (A2G logistic approximation)**
+
+Theo hướng của các nghiên cứu A2G về xác suất LoS theo hình học/elevation, dùng dạng:
+
+$$
+p_{LoS}(\theta) = \frac{1}{1 + a\exp\left(-b(\theta-a)\right)}
+$$
+
+Trong code:
+- `EnableStochasticLos`
+- `LosProbabilityA`, `LosProbabilityB`
+
+2) **Doppler/coherence-time driven margin**
+
+Theo quan hệ Doppler và coherence-time (Clarke-style approximation):
+
+$$
+f_{D,max} \approx \frac{v_{rel}}{c}f_c, \qquad T_c \approx \frac{0.423}{f_{D,max}}
+$$
+
+Và khi:
+
+$$
+\frac{t_{airtime}}{T_c} > 1
+$$
+
+thì cộng thêm margin penalty trong contact-window gate (bounded bởi cap).
+
+3) **BER/PER packet reliability**
+
+Giữ nguyên hướng analytic đã có trong code:
+
+$$
+PER = 1 - (1-BER)^{8L}
+$$
+
+và dùng stochastic Bernoulli để quyết định drop ở PHY receive path.
 
 ---
 

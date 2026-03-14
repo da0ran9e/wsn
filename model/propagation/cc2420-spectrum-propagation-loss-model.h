@@ -64,6 +64,14 @@ private:
   double m_elevMixedThreshDeg;
   bool m_enableShadowing;
 
+  // Optional stochastic LoS selector (research-aligned mode).
+  // Uses a logistic pLoS(elevation) approximation inspired by A2G measurement/model literature:
+  // pLoS(theta) = 1 / (1 + a * exp(-b * (theta - a))).
+  // When disabled, model keeps deterministic threshold behavior.
+  bool m_enableStochasticLos;
+  double m_losProbA;
+  double m_losProbB;
+
   // Fast fading (Ricean/Rayleigh per elevation profile)
   // σ_K = 5.57 / sqrt(1 + K) dB  (Rayleigh K=0 → 5.57 dB, strong LoS K=15 → 1.39 dB)
   bool m_enableFastFading;
@@ -72,11 +80,17 @@ private:
   double m_kFactorNLoS;         // K=0 → Rayleigh
   double m_kFactorGround;       // K=0 → Rayleigh for ground–ground
 
+  // Optional lightweight heading mismatch penalty (proxy for orientation-sensitive link budget).
+  bool m_enableHeadingPenalty;
+  double m_headingPenaltyMaxDb;
+  double m_headingPenaltyMinSpeedMps;
+
   // RNGs for shadowing
   mutable Ptr<NormalRandomVariable> m_shadowingLosRng;
   mutable Ptr<NormalRandomVariable> m_shadowingMixedRng;
   mutable Ptr<NormalRandomVariable> m_shadowingNlosRng;
   mutable Ptr<NormalRandomVariable> m_shadowingGroundGroundRng;
+  mutable Ptr<UniformRandomVariable> m_losSelectorRng;
 
   // RNGs for fast fading (one per elevation profile, sampled per packet)
   mutable Ptr<NormalRandomVariable> m_fastFadingLosRng;

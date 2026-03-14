@@ -88,6 +88,21 @@ Cc2420SpectrumPropagationLossModel::GetTypeId()
                                           DoubleValue(20.0),
                                           MakeDoubleAccessor(&Cc2420SpectrumPropagationLossModel::m_elevMixedThreshDeg),
                                           MakeDoubleChecker<double>(0.0, 90.0))
+                            .AddAttribute("EnableStochasticLos",
+                                          "Enable stochastic LoS selection using pLoS(elevation).",
+                                          BooleanValue(false),
+                                          MakeBooleanAccessor(&Cc2420SpectrumPropagationLossModel::m_enableStochasticLos),
+                                          MakeBooleanChecker())
+                            .AddAttribute("LosProbabilityA",
+                                          "Logistic pLoS parameter 'a' for pLoS(theta)=1/(1+a*exp(-b*(theta-a))).",
+                                          DoubleValue(9.61),
+                                          MakeDoubleAccessor(&Cc2420SpectrumPropagationLossModel::m_losProbA),
+                                          MakeDoubleChecker<double>(1e-6))
+                            .AddAttribute("LosProbabilityB",
+                                          "Logistic pLoS parameter 'b' for pLoS(theta)=1/(1+a*exp(-b*(theta-a))).",
+                                          DoubleValue(0.16),
+                                          MakeDoubleAccessor(&Cc2420SpectrumPropagationLossModel::m_losProbB),
+                                          MakeDoubleChecker<double>(1e-6))
                             .AddAttribute("EnableShadowing",
                                           "Enable log-normal shadowing term",
                                           BooleanValue(true),
@@ -117,6 +132,21 @@ Cc2420SpectrumPropagationLossModel::GetTypeId()
                                           "Ricean K-factor (linear) for ground-ground links; 0 = Rayleigh",
                                           DoubleValue(0.0),
                                           MakeDoubleAccessor(&Cc2420SpectrumPropagationLossModel::m_kFactorGround),
+                                          MakeDoubleChecker<double>(0.0))
+                            .AddAttribute("EnableHeadingPenalty",
+                                          "Enable lightweight heading-mismatch penalty (proxy for orientation effects).",
+                                          BooleanValue(false),
+                                          MakeBooleanAccessor(&Cc2420SpectrumPropagationLossModel::m_enableHeadingPenalty),
+                                          MakeBooleanChecker())
+                            .AddAttribute("HeadingPenaltyMaxDb",
+                                          "Maximum additional loss for severe heading mismatch (dB).",
+                                          DoubleValue(3.0),
+                                          MakeDoubleAccessor(&Cc2420SpectrumPropagationLossModel::m_headingPenaltyMaxDb),
+                                          MakeDoubleChecker<double>(0.0))
+                            .AddAttribute("HeadingPenaltyMinSpeedMps",
+                                          "Minimum TX speed to activate heading penalty (m/s).",
+                                          DoubleValue(0.5),
+                                          MakeDoubleAccessor(&Cc2420SpectrumPropagationLossModel::m_headingPenaltyMinSpeedMps),
                                           MakeDoubleChecker<double>(0.0));
   return tid;
 }
@@ -135,17 +165,24 @@ Cc2420SpectrumPropagationLossModel::Cc2420SpectrumPropagationLossModel()
       m_shadowingSigmaNlosDb(8.0),
       m_elevLosThreshDeg(40.0),
       m_elevMixedThreshDeg(20.0),
+      m_enableStochasticLos(false),
+      m_losProbA(9.61),
+      m_losProbB(0.16),
       m_enableShadowing(true),
       m_enableFastFading(true),
       m_kFactorLoS(15.0),
       m_kFactorMixed(6.0),
       m_kFactorNLoS(0.0),
-      m_kFactorGround(0.0)
+      m_kFactorGround(0.0),
+      m_enableHeadingPenalty(false),
+      m_headingPenaltyMaxDb(3.0),
+      m_headingPenaltyMinSpeedMps(0.5)
 {
   m_shadowingLosRng = CreateObject<NormalRandomVariable>();
   m_shadowingMixedRng = CreateObject<NormalRandomVariable>();
   m_shadowingNlosRng = CreateObject<NormalRandomVariable>();
   m_shadowingGroundGroundRng = CreateObject<NormalRandomVariable>();
+  m_losSelectorRng = CreateObject<UniformRandomVariable>();
 
   m_shadowingLosRng->SetAttribute("Mean", DoubleValue(0.0));
   m_shadowingMixedRng->SetAttribute("Mean", DoubleValue(0.0));
@@ -185,7 +222,29 @@ Cc2420SpectrumPropagationLossModel::ComputePathLossDb(Ptr<const MobilityModel> t
   const Vector txPos = txMobility->GetPosition();
   const Vector rxPos = rxMobility->GetPosition();
 
-  return ComputePathLossDbFromPositions(txPos, rxPos, true);
+  double pathLossDb = ComputePathLossDbFromPositions(txPos, rxPos, true);
+
+  // Optional heading penalty (lightweight proxy, not full 3D antenna model):
+  // adds loss when TX velocity vector points away from LOS direction.
+  if (m_enableHeadingPenalty)
+  {
+    const Vector txVel = txMobility->GetVelocity();
+    const double txSpeed = std::sqrt(txVel.x * txVel.x + txVel.y * txVel.y + txVel.z * txVel.z);
+    if (txSpeed >= m_headingPenaltyMinSpeedMps)
+    {
+      const Vector los(rxPos.x - txPos.x, rxPos.y - txPos.y, rxPos.z - txPos.z);
+      const double losNorm = std::sqrt(los.x * los.x + los.y * los.y + los.z * los.z);
+      if (losNorm > 1e-9)
+      {
+        const double cosPsi = (txVel.x * los.x + txVel.y * los.y + txVel.z * los.z) / (txSpeed * losNorm);
+        const double cosClamped = std::max(-1.0, std::min(1.0, cosPsi));
+        const double mismatch = (1.0 - cosClamped) * 0.5; // 0: aligned, 1: opposite
+        pathLossDb += mismatch * m_headingPenaltyMaxDb;
+      }
+    }
+  }
+
+  return pathLossDb;
 }
 
 double
@@ -211,27 +270,84 @@ Cc2420SpectrumPropagationLossModel::ComputePathLossDbFromPositions(const Vector&
           ? (std::atan2(std::abs(dz), horizontalDistance) * kRadToDeg)
           : 90.0;
 
+  enum class LinkProfile
+  {
+    GROUND,
+    LOS,
+    MIXED,
+    NLOS
+  };
+
+  LinkProfile profile = LinkProfile::NLOS;
+  if (isGroundGround)
+  {
+    profile = LinkProfile::GROUND;
+  }
+  else
+  {
+    const bool deterministicLos = (elevDeg >= m_elevLosThreshDeg);
+    const bool deterministicMixed = (elevDeg >= m_elevMixedThreshDeg);
+
+    if (m_enableStochasticLos && m_losSelectorRng)
+    {
+      // Research-inspired A2G logistic LoS probability model (angle-based form):
+      // pLoS(theta)=1/(1+a*exp(-b*(theta-a))).
+      const double pLosRaw = 1.0 / (1.0 + m_losProbA * std::exp(-m_losProbB * (elevDeg - m_losProbA)));
+      const double pLos = std::max(0.0, std::min(1.0, pLosRaw));
+
+      if (m_losSelectorRng->GetValue() < pLos)
+      {
+        profile = LinkProfile::LOS;
+      }
+      else
+      {
+        profile = deterministicMixed ? LinkProfile::MIXED : LinkProfile::NLOS;
+      }
+    }
+    else
+    {
+      if (deterministicLos)
+      {
+        profile = LinkProfile::LOS;
+      }
+      else if (deterministicMixed)
+      {
+        profile = LinkProfile::MIXED;
+      }
+      else
+      {
+        profile = LinkProfile::NLOS;
+      }
+    }
+  }
+
   double pathLossExponent = m_pathLossExpNlos;
   Ptr<NormalRandomVariable> shadowingRng = m_shadowingNlosRng;
   double sigmaDb = m_shadowingSigmaNlosDb;
 
-  if (isGroundGround)
+  switch (profile)
   {
+  case LinkProfile::GROUND:
     pathLossExponent = m_pathLossExpGroundGround;
     shadowingRng = m_shadowingGroundGroundRng;
     sigmaDb = m_shadowingSigmaGroundGroundDb;
-  }
-  else if (elevDeg >= m_elevLosThreshDeg)
-  {
+    break;
+  case LinkProfile::LOS:
     pathLossExponent = m_pathLossExpLos;
     shadowingRng = m_shadowingLosRng;
     sigmaDb = m_shadowingSigmaLosDb;
-  }
-  else if (elevDeg >= m_elevMixedThreshDeg)
-  {
+    break;
+  case LinkProfile::MIXED:
     pathLossExponent = m_pathLossExpMixed;
     shadowingRng = m_shadowingMixedRng;
     sigmaDb = m_shadowingSigmaMixedDb;
+    break;
+  case LinkProfile::NLOS:
+  default:
+    pathLossExponent = m_pathLossExpNlos;
+    shadowingRng = m_shadowingNlosRng;
+    sigmaDb = m_shadowingSigmaNlosDb;
+    break;
   }
 
   double shadowingDb = 0.0;
@@ -249,15 +365,15 @@ Cc2420SpectrumPropagationLossModel::ComputePathLossDbFromPositions(const Vector&
   double fastFadingDb = 0.0;
   if (includeShadowing && m_enableFastFading)
   {
-    const double kFactor = isGroundGround            ? m_kFactorGround
-                         : (elevDeg >= m_elevLosThreshDeg)   ? m_kFactorLoS
-                         : (elevDeg >= m_elevMixedThreshDeg) ? m_kFactorMixed
-                         : m_kFactorNLoS;
+    const double kFactor = (profile == LinkProfile::GROUND) ? m_kFactorGround
+               : (profile == LinkProfile::LOS)    ? m_kFactorLoS
+               : (profile == LinkProfile::MIXED)  ? m_kFactorMixed
+                                 : m_kFactorNLoS;
 
-    Ptr<NormalRandomVariable> fastRng = isGroundGround            ? m_fastFadingGroundRng
-                                      : (elevDeg >= m_elevLosThreshDeg)   ? m_fastFadingLosRng
-                                      : (elevDeg >= m_elevMixedThreshDeg) ? m_fastFadingMixedRng
-                                      : m_fastFadingNlosRng;
+    Ptr<NormalRandomVariable> fastRng = (profile == LinkProfile::GROUND) ? m_fastFadingGroundRng
+                      : (profile == LinkProfile::LOS)    ? m_fastFadingLosRng
+                      : (profile == LinkProfile::MIXED)  ? m_fastFadingMixedRng
+                                        : m_fastFadingNlosRng;
 
     if (fastRng)
     {
@@ -348,6 +464,10 @@ Cc2420SpectrumPropagationLossModel::DoAssignStreams(int64_t stream)
   {
     m_shadowingGroundGroundRng->SetStream(stream++);
   }
+  if (m_losSelectorRng)
+  {
+    m_losSelectorRng->SetStream(stream++);
+  }
   if (m_fastFadingLosRng)
   {
     m_fastFadingLosRng->SetStream(stream++);
@@ -364,7 +484,7 @@ Cc2420SpectrumPropagationLossModel::DoAssignStreams(int64_t stream)
   {
     m_fastFadingGroundRng->SetStream(stream++);
   }
-  return 8;
+  return 9;
 }
 
 } // namespace propagation

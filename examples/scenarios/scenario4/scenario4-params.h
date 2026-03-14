@@ -33,7 +33,7 @@ extern std::map<int32_t, std::map<int32_t, std::vector<uint32_t>>> g_cellGateway
 
 // Grid parameters
 constexpr uint32_t DEFAULT_GRID_SIZE = 20;
-constexpr double DEFAULT_SPACING = 50.0;
+constexpr double DEFAULT_SPACING = 20.0;
 
 // Base station location (far from network to avoid interference)
 constexpr double BS_POSITION_X = -100.0;
@@ -42,7 +42,7 @@ constexpr double BS_POSITION_Z = 0.0;
 
 // UAV parameters
 constexpr uint32_t DEFAULT_NUM_UAVS = 2;
-constexpr double DEFAULT_UAV_ALTITUDE = 50.0;
+constexpr double DEFAULT_UAV_ALTITUDE = 20.0;
 constexpr double DEFAULT_UAV_SPEED = 20.0;  // m/s
 
 // Timing constants

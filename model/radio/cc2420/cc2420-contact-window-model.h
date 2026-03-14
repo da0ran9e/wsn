@@ -44,6 +44,14 @@ class Cc2420ContactWindowModel : public Object
     double m_guardTimeSeconds;
     double m_sampleStepSeconds;
     double m_requiredMarginDb;
+
+    // Optional velocity-aware margin based on coherence-time intuition:
+    //   fD,max ~= (v_rel / c) * fc,   Tc ~= 0.423 / fD,max.
+    // If packet airtime approaches/exceeds Tc, require extra link margin.
+    bool m_enableVelocityAwareMargin;
+    double m_carrierFrequencyHz;
+    double m_velocityPenaltySlopeDb;
+    double m_velocityPenaltyCapDb;
 };
 
 } // namespace wsn

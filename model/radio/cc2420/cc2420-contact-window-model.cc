@@ -15,6 +15,7 @@
 #include "ns3/mobility-model.h"
 
 #include <algorithm>
+#include <cmath>
 
 namespace ns3
 {
@@ -55,6 +56,26 @@ Cc2420ContactWindowModel::GetTypeId()
                       "Extra RSSI margin above sensitivity required for contact validation.",
                       DoubleValue(0.0),
                       MakeDoubleAccessor(&Cc2420ContactWindowModel::m_requiredMarginDb),
+                      MakeDoubleChecker<double>())
+        .AddAttribute("EnableVelocityAwareMargin",
+                      "Enable extra contact margin when coherence time is small versus packet airtime.",
+                      BooleanValue(false),
+                      MakeBooleanAccessor(&Cc2420ContactWindowModel::m_enableVelocityAwareMargin),
+                      MakeBooleanChecker())
+        .AddAttribute("CarrierFrequencyHz",
+                      "Carrier frequency used for Doppler/coherence-time based margin (Hz).",
+                      DoubleValue(2.4e9),
+                      MakeDoubleAccessor(&Cc2420ContactWindowModel::m_carrierFrequencyHz),
+                      MakeDoubleChecker<double>(1e6))
+        .AddAttribute("VelocityPenaltySlopeDb",
+                      "Slope of additional margin versus airtime/Tc ratio above 1.",
+                      DoubleValue(2.0),
+                      MakeDoubleAccessor(&Cc2420ContactWindowModel::m_velocityPenaltySlopeDb),
+                      MakeDoubleChecker<double>(0.0))
+        .AddAttribute("VelocityPenaltyCapDb",
+                      "Maximum additional margin from velocity-aware penalty (dB).",
+                      DoubleValue(8.0),
+                      MakeDoubleAccessor(&Cc2420ContactWindowModel::m_velocityPenaltyCapDb),
                       MakeDoubleChecker<double>());
     return tid;
 }
@@ -64,7 +85,11 @@ Cc2420ContactWindowModel::Cc2420ContactWindowModel()
       m_dataRateBps(250000.0),
       m_guardTimeSeconds(0.002),
       m_sampleStepSeconds(0.001),
-      m_requiredMarginDb(0.0)
+    m_requiredMarginDb(0.0),
+    m_enableVelocityAwareMargin(false),
+    m_carrierFrequencyHz(2.4e9),
+    m_velocityPenaltySlopeDb(2.0),
+    m_velocityPenaltyCapDb(8.0)
 {
     NS_LOG_FUNCTION(this);
 }
@@ -108,14 +133,38 @@ Cc2420ContactWindowModel::HasContactForPacket(Ptr<const Cc2420Phy> txPhy,
         return true;
     }
 
-    const double minRxDbm = rxPhy->GetRxSensitivity() + m_requiredMarginDb;
-    const double requiredTime = GetPacketAirtimeSeconds(packetSizeBytes) + m_guardTimeSeconds;
+    const double airtime = GetPacketAirtimeSeconds(packetSizeBytes);
+    const double requiredTime = airtime + m_guardTimeSeconds;
     const double sampleStep = std::min(std::max(m_sampleStepSeconds, 1e-5), std::max(requiredTime, 1e-5));
 
     const Vector txStart = txMob->GetPosition();
     const Vector rxStart = rxMob->GetPosition();
     const Vector txVel = txMob->GetVelocity();
     const Vector rxVel = rxMob->GetVelocity();
+
+    // Velocity-aware margin from coherence-time approximation:
+    // fD,max ~= (v_rel / c) * fc ; Tc ~= 0.423 / fD,max.
+    // If airtime/Tc > 1, add a bounded extra margin.
+    double velocityPenaltyDb = 0.0;
+    if (m_enableVelocityAwareMargin && airtime > 0.0)
+    {
+        const Vector relVel(txVel.x - rxVel.x, txVel.y - rxVel.y, txVel.z - rxVel.z);
+        const double vRel = std::sqrt(relVel.x * relVel.x + relVel.y * relVel.y + relVel.z * relVel.z);
+        const double c = 3.0e8;
+        const double fD = (vRel / c) * m_carrierFrequencyHz;
+        if (fD > 1e-9)
+        {
+            const double tc = 0.423 / fD;
+            const double ratio = airtime / tc;
+            if (ratio > 1.0)
+            {
+                velocityPenaltyDb = std::min(m_velocityPenaltyCapDb,
+                                             (ratio - 1.0) * m_velocityPenaltySlopeDb);
+            }
+        }
+    }
+
+    const double minRxDbm = rxPhy->GetRxSensitivity() + m_requiredMarginDb + velocityPenaltyDb;
 
     for (double dt = 0.0; dt <= requiredTime + 1e-9; dt += sampleStep)
     {
@@ -133,7 +182,9 @@ Cc2420ContactWindowModel::HasContactForPacket(Ptr<const Cc2420Phy> txPhy,
             NS_LOG_DEBUG("[ContactWindow] insufficient contact: dt=" << dt
                          << "s required=" << requiredTime
                          << "s rx=" << rxPowerDbm
-                         << "dBm threshold=" << minRxDbm << "dBm");
+                         << "dBm threshold=" << minRxDbm
+                         << "dBm (baseMargin=" << m_requiredMarginDb
+                         << "dB velocityPenalty=" << velocityPenaltyDb << "dB)");
             return false;
         }
     }

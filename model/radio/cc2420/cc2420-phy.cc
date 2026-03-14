@@ -369,9 +369,13 @@ Cc2420Phy::EvaluateReceptionFrom(Ptr<Cc2420Phy> txPhy,
     const uint32_t srcNodeId = getNodeIdFromPhy(txPhy);
     const uint32_t dstNodeId = getNodeIdFromPhy(this);
 
-    auto emitDrop = [&](const std::string& reason) {
+    auto emitDrop = [&](const std::string& reason, const std::string& meta) {
         std::ostringstream oss;
         oss << srcNodeId << "-D-" << dstNodeId << "|" << reason;
+        if (!meta.empty())
+        {
+            oss << "|" << meta;
+        }
         EmitDebugTrace(oss.str(), nullptr);
     };
 
@@ -432,7 +436,12 @@ Cc2420Phy::EvaluateReceptionFrom(Ptr<Cc2420Phy> txPhy,
     }
     if (rssiDbm < m_rxSensitivityDbm)
     {
-        emitDrop("RxDropBelowSensitivity");
+        std::ostringstream meta;
+        meta << "rssiDbm=" << rssiDbm
+             << "|rxSensitivityDbm=" << m_rxSensitivityDbm
+             << "|snrDb=" << (rssiDbm - m_noiseFloorDbm)
+             << "|noiseFloorDbm=" << m_noiseFloorDbm;
+        emitDrop("RxDropBelowSensitivity", meta.str());
         return false;
     }
 
@@ -457,7 +466,12 @@ Cc2420Phy::EvaluateReceptionFrom(Ptr<Cc2420Phy> txPhy,
                          << " dB, BER=" << ber
                          << ", PER=" << per
                          << ", size=" << packetSizeBytes << " B");
-            emitDrop("RxDropBer");
+            std::ostringstream meta;
+            meta << "snrDb=" << snrDb
+                 << "|ber=" << ber
+                 << "|per=" << per
+                 << "|packetSize=" << packetSizeBytes;
+            emitDrop("RxDropBer", meta.str());
             lqi = 0;
             return false;
         }
