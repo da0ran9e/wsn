@@ -93,6 +93,15 @@ constexpr double UAV1_HOVER_TIME = 2.0;  // seconds - hover to broadcast fragmen
 constexpr double UAV2_SPEED = 20.0;  // m/s - slower flight speed
 constexpr double UAV2_HOVER_TIME = 0.0;  // seconds - no hovering
 
+// UAV2 coverage path strategy (Greedy Max-Coverage with Cost)
+constexpr bool UAV2_USE_NEW_ALGO = true;
+constexpr bool UAV2_USE_CENTROIDS = true;
+constexpr uint32_t UAV2_NUM_CENTROIDS_MAX = 8;
+constexpr uint32_t UAV2_KMEANS_MAX_ITER = 20;
+constexpr double UAV2_ALPHA = 1.0;
+constexpr double UAV2_SCORE_EPS = 1e-6;
+constexpr bool UAV2_USE_TRAVEL_TIME = true;
+
 inline int32_t
 ComputeDefaultHexGridOffset(uint32_t nodeCount)
 {
