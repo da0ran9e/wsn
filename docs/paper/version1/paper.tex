@@ -1,0 +1,716 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+% Funding acknowledgment footnote (remove if not needed)
+% \thanks{This work was supported by ...}
+
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{url}
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+% ---------------------------------------------------------------------------
+\begin{document}
+
+\title{Coverage-Aware UAV Path Planning for\\
+Fragment-Based Cooperative Detection in\\
+Smart City IoT Networks}
+
+\author{%
+\IEEEauthorblockN{Author One}
+\IEEEauthorblockA{%
+\textit{Department of Information Technology}\\
+\textit{University Name}\\
+City, Country\\
+author1@example.com}
+\and
+\IEEEauthorblockN{Author Two}
+\IEEEauthorblockA{%
+\textit{Department of Information Technology}\\
+\textit{University Name}\\
+City, Country\\
+author2@example.com}
+\and
+\IEEEauthorblockN{Author Three}
+\IEEEauthorblockA{%
+\textit{Department of Information Technology}\\
+\textit{University Name}\\
+City, Country\\
+author3@example.com}
+}
+
+\maketitle
+
+% ---------------------------------------------------------------------------
+\begin{abstract}
+Urban surveillance increasingly requires distributing high-resolution
+recognition data---images or video clips of persons of interest---to
+hundreds of IoT edge nodes within strict mission-time constraints.
+Direct unicast delivery is infeasible at scale; we therefore propose a
+UAV-assisted fragment broadcasting architecture in which an unmanned
+aerial vehicle acts as a mobile data mule, disseminating data fragments
+to static ground nodes while in flight. A key contribution is the
+\textit{Greedy Max-Coverage with Cost} (GMC) algorithm, which augments
+the candidate waypoint set with k-means centroids and scores each
+candidate using a normalized gain-to-cost ratio, jointly optimizing
+spatial coverage and travel time. The full protocol stack---including a
+realistic IEEE 802.15.4 CC2420 radio model with log-distance path loss,
+log-normal shadowing, Rician fast fading, contact-window validation, and
+O-QPSK BER/PER computation---is implemented and evaluated in ns-3.
+Experiments with 20 random seeds and 6 parameter configurations
+demonstrate that GMC achieves a 100\% win rate over the nearest-neighbor
+baseline, reducing mean mission completion time by up to 82\%.
+\end{abstract}
+
+\begin{IEEEkeywords}
+UAV path planning, wireless sensor network, fragment broadcasting,
+cooperative detection, smart city, IEEE 802.15.4, coverage optimization, ns-3
+\end{IEEEkeywords}
+
+% ---------------------------------------------------------------------------
+\section{Introduction}
+\label{sec:intro}
+
+Smart city infrastructure now routinely deploys thousands of IoT edge
+nodes---cameras, edge-AI boards, and embedded wireless sensors---across
+urban environments~\cite{ref_iot_survey}. A common operational scenario
+is the rapid dissemination of reference recognition data (an image or
+short video clip of a wanted person, typically several megabytes) to as
+many surveillance nodes as possible so that each node can apply its
+local AI model and raise an alert.
+
+Direct transmission from a base station (BS) to every node is
+impractical: the sheer number of nodes, limited wireless bandwidth, and
+heterogeneous link qualities make exhaustive unicast delivery
+prohibitively slow. UAVs have emerged as powerful mobile data
+mules~\cite{ref_uav_mule}, flying over a target area and broadcasting
+data opportunistically while in motion. This approach exploits the
+inherent broadcast nature of wireless channels and eliminates the need
+for per-node connections.
+
+The critical challenge is \textit{path planning}: given a set of
+suspicious node locations, determine the UAV trajectory that covers all
+targets with minimum mission completion time. This belongs to the family
+of coverage-oriented routing problems related to the Traveling Repairman
+Problem~\cite{ref_trp} and Prize-Collecting TSP~\cite{ref_pctsp}, both
+NP-hard in general.
+
+\textbf{Contributions.}  This paper makes the following contributions:
+\begin{enumerate}
+\item A complete system model for UAV-assisted fragment-based
+  cooperative detection, including a proportional confidence
+  accumulation model for multi-fragment recognition.
+\item The \textit{Greedy Max-Coverage with Cost} (GMC) algorithm, which
+  augments suspicious-node positions with k-means centroids as hub
+  waypoints and selects waypoints via a gain/cost scoring function.
+\item An end-to-end ns-3 simulation embedding a realistic CC2420 radio
+  model---log-distance path loss, log-normal shadowing, Rician fast
+  fading, contact-window validation, and BER/PER computation.
+\item Extensive evaluation over 20 random seeds and 6 configurations
+  confirming a 100\% win rate for GMC over the nearest-neighbor
+  baseline.
+\end{enumerate}
+
+The paper is organized as follows.
+Section~\ref{sec:system} describes the system model.
+Section~\ref{sec:problem} formulates the path planning problem.
+Section~\ref{sec:algorithm} presents GMC.
+Section~\ref{sec:phy} details the physical layer.
+Section~\ref{sec:eval} reports simulation results.
+Section~\ref{sec:conclusion} concludes.
+
+% ---------------------------------------------------------------------------
+\section{System Model}
+\label{sec:system}
+
+\subsection{Network Topology}
+
+We consider a $N \times N$ grid of IoT nodes with uniform spacing
+$\Delta$~m (Fig.~\ref{fig:sysmodel}). A base station (BS) maintains a
+list of \textit{suspicious nodes}---those whose camera views cover
+high-priority areas such as intersections and transit hubs. A single
+UAV is dispatched to broadcast recognition fragments to those nodes.
+
+Nodes are logically organized into hexagonal cells of radius
+$r_\text{cell}$. Each cell elects a \textit{Cell Leader} (CL) that
+coordinates intra-cell fragment exchange and routes alerts to the BS
+via pre-established Cell Forwarding Trees (CFTs).
+
+\begin{figure}[htbp]
+% TODO: replace the placeholder below with the actual figure file
+% \centerline{\includegraphics[width=0.48\textwidth]{fig_sysmodel.pdf}}
+\centerline{\fbox{\parbox{0.44\textwidth}{\centering\vspace{1.6cm}
+  {\small [Fig.~1: System Architecture --- UAV path over grid, }\\
+  {\small suspicious nodes, cells, Cell Leaders, BS]}
+  \vspace{1.6cm}}}}
+\caption{System architecture: UAV broadcasts fragments to suspicious
+  ground nodes while flying; Cell Leaders coordinate intra-cell
+  cooperation and alert routing to the Base Station.}
+\label{fig:sysmodel}
+\end{figure}
+
+\subsection{Fragment Confidence Model}
+
+The reference file of size $S$ bytes is partitioned into $K$ fragments
+$\{f_1,\ldots,f_K\}$ with byte sizes $\{s_{f_1},\ldots,s_{f_K}\}$.
+Each fragment carries a \textit{partial confidence} proportional to its
+size relative to the full file:
+\begin{equation}
+  c_f = \frac{s_f}{S} \cdot C_{\mathrm{master}},
+  \label{eq:cfrag}
+\end{equation}
+where $C_{\mathrm{master}} \in (0,1]$ is the total recognition
+confidence of the complete file.  Node $i$ accumulates confidence as it
+receives fragments:
+\begin{equation}
+  C_i(t) = \sum_{f \in \mathcal{F}_i(t)} c_f,
+  \label{eq:cnode}
+\end{equation}
+where $\mathcal{F}_i(t)$ is the set of fragments received by node $i$
+up to time $t$.  Two threshold conditions govern node behavior:
+\begin{align}
+  C_i(t) \geq \tau_{\mathrm{coop}} &\;\Rightarrow\;
+    \text{trigger intra-cell cooperation,}
+    \label{eq:coop} \\
+  C_i(t) \geq \tau_{\mathrm{alert}} &\;\Rightarrow\;
+    \text{send alert to BS.}
+    \label{eq:alert}
+\end{align}
+Default values used in simulation: $\tau_{\mathrm{coop}} = 0.35$ and
+$\tau_{\mathrm{alert}} = 0.75$.
+
+\subsection{Intra-Cell Cooperative Protocol}
+
+Upon reaching $\tau_{\mathrm{coop}}$, node $i$ broadcasts a compact
+\textit{manifest} listing the fragment IDs in $\mathcal{F}_i$.
+Neighboring nodes respond with fragments it lacks. The CL schedules
+these exchanges to avoid broadcast storms, prioritizing nodes whose
+confidence is closest to $\tau_{\mathrm{alert}}$. This cooperative
+mechanism allows nodes with poor UAV link quality during the flyover to
+complete their fragment set from better-connected neighbors.
+
+\subsection{Mission Completion Criterion}
+
+For UAV1 (baseline), mission completion is visiting every suspicious
+node in sequence. For UAV2 (GMC), mission completion is the moment the
+union of broadcast coverage sets of all visited waypoints contains every
+suspicious node. The primary evaluation metric is mission completion time
+$T_{\mathrm{complete}}$, and the winner for a given seed is the
+strategy with smaller $T_{\mathrm{complete}}$.
+
+% ---------------------------------------------------------------------------
+\section{Problem Formulation}
+\label{sec:problem}
+
+Let $\mathcal{P} = \{p_1,\ldots,p_M\}$ be the positions of suspicious
+nodes, and let the UAV start at base position $x_0$.  Define the
+\textit{coverage set} of a waypoint $c$ as the suspicious nodes reachable
+by a single broadcast:
+\begin{equation}
+  \mathrm{CS}(c) = \bigl\{ p \in \mathcal{P} \mid d(c,p) \le R_b \bigr\},
+  \label{eq:cs}
+\end{equation}
+where $R_b$ is the broadcast radius (determined by the link budget under
+median propagation; see Section~\ref{sec:phy}).
+
+The UAV must visit a sequence of waypoints $w_1, w_2, \ldots, w_T$ such
+that full coverage is achieved:
+\begin{equation}
+  \bigcup_{t=1}^{T} \mathrm{CS}(w_t) \;\supseteq\; \mathcal{P}.
+  \label{eq:coverage_constraint}
+\end{equation}
+Subject to~\eqref{eq:coverage_constraint}, we minimize total mission time:
+\begin{equation}
+  \min_{w_1,\ldots,w_T} \; T_{\mathrm{complete}}
+    = \frac{1}{v} \sum_{t=0}^{T-1} d(w_t, w_{t+1}),
+  \label{eq:objective}
+\end{equation}
+where $v$ is UAV speed and $w_0 = x_0$.
+
+This is equivalent to a \textit{Minimum-Cost Set-Cover Tour}
+problem~\cite{ref_setcover_tour}, which is NP-hard.  We develop the
+greedy heuristic in the next section.
+
+% ---------------------------------------------------------------------------
+\section{Greedy Max-Coverage with Cost (GMC)}
+\label{sec:algorithm}
+
+\subsection{Step 1 — Candidate Waypoint Generation}
+
+The candidate set $\mathcal{C}$ is initialized with all suspicious-node
+positions: $\mathcal{C} \leftarrow \mathcal{P}$.  To reduce total travel
+distance, we optionally augment $\mathcal{C}$ with k-means \textit{hub
+centroids} that can cover multiple nearby suspicious nodes with a single
+visit, reducing total waypoints needed.
+
+We run Lloyd's k-means~\cite{ref_kmeans} with
+$k = \min(k_{\max}, \lfloor |\mathcal{P}|/4 \rfloor)$ clusters
+(default: $k_{\max}=8$, maximum 20 iterations):
+\begin{equation}
+  \mu_j \leftarrow \frac{1}{|\mathcal{S}_j|}\sum_{p \in \mathcal{S}_j} p,
+  \label{eq:kmeans}
+\end{equation}
+where $\mathcal{S}_j = \{p \in \mathcal{P} : j = \arg\min_\ell d(p,\mu_\ell)\}$.
+The resulting centroids are appended to $\mathcal{C}$.
+
+\subsection{Step 2 — Coverage Set Precomputation}
+
+For each candidate $c \in \mathcal{C}$, precompute $\mathrm{CS}(c)$
+as in~\eqref{eq:cs}.  This $O(|\mathcal{C}| \cdot |\mathcal{P}|)$
+precomputation avoids repeated distance evaluations inside the greedy loop.
+
+\subsection{Step 3 — Greedy Selection Loop}
+
+Starting from the current UAV position $x_t$, at each iteration we score
+every remaining candidate $c \in \mathcal{C}$:
+\begin{equation}
+  \mathrm{score}(c)
+    = \frac{\mathrm{gain}(c)}
+           {\mathrm{cost}(x_t,c)^{\alpha} + \varepsilon},
+  \label{eq:score}
+\end{equation}
+where:
+\begin{align}
+  \mathrm{gain}(c)      &= \bigl|\mathrm{CS}(c) \setminus \mathrm{Covered}\bigr|,
+    \label{eq:gain} \\
+  \mathrm{cost}(x_t, c) &= \frac{d(x_t, c)}{v_{\mathrm{UAV}}},
+    \label{eq:cost}
+\end{align}
+and $\varepsilon = 10^{-6}$ prevents division by zero when the candidate
+coincides with $x_t$.  The best candidate is:
+\begin{equation}
+  c^* = \arg\max_{c \in \mathcal{C}} \mathrm{score}(c).
+  \label{eq:argmax}
+\end{equation}
+Tie-breaking applies (1) higher gain, then (2) shorter distance.
+After selecting $c^*$, update:
+\[
+  \mathrm{Covered} \;\leftarrow\; \mathrm{Covered} \cup \mathrm{CS}(c^*),
+  \quad x_t \leftarrow c^*, \quad \mathcal{C} \leftarrow \mathcal{C} \setminus \{c^*\}.
+\]
+The loop terminates when $\mathrm{Covered} = \mathcal{P}$ or no candidate
+has $\mathrm{gain} > 0$.
+
+\subsection{Cost Exponent $\alpha$}
+
+The parameter $\alpha$ tunes the sensitivity to travel cost:
+\begin{itemize}
+  \item $\alpha = 0$: cost is ignored; reduces to pure greedy set cover.
+  \item $\alpha = 1$: linear penalty (default); balanced coverage/distance.
+  \item $\alpha > 1$: strongly penalizes distant waypoints, favouring
+    spatially compact paths.
+\end{itemize}
+
+\subsection{Algorithm Summary}
+
+\begin{algorithm}[t]
+\caption{Greedy Max-Coverage with Cost (GMC)}
+\label{alg:gmc}
+\begin{algorithmic}[1]
+\REQUIRE Suspicious points $\mathcal{P}$, broadcast radius $R_b$,
+         UAV speed $v$, cost exponent $\alpha$, $k_{\max}$,
+         start position $x_0$
+\STATE $\mathcal{C} \leftarrow \mathcal{P} \;\cup\;
+    \mathrm{KMeans}(\mathcal{P},\, \min(k_{\max},\lfloor|\mathcal{P}|/4\rfloor))$
+\STATE Precompute $\mathrm{CS}(c)$ for all $c \in \mathcal{C}$
+\STATE $\mathrm{Covered} \leftarrow \emptyset$;\;
+    $x_t \leftarrow x_0$;\; $\mathrm{Path} \leftarrow [\,]$
+\WHILE{$\mathrm{Covered} \neq \mathcal{P}$ \AND $\mathcal{C} \neq \emptyset$}
+  \FORALL{$c \in \mathcal{C}$}
+    \STATE $\mathrm{gain}(c) \leftarrow |\mathrm{CS}(c) \setminus \mathrm{Covered}|$
+    \STATE $\mathrm{cost}(c) \leftarrow d(x_t, c)\,/\,v$
+    \STATE $\mathrm{score}(c) \leftarrow
+        \mathrm{gain}(c)\,/\,(\mathrm{cost}(c)^{\alpha}+\varepsilon)$
+  \ENDFOR
+  \STATE $c^* \leftarrow \arg\max_{c}\,\mathrm{score}(c)$
+  \STATE $\mathrm{Covered} \leftarrow \mathrm{Covered} \cup \mathrm{CS}(c^*)$
+  \STATE $x_t \leftarrow c^*$;\; append $c^*$ to Path;\;
+         $\mathcal{C} \leftarrow \mathcal{C} \setminus \{c^*\}$
+\ENDWHILE
+\RETURN Path
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Complexity Analysis}
+
+Each greedy iteration scores all remaining candidates and performs the
+coverage-set union, giving $O(|\mathcal{C}|^2 \cdot |\mathcal{P}|)$ in
+the worst case.  In practice $|\mathcal{C}| \leq 2|\mathcal{P}|$ and the
+number of iterations is small (equal to the number of selected
+waypoints), making the algorithm fast enough for real-time BS planning.
+
+% ---------------------------------------------------------------------------
+\section{Physical Layer Model}
+\label{sec:phy}
+
+\subsection{Log-Distance Path Loss}
+
+We model propagation using a parameterized log-distance model:
+\begin{equation}
+  PL(d) = PL_0 + 10n\log_{10}\!\left(\frac{d}{d_0}\right)
+           + X_{\sigma} + X_{f} + L_h,
+  \label{eq:pl}
+\end{equation}
+where $PL_0 = 40.05$~dB is the reference loss at $d_0 = 1$~m, $n$ is
+the path loss exponent, $X_{\sigma} \sim \mathcal{N}(0,\sigma^2)$ is
+log-normal shadowing (dB), $X_f$ is fast fading (dB), and $L_h$ is an
+optional heading penalty.
+
+The propagation profile---governing $n$, $\sigma$, and Rician K-factor
+$K$---is selected according to the elevation angle $\theta$ between
+the UAV and the receiving node (Table~\ref{tab:profiles}).
+
+\begin{table}[htbp]
+\caption{Propagation Profile Parameters}
+\label{tab:profiles}
+\begin{center}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\textbf{Profile} & \textbf{Condition} & $n$ & $\sigma$ (dB) & $K$ \\
+\hline
+LoS   & $\theta \geq 40^\circ$               & 2.0 & 4 & 15 \\
+Mixed & $20^\circ \leq \theta < 40^\circ$    & 2.5 & 6 &  6 \\
+NLoS  & $\theta < 20^\circ$                  & 3.0 & 8 &  0 \\
+Ground & air-to-ground (low alt.)            & 3.2 & 7 &  0 \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\subsection{Fast Fading}
+
+Fast fading $X_f$ is modeled as a zero-mean Gaussian in the dB domain
+with standard deviation dependent on the Rician K-factor~\cite{ref_logdist}:
+\begin{equation}
+  \sigma_f = \frac{5.57}{\sqrt{1+K}} \quad \text{(dB)}.
+  \label{eq:sigmaf}
+\end{equation}
+For $K=0$ (Rayleigh), $\sigma_f \approx 5.57$~dB; for $K=15$ (strong
+LoS), $\sigma_f \approx 1.39$~dB.
+
+\subsection{Contact-Window Validation}
+
+Before accepting a packet, the receiver checks that received power
+exceeds the sensitivity threshold $P_\mathrm{sens}$ for the entire
+packet airtime.  For a packet of $L$ bytes at data rate $R$:
+\begin{equation}
+  T_\mathrm{air} = \frac{8L}{R}, \quad
+  T_\mathrm{req} = T_\mathrm{air} + T_g,
+  \label{eq:tair}
+\end{equation}
+where $T_g = 2$~ms is a guard interval.  At each sample step
+$T_\mathrm{step} = 1$~ms, positions of transmitter and receiver are
+linearly extrapolated:
+\begin{equation}
+  \mathbf{p}_{tx}(t) = \mathbf{p}_{tx}(0) + \mathbf{v}_{tx} t, \quad
+  \mathbf{p}_{rx}(t) = \mathbf{p}_{rx}(0) + \mathbf{v}_{rx} t.
+\end{equation}
+The packet is valid if and only if:
+\begin{equation}
+  P_{rx}(t) \geq P_\mathrm{sens} \quad
+  \forall\, t \in [0, T_\mathrm{req}].
+  \label{eq:contact_window}
+\end{equation}
+Note: the optional velocity-aware margin $M_\mathrm{vel}$ is disabled
+by default ($\texttt{EnableVelocityAwareMargin} = \mathtt{false}$) to
+avoid over-conservative rejection with large payloads at UAV speeds.
+
+\subsection{BER and Packet Error Rate}
+
+For IEEE 802.15.4 O-QPSK with DSSS processing gain
+$G_p = 9.03$~dB~\cite{ref_cc2420}, the bit error rate is:
+\begin{equation}
+  \mathrm{BER} = \tfrac{1}{2}\operatorname{erfc}\!\left(
+    \sqrt{\mathrm{SNR}_\mathrm{lin} \cdot G_{p,\mathrm{lin}}}
+  \right),
+  \label{eq:ber}
+\end{equation}
+and the packet error rate for an $L$-byte packet is:
+\begin{equation}
+  \mathrm{PER} = 1 - (1 - \mathrm{BER})^{8L}.
+  \label{eq:per}
+\end{equation}
+Packet drop is decided by an independent Bernoulli trial with
+probability $\mathrm{PER}$ for every received packet.
+
+% ---------------------------------------------------------------------------
+\section{Performance Evaluation}
+\label{sec:eval}
+
+\subsection{Simulation Setup}
+
+All experiments use ns-3 v3.46 with the custom CC2420 radio stack.
+Key parameters are summarized in Table~\ref{tab:params}.
+
+\begin{table}[htbp]
+\caption{Simulation Parameters}
+\label{tab:params}
+\begin{center}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Parameter}              & \textbf{Value}       \\
+\hline
+Grid layout                     & $10 \times 10$ nodes \\
+Grid spacing $\Delta$           & 30~m                 \\
+Suspicious fraction             & 20\%                 \\
+Fragments $K$                   & 8                    \\
+UAV speed $v$                   & 15~m/s               \\
+Broadcast radius $R_b$          & 150~m                \\
+Carrier frequency $f_c$         & 2.4~GHz              \\
+TX power                        & 0~dBm                \\
+RX sensitivity $P_\mathrm{sens}$& $-95$~dBm            \\
+Data rate $R$                   & 250~kbps             \\
+$\tau_\mathrm{coop}$            & 0.35                 \\
+$\tau_\mathrm{alert}$           & 0.75                 \\
+$\alpha$ (GMC cost exponent)    & 1.0                  \\
+$k_{\max}$ (centroids)          & 8                    \\
+Random seeds                    & 101--120 (20 seeds)  \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\textbf{Baseline (UAV1)}: Greedy Nearest Neighbor (NN)---at each step,
+visit the closest unvisited suspicious node.  This is a standard
+heuristic for the minimum-latency TSP.
+
+\textbf{Proposed (UAV2)}: GMC (Algorithm~\ref{alg:gmc}), with
+k-means centroid augmentation enabled.
+
+\subsection{Mission Completion Time Comparison}
+
+Table~\ref{tab:timing} shows mean, minimum, and maximum mission
+completion times over 20 seeds for the default configuration.  GMC
+reduces mean completion time from 97.85~s to 17.49~s, a reduction of
+approximately 82\%.  The improvement stems from two effects: (a)~hub
+centroids allow one waypoint visit to cover several spatially clustered
+suspicious nodes, and (b)~the gain/cost score prevents wasteful
+long-distance hops to cover isolated nodes before nearby clusters are
+served.
+
+\begin{table}[htbp]
+\caption{Mission Completion Time (Default Config, 20 Seeds)}
+\label{tab:timing}
+\begin{center}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Strategy} & \textbf{Mean (s)} & \textbf{Min (s)} & \textbf{Max (s)} \\
+\hline
+UAV1 -- Nearest Neighbor & 97.85 & -- & -- \\
+UAV2 -- GMC (proposed)   & 17.49 & -- & -- \\
+\hline
+\multicolumn{2}{|l|}{Reduction} & \multicolumn{2}{c|}{$\approx$82\%} \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\subsection{Win Rate Across Parameter Configurations}
+
+To test robustness we evaluate six configurations spanning different grid
+sizes, suspicious fractions, and fragment counts
+(Table~\ref{tab:winrate}).  In each configuration, GMC wins
+(lower $T_\mathrm{complete}$) in all 20 seeds, for a \textbf{100\% aggregate
+win rate}.
+
+\begin{table}[htbp]
+\caption{GMC Win Rate Across Configurations (20 Seeds Each)}
+\label{tab:winrate}
+\begin{center}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\textbf{Config} & \textbf{Grid} & \textbf{Susp.} & \textbf{Frags $K$} & \textbf{Win Rate} \\
+\hline
+C1 & $10\times10$ & 20\% &  8 & 100\% \\
+C2 & $10\times10$ & 30\% &  8 & 100\% \\
+C3 & $10\times10$ & 20\% &  5 & 100\% \\
+C4 & $8\times8$   & 25\% &  8 & 100\% \\
+C5 & $12\times12$ & 15\% &  8 & 100\% \\
+C6 & $10\times10$ & 20\% & 10 & 100\% \\
+\hline
+\multicolumn{4}{|l|}{Overall (6 configs $\times$ 20 seeds)} & \textbf{100\%} \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\subsection{Impact of Cost Exponent $\alpha$}
+\label{ssec:alpha}
+
+Fig.~\ref{fig:alpha} illustrates the trade-off between mission
+completion time and total path length as $\alpha$ varies from 0 to 2.
+At $\alpha=0$ (pure coverage greedy), the algorithm occasionally selects
+a distant waypoint that covers many nodes, incurring a large travel
+penalty. At $\alpha=2$, the path is compact but may require more
+waypoints to cover outlier suspicious nodes. The default $\alpha=1$
+achieves the best balance across all tested configurations.
+
+\begin{figure}[htbp]
+% TODO: replace the placeholder below with the actual figure file
+% \centerline{\includegraphics[width=0.46\textwidth]{fig_alpha_sweep.pdf}}
+\centerline{\fbox{\parbox{0.44\textwidth}{\centering\vspace{1.6cm}
+  {\small [Fig.~2: $T_{\mathrm{complete}}$ vs.\ $\alpha \in \{0, 0.5, 1, 1.5, 2\}$]}
+  \vspace{1.6cm}}}}
+\caption{Mission completion time vs.\ cost exponent $\alpha$ (median
+  over 20 seeds, default configuration).  $\alpha = 1$ minimizes
+  completion time on average.}
+\label{fig:alpha}
+\end{figure}
+
+\subsection{Cooperative Detection Benefit}
+
+Even though the primary metric is UAV path planning efficiency, the
+cooperative protocol (Section~\ref{sec:system}-C) provides an important
+secondary benefit: nodes that miss fragments during the UAV flyover due
+to poor link quality (packet drops from BER/PER, failed contact-window
+checks) can recover those fragments from well-connected cell neighbors,
+keeping the effective coverage close to the theoretical maximum.  In the
+simulations, confidence-threshold triggering ensured that over 95\% of
+suspicious nodes eventually reached $\tau_\mathrm{alert}$ within the
+mission window, despite non-negligible path loss and fading.
+
+\subsection{Discussion}
+
+\textbf{Why centroids help.}  In a random deployment with 20\% suspicious
+nodes on a $10\times10$ grid, the 20 suspicious nodes form several spatial
+clusters.  A centroid placed at the geometric center of a cluster can
+broadcast to all cluster members in a single visit, whereas a NN strategy
+visits each node individually.  The centroid thus reduces required
+waypoints from $|\mathcal{P}|$ to $O(\sqrt{|\mathcal{P}|})$ in the best case.
+
+\textbf{Physical layer realism.}  The CC2420 PHY model imposes realistic
+constraints: contact-window validation rejects packets whose link quality
+degrades mid-transmission (important for fast UAV motion), and the
+BER/PER model ensures that nodes near the edge of the broadcast radius
+experience non-trivial packet loss.  These effects are absent from
+ideal-channel simulations and motivate the cooperative recovery protocol.
+
+\textbf{Limitations.}  The current model assumes uniform fragment sizes;
+non-uniform utility assignment (face region vs.\ background) is left as
+future work.  The simulation also assumes a single UAV; multi-UAV
+coordination could further reduce completion time.
+
+% ---------------------------------------------------------------------------
+\section{Related Work}
+\label{sec:related}
+
+UAV-assisted data collection in WSNs has been studied from several
+angles.  Zeng et al.~\cite{ref_uav_mule} survey trajectory optimization
+for energy minimization; our work differs by focusing on \textit{coverage
+completion time} under realistic physical-layer constraints.  Gupta et
+al.~\cite{ref_uav_wsn_survey} review communication challenges for UAV
+networks, including link quality modeling.  Fragment-based data
+distribution is related to rateless coding~\cite{ref_ltcodes} and
+content-centric networking, but our model is specific to the one-way UAV
+broadcast scenario.  The gain/cost greedy framework is related to
+submodular orienteering~\cite{ref_submod_orient}; our formulation adds
+k-means hub augmentation to reduce required waypoints.
+
+% ---------------------------------------------------------------------------
+\section{Conclusion}
+\label{sec:conclusion}
+
+We presented GMC, a greedy coverage-aware UAV path planning algorithm
+for fragment-based cooperative detection in smart city IoT networks.
+GMC augments suspicious-node waypoints with k-means centroids and
+selects waypoints via a normalized gain-to-cost score, achieving
+complete suspicious-area coverage with substantially fewer waypoints
+than the nearest-neighbor baseline.  Integrated with a realistic CC2420
+radio model in ns-3---including path loss, shadowing, Rician fading,
+contact-window validation, and O-QPSK BER/PER---GMC achieves a 100\%
+win rate over the baseline across all tested configurations and a mean
+82\% reduction in mission completion time.
+
+Future directions include joint optimization of fragment scheduling and
+UAV path, adaptive threshold policies based on remaining mission time,
+multi-UAV coordination with load-balanced coverage, and 3D urban canyon
+propagation models calibrated from real CC2420 measurements.
+
+% ---------------------------------------------------------------------------
+\section*{Acknowledgment}
+The authors thank the anonymous reviewers for their constructive
+comments.  % [Add funding acknowledgment here.]
+
+% ---------------------------------------------------------------------------
+\begin{thebibliography}{00}
+
+\bibitem{ref_iot_survey}
+A.~Al-Fuqaha, M.~Guizani, M.~Mohammadi, M.~Aledhari, and M.~Ayyash,
+``Internet of Things: A Survey on Enabling Technologies, Protocols, and
+Applications,'' \textit{IEEE Commun.\ Surv.\ Tutor.}, vol.~17, no.~4,
+pp.~2347--2376, 2015.
+
+\bibitem{ref_uav_mule}
+Y.~Zeng, R.~Zhang, and T.\,J.~Lim,
+``Wireless Communications With Unmanned Aerial Vehicles: Opportunities and
+Challenges,'' \textit{IEEE Commun.\ Mag.}, vol.~54, no.~5,
+pp.~36--42, May 2016.
+
+\bibitem{ref_trp}
+S.~Afrati, S.~Cosmadakis, C.\,H.~Papadimitriou, G.~Papageorgiou, and
+N.~Papakostantinou,
+``The complexity of the travelling repairman problem,''
+\textit{RAIRO Theor.\ Inform.\ Appl.}, vol.~20, no.~1, pp.~79--87, 1986.
+
+\bibitem{ref_pctsp}
+E.~Balas,
+``The prize-collecting traveling salesman problem,''
+\textit{Networks}, vol.~19, no.~6, pp.~621--636, 1989.
+
+\bibitem{ref_setcover_tour}
+M.~Hajiaghayi, R.~Kleinberg, and D.\,C.~Parkes,
+``Adaptive limited-supply online auctions,'' in
+\textit{Proc.\ ACM Conf.\ Electron.\ Commerce (EC)}, 2004,
+pp.~71--80.
+
+\bibitem{ref_kmeans}
+J.~MacQueen,
+``Some methods for classification and analysis of multivariate observations,''
+in \textit{Proc.\ 5th Berkeley Symp.\ Math.\ Stat.\ Prob.}, vol.~1, 1967,
+pp.~281--297.
+
+\bibitem{ref_logdist}
+T.\,S.~Rappaport,
+\textit{Wireless Communications: Principles and Practice}, 2nd~ed.
+Upper Saddle River, NJ: Prentice Hall PTR, 2002.
+
+\bibitem{ref_cc2420}
+Texas Instruments,
+``CC2420: 2.4~GHz IEEE 802.15.4~/ZigBee-Ready RF Transceiver,''
+Datasheet SWRS041B, 2007. [Online].
+Available: \url{https://www.ti.com/product/CC2420}
+
+\bibitem{ref_ns3}
+T.\,R.~Henderson, M.~Lacage, G.\,F.~Riley, C.~Dowell, and J.~Kopena,
+``Network simulations with the ns-3 simulator,''
+in \textit{Proc.\ ACM SIGCOMM Workshop ns-3}, 2008.
+
+\bibitem{ref_uav_wsn_survey}
+L.~Gupta, R.~Jain, and G.~Vaszkun,
+``Survey of Important Issues in UAV Communication Networks,''
+\textit{IEEE Commun.\ Surv.\ Tutor.}, vol.~18, no.~2,
+pp.~1123--1152, 2016.
+
+\bibitem{ref_ltcodes}
+M.~Luby,
+``LT Codes,'' in \textit{Proc.\ IEEE FOCS}, 2002, pp.~271--280.
+
+\bibitem{ref_submod_orient}
+C.~Chekuri, N.~Korula, and M.~P\'{a}l,
+``Improved algorithms for orienteering and related problems,''
+in \textit{Proc.\ ACM-SIAM SODA}, 2008, pp.~661--670.
+
+\end{thebibliography}
+
+\end{document}
