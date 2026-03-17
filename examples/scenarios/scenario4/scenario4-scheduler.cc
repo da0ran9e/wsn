@@ -37,20 +37,24 @@ ScheduleScenario4Events(const Scenario4RunConfig& config)
 {
     // Step 1: Ground nodes startup discovery phase
     Simulator::Schedule(Seconds(config.startupPhaseDuration), &routing::RunStartupPhase);
+
+    // Step 2: Run deferred BS post-init tasks (fragment generation + UAV path planning).
+    Simulator::Schedule(Seconds(config.startupPhaseDuration + 0.01),
+                        &routing::RunBaseStationPostInitTasks);
     
-    // Step 2: BS processes initial topology and plans UAV paths (happens in Initialize())
-    Simulator::Schedule(Seconds(config.startupPhaseDuration + 0.01), &routing::TickBaseStationControl);
+    // Step 3: BS control tick for latest shared topology.
+    Simulator::Schedule(Seconds(config.startupPhaseDuration + 0.02), &routing::TickBaseStationControl);
     
-    // Step 3: Initialize UAV flight - UAVs start flying to waypoints
+    // Step 4: Initialize UAV flight - UAVs start flying to waypoints
     Simulator::Schedule(Seconds(config.startupPhaseDuration + 0.1), &routing::InitializeUavFlight);
     
-    // Step 4: Initialize UAV fragment broadcast
+    // Step 5: Initialize UAV fragment broadcast
     Simulator::Schedule(Seconds(config.startupPhaseDuration + 0.2), &routing::InitializeUavBroadcast);
     
-    // Step 5: Initialize cell cooperation timeout (force cooperation after delay)
+    // Step 6: Initialize cell cooperation timeout (force cooperation after delay)
     Simulator::Schedule(Seconds(config.startupPhaseDuration + 0.3), &routing::InitializeCellCooperationTimeout);
     
-    // Step 6: Periodic topology updates and BS control ticks
+    // Step 7: Periodic topology updates and BS control ticks
     Simulator::Schedule(Seconds(config.startupPhaseDuration + 0.5),
                         &SchedulePeriodicTopologyTick,
                         1.0,
@@ -63,6 +67,7 @@ ScheduleScenario4Events(const Scenario4RunConfig& config)
 void
 ScheduleSingleScenario4Event(const Scenario4RunConfig& config)
 {
+    Simulator::Schedule(Seconds(config.startupPhaseDuration + 0.01), &routing::RunBaseStationPostInitTasks);
     Simulator::Schedule(Seconds(config.startupPhaseDuration + 0.1), &routing::InitializeUavFlight);
     Simulator::Schedule(Seconds(config.startupPhaseDuration + 0.2), &routing::InitializeUavBroadcast);
     Simulator::Schedule(Seconds(config.startupPhaseDuration + 0.3), &routing::InitializeCellCooperationTimeout);

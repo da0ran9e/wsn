@@ -117,6 +117,93 @@ IsAlertTriggered(double confidence, double threshold)
     return confidence >= threshold;
 }
 
+// ===== RADIO TRANSMISSION TIME HELPERS =====
+
+/**
+ * Calculate radio transmission contact time for a packet.
+ * 
+ * Formula: transmission_time = (packet_size_bits / bitrate_bps)
+ * 
+ * For CC2420 (802.15.4 ZigBee radio):
+ * - Physical bitrate: 250 kbps (250,000 bits per second)
+ * - Frame overhead: MAC header (up to 25 bytes)
+ * - Max frame: 127 bytes (11 bytes header + 116 bytes payload)
+ * 
+ * Example:
+ * - Packet size: 100 bytes
+ * - Total bits: 100 * 8 = 800 bits
+ * - Contact time: 800 / 250,000 = 3.2 milliseconds
+ * 
+ * \param packetSizeBytes Packet size in bytes
+ * \param bitrateBps Physical layer bitrate in bits per second (default: 250,000 for CC2420)
+ * \return Contact/transmission time in seconds
+ */
+inline double
+CalculateTransmissionTime(uint32_t packetSizeBytes, uint32_t bitrateBps = 250000)
+{
+    if (bitrateBps == 0)
+    {
+        return 0.0;
+    }
+    
+    // Total bits = packet size in bytes * 8 bits per byte
+    uint64_t totalBits = static_cast<uint64_t>(packetSizeBytes) * 8;
+    
+    // Contact time = total bits / bitrate
+    return static_cast<double>(totalBits) / static_cast<double>(bitrateBps);
+}
+
+/**
+ * Calculate total transmission time for sending entire master file.
+ * 
+ * Used for UAV1 hover time calculation.
+ * Master file size = masterFileConfidence + fragment metadata
+ * 
+ * \param masterFileSizeBytes Total master file size in bytes
+ * \param bitrateBps Physical layer bitrate (default: 250,000 for CC2420)
+ * \return Total transmission time in seconds
+ */
+inline double
+CalculateMasterFileTransmissionTime(uint32_t masterFileSizeBytes, uint32_t bitrateBps = 250000)
+{
+    return CalculateTransmissionTime(masterFileSizeBytes, bitrateBps);
+}
+
+/**
+ * Calculate transmission time for a single fragment packet.
+ * 
+ * Fragment packet size = fragment data + header
+ * 
+ * \param fragmentPixelCount Number of pixels in fragment
+ * \param bytesPerPixel Bytes per pixel (typically 3 for RGB)
+ * \param bitrateBps Physical layer bitrate (default: 250,000 for CC2420)
+ * \return Transmission time for one fragment in seconds
+ */
+inline double
+CalculateFragmentTransmissionTime(uint32_t fragmentPixelCount, 
+                                  uint32_t bytesPerPixel,
+                                  uint32_t bitrateBps = 250000)
+{
+    uint32_t fragmentSizeBytes = fragmentPixelCount * bytesPerPixel;
+    return CalculateTransmissionTime(fragmentSizeBytes, bitrateBps);
+}
+
+/**
+ * Calculate CC2420-specific transmission time.
+ * 
+ * CC2420 is IEEE 802.15.4 compliant with 250 kbps bitrate.
+ * Reference: cc2420-example.cc shows frame TX time: (127 * 8) / 250.0 = 4.064 ms
+ * 
+ * \param packetSizeBytes Packet size in bytes
+ * \return Contact time in seconds
+ */
+inline double
+CalculateCc2420TransmissionTime(uint32_t packetSizeBytes)
+{
+    // CC2420 bitrate: 250 kbps
+    return CalculateTransmissionTime(packetSizeBytes, 250000);
+}
+
 } // namespace helper
 } // namespace scenario4
 } // namespace wsn

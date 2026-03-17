@@ -92,6 +92,15 @@ public:
      * Initialize BS and register callbacks.
      */
     void Initialize();
+
+    /**
+     * Execute post-initialization tasks deferred to scheduler.
+     *
+     * Includes:
+     * - Step 10: fragment generation for UAV broadcast
+     * - Step 11: UAV flight path planning
+     */
+    void RunPostInitScheduledTasks();
     
     /**
      * Receive topology snapshot from ground network.

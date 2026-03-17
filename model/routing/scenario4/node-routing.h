@@ -18,6 +18,11 @@ namespace routing {
 void InitializeBaseStation(uint32_t nodeId);
 
 /**
+ * Execute deferred BS post-init tasks (Step 10-11).
+ */
+void RunBaseStationPostInitTasks();
+
+/**
  * Trigger one BS control tick.
  * BS will pull latest shared topology snapshot if available.
  */

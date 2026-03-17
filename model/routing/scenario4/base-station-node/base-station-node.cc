@@ -1028,9 +1028,25 @@ PlanUavFlightPathsForBsInit()
     const double altitude = ::ns3::wsn::scenario4::params::BS_INIT_UAV_PATROL_ALTITUDE;
     const double broadcastRadius = ::ns3::wsn::scenario4::params::UAV_BROADCAST_RADIUS;
     
-    // UAV1: Fast speed with hover time
+    // UAV1: Fast speed with hover time = TX time to send the whole master file.
+    // masterFileBytes is derived from generated fragment pool.
     const double uav1Speed = ::ns3::wsn::scenario4::params::UAV1_SPEED;
-    const double uav1HoverTime = ::ns3::wsn::scenario4::params::UAV1_HOVER_TIME;
+    uint64_t masterFileBytes = 0;
+    {
+        const auto& generated = GetBsGeneratedFragments();
+        for (const auto& [fid, frag] : generated.fragments)
+        {
+            (void)fid;
+            masterFileBytes += static_cast<uint64_t>(frag.pixelCount)
+                               * static_cast<uint64_t>(::ns3::wsn::scenario4::params::DEFAULT_BYTES_PER_PIXEL);
+        }
+    }
+    const double uav1HoverTime = (masterFileBytes > 0)
+        ? helper::CalculateMasterFileTransmissionTime(
+              static_cast<uint32_t>(std::min<uint64_t>(masterFileBytes,
+                                                       static_cast<uint64_t>(std::numeric_limits<uint32_t>::max()))),
+              ::ns3::wsn::scenario4::params::RADIO_BITRATE_BPS)
+        : ::ns3::wsn::scenario4::params::UAV1_HOVER_TIME;
     
     // UAV2: Slow speed without hover time
     const double uav2Speed = ::ns3::wsn::scenario4::params::UAV2_SPEED;
@@ -1049,6 +1065,9 @@ PlanUavFlightPathsForBsInit()
     
     NS_LOG_INFO("[BS-UAV-PATH] UAV1: Planning path using Greedy Nearest Neighbor"
                 << " | suspiciousNodes=" << suspiciousNodePositions.size()
+                << " | masterFileBytes=" << masterFileBytes
+                << " | radioBitrate=" << ::ns3::wsn::scenario4::params::RADIO_BITRATE_BPS << "bps"
+                << " | computedHoverTxTime=" << std::fixed << std::setprecision(3) << uav1HoverTime << "s"
                 << " | startPos=(" << std::fixed << std::setprecision(1) 
                 << uav1StartPos.x << "," << uav1StartPos.y << "," << uav1StartPos.z << ")");
     
@@ -1683,17 +1702,23 @@ routing::BaseStationNode::Initialize()
         *::ns3::wsn::scenario4::params::g_resultFileStream << std::endl << std::endl;
         ::ns3::wsn::scenario4::params::g_resultFileStream->flush();
     }
+}
+
+void
+routing::BaseStationNode::RunPostInitScheduledTasks()
+{
+    NS_LOG_FUNCTION(this);
 
     // Step 10: BS generate fragments để UAV broadcast
     GenerateFragmentsForBsInit();
-    if (::ns3::wsn::scenario4::params::g_resultFileStream && 
+    if (::ns3::wsn::scenario4::params::g_resultFileStream &&
         ::ns3::wsn::scenario4::params::g_resultFileStream->is_open())
     {
         const FragmentCollection& fragments = GetBsGeneratedFragments();
         *::ns3::wsn::scenario4::params::g_resultFileStream
             << "Step 10: Generate Fragments" << std::endl
             << "  Total fragments: " << fragments.fragments.size() << std::endl
-            << "  Total confidence: " << std::fixed << std::setprecision(3) 
+            << "  Total confidence: " << std::fixed << std::setprecision(3)
             << fragments.totalConfidence << std::endl
             << std::endl;
         ::ns3::wsn::scenario4::params::g_resultFileStream->flush();
@@ -1701,22 +1726,22 @@ routing::BaseStationNode::Initialize()
 
     // Step 11: lên lịch đường bay cho UAV
     PlanUavFlightPathsForBsInit();
-    if (::ns3::wsn::scenario4::params::g_resultFileStream && 
+    if (::ns3::wsn::scenario4::params::g_resultFileStream &&
         ::ns3::wsn::scenario4::params::g_resultFileStream->is_open())
     {
         const auto& uavPaths = GetUavFlightPaths();
         *::ns3::wsn::scenario4::params::g_resultFileStream
             << "Step 11: Plan UAV Flight Paths" << std::endl
             << "  Total UAVs: " << uavPaths.size() << std::endl;
-        
+
         for (const auto& [uavId, path] : uavPaths)
         {
             *::ns3::wsn::scenario4::params::g_resultFileStream
                 << "  UAV " << uavId << ":" << std::endl
                 << "    Waypoints: " << path.waypoints.size() << std::endl
-                << "    Total time: " << std::fixed << std::setprecision(1) 
+                << "    Total time: " << std::fixed << std::setprecision(1)
                 << path.totalTime << "s" << std::endl;
-            
+
             // Calculate total distance
             double totalDist = 0.0;
             Ptr<Node> uavNode = NodeList::GetNode(uavId);
@@ -1734,20 +1759,10 @@ routing::BaseStationNode::Initialize()
                 }
             }
             *::ns3::wsn::scenario4::params::g_resultFileStream
-                << "    Total distance: " << std::fixed << std::setprecision(1) 
+                << "    Total distance: " << std::fixed << std::setprecision(1)
                 << totalDist << "m" << std::endl;
         }
         *::ns3::wsn::scenario4::params::g_resultFileStream << std::endl;
-        ::ns3::wsn::scenario4::params::g_resultFileStream->flush();
-    }
-
-    if (::ns3::wsn::scenario4::params::g_resultFileStream && 
-        ::ns3::wsn::scenario4::params::g_resultFileStream->is_open())
-    {
-        *::ns3::wsn::scenario4::params::g_resultFileStream
-            << "=== Base Station Initialization Complete ===" << std::endl
-            << "End Time: " << Simulator::Now().GetSeconds() << "s" << std::endl
-            << std::endl;
         ::ns3::wsn::scenario4::params::g_resultFileStream->flush();
     }
 }

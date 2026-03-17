@@ -8,6 +8,7 @@
 #include "base-station-node/fragment-generator.h"
 #include "ground-node-routing/ground-node-routing.h"
 #include "ground-node-routing/cell-cooperation.h"
+#include "helper/calc-utils.h"
 #include "packet-header.h"
 #include "../../radio/cc2420/cc2420-net-device.h"
 #include "ns3/mac16-address.h"
@@ -18,6 +19,7 @@
 #include "ns3/packet.h"
 #include "ns3/waypoint-mobility-model.h"
 #include "../../../examples/scenarios/scenario4/scenario4-params.h"
+#include <algorithm>
 #include <cmath>
 #include <iomanip>
 #include <limits>
@@ -57,6 +59,17 @@ void InitializeBaseStation(uint32_t nodeId)
         g_baseStation = new BaseStationNode(nodeId);
         g_baseStation->Initialize();
     }
+}
+
+void
+RunBaseStationPostInitTasks()
+{
+    if (g_baseStation == nullptr)
+    {
+        NS_LOG_WARN("RunBaseStationPostInitTasks called before InitializeBaseStation");
+        return;
+    }
+    g_baseStation->RunPostInitScheduledTasks();
 }
 
 void
@@ -304,14 +317,34 @@ void InitializeUavBroadcast()
         return;
     }
     
+    // Per-fragment radio contact time helper:
+    // t_tx(fragment_i) = (fragment_i_bytes * 8) / RADIO_BITRATE_BPS
+    auto fragmentTxTimeSec = [](uint32_t pixelCount) {
+        return helper::CalculateFragmentTransmissionTime(
+            pixelCount,
+            ns3::wsn::scenario4::params::DEFAULT_BYTES_PER_PIXEL,
+            ns3::wsn::scenario4::params::RADIO_BITRATE_BPS);
+    };
+    
     // UAV2 broadcasts from first waypoint until last waypoint
     const double broadcastStartTime = uav2Path.waypoints[0].arrivalTime;
     const double broadcastEndTime = uav2Path.waypoints.back().arrivalTime;
-    const double broadcastInterval = ns3::wsn::scenario4::params::FRAGMENT_BROADCAST_INTERVAL;
     
     // Calculate total broadcast duration and number of cycles
     const double totalBroadcastDuration = broadcastEndTime - broadcastStartTime;
-    const double singleCycleDuration = fragments.fragments.size() * broadcastInterval;
+    double singleCycleDuration = 0.0;
+    for (const auto& [fragmentId, fragment] : fragments.fragments)
+    {
+        (void)fragmentId;
+        const double txTime = fragmentTxTimeSec(fragment.pixelCount);
+        singleCycleDuration += (txTime > 0.0)
+            ? txTime
+            : ns3::wsn::scenario4::params::FRAGMENT_BROADCAST_INTERVAL;
+    }
+    if (singleCycleDuration <= 0.0)
+    {
+        singleCycleDuration = fragments.fragments.size() * ns3::wsn::scenario4::params::FRAGMENT_BROADCAST_INTERVAL;
+    }
     const uint32_t numBroadcastCycles = static_cast<uint32_t>(
         std::ceil(totalBroadcastDuration / singleCycleDuration));
     
@@ -323,10 +356,11 @@ void InitializeUavBroadcast()
                 << " | duration=" << totalBroadcastDuration << "s"
                 << " | cycleDuration=" << singleCycleDuration << "s"
                 << " | numCycles=" << numBroadcastCycles
-                << " | interval=" << broadcastInterval << "s");
+                << " | txFormula=(bytes*8)/" << ns3::wsn::scenario4::params::RADIO_BITRATE_BPS << "bps");
     
     // Schedule broadcast cycles - repeat until reaching last waypoint
     double currentTime = broadcastStartTime;
+    double lastScheduledTime = broadcastStartTime;
     uint32_t totalBroadcasts = 0;
     
     for (uint32_t cycle = 0; cycle < numBroadcastCycles; ++cycle)
@@ -399,7 +433,11 @@ void InitializeUavBroadcast()
                 }
             });
             
-            currentTime += broadcastInterval;
+            const double perFragmentInterval = std::max(
+                fragmentTxTimeSec(fragment.pixelCount),
+                ns3::wsn::scenario4::params::FRAGMENT_BROADCAST_INTERVAL);
+            lastScheduledTime = currentTime;
+            currentTime += perFragmentInterval;
             totalBroadcasts++;
         }
         
@@ -411,7 +449,7 @@ void InitializeUavBroadcast()
     
     NS_LOG_INFO("[UAV-BROADCAST] Scheduled " << totalBroadcasts 
                 << " total fragment broadcasts in " << numBroadcastCycles << " cycles"
-                << " | actualEndTime=" << (currentTime - broadcastInterval) << "s");
+                << " | actualEndTime=" << lastScheduledTime << "s");
 }
 
 void InitializeCellCooperationTimeout()

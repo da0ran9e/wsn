@@ -48,7 +48,11 @@ constexpr double DEFAULT_UAV_SPEED = 20.0;  // m/s
 // Timing constants
 constexpr double STARTUP_PHASE_DURATION = 5.0;  // seconds
 constexpr double UAV_PLANNING_DELAY = 0.2;      // seconds after startup
-constexpr double FRAGMENT_BROADCAST_INTERVAL = 0.2;  // seconds - UAV1_HOVER_TIME / DEFAULT_NUM_FRAGMENTS = 2.0s / 10 = 0.2s
+constexpr double FRAGMENT_BROADCAST_INTERVAL = 0.2;  // seconds (fallback/default)
+
+// ===== RADIO AND TRANSMISSION PARAMETERS =====
+// CC2420 (IEEE 802.15.4 ZigBee) radio specifications
+constexpr uint32_t RADIO_BITRATE_BPS = 250000;  // bits per second (250 kbps)
 
 // ===== ROUTING PARAMETERS =====
 
@@ -88,13 +92,17 @@ constexpr double UAV_BROADCAST_RADIUS = 50.0;  // meters - UAV communication/bro
 constexpr double BS_INIT_UAV_STARTING_ALTITUDE = DEFAULT_UAV_ALTITUDE;
 constexpr double BS_INIT_UAV_PATROL_ALTITUDE = DEFAULT_UAV_ALTITUDE;
 
-// UAV1 (Greedy Nearest Neighbor): Fast speed + hover time at each node
+// UAV1 (Greedy Nearest Neighbor): hover time is computed dynamically from
+// master-file transmission time in base-station-node.cc.
 constexpr double UAV1_SPEED = 20.0;  // m/s - faster flight speed
-constexpr double UAV1_HOVER_TIME = 2.0;  // seconds - hover to broadcast fragments
+constexpr double UAV1_HOVER_TIME = 2.0;  // seconds (fallback/default)
 
 // UAV2 (Greedy Set Cover): Slower speed + no hover time
-constexpr double UAV2_SPEED = 20.0;  // m/s - slower flight speed
-constexpr double UAV2_HOVER_TIME = 0.0;  // seconds - no hovering
+// UAV2 broadcasts while flying (no hover).
+// Inter-fragment spacing is computed dynamically from each fragment TX time
+// in node-routing.cc.
+constexpr double UAV2_SPEED = 20.0;  // m/s - flight speed
+constexpr double UAV2_HOVER_TIME = 0.0;  // seconds - no hovering, broadcasts while flying
 
 // UAV2 coverage path strategy (Greedy Max-Coverage with Cost)
 constexpr bool UAV2_USE_NEW_ALGO = true;
