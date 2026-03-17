@@ -6,12 +6,11 @@
 
 ## 1. Summary
 
-Recent work added four important PHY-related improvements:
+Recent work added three important PHY-related improvements:
 
 1. **Geometry-aware air-to-ground propagation**
 2. **Contact-window prediction for packet viability**
-3. **PHY/MAC drop tracing into scenario output**
-4. **Fast fading support (Ricean / Rayleigh approximation)**
+3. **Fast fading support (Ricean / Rayleigh approximation)**
 
 Together, these changes move the simulation from a mostly static distance-based radio approximation toward a
 **packet-level, mobility-aware PHY decision path**.
@@ -64,7 +63,7 @@ The propagation model now classifies links using geometry:
 
 - **Ground-ground**
 - **Air-ground LoS**
-- **Air-ground mixed**
+- **Air-ground Mixed**
 - **Air-ground NLoS**
 
 Classification uses:
@@ -75,6 +74,48 @@ Classification uses:
 - altitude threshold for airborne vs ground nodes
 
 The path loss still follows a log-distance structure, but the exponent and shadowing sigma depend on the profile.
+
+### Implementation impact (what this changes for the system)
+
+- Enables the contact-window logic to evaluate projected receive power over the full packet airtime using explicit
+	coordinates instead of relying on the instantaneous MobilityModel state.
+- Allows code outside the live mobility stack (MAC pre-scheduling, planning helpers, offline analyzers) to query
+	link quality for hypothetical UAV positions and times.
+- Improves determinism of gating decisions: contact-window samples are derived from position->pathloss evaluations,
+	not from ephemeral object state that may differ across parallel components.
+
+### Influencing factors (inputs that affect results)
+
+- Transmit power `P_tx` and antenna gains (tx/rx).
+- 3D distance between transmitter and receiver and elevation angle.
+- Environment/profile selection (LoS / Mixed / NLoS / Ground-ground).
+- Frequency and reference path-loss at `d0` (implicit in model calibration).
+- Shadowing sample (log-normal) drawn per link and per evaluation context.
+
+### Formulas implemented
+
+- Geometry-driven path loss (log-distance model):
+
+	$$PL(d) = PL(d_0) + 10\,n\,\log_{10}\left(\frac{d}{d_0}\right)$$
+
+	where `n` is the profile-dependent path-loss exponent and `PL(d0)` is the reference loss at distance `d0`.
+
+- Slow fading (shadowing) modeled as additive log-normal term:
+
+	$$X_{shadowing}\sim \mathcal{N}(0,\sigma_{profile}^2)\quad\text{(dB)}$$
+
+- Combined per-sample receive power (dBm):
+
+	$$P_{rx}(d) = P_{tx} - PL(d) - X_{shadowing}$$
+
+	(Fast fading is added later in the full receive path; see §7.)
+
+### Citations and mapping
+
+- Al‑Hourani et al., GLOBECOM 2014 — motivates elevation-angle-based LoS modelling and classification used to choose
+	`n`/`\sigma` profiles for air-ground links.
+- 3GPP TR 38.901 — provides standardized guidance for path-loss parameter ranges and scenario-dependent calibration.
+- Goldsmith (Wireless Communications) — canonical reference for log-distance path-loss and shadowing model.
 
 ---
 
@@ -90,6 +131,54 @@ The model already included log-normal shadowing and now uses profile-dependent p
 | Air-ground NLoS | 3.0 | 8.0 dB |
 
 This gives physically more plausible variability than a single fixed propagation profile.
+
+### Implementation impact (what this changes for the system)
+
+- Profile-dependent shadowing makes some air-ground links significantly more stable (LoS, small \sigma) while others
+	become more bursty (NLoS, large \sigma). This changes which receivers pass the contact-window test and therefore
+	which nodes are selected as targets during UAV broadcasts.
+- Using distinct `\sigma` values per profile also improves reproducibility of experiments when comparing environment
+	assumptions (e.g., suburban vs urban maps).
+
+### Influencing factors
+
+- Propagation profile selection (based on elevation angle and geometry).
+- Choice of `\sigma` per profile (calibrated from measurements or standards).
+- Correlation model: current implementation samples shadowing per link independently (no spatial correlation).
+
+### Formulas implemented
+
+- Shadowing term applied as an additive Gaussian in dB (log-normal power variation):
+
+	$$X_{shadowing} \sim \mathcal{N}(0,\sigma_{profile}^2)\quad\text{(dB)}$$
+
+- Effective received power (combining path loss and shadowing):
+
+	$$P_{rx} = P_{tx} - PL(d) - X_{shadowing}$$
+
+	(This is the sample used by `CalcRxPowerDbmFromPositions` when evaluating a projected position.)
+
+### Citations and mapping
+
+- 3GPP TR 38.901 — recommended shadowing sigma values and profile-dependent parameter guidance.
+- Al‑Hourani et al. (2014) — supports different treatment for LoS vs NLoS in low-altitude aerial channels.
+- Goldsmith (2005) — background on log-normal shadowing and its interpretation.
+
+### 3.2.1 Mapping to 3GPP recommendations
+
+The profile values above were chosen to be consistent with parametric ranges in 3GPP TR 38.901 (UMi/UMa measurement envelopes) and with low-altitude air-to-ground summaries (Al‑Hourani). The table below shows the doc's working values and their 3GPP-inspired mapping/justification.
+
+| Profile | Working n | Working \sigma | 3GPP-inspired mapping / justification |
+|--------|-----------:|---------------:|----------------------------------------|
+| Ground-ground | 3.2 | 7.0 dB | Maps to urban/suburban ground scenarios (3GPP UMi/NLoS range), higher shadowing due to street clutter.
+| Air-ground LoS | 2.0 | 4.0 dB | Consistent with 3GPP LoS urban-macro/low-altitude LoS exponents (~2.0) and small shadowing (3–4 dB).
+| Air-ground Mixed | 2.5 | 6.0 dB | Hybrid between LoS and NLoS; use intermediate exponent and sigma to represent partial obstruction scenarios.
+| Air-ground NLoS | 3.0 | 8.0 dB | Aligned with 3GPP NLoS exponent ranges and larger sigma for deep shadowing / cluttered low-altitude NLoS.
+
+Notes:
+- 3GPP TR 38.901 provides scenario-specific PL exponents and shadowing sigma ranges (UMi, UMa, RMa). We adapt those ranges conservatively for low-altitude UAV links: LoS ~2.0, NLoS in the 3.0–3.5 range, shadowing sigma range ≈ 3–8 dB depending on environment.
+- Use `KFactor` defaults (see §7) informed by measurement summaries (TR36.777 and TR38.901 guidance): LoS high K (Ricean), NLoS K near 0 (Rayleigh-like).
+- If you want exact per-scenario 3GPP numbers (UMi LoS, UMi NLoS, UMa LoS/NLoS), I can extract the table entries from TR 38.901 and insert a second detailed mapping table.
 
 ---
 
@@ -130,58 +219,6 @@ The MAC calls `HasContactForPacket(...)` before dispatching to each peer.
 If the contact window is insufficient, the transmission to that peer is skipped.
 
 This is logically a PHY-informed gating decision implemented at the MAC dispatch point.
-
----
-
-## 5. PHY Drop Tracing
-
-The PHY now emits structured debug trace events for receive-side rejection.
-
-Added receive rejection reasons include:
-
-- `RxDropBelowSensitivity`
-- `RxDropBer`
-
-The MAC also emits PHY-adjacent rejection reasons such as:
-
-- `DropPhyReject`
-- `DropContactWindow`
-- `DropContactWindowSummary`
-
-These events are forwarded through the unified net-device callback path and logged by scenario code into the shared
-result stream.
-
-### Why this matters
-
-Previously, a packet might silently fail due to low signal or BER without a clear event in the result file.
-Now the scenario has a consistent hook to record why PHY delivery failed.
-
-This is useful for:
-
-- debugging propagation assumptions
-- validating contact-window behavior
-- explaining why a UAV broadcast did not reach a set of receivers
-
----
-
-## 6. Aggregated Contact-Drop Logging
-
-To avoid extremely heavy logs during broadcast, contact-window drops are now aggregated per transmission attempt.
-
-### Old behavior
-
-One UAV broadcast to many peers could generate one drop line per destination.
-This became noisy and expensive in result files.
-
-### New behavior
-
-The MAC accumulates all destinations dropped due to insufficient contact time and emits a **single summary event**:
-
-- source node
-- dropped destination count
-- destination list
-
-This keeps PHY-related diagnostics usable in large broadcasts.
 
 ---
 
@@ -341,8 +378,38 @@ The key advances are:
 
 - geometry-aware propagation
 - packet-duration-aware contact gating
-- structured PHY drop visibility
 - lightweight fast fading
 
 This is a good intermediate design point for UAV-ground dissemination studies where packet success should depend on
 **where the UAV is, how fast it moves, how long the packet takes, and how stable the link is**.
+
+---
+
+## References (selected)
+
+- Al‑Hourani, A., Kandeepan, S., & Lardner, S. (2014). Modeling air-to-ground path loss for low altitude platforms. IEEE Global Communications Conference (GLOBECOM), 2014.
+
+	- Use: justification for altitude-dependent LoS probability, mixed/NLoS profiling, and centroid-based coverage reasoning in urban/suburban topologies.
+
+- 3GPP TR 38.901 (2017) — Study on channel model for frequencies from 0.5 to 100 GHz.
+
+	- Use: standardized parametric models for LoS probability, path-loss exponents, and K-factor guidance for air-ground links (see UMi/UMa/LOS/NLOS variants).
+
+- 3GPP TR 36.777 (2017) — Study on enhanced LTE support for aerial vehicles.
+
+	- Use: UAV-specific measurement summaries and parameter recommendations for handover and link stability tradeoffs relevant to contact-window thresholds.
+
+- Goldsmith, A. (2005). Wireless Communications. Cambridge University Press.
+
+	- Use: canonical derivations for log-distance path-loss, shadowing (log-normal) modeling, and Rice/Rayleigh fading basics used in the fast-fading approximation.
+
+- Chvátal, V. (1979). A greedy heuristic for the set-covering problem. Mathematics of Operations Research, 4(3), 233–235.
+
+	- Use: theoretical justification for the greedy coverage step used in waypoint selection (see design doc `UAV2_GreedyMaxCoverageWithCost.md`).
+
+---
+
+Notes:
+- If you want full BibTeX entries (DOIs, pages) I can fetch and insert them into `src/wsn/docs/paper/refs/related-works/UAV-Physical/UAV-Physical.bib` or a dedicated `phy-updates.bib`.
+- I intentionally referenced standards (3GPP) because they provide concrete parameter recommendations that can be mapped to the profile tables above.
+

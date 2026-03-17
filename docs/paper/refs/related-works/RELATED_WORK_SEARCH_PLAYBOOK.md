@@ -1,5 +1,17 @@
 # Related Work Search Playbook (for UAV2 Scenario5)
 
+## Quick: Fragment generation & processing (mô tả ngắn + queries)
+
+Mục tiêu tìm tài liệu ở đây là các phương pháp tạo/phân mảnh ảnh/video để giảm dung lượng truyền, các kỹ thuật ghép/phục hồi từ tập con fragment, và các chiến lược inference trên từng fragment (per‑fragment detection / incremental fusion). Tập hợp các query mẫu dưới đây giúp phát hiện nhanh các bài về progressive/scalable coding, multi‑frame super‑resolution, rateless/UEP coding, và patch‑level inference.
+
+### Example queries (copy/paste)
+- "(image OR video) AND (fragment OR patch OR tile) AND (progressive OR scalable OR layered) AND (decoding OR reconstruction)"
+- "(multi-frame OR multi-image OR multi-view) AND (super-resolution OR fusion) AND (shift-and-add OR reconstruction)"
+- "(fountain OR LT OR Raptor OR rateless OR 'unequal error protection') AND (fragment OR chunk) AND (image OR video)"
+- "(patch-based OR local-feature OR 'per-patch' OR tile) AND (detection OR recognition OR 'early inference') AND (edge OR distributed)"
+- "(partial image OR cropped) AND (detection OR 'tiny object') AND (minimum resolution OR minimal size)"
+
+
 ## 1) Mục tiêu phần Related Work
 
 Phần related work của bài nên trả lời rõ 3 câu hỏi:

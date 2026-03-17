@@ -16,6 +16,21 @@ Tổng quan ý tưởng
 - Sau khi chọn c*, thêm waypoint, cập nhật covered, curPos ← c*, lặp đến khi covered = all nodes.
 - (Tùy chọn) sau chọn tập waypoints, chạy 2‑opt/TSP heuristic để giảm tổng travel distance giữa các waypoints đã chọn.
 
+## Selected excerpts from curated references
+
+Below are short excerpts and notes taken from our curated Conf-Abstracts to ground the design choices:
+
+- "Strongly relevant to UAV2 execution because it considers dynamic service time, not just geometry. Buffer-aware behavior is a useful analogue for fragment backlog, missing-fragment pressure, or cell urgency." — summary for "Optimizing UAV-Based Data Collection in IoT Networks With Dynamic Service Time and Buffer-Aware Trajectory Planning" (Donipati et al., IEEE Trans. Netw. Serv. Manag., 2025).
+
+- "Time-balancing scheduling is a useful analogue for balancing waypoint service across suspicious cells. Relevant to low-latency data acquisition in sparse IoT deployments." — summary for "Collaborative Data Acquisition for UAV-Aided IoT Based on Time-Balancing Scheduling" (Ren et al., IEEE Internet of Things Journal, 2024).
+
+- "A greedy heuristic for the set-covering problem" provides the theoretical basis for the gain-maximizing step of our greedy approach (Chvátal, 1979).
+
+These excerpts directly motivate three concrete design choices in our algorithm:
+
+- Use a cost-aware score (gain / cost^alpha) to balance coverage and travel/service time (Donipati et al.).
+- Allow tuning toward time‑balanced service or fairness (via alpha and seeding) as suggested by time‑balancing scheduling literature (Ren et al.).
+- Keep the greedy coverage selection as the core heuristic, justified by Chvátal's approximation argument for set‑cover.
 Lý thuyết & nguồn tham khảo
 - Greedy Set Cover (approximation): Chvátal, V. "A greedy heuristic for the set-covering problem." (1979) — cơ sở cho greedy coverage. (tham khảo thuật toán tập phủ).
 - Coverage + travel trade‑off & trajectory planning: xem các bài trong `src/wsn/docs/paper/refs/related-works/UAV-Path-Planning/Conf-Abstracts.md`, gợi ý chính:
@@ -98,6 +113,3 @@ Ghi chú triển khai nhanh
 - Bắt đầu bằng việc cài đặt các hàm phụ trong cùng namespace (routing:: helper functions). Giữ API nhỏ, test composition riêng rẽ.
 - Không xoá hoàn toàn thuật toán cũ ngay — giữ như fallback khi `UAV2_USE_NEW_ALGO=false`.
 
----
-
-Nếu bạn đồng ý, tôi sẽ: (A) implement file‑level patch thay block UAV2 trong `PlanUavFlightPathsForBsInit` bằng lời gọi `BuildUav2CoveragePath(...)`, (B) thêm các hàm phụ (centroid, coverage precompute, selector), và (C) thêm cấu hình param mặc định vào `params`.
