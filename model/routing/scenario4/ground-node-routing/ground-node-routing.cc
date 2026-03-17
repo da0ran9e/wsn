@@ -262,9 +262,12 @@ OnGroundNodeReceivePacket(uint32_t nodeId, Ptr<const Packet> packet, double rssi
                     state.fragments.GetFragment(fragId)->confidence < confidence) {
                     
                     Fragment frag;
-                    frag.fragmentId = fragId;
-                    frag.confidence = confidence;
-                    frag.size = copy->GetSize();
+                    frag.fragmentId   = fragId;
+                    frag.strideOffset = fragId;  // stride slot = fragment ID (N-way uniform split)
+                    // Payload bytes / bytesPerPixel gives the pixel count for this region.
+                    frag.pixelCount   = copy->GetSize()
+                                        / ::ns3::wsn::scenario4::params::DEFAULT_BYTES_PER_PIXEL;
+                    frag.confidence   = confidence;
                     
                     state.fragments.AddFragment(frag);
                     state.confidence = state.fragments.totalConfidence;
@@ -334,10 +337,15 @@ OnGroundNodeReceivePacket(uint32_t nodeId, Ptr<const Packet> packet, double rssi
                         const bool hasAllFragments =
                             (state.expectedFragmentCount > 0) &&
                             (state.fragments.fragments.size() >= state.expectedFragmentCount);
-                        if (state.cooperationEnabled && state.cellId >= 0 && !hasAllFragments)
+                        const bool belowReliableReconstruction =
+                            state.confidence < ::ns3::wsn::scenario4::params::COOPERATION_THRESHOLD;
+                        if (state.cooperationEnabled && state.cellId >= 0 && !hasAllFragments &&
+                            belowReliableReconstruction)
                         {
                             NS_LOG_INFO("Node " << nodeId << " cooperation timeout triggered"
-                                       << " | confidence=" << state.confidence);
+                                       << " | confidence=" << state.confidence
+                                       << " | threshold="
+                                       << ::ns3::wsn::scenario4::params::COOPERATION_THRESHOLD);
                             RequestFragmentSharing(nodeId, state.cellId);
                         }
                     });

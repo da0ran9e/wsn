@@ -3,6 +3,7 @@
  */
 
 #include "scenario4-config.h"
+#include <algorithm>
 #include <sstream>
 
 namespace ns3 {
@@ -55,6 +56,26 @@ Scenario4RunConfig::Validate(std::string& errorMsg) const
     // Fragment validation
     if (numFragments == 0) {
         oss << "Number of fragments must be > 0";
+        errorMsg = oss.str();
+        return false;
+    }
+
+    // Ensure smallest fragment is still large enough for reliable recognition.
+    // With pixel-stride partitioning, smallest fragment size is floor(totalPixels / numFragments).
+    const uint32_t totalPixels =
+        params::DEFAULT_IMAGE_WIDTH * params::DEFAULT_IMAGE_HEIGHT;
+    const uint32_t minFragmentPixels = params::MIN_RECOGNIZABLE_FRAGMENT_PIXELS;
+    const uint32_t maxFragmentsByRecognition =
+        (minFragmentPixels > 0)
+            ? std::max<uint32_t>(1, totalPixels / minFragmentPixels)
+            : 1;
+
+    if (numFragments > maxFragmentsByRecognition) {
+        oss << "Number of fragments too high for recognizable fragment size: "
+            << "numFragments=" << numFragments
+            << ", maxAllowed=" << maxFragmentsByRecognition
+            << " (image=" << params::DEFAULT_IMAGE_WIDTH << "x" << params::DEFAULT_IMAGE_HEIGHT
+            << ", minFragmentPixels=" << minFragmentPixels << ")";
         errorMsg = oss.str();
         return false;
     }

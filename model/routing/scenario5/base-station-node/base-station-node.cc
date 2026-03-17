@@ -966,7 +966,7 @@ GenerateFragmentsForBsInit()
         {
             const auto& frag = generated.fragments[i];
             *ns3::wsn::scenario5::params::g_resultFileStream
-                << " " << frag.size << "(" << std::fixed << std::setprecision(3) << frag.confidence << ")";
+                << " " << frag.pixelCount << "px(" << std::fixed << std::setprecision(3) << frag.confidence << ")";
         }
         *ns3::wsn::scenario5::params::g_resultFileStream << std::endl;
     }    

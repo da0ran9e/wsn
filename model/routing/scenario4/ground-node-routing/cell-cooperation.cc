@@ -13,8 +13,6 @@ namespace wsn {
 namespace scenario4 {
 namespace routing {
 
-static constexpr double kCooperationThreshold = 0.35;
-
 void InitializeCellCooperation() {}
 
 void

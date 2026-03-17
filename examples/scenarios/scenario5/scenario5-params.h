@@ -80,14 +80,20 @@ ComputeDefaultHexGridOffset(uint32_t nodeCount)
 		gridSizeApprox * HEX_GRID_OFFSET_MULTIPLIER + HEX_GRID_OFFSET_EXTRA));
 }
 
+// Fragment parameters - image pixel-region fragments
+// An image of DEFAULT_IMAGE_WIDTH x DEFAULT_IMAGE_HEIGHT is partitioned into
+// DEFAULT_NUM_FRAGMENTS fragments via pixel-stride interleaving.
 constexpr uint32_t DEFAULT_NUM_FRAGMENTS = 10;
 constexpr double MIN_FRAGMENT_CONFIDENCE = 0.1;
 constexpr double MAX_FRAGMENT_CONFIDENCE = 0.9;
-constexpr uint32_t DEFAULT_FRAGMENT_SIZE_BYTES = 1024;
-constexpr uint32_t DEFAULT_MASTER_FILE_SIZE_BYTES = 2 * 1024 * 1024;
+// Image input dimensions (YOLOv4 / SSD default 416x416 px input)
+constexpr uint32_t DEFAULT_IMAGE_WIDTH    = 416;   // pixels
+constexpr uint32_t DEFAULT_IMAGE_HEIGHT   = 416;   // pixels
+constexpr uint32_t DEFAULT_BYTES_PER_PIXEL = 3;    // RGB
+// Base detection confidence for the full unpartitioned image.
+// Individual fragment confidence is derived so that union probability
+// over all N fragments recovers exactly this value.
 constexpr double DEFAULT_MASTER_FILE_CONFIDENCE = 0.95;
-constexpr double FRAGMENT_WEIGHT_MIN = 0.5;
-constexpr double FRAGMENT_WEIGHT_MAX = 2.0;
 constexpr uint32_t BS_INIT_FRAGMENT_GENERATION_COUNT = DEFAULT_NUM_FRAGMENTS;
 
 extern std::ofstream* g_resultFileStream;

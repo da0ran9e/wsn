@@ -23,3 +23,9 @@ Union probability (tốt khi các fragment độc lập): p_union = 1 − ∏_i 
 Log‑odds/Bayesian update: L = Σ logit(p_i), p_comb = sigmoid(L).
 Simple voting / averaging: p_mean = mean(p_i) (khi cần đơn giản).
 Quy ước “confident”: p_comb ≥ 0.75–0.9 thường được coi là tin cậy cho cảnh báo tự động; tinh chỉnh theo FA/FR yêu cầu của bài.
+## ngưỡng tái tạo tin cậy
+Interleave: ≳75–100% mảnh để tái tạo tốt.
+Subsample+shift, r=2: ≈4 samples (≥40% nếu tổng 10 fragments) để có cải thiện; để gần gốc ≳50–80%.
+Deep SR fusion: 2–4 fragments → cải thiện đáng kể; 6–10 → tốt.
+Progressive layers: 10–30% đầu → coarse but possibly usable for detection.
+Rateless codes: cần ≈100% của k blocks ±5–10% overhead (không phụ thuộc vị trí fragment).

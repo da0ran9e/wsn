@@ -4,12 +4,8 @@
 
 #include "fragment.h"
 #include "../../../examples/scenarios/scenario4/scenario4-params.h"
-#include "ns3/random-variable-stream.h"
-#include "ns3/double.h"
 #include "ns3/log.h"
-#include <algorithm>
 #include <cmath>
-#include <numeric>
 #include <vector>
 
 namespace ns3 {
@@ -50,19 +46,22 @@ FragmentCollection::UpdateTotalConfidence()
         totalConfidence = 0.0;
         return;
     }
-    
-    double sum = 0.0;
+
+    // Union probability: p_union = 1 - prod(1 - p_i)
+    // Fuses independent per-fragment detection probabilities.
+    // When all N fragments are present this recovers the full-image base confidence.
+    double product = 1.0;
     for (const auto& pair : fragments) {
-        sum += pair.second.confidence;
+        product *= (1.0 - pair.second.confidence);
     }
-    totalConfidence = sum;
+    totalConfidence = 1.0 - product;
 }
 
 FragmentCollection
 GenerateFragments(uint32_t numFragments)
 {
     NS_LOG_FUNCTION(numFragments);
-    
+
     FragmentCollection collection;
 
     if (numFragments == 0)
@@ -71,83 +70,65 @@ GenerateFragments(uint32_t numFragments)
         return collection;
     }
 
-    const uint32_t masterFileSize = ::ns3::wsn::scenario4::params::DEFAULT_MASTER_FILE_SIZE_BYTES;
-    const double masterFileConfidence = ::ns3::wsn::scenario4::params::DEFAULT_MASTER_FILE_CONFIDENCE;
-    const double weightMin = ::ns3::wsn::scenario4::params::FRAGMENT_WEIGHT_MIN;
-    const double weightMax = ::ns3::wsn::scenario4::params::FRAGMENT_WEIGHT_MAX;
+    // Image dimensions and encoding parameters.
+    const uint32_t imageWidth    = ::ns3::wsn::scenario4::params::DEFAULT_IMAGE_WIDTH;
+    const uint32_t imageHeight   = ::ns3::wsn::scenario4::params::DEFAULT_IMAGE_HEIGHT;
+    const uint32_t bytesPerPixel = ::ns3::wsn::scenario4::params::DEFAULT_BYTES_PER_PIXEL;
+    const uint32_t minRecognizableFragmentPixels =
+        ::ns3::wsn::scenario4::params::MIN_RECOGNIZABLE_FRAGMENT_PIXELS;
+    const double   baseConf      = ::ns3::wsn::scenario4::params::DEFAULT_MASTER_FILE_CONFIDENCE;
+    const uint32_t totalPixels   = imageWidth * imageHeight;
 
-    // 1) Randomly split a large master file into different fragment sizes.
-    Ptr<UniformRandomVariable> uniformRv = CreateObject<UniformRandomVariable>();
-    uniformRv->SetAttribute("Min", DoubleValue(weightMin));
-    uniformRv->SetAttribute("Max", DoubleValue(weightMax));
+    // Pixel-stride interleaving (stride = numFragments):
+    // Fragment i owns pixels at row-major positions i, i+N, i+2N, ...
+    // giving each fragment a spatially-uniform sample of the full image.
+    const uint32_t basePixels  = totalPixels / numFragments;
+    const uint32_t extraPixels = totalPixels % numFragments; // first extraPixels fragments get +1
 
-    std::vector<double> weights(numFragments, 1.0);
+    if (basePixels < minRecognizableFragmentPixels)
+    {
+        NS_LOG_WARN("Configured numFragments=" << numFragments
+                    << " makes smallest fragment too small for recognition"
+                    << " | minFragmentPixels=" << basePixels
+                    << " | required>=" << minRecognizableFragmentPixels);
+    }
+
     for (uint32_t i = 0; i < numFragments; ++i)
     {
-        weights[i] = uniformRv->GetValue();
-    }
-
-    const double sumWeights = std::accumulate(weights.begin(), weights.end(), 0.0);
-
-    std::vector<uint32_t> fragmentSizes(numFragments, 0);
-    std::vector<double> fractionalParts(numFragments, 0.0);
-    uint64_t allocatedSize = 0;
-
-    for (uint32_t i = 0; i < numFragments; ++i)
-    {
-        const double exactSize = (weights[i] / sumWeights) * static_cast<double>(masterFileSize);
-        const uint32_t baseSize = static_cast<uint32_t>(std::floor(exactSize));
-        fragmentSizes[i] = baseSize;
-        fractionalParts[i] = exactSize - static_cast<double>(baseSize);
-        allocatedSize += baseSize;
-    }
-
-    // Distribute remainder bytes by largest fractional parts to match exactly masterFileSize.
-    uint32_t remainder = (allocatedSize < masterFileSize)
-                             ? static_cast<uint32_t>(masterFileSize - allocatedSize)
-                             : 0;
-
-    std::vector<uint32_t> order(numFragments);
-    std::iota(order.begin(), order.end(), 0);
-    std::sort(order.begin(), order.end(), [&fractionalParts](uint32_t a, uint32_t b) {
-        return fractionalParts[a] > fractionalParts[b];
-    });
-
-    for (uint32_t i = 0; i < remainder; ++i)
-    {
-        fragmentSizes[order[i % numFragments]] += 1;
-    }
-    
-    // 2) Confidence depends on fragment size and is split from master-file confidence budget.
-    for (uint32_t i = 0; i < numFragments; ++i) {
         Fragment frag;
-        frag.fragmentId = i;
-        frag.size = fragmentSizes[i];
-        frag.confidence = (static_cast<double>(frag.size) / static_cast<double>(masterFileSize))
-                          * masterFileConfidence;
+        frag.fragmentId   = i;
+        frag.strideOffset = i;  // stride slot = fragment index for N-way uniform split
+        frag.pixelCount   = basePixels + (i < extraPixels ? 1u : 0u);
 
-        // Placeholder payload chunk (simulating file split).
-        frag.data.resize(frag.size, static_cast<uint8_t>(i % 256));
-        
+        // Per-fragment detection probability derived from the inverse union-probability formula:
+        //   p_i = 1 - (1 - baseConf)^(pixelCount_i / totalPixels)
+        // This guarantees: 1 - prod(1 - p_i) = baseConf when all N fragments are present.
+        const double pixelFraction = static_cast<double>(frag.pixelCount)
+                                     / static_cast<double>(totalPixels);
+        frag.confidence = 1.0 - std::pow(1.0 - baseConf, pixelFraction);
+
+        // Simulated pixel data: RGB bytes, byte pattern distinguishes fragments.
+        frag.data.resize(frag.pixelCount * bytesPerPixel, static_cast<uint8_t>(i % 256));
+
         collection.AddFragment(frag);
     }
 
-    uint64_t totalSize = 0;
-    double totalConfidence = 0.0;
+    // Logging summary.
+    uint64_t totalDataBytes = 0;
     for (const auto& [id, frag] : collection.fragments)
     {
         (void)id;
-        totalSize += frag.size;
-        totalConfidence += frag.confidence;
+        totalDataBytes += static_cast<uint64_t>(frag.pixelCount) * bytesPerPixel;
     }
-    
+
     NS_LOG_INFO("Generated " << numFragments
-                << " fragments from master file=" << masterFileSize << " bytes"
-                << " | totalFragmentSize=" << totalSize << " bytes"
-                << " | masterConfidence=" << masterFileConfidence
-                << " | allocatedConfidence=" << totalConfidence
-                << " | collectionConfidence=" << collection.totalConfidence);
-    
+                << " pixel-region fragments | image=" << imageWidth << "x" << imageHeight
+                << " (" << totalPixels << " px)"
+                << " | totalDataBytes=" << totalDataBytes
+                << " | minRecFragmentPixels=" << minRecognizableFragmentPixels
+                << " | baseConf=" << baseConf
+                << " | p_union=" << collection.totalConfidence);
+
     return collection;
 }
 

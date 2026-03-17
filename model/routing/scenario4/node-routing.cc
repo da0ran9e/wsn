@@ -350,7 +350,7 @@ void InitializeUavBroadcast()
                             << " broadcasting fragment " << fragmentId
                             << " (cycle " << (cycleNum + 1) << ")"
                             << " | confidence=" << std::fixed << std::setprecision(3) << fragment.confidence
-                            << " | size=" << fragment.size << " bytes"
+                            << " | pixels=" << fragment.pixelCount
                             << " | t=" << Simulator::Now().GetSeconds() << "s");
                 
                 // Log to result file
@@ -363,7 +363,7 @@ void InitializeUavBroadcast()
                         << " | fragmentId=" << fragmentId
                         << " | cycle=" << (cycleNum + 1)
                         << " | confidence=" << std::fixed << std::setprecision(3) << fragment.confidence
-                        << " | size=" << fragment.size
+                        << " | pixels=" << fragment.pixelCount
                         << std::endl;
                 }
                 
@@ -379,7 +379,8 @@ void InitializeUavBroadcast()
                     return;
                 }
                 
-                Ptr<Packet> pkt = Create<Packet>(fragment.size);
+                Ptr<Packet> pkt = Create<Packet>(fragment.pixelCount
+                                                   * ::ns3::wsn::scenario4::params::DEFAULT_BYTES_PER_PIXEL);
 
                 FragmentPacket fragHeader;
                 fragHeader.SetFragmentId(fragmentId);

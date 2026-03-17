@@ -53,8 +53,11 @@ constexpr double FRAGMENT_BROADCAST_INTERVAL = 0.2;  // seconds - UAV1_HOVER_TIM
 // ===== ROUTING PARAMETERS =====
 
 // Thresholds
-constexpr double COOPERATION_THRESHOLD = 0.35;  // trigger cell cooperation
-constexpr double ALERT_THRESHOLD = 0.75;        // trigger alert state
+// Reliable reconstruction threshold from fragment-gen.md:
+// practical confident range for automated decisions is p_comb >= 0.75..0.9.
+// Use 0.75 as cooperation trigger and 0.9 for alert confirmation.
+constexpr double COOPERATION_THRESHOLD = 0.75;  // trigger cell cooperation
+constexpr double ALERT_THRESHOLD = 0.90;        // trigger alert state
 constexpr double SUSPICIOUS_COVERAGE_PERCENT = 0.30;  // top 30% nodes
 
 // BS init suspicious-region selection parameters
@@ -112,15 +115,25 @@ ComputeDefaultHexGridOffset(uint32_t nodeCount)
 		gridSizeApprox * HEX_GRID_OFFSET_MULTIPLIER + HEX_GRID_OFFSET_EXTRA));
 }
 
-// Fragment parameters
+// Fragment parameters - image pixel-region fragments
+// An image of DEFAULT_IMAGE_WIDTH x DEFAULT_IMAGE_HEIGHT is partitioned into
+// DEFAULT_NUM_FRAGMENTS fragments via pixel-stride interleaving.
 constexpr uint32_t DEFAULT_NUM_FRAGMENTS = 10;
 constexpr double MIN_FRAGMENT_CONFIDENCE = 0.1;
 constexpr double MAX_FRAGMENT_CONFIDENCE = 0.9;
-constexpr uint32_t DEFAULT_FRAGMENT_SIZE_BYTES = 1024;
-constexpr uint32_t DEFAULT_MASTER_FILE_SIZE_BYTES = 2 * 1024 * 1024; // 2 MB
-constexpr double DEFAULT_MASTER_FILE_CONFIDENCE = 0.95;
-constexpr double FRAGMENT_WEIGHT_MIN = 0.5;
-constexpr double FRAGMENT_WEIGHT_MAX = 2.0;
+// Image input dimensions (YOLOv4 / SSD default 416x416 px input)
+constexpr uint32_t DEFAULT_IMAGE_WIDTH    = 416;   // pixels
+constexpr uint32_t DEFAULT_IMAGE_HEIGHT   = 416;   // pixels
+constexpr uint32_t DEFAULT_BYTES_PER_PIXEL = 3;    // RGB
+// Minimum recognizable target size (whole-body rule-of-thumb from fragment-gen.md: 50-100 px).
+// Use the conservative lower bound 50 px and map it to minimum fragment area.
+constexpr uint32_t MIN_RECOGNIZABLE_OBJECT_HEIGHT_PX = 50;
+constexpr uint32_t MIN_RECOGNIZABLE_FRAGMENT_PIXELS =
+	MIN_RECOGNIZABLE_OBJECT_HEIGHT_PX * MIN_RECOGNIZABLE_OBJECT_HEIGHT_PX;
+// Base detection confidence for the full unpartitioned image.
+// Individual fragment confidence is derived so that union probability
+// over all N fragments recovers exactly this value.
+constexpr double DEFAULT_MASTER_FILE_CONFIDENCE = 0.90;
 constexpr uint32_t BS_INIT_FRAGMENT_GENERATION_COUNT = DEFAULT_NUM_FRAGMENTS;
 
 // ===== GLOBAL RESULT FILE STREAM =====
