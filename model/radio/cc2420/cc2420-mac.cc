@@ -6,14 +6,18 @@
 
 #include "cc2420-mac.h"
 #include "cc2420-contact-window-model.h"
+#include "../../propagation/cc2420-spectrum-propagation-loss-model.h"
 
 #include "ns3/log.h"
+#include "ns3/mobility-model.h"
 #include "ns3/simulator.h"
 #include "ns3/random-variable-stream.h"
 #include "ns3/net-device.h"
 #include "ns3/node.h"
+#include "ns3/vector.h"
 
 #include <algorithm>
+#include <limits>
 #include <sstream>
 #include <vector>
 
@@ -152,6 +156,33 @@ Cc2420Mac::McpsDataRequest(Ptr<Packet> packet, Mac16Address destAddr, bool reque
 
     // Accumulate contact-window drops; emit a single summary after the peer loop.
     std::vector<uint32_t> contactDropDsts;
+    std::vector<uint32_t> contactDropDstsGoodRssi;
+
+    auto computeStartRssi = [&](Cc2420Mac* peer, double& outRssiDbm, double& outRxSensitivityDbm) -> bool {
+        outRssiDbm = -std::numeric_limits<double>::infinity();
+        outRxSensitivityDbm = -std::numeric_limits<double>::infinity();
+
+        if (!m_phy || !peer || !peer->m_phy)
+        {
+            return false;
+        }
+
+        Ptr<MobilityModel> txMob = m_phy->GetMobility();
+        Ptr<MobilityModel> rxMob = peer->m_phy->GetMobility();
+        Ptr<propagation::Cc2420SpectrumPropagationLossModel> propagation =
+            peer->m_phy->GetPropagationLossModel();
+        if (!txMob || !rxMob || !propagation)
+        {
+            return false;
+        }
+
+        const Vector txPos = txMob->GetPosition();
+        const Vector rxPos = rxMob->GetPosition();
+        outRssiDbm = propagation->CalcRxPowerDbmFromPositions(
+            m_phy->GetTxPower(), txPos, rxPos, false);
+        outRxSensitivityDbm = peer->m_phy->GetRxSensitivity();
+        return true;
+    };
 
     for (Cc2420Mac* peer : g_allMacs)
     {
@@ -181,6 +212,15 @@ Cc2420Mac::McpsDataRequest(Ptr<Packet> packet, Mac16Address destAddr, bool reque
             !m_contactWindowModel->HasContactForPacket(m_phy, peer->m_phy, packet->GetSize()))
         {
             contactDropDsts.push_back(dstNodeId);
+
+            double startRssiDbm = -std::numeric_limits<double>::infinity();
+            double rxSensitivityDbm = -std::numeric_limits<double>::infinity();
+            if (computeStartRssi(peer, startRssiDbm, rxSensitivityDbm) &&
+                startRssiDbm >= rxSensitivityDbm)
+            {
+                contactDropDstsGoodRssi.push_back(dstNodeId);
+            }
+
             continue;
         }
 
@@ -237,6 +277,26 @@ Cc2420Mac::McpsDataRequest(Ptr<Packet> packet, Mac16Address destAddr, bool reque
                 oss << ',';
             }
             oss << contactDropDsts[i];
+        }
+        EmitDebugTrace(oss.str(), packet);
+    }
+
+    // Emit filtered summary: packets that had sufficient start RSSI but still
+    // dropped due to contact-time insufficiency.
+    if (!contactDropDstsGoodRssi.empty())
+    {
+        std::ostringstream oss;
+        oss << srcNodeId << "-D-*|DropContactWindowGoodRssiSummary"
+            << "|srcAddr=" << src
+            << "|dropCount=" << contactDropDstsGoodRssi.size()
+            << "|dsts=";
+        for (std::size_t i = 0; i < contactDropDstsGoodRssi.size(); ++i)
+        {
+            if (i > 0)
+            {
+                oss << ',';
+            }
+            oss << contactDropDstsGoodRssi[i];
         }
         EmitDebugTrace(oss.str(), packet);
     }

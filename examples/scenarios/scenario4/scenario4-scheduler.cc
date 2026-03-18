@@ -35,6 +35,8 @@ SchedulePeriodicTopologyTick(double intervalSec, double endSec)
 void
 ScheduleScenario4Events(const Scenario4RunConfig& config)
 {
+    routing::SetScenarioStopTime(config.simTime);
+
     // Step 1: Ground nodes startup discovery phase
     Simulator::Schedule(Seconds(config.startupPhaseDuration), &routing::RunStartupPhase);
 
@@ -67,6 +69,8 @@ ScheduleScenario4Events(const Scenario4RunConfig& config)
 void
 ScheduleSingleScenario4Event(const Scenario4RunConfig& config)
 {
+    routing::SetScenarioStopTime(config.simTime);
+
     Simulator::Schedule(Seconds(config.startupPhaseDuration + 0.01), &routing::RunBaseStationPostInitTasks);
     Simulator::Schedule(Seconds(config.startupPhaseDuration + 0.1), &routing::InitializeUavFlight);
     Simulator::Schedule(Seconds(config.startupPhaseDuration + 0.2), &routing::InitializeUavBroadcast);

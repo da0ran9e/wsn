@@ -17,6 +17,11 @@
 #include "../../../model/radio/cc2420/cc2420-net-device.h"
 #include "../../../model/radio/cc2420/cc2420-phy.h"
 #include "../../../model/propagation/cc2420-spectrum-propagation-loss-model.h"
+#include "../../../model/routing/scenario4/packet-header.h"
+
+#include <limits>
+#include <sstream>
+#include <vector>
 
 namespace ns3 {
 
@@ -70,16 +75,100 @@ HandleRadioDebugTrace(Ptr<wsn::Cc2420NetDevice> dev,
         }
     }
 
-    // Keep only the aggregated contact-window summary (one line per TX attempt).
-    if (reason != "DropContactWindowSummary")
+    // Keep only filtered contact-window summary: start RSSI is good but packet
+    // is still dropped because contact time is insufficient.
+    if (reason != "DropContactWindowGoodRssiSummary")
     {
         return;
     }
 
+    auto parseSrcNodeId = [](const std::string& linkText, uint32_t fallback) {
+        const std::size_t pos = linkText.find("-D-");
+        if (pos == std::string::npos)
+        {
+            return fallback;
+        }
+        try
+        {
+            return static_cast<uint32_t>(std::stoul(linkText.substr(0, pos)));
+        }
+        catch (...)
+        {
+            return fallback;
+        }
+    };
+
+    auto parseDstNodeIds = [](const std::string& metaText) {
+        std::vector<uint32_t> dsts;
+        const std::size_t pos = metaText.find("dsts=");
+        if (pos == std::string::npos)
+        {
+            return dsts;
+        }
+
+        std::string list = metaText.substr(pos + 5);
+        const std::size_t nextBar = list.find('|');
+        if (nextBar != std::string::npos)
+        {
+            list = list.substr(0, nextBar);
+        }
+
+        std::stringstream ss(list);
+        std::string token;
+        while (std::getline(ss, token, ','))
+        {
+            if (token.empty())
+            {
+                continue;
+            }
+            try
+            {
+                dsts.push_back(static_cast<uint32_t>(std::stoul(token)));
+            }
+            catch (...)
+            {
+            }
+        }
+        return dsts;
+    };
+
+    uint32_t fragmentId = std::numeric_limits<uint32_t>::max();
+    if (packet)
+    {
+        Ptr<Packet> parsePacket = packet->Copy();
+        ::ns3::wsn::scenario4::routing::PacketHeader typeHeader;
+        if (parsePacket->PeekHeader(typeHeader) > 0 &&
+            typeHeader.GetType() == ::ns3::wsn::scenario4::routing::PACKET_TYPE_FRAGMENT)
+        {
+            parsePacket->RemoveHeader(typeHeader);
+            ::ns3::wsn::scenario4::routing::FragmentPacket fragHeader;
+            if (parsePacket->PeekHeader(fragHeader) > 0)
+            {
+                parsePacket->RemoveHeader(fragHeader);
+                fragmentId = fragHeader.GetFragmentId();
+            }
+        }
+    }
+
+    const uint32_t srcNodeId = parseSrcNodeId(link, nodeId);
+    const std::vector<uint32_t> dstNodeIds = parseDstNodeIds(meta);
+
     *ns3::wsn::scenario4::params::g_resultFileStream
         << "\n[EVENT] " << Simulator::Now().GetSeconds()
-        << " | event=ContactDrop"
-        << " | link=" << link
+        << " | event=ContactDropGoodRssi"
+        << " | srcNodeId=" << srcNodeId
+        << " | fragmentId=";
+
+    if (fragmentId == std::numeric_limits<uint32_t>::max())
+    {
+        *ns3::wsn::scenario4::params::g_resultFileStream << "unknown";
+    }
+    else
+    {
+        *ns3::wsn::scenario4::params::g_resultFileStream << fragmentId;
+    }
+
+    *ns3::wsn::scenario4::params::g_resultFileStream
         << " | packetSize=" << packetSize;
 
     if (!meta.empty())
@@ -89,6 +178,26 @@ HandleRadioDebugTrace(Ptr<wsn::Cc2420NetDevice> dev,
     }
 
     *ns3::wsn::scenario4::params::g_resultFileStream << std::endl;
+
+    // Required compact format: <node>-D-<node>(fragmentId)
+    if (!dstNodeIds.empty())
+    {
+        for (uint32_t dstNodeId : dstNodeIds)
+        {
+            *ns3::wsn::scenario4::params::g_resultFileStream
+                << srcNodeId << "-D-" << dstNodeId << "(";
+            if (fragmentId == std::numeric_limits<uint32_t>::max())
+            {
+                *ns3::wsn::scenario4::params::g_resultFileStream << "-1";
+            }
+            else
+            {
+                *ns3::wsn::scenario4::params::g_resultFileStream << fragmentId;
+            }
+            *ns3::wsn::scenario4::params::g_resultFileStream << ") ";
+        }
+        *ns3::wsn::scenario4::params::g_resultFileStream << std::endl;
+    }
 }
 } // namespace
 
@@ -243,8 +352,8 @@ Scenario4Runner::InstallProtocolStack()
                     phy->SetPropagationLossModel(propagationModel);
                 }
 
-                // dev->SetDebugPacketTraceCallback(
-                //     MakeBoundCallback(&HandleRadioDebugTrace, dev));
+                dev->SetDebugPacketTraceCallback(
+                    MakeBoundCallback(&HandleRadioDebugTrace, dev));
             }
         };
 
@@ -263,8 +372,8 @@ Scenario4Runner::InstallProtocolStack()
             if (dev && dev->GetPhy())
             {
                 dev->GetPhy()->SetPropagationLossModel(propagationModel);
-                // dev->SetDebugPacketTraceCallback(
-                //     MakeBoundCallback(&HandleRadioDebugTrace, dev));
+                dev->SetDebugPacketTraceCallback(
+                    MakeBoundCallback(&HandleRadioDebugTrace, dev));
             }
         }
         for (uint32_t i = 0; i < bsDevices.GetN(); ++i)
@@ -273,8 +382,8 @@ Scenario4Runner::InstallProtocolStack()
             if (dev && dev->GetPhy())
             {
                 dev->GetPhy()->SetPropagationLossModel(propagationModel);
-                // dev->SetDebugPacketTraceCallback(
-                //     MakeBoundCallback(&HandleRadioDebugTrace, dev));
+                dev->SetDebugPacketTraceCallback(
+                    MakeBoundCallback(&HandleRadioDebugTrace, dev));
             }
         }
     }

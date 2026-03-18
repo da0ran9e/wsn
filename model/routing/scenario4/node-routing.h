@@ -23,6 +23,11 @@ void InitializeBaseStation(uint32_t nodeId);
 void RunBaseStationPostInitTasks();
 
 /**
+ * Store the absolute scenario stop time for repeated scheduling logic.
+ */
+void SetScenarioStopTime(double stopTimeSec);
+
+/**
  * Trigger one BS control tick.
  * BS will pull latest shared topology snapshot if available.
  */

@@ -60,8 +60,8 @@ constexpr uint32_t RADIO_BITRATE_BPS = 250000;  // bits per second (250 kbps)
 // Reliable reconstruction threshold from fragment-gen.md:
 // practical confident range for automated decisions is p_comb >= 0.75..0.9.
 // Use 0.75 as cooperation trigger and 0.9 for alert confirmation.
-constexpr double COOPERATION_THRESHOLD = 0.75;  // trigger cell cooperation
-constexpr double ALERT_THRESHOLD = 0.90;        // trigger alert state
+constexpr double COOPERATION_THRESHOLD = 0.3;  // trigger cell cooperation
+constexpr double ALERT_THRESHOLD = 0.75;        // trigger alert state
 constexpr double SUSPICIOUS_COVERAGE_PERCENT = 0.30;  // top 30% nodes
 
 // BS init suspicious-region selection parameters
@@ -101,7 +101,7 @@ constexpr double UAV1_HOVER_TIME = 2.0;  // seconds (fallback/default)
 // UAV2 broadcasts while flying (no hover).
 // Inter-fragment spacing is computed dynamically from each fragment TX time
 // in node-routing.cc.
-constexpr double UAV2_SPEED = 20.0;  // m/s - flight speed
+constexpr double UAV2_SPEED = 15.0;  // m/s - flight speed
 constexpr double UAV2_HOVER_TIME = 0.0;  // seconds - no hovering, broadcasts while flying
 
 // UAV2 coverage path strategy (Greedy Max-Coverage with Cost)

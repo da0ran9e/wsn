@@ -39,6 +39,7 @@ static bool g_uav1MissionCompleted = false;
 static double g_uav1MissionCompletedTime = -1.0;
 static bool g_uav2MissionCompleted = false;
 static double g_uav2MissionCompletedTime = -1.0;
+static double g_scenarioStopTimeSec = -1.0;
 
 namespace
 {
@@ -70,6 +71,12 @@ RunBaseStationPostInitTasks()
         return;
     }
     g_baseStation->RunPostInitScheduledTasks();
+}
+
+void
+SetScenarioStopTime(double stopTimeSec)
+{
+    g_scenarioStopTimeSec = stopTimeSec;
 }
 
 void
@@ -177,6 +184,8 @@ void InitializeUavFlight()
     }
     
     NS_LOG_INFO("[UAV-FLIGHT] Initializing flight for " << uavPaths.size() << " UAVs");
+
+    const double scenarioStopTimeSec = g_scenarioStopTimeSec;
     
     // Schedule waypoint movements for each UAV
     for (const auto& [uavNodeId, path] : uavPaths)
@@ -196,89 +205,109 @@ void InitializeUavFlight()
         }
 
         Ptr<WaypointMobilityModel> waypointMobility = DynamicCast<WaypointMobilityModel>(mobility);
+        const bool isUav1Path = (uavNodeId == uav1NodeId);
+
+        uint32_t repeatCount = 1;
+        if (!isUav1Path && path.totalTime > 0.0 && scenarioStopTimeSec > 0.0)
+        {
+            repeatCount = static_cast<uint32_t>(std::ceil(scenarioStopTimeSec / path.totalTime));
+            repeatCount = std::max(1u, repeatCount);
+        }
         
         NS_LOG_INFO("[UAV-FLIGHT] Scheduling " << path.waypoints.size() 
                     << " waypoints for UAV " << uavNodeId
-                    << " | totalTime=" << path.totalTime << "s");
+                    << " | totalTime=" << path.totalTime << "s"
+                    << " | repeatCount=" << repeatCount);
         
         // Schedule movement to each waypoint
-        for (size_t i = 0; i < path.waypoints.size(); ++i)
+        for (uint32_t repeatIdx = 0; repeatIdx < repeatCount; ++repeatIdx)
         {
-            const Waypoint& wp = path.waypoints[i];
-            const bool isUav1 = (uavNodeId == uav1NodeId);
-            const bool hasPreviousWaypoint = (i > 0);
-            const Waypoint prevWp = hasPreviousWaypoint ? path.waypoints[i - 1] : wp;
+            const double cycleOffsetSec = repeatIdx * path.totalTime;
 
-            if (waypointMobility)
+            for (size_t i = 0; i < path.waypoints.size(); ++i)
             {
-                waypointMobility->AddWaypoint(
-                    ns3::Waypoint(Simulator::Now() + Seconds(wp.arrivalTime), wp.position));
-            }
-            
-            // Schedule position update at waypoint arrival time
-            Simulator::Schedule(Seconds(wp.arrivalTime),
-                                [uavNodeId,
-                                 wp,
-                                 i,
-                                 isUav1,
-                                 hasPreviousWaypoint,
-                                 prevWp,
-                                 hasSuspiciousPointPos,
-                                 suspiciousPointPos]() {
-                Ptr<Node> node = NodeList::GetNode(uavNodeId);
-                if (!node) return;
-                
-                Ptr<MobilityModel> mob = node->GetObject<MobilityModel>();
-                if (!mob) return;
-
-                const Vector actualPos = mob->GetPosition();
-                
-                NS_LOG_INFO("[UAV-FLIGHT] UAV " << uavNodeId 
-                            << " arrived at waypoint " << (i + 1)
-                            << " | pos=(" << actualPos.x << "," << actualPos.y << "," << actualPos.z << ")"
-                            << " | t=" << Simulator::Now().GetSeconds() << "s");
-
-                // TODO:  in log vào `g_resultFileStream` tại đây
-                // Format: [EVENT] time | event=UAVWaypointArrival | nodeId=... | pos=(x,y,z)
-                if (ns3::wsn::scenario4::params::g_resultFileStream)
+                const Waypoint& wp = path.waypoints[i];
+                const double scheduledArrivalSec = wp.arrivalTime + cycleOffsetSec;
+                if (scenarioStopTimeSec > 0.0 && scheduledArrivalSec > scenarioStopTimeSec)
                 {
-                    *ns3::wsn::scenario4::params::g_resultFileStream
-                        << "\n[EVENT] " << Simulator::Now().GetSeconds()
-                        << " | event=UAVWaypointArrival"
-                        << " | nodeId=" << uavNodeId
-                        << " | pos=(" << actualPos.x << "," << actualPos.y << "," << actualPos.z << ")"
-                        << std::endl;
+                    break;
                 }
 
-                // UAV1 mission completion: considered done right after leaving suspicious point.
-                // In discrete waypoint events, we detect this at arrival of the waypoint
-                // immediately after the suspicious-point waypoint.
-                if (!g_uav1MissionCompleted && isUav1 && hasPreviousWaypoint && hasSuspiciousPointPos)
+                const bool isUav1 = (uavNodeId == uav1NodeId);
+                const bool hasPreviousWaypoint = (i > 0);
+                const Waypoint prevWp = hasPreviousWaypoint ? path.waypoints[i - 1] : wp;
+                const uint32_t cycleNum = repeatIdx + 1;
+
+                if (waypointMobility)
                 {
-                    constexpr double kPosEps = 1.0;
-                    const bool prevIsSuspiciousPoint =
-                        (std::abs(prevWp.position.x - suspiciousPointPos.x) <= kPosEps) &&
-                        (std::abs(prevWp.position.y - suspiciousPointPos.y) <= kPosEps);
+                    waypointMobility->AddWaypoint(
+                        ns3::Waypoint(Simulator::Now() + Seconds(scheduledArrivalSec), wp.position));
+                }
+            
+                // Schedule position update at waypoint arrival time
+                Simulator::Schedule(Seconds(scheduledArrivalSec),
+                                    [uavNodeId,
+                                     i,
+                                     cycleNum,
+                                     isUav1,
+                                     hasPreviousWaypoint,
+                                     prevWp,
+                                     hasSuspiciousPointPos,
+                                     suspiciousPointPos]() {
+                    Ptr<Node> node = NodeList::GetNode(uavNodeId);
+                    if (!node) return;
+                    
+                    Ptr<MobilityModel> mob = node->GetObject<MobilityModel>();
+                    if (!mob) return;
 
-                    if (prevIsSuspiciousPoint)
+                    const Vector actualPos = mob->GetPosition();
+                    
+                    NS_LOG_INFO("[UAV-FLIGHT] UAV " << uavNodeId 
+                                << " arrived at waypoint " << (i + 1)
+                                << " | cycle=" << cycleNum
+                                << " | pos=(" << actualPos.x << "," << actualPos.y << "," << actualPos.z << ")"
+                                << " | t=" << Simulator::Now().GetSeconds() << "s");
+
+                    if (ns3::wsn::scenario4::params::g_resultFileStream)
                     {
-                        g_uav1MissionCompleted = true;
-                        g_uav1MissionCompletedTime = Simulator::Now().GetSeconds();
+                        *ns3::wsn::scenario4::params::g_resultFileStream
+                            << "\n[EVENT] " << Simulator::Now().GetSeconds()
+                            << " | event=UAVWaypointArrival"
+                            << " | nodeId=" << uavNodeId
+                            << " | cycle=" << cycleNum
+                            << " | pos=(" << actualPos.x << "," << actualPos.y << "," << actualPos.z << ")"
+                            << std::endl;
+                    }
 
-                        NS_LOG_WARN("[UAV1-MISSION] Completed after leaving suspicious point"
-                                    << " | t=" << g_uav1MissionCompletedTime << "s");
+                    // UAV1 mission completion: considered done right after leaving suspicious point.
+                    // Only relevant for UAV1 single-pass path.
+                    if (!g_uav1MissionCompleted && isUav1 && hasPreviousWaypoint && hasSuspiciousPointPos)
+                    {
+                        constexpr double kPosEps = 1.0;
+                        const bool prevIsSuspiciousPoint =
+                            (std::abs(prevWp.position.x - suspiciousPointPos.x) <= kPosEps) &&
+                            (std::abs(prevWp.position.y - suspiciousPointPos.y) <= kPosEps);
 
-                        if (ns3::wsn::scenario4::params::g_resultFileStream)
+                        if (prevIsSuspiciousPoint)
                         {
-                            *ns3::wsn::scenario4::params::g_resultFileStream
-                                << "\n[EVENT] " << g_uav1MissionCompletedTime
-                                << " | event=UAV1MissionComplete"
-                                << " | reason=LeftSuspiciousPoint"
-                                << std::endl;
+                            g_uav1MissionCompleted = true;
+                            g_uav1MissionCompletedTime = Simulator::Now().GetSeconds();
+
+                            NS_LOG_WARN("[UAV1-MISSION] Completed after leaving suspicious point"
+                                        << " | t=" << g_uav1MissionCompletedTime << "s");
+
+                            if (ns3::wsn::scenario4::params::g_resultFileStream)
+                            {
+                                *ns3::wsn::scenario4::params::g_resultFileStream
+                                    << "\n[EVENT] " << g_uav1MissionCompletedTime
+                                    << " | event=UAV1MissionComplete"
+                                    << " | reason=LeftSuspiciousPoint"
+                                    << std::endl;
+                            }
                         }
                     }
-                }
-            });
+                });
+            }
         }
     }
 }
@@ -326,9 +355,12 @@ void InitializeUavBroadcast()
             ns3::wsn::scenario4::params::RADIO_BITRATE_BPS);
     };
     
-    // UAV2 broadcasts from first waypoint until last waypoint
+    // UAV2 broadcasts from first waypoint until the repeated-flight horizon.
     const double broadcastStartTime = uav2Path.waypoints[0].arrivalTime;
-    const double broadcastEndTime = uav2Path.waypoints.back().arrivalTime;
+    const double onePassEndTime = uav2Path.waypoints.back().arrivalTime;
+    const double broadcastEndTime = (g_scenarioStopTimeSec > broadcastStartTime)
+        ? g_scenarioStopTimeSec
+        : onePassEndTime;
     
     // Calculate total broadcast duration and number of cycles
     const double totalBroadcastDuration = broadcastEndTime - broadcastStartTime;
@@ -480,8 +512,10 @@ void InitializeCellCooperationTimeout()
         return;
     }
     
-    // Timeout = time when UAV2 reaches last waypoint
-    const double cooperationTimeoutSec = uav2Path.waypoints.back().arrivalTime;
+    // Timeout = time when UAV2 finishes its repeated mission horizon.
+    const double cooperationTimeoutSec = (g_scenarioStopTimeSec > 0.0)
+        ? g_scenarioStopTimeSec
+        : uav2Path.waypoints.back().arrivalTime;
     
     NS_LOG_INFO("[CELL-COOPERATION-TIMEOUT] Scheduling forced cooperation trigger"
                 << " | uav2LastWaypointTime=" << cooperationTimeoutSec << "s"
@@ -519,7 +553,7 @@ void InitializeCellCooperationTimeout()
         if (ns3::wsn::scenario4::params::g_resultFileStream)
         {
             *ns3::wsn::scenario4::params::g_resultFileStream
-                << "[EVENT] " << Simulator::Now().GetSeconds()
+                << "\n[EVENT] " << Simulator::Now().GetSeconds()
                 << " | event=CellCooperationTimeout"
                 << " | triggeredNodes=" << triggeredCount
                 << std::endl;

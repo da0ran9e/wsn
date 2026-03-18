@@ -336,11 +336,23 @@ button:hover {
 }
 
 .comm-link-r {
-  stroke: rgba(255, 64, 64, 0.95);
+  stroke: rgba(88, 230, 130, 0.98);
 }
 
 .comm-link-s {
   stroke: rgba(255, 220, 64, 0.95);
+}
+
+.comm-link-d {
+  stroke: rgba(255, 72, 72, 0.98);
+  stroke-dasharray: 5 3;
+}
+
+.comm-link-d-cross {
+  stroke: rgba(255, 40, 40, 1);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  opacity: 1;
 }
 
 .timeline-panel {

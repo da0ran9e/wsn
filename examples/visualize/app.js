@@ -430,7 +430,7 @@ function parseUavPaths(text) {
 function parseUavWaypointEvents(text) {
   const lines = text.split(/\r?\n/);
   const events = [];
-  const regex = /^\[EVENT\]\s*([\d.]+)\s*\|\s*event=UAVWaypointArrival\s*\|\s*nodeId=(\d+)\s*\|\s*pos=\((-?[\d.]+),(-?[\d.]+),(-?[\d.]+)\)/;
+  const regex = /^\[EVENT\]\s*([\d.]+)\s*\|\s*event=UAVWaypointArrival\s*\|\s*nodeId=(\d+)(?:\s*\|\s*cycle=(\d+))?\s*\|\s*pos=\((-?[\d.]+),(-?[\d.]+),(-?[\d.]+)\)/;
 
   for (const line of lines) {
     const m = line.match(regex);
@@ -441,9 +441,10 @@ function parseUavWaypointEvents(text) {
     events.push({
       time: Number(m[1]),
       nodeId: Number(m[2]),
-      x: Number(m[3]),
-      y: Number(m[4]),
-      z: Number(m[5]),
+      cycle: m[3] ? Number(m[3]) : 1,
+      x: Number(m[4]),
+      y: Number(m[5]),
+      z: Number(m[6]),
     });
   }
 
@@ -458,18 +459,19 @@ function parseCommunicationLinks(text) {
   let currentEventTime = null;
 
   const eventRegex = /^\[EVENT\]\s*([\d.]+)\s*\|/;
-  const tokenRegex = /(\d+)-(R|S)-(\d+)\((\d+)\)/g;
+  const tokenRegex = /(\d+)-(R|S|D)-(\d+)\((\d+)\)/g;
 
   for (const line of lines) {
     const eventMatch = line.match(eventRegex);
     if (eventMatch) {
       currentEventTime = Number(eventMatch[1]);
-      continue;
     }
 
     if (currentEventTime === null) {
       continue;
     }
+
+    tokenRegex.lastIndex = 0;
 
     let tokenMatch;
     while ((tokenMatch = tokenRegex.exec(line)) !== null) {
@@ -908,9 +910,35 @@ function renderCommunicationFrame() {
     line.setAttribute('y2', dst.y);
     line.setAttribute(
       'class',
-      link.linkType === 'R' ? 'comm-link comm-link-r' : 'comm-link comm-link-s',
+      link.linkType === 'R'
+        ? 'comm-link comm-link-r'
+        : link.linkType === 'S'
+          ? 'comm-link comm-link-s'
+          : 'comm-link comm-link-d',
     );
     communicationLayer.appendChild(line);
+
+    if (link.linkType === 'D') {
+      const midX = (src.x + dst.x) / 2;
+      const midY = (src.y + dst.y) / 2;
+      const markSize = 5;
+
+      const x1 = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      x1.setAttribute('x1', midX - markSize);
+      x1.setAttribute('y1', midY - markSize);
+      x1.setAttribute('x2', midX + markSize);
+      x1.setAttribute('y2', midY + markSize);
+      x1.setAttribute('class', 'comm-link-d-cross');
+      communicationLayer.appendChild(x1);
+
+      const x2 = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      x2.setAttribute('x1', midX - markSize);
+      x2.setAttribute('y1', midY + markSize);
+      x2.setAttribute('x2', midX + markSize);
+      x2.setAttribute('y2', midY - markSize);
+      x2.setAttribute('class', 'comm-link-d-cross');
+      communicationLayer.appendChild(x2);
+    }
   }
 }
 
