@@ -6,6 +6,7 @@
 
 #include "base-station-node/base-station-node.h"
 #include "base-station-node/fragment-generator.h"
+#include "node-routing.h"
 #include "ground-node-routing/ground-node-routing.h"
 #include "ground-node-routing/cell-cooperation.h"
 #include "helper/calc-utils.h"
@@ -51,6 +52,71 @@ GetCc2420Device(Ptr<Node> node)
         return nullptr;
     }
     return DynamicCast<wsn::Cc2420NetDevice>(node->GetDevice(0));
+}
+
+void
+TryMarkUav2CompletionFromSuspiciousSeed(const char* source)
+{
+    if (g_uav2MissionCompleted)
+    {
+        return;
+    }
+
+    const uint32_t suspiciousSeedNodeId = GetSuspiciousSeedNodeId();
+    if (suspiciousSeedNodeId == std::numeric_limits<uint32_t>::max())
+    {
+        return;
+    }
+
+    auto it = g_groundNetworkPerNode.find(suspiciousSeedNodeId);
+    if (it == g_groundNetworkPerNode.end())
+    {
+        return;
+    }
+
+    const double confidence = it->second.confidence;
+    if (confidence >= ::ns3::wsn::scenario4::params::ALERT_THRESHOLD)
+    {
+        NS_LOG_INFO("[UAV2-MISSION-FALLBACK] Triggered by " << source
+                    << " | seedNodeId=" << suspiciousSeedNodeId
+                    << " | confidence=" << std::fixed << std::setprecision(3) << confidence
+                    << " | threshold=" << ::ns3::wsn::scenario4::params::ALERT_THRESHOLD
+                    << " | t=" << Simulator::Now().GetSeconds() << "s");
+        MarkUav2MissionCompleted(suspiciousSeedNodeId, confidence);
+    }
+}
+
+void
+SchedulePeriodicUav2CompletionCheck(double intervalSec, double endTimeSec)
+{
+    if (g_uav2MissionCompleted || intervalSec <= 0.0)
+    {
+        return;
+    }
+
+    const double nowSec = Simulator::Now().GetSeconds();
+    if (endTimeSec > 0.0 && nowSec > endTimeSec)
+    {
+        return;
+    }
+
+    TryMarkUav2CompletionFromSuspiciousSeed("PeriodicCheck");
+
+    if (g_uav2MissionCompleted)
+    {
+        return;
+    }
+
+    const double nextSec = nowSec + intervalSec;
+    if (endTimeSec > 0.0 && nextSec > endTimeSec)
+    {
+        return;
+    }
+
+    Simulator::Schedule(Seconds(intervalSec),
+                        &SchedulePeriodicUav2CompletionCheck,
+                        intervalSec,
+                        endTimeSec);
 }
 }
 
@@ -103,6 +169,14 @@ MarkUav2MissionCompleted(uint32_t triggerNodeId, double triggerConfidence)
             << " | triggerNodeId=" << triggerNodeId
             << " | confidence=" << std::fixed << std::setprecision(3) << triggerConfidence
             << std::endl;
+    }
+
+    if (g_uav1MissionCompleted && g_uav2MissionCompleted)
+    {
+        constexpr double kEarlyStopDelay = 1.0;
+        NS_LOG_WARN("[EARLY-STOP] Both UAV missions complete, stopping simulation in "
+                    << kEarlyStopDelay << "s");
+        Simulator::Stop(Seconds(kEarlyStopDelay));
     }
 }
 
@@ -182,6 +256,18 @@ void InitializeUavFlight()
             hasSuspiciousPointPos = true;
         }
     }
+
+    // Fallback checker:
+    // periodically evaluate seed-node confidence to avoid missing UAV2 completion
+    // when threshold crossing happens via non-direct reception paths.
+    constexpr double kUav2CompletionCheckIntervalSec = 0.5;
+    const double checkEndTimeSec = (g_scenarioStopTimeSec > 0.0)
+        ? g_scenarioStopTimeSec
+        : 0.0;
+    Simulator::Schedule(Seconds(kUav2CompletionCheckIntervalSec),
+                        &SchedulePeriodicUav2CompletionCheck,
+                        kUav2CompletionCheckIntervalSec,
+                        checkEndTimeSec);
     
     NS_LOG_INFO("[UAV-FLIGHT] Initializing flight for " << uavPaths.size() << " UAVs");
 
@@ -303,6 +389,14 @@ void InitializeUavFlight()
                                     << " | event=UAV1MissionComplete"
                                     << " | reason=LeftSuspiciousPoint"
                                     << std::endl;
+                            }
+
+                            if (g_uav1MissionCompleted && g_uav2MissionCompleted)
+                            {
+                                constexpr double kEarlyStopDelay = 1.0;
+                                NS_LOG_WARN("[EARLY-STOP] Both UAV missions complete, stopping simulation in "
+                                            << kEarlyStopDelay << "s");
+                                Simulator::Stop(Seconds(kEarlyStopDelay));
                             }
                         }
                     }
@@ -548,6 +642,9 @@ void InitializeCellCooperationTimeout()
         NS_LOG_INFO("[CELL-COOPERATION-TIMEOUT] Global timeout completed"
                     << " | triggered=" << triggeredCount 
                     << " | skipped=" << skippedCount << " (already cooperated)");
+
+        // One-shot fallback check right after global cooperation trigger.
+        TryMarkUav2CompletionFromSuspiciousSeed("CellCooperationTimeout");
         
         // Log to result file
         if (ns3::wsn::scenario4::params::g_resultFileStream)

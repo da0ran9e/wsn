@@ -1,10 +1,13 @@
 #include "cell-cooperation.h"
 #include "ground-node-routing.h"
+#include "../base-station-node/base-station-node.h"
+#include "../node-routing.h"
 #include "../helper/calc-utils.h"
 #include "ns3/log.h"
 #include "ns3/random-variable-stream.h"
 #include "ns3/simulator.h"
 #include "../../../../examples/scenarios/scenario4/scenario4-params.h"
+#include <limits>
 #include <set>
 
 namespace ns3 {
@@ -145,6 +148,17 @@ ShareFragments(uint32_t fromNode, uint32_t toNode)
                                           toState.expectedFragmentCount
                                     : 0.0;
     toState.lastCooperationTime = Simulator::Now().GetSeconds();
+
+    // Fallback completion path:
+    // If suspicious seed node reaches alert threshold via peer-sharing (S links),
+    // UAV2 mission should still be marked as completed.
+    const uint32_t suspiciousSeedNodeId = GetSuspiciousSeedNodeId();
+    if (suspiciousSeedNodeId != std::numeric_limits<uint32_t>::max() &&
+        toNode == suspiciousSeedNodeId &&
+        toState.confidence >= ::ns3::wsn::scenario4::params::ALERT_THRESHOLD)
+    {
+        MarkUav2MissionCompleted(toNode, toState.confidence);
+    }
 }
 
 void
