@@ -1,0 +1,1370 @@
+--- PAGE 1 ---
+
+IEEE INTERNET OF THINGS JOURNAL, VOL. 10, NO. 9, 1 MAY 2023 8185
+Deep Reinforcement Learning for Trajectory
+Path Planning and Distributed Inference in
+Resource-Constrained UA V Swarms
+Marwan Dhuheir , Emna Baccour , Aiman Erbad ,Senior Member, IEEE , Sinan Sabeeh Al-Obaidi ,
+and Mounir Hamdi ,Fellow, IEEE
+Abstract —The deployment ﬂexibility and maneuverability of
+unmanned aerial vehicles (UA Vs) increased their adoption invarious applications, such as wildﬁre tracking, border monitor-ing, etc. In many critical applications, UA Vs capture images andother sensory data and then send the captured data to remote
+servers for inference and data processing tasks. However, this
+approach is not always practical in real-time applications dueto the connection instability, limited bandwidth, and end-to-endlatency. One promising solution is to divide the inference requestsinto multiple parts (layers or segments), with each part beingexecuted in a different UA V based on the available resources.Furthermore, some applications require the UA Vs to traversecertain areas and capture incidents; thus, planning their pathsbecomes critical particularly, to reduce the latency of making thecollaborative inference process. Speciﬁcally, planning the UA Vstrajectory can reduce the data transmission latency by commu-nicating with devices in the same proximity while mitigating thetransmission interference. This work aims to design a model fordistributed collaborative inference requests and path planning ina UA V swarm while respecting the resource constraints due to thecomputational load and memory usage of the inference requests.The model is formulated as an optimization problem and aims tominimize latency. The formulated problem is NP-hard so ﬁndingthe optimal solution is quite complex; thus, this article intro-duces a real-time and dynamic solution for online applicationsusing deep reinforcement learning. We conduct extensive sim-ulations and compare our results to the state-of-the-art studiesdemonstrating that our model outperforms the competing models.
+Index Terms —Classiﬁcation decision, convolutional neural
+networks (CNNs), distributed inference, latency, optimization,path planning, unmanned aerial vehicles (UA Vs).
+I. I NTRODUCTION
+RECENTLY, unmanned aerial vehicles (UA Vs) have been
+widely used in various applications ranging from surveil-
+lance [ 1], search and rescue operations [ 2], and goods deliv-
+ery [ 3] to face detection [ 4], delivery of wireless services [ 5],
+Manuscript received 8 July 2022; revised 15 October 2022; accepted
+9 December 2022. Date of publication 28 December 2022; date of currentversion 25 April 2023. This work was supported by NPRP-Standard (NPRPS)13th Cycle from the Qatar National Research Fund under Grant NPRP13S-
+0205-200265. (Corresponding author: Aiman Erbad.)
+Marwan Dhuheir, Emna Baccour, Aiman Erbad, and Mounir Hamdi are
+with the College of Science and Engineering, Hamad Bin Khalifa University,Doha, Qatar (e-mail: madh28916@hbku.edu.qa; ebaccourepbesaid@
+hbku.edu.qa; aerbad@hbku.edu.qa; mhamdi@hbku.edu.qa).
+Sinan Sabeeh Al-Obaidi is with the Research and Development Engineering
+Department, Barzan Holdings QSTP LLC, Doha, Qatar (e-mail: ssabeeh@
+me.com).
+Digital Object Identiﬁer 10.1109/JIOT.2022.3231341and precision agriculture [ 6], which highly aroused the
+attention of researchers and manufacturers. UA Vs outperformtraditional technologies in terms of many factors, such as high
+maneuverability, low cost, easy control system designing, and
+monitoring from low-level altitudes [ 7]. Speciﬁcally, UA Vs can
+provide architecture ﬂexibility as their system conﬁguration is
+easy, making UA Vs an alternative in applications like recon-
+naissance missions. In addition, the ease of directing UA Vs,monitoring from low-level altitudes, and capturing data from
+different angles give them the advantage of being used in areas
+that are difﬁcult to reach by traditional methods.
+Some UA V applications require more than one device to
+accomplish their mission with high accuracy. Furthermore, astasks become more complicated, such as tracking an object on
+the ground, it becomes challenging for a single UA V to capture
+high-resolution images and process them due to the limitedcapabilities (including computational capacity and memory
+usage). Hence, a swarm of UA Vs is required in order to allow
+devices to collaborate in achieving a speciﬁc goal. Multi-UA V-based applications have started to appear in a plethora
+of applications, such as oil/gas offshore inspection, delivering
+wireless communication in more dense areas, military-basedoperations, and delivering Covid-19 vaccine [ 6]. One critical
+application of UA Vs is surveillance and monitoring an area
+for many purposes, such as forest ﬁre detection, border mon-itoring, and collecting data from a disaster scene. Moreover,
+a swarm of UA Vs can handle more complex operations effec-
+tively. In particular, all UA Vs collaborate to achieve the mis-
+sion. Unlike satellites capturing images from the ground, the
+UA V-enabled surveillance systems can capture high-resolutionpictures that are more practical for classiﬁcation tasks [ 8].
+Deep neural networks (DNNs), which are employed in
+computer vision to analyze data collected by UA Vs, have sig-niﬁcantly improved in recent years [ 2]. Moreover, DNNs have
+become a state-of-the-art solution for image classiﬁcation and
+recognition [ 9], [10]. Although DNN has accomplished signif-
+icant improvements in complicated UA V missions, one UA V
+cannot execute the DNN model onboard due to its resource
+constraints, which leads to impractical execution time [ 11].
+In fact, these DNN networks consist of millions of neu-
+rons and billions of connections and consume large amount
+of resources to process the required inferences, and oneUA V cannot accomplish the mission with minimum latency.
+Existing works tried to reduce the DNN network size, but
+2327-4662 c/circlecopyrt2022 IEEE. Personal use is permitted, but republication/redistribution requires IEEE permission.
+See https://www.ieee.org/publications/rights/index.html for more information.
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:24:44 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 2 ---
+
+8186 IEEE INTERNET OF THINGS JOURNAL, VOL. 10, NO. 9, 1 MAY 2023
+the accuracy was affected. Hence, distributed inference in
+multi-UA Vs is a promising solution to utilize DNN networkslocally. In other words, the complete process is achieved
+onboard without resorting to remote servers. In order to over-
+come the resource-constrained problem, the DNN model ispartitioned into various parts/tasks, and each task is assigned to
+one UA V in the swarm. Each UA V executes its dedicated task
+and shares the output with the next participant until obtainingthe ﬁnal prediction [ 12], [13]. However, working with UA Vs
+to accomplish a mission adds a complexity of mobility and
+interference, represented by the data rates and the distancebetween devices. Previous works did not consider studying the
+UA Vs’ trajectory path and its effect on the latency of making
+the ﬁnal prediction. Furthermore, doing in-site classiﬁcation by
+moving devices exposed to path loss, interference, and possi-
+ble disconnection has not been investigated in the literature.As a result, to allow deep neural to be processed in UA V
+systems, the DNN distribution should be designed to consider
+the hardware and physical limits, as same as intended UA Vspath planning and latency of decision making, which is one
+of our aims in this article.
+Planning the UA Vs’ trajectory is crucial in surveillance-
+based applications to mitigate interference and improve the
+overall system performance. Different applications are studied
+where the UA V track is planned while executing a mission.Chang et al. [ 14] and Jeong et al. [ 15]u s e dU A V st op r o v i d e
+computation ofﬂoading to user elements (UEs) on the ground
+while trajectories are planned to cover speciﬁc users. The workin [14] focused on designing the UA Vs’ trajectory to collect
+data from the Internet of Things (IoT) devices. Our model
+involves planning the UA Vs’ trajectory in surveillance-based
+applications and collaborative image processing. In this con-
+text, we plan the route of the UA Vs by dividing the surveyedarea into equal-spaced cells, and we assume that each UA V
+covers one cell in the same time slot. Participants’ mobility
+affects the latency of calculating the joint image classiﬁcationdecisions. In particular, when participants are close to each
+other, the interference increases, which affects data transmis-
+sion. On the other hand, when UA Vs are too far away, thelatency to exchange data becomes very high, which makes
+the inference distribution not practical. To summarize, the dis-
+tance between cooperating UA Vs should be well planned toexecute the inference request with minimum latency and low
+interference.
+In this article, we study the deployment of convolutional
+neural networks (CNNs) within a surveillance UA V system.
+We build a collaborative strategy that distributes the com-
+putation of different CNN layers into multiple UA V devices.Particularly, the complete CNN is divided into parts/tasks, and
+these parts are distributed to be computed in the connected
+UA Vs, aiming to minimize the latency while considering the
+resource constraints and the distance between participants.
+Particularly, if any participant runs out of resources, it del-egates the subsequent layer to the next UA V to execute it.
+In addition, the trajectory of UA Vs is planned to control the
+distance between UA Vs, which highly impacts data trans-mission and consequently impacts the optimal placement of
+layers within UA Vs. During this distribution, the UA Vs may berequested to visit predeﬁned hot cells. We validate our model
+by considering different CNN networks and different resourcecapacities of participants. To the best of our knowledge, we
+believe that our work is the ﬁrst to plan UA Vs’ trajectory to
+assist a CNN distribution. The contributions of this article arestated as follows.
+1) We introduce a system model consisting of a swarm of
+UA Vs capturing images and feeding them to the CNNmodel for image classiﬁcation. The main objective is to
+minimize the time of making the ﬁnal classiﬁcation deci-
+sion by planning their trajectory. The connected UA Vscollaborate to reduce the ﬁnal classiﬁcation latency and
+ﬁnish the online requests within the UA Vs.
+2) We formulate our UA Vs’ collaborative inference and
+path planning as a nonlinear optimization problem that
+seeks to minimize the latency of making the ﬁnalclassiﬁcation decision while planning the UA Vs paths
+to cover the whole area by visiting different loca-
+tions and controlling critical spots. This optimizationrespects the UA Vs constraints, such as memory usage
+and computational complexity.
+3) We relax the optimization problem by ﬁxing one variable
+and running the optimization for the other one for the
+maximum of possible values and choosing the value that
+gives the minimum latency.
+4) The formulated optimization problem is NP-hard, and
+it is not adequate for online resource allocation; hence,
+we introduce a reinforcement learning (RL) algorithmthat seeks to ﬁnd the trajectory path of UA Vs while
+distributing CNN tasks. The RL approach is solved
+using an efﬁcient algorithm, namely, proximal policy
+optimization (PPO).
+5) We evaluate our system model through extensive simu-
+lations to prove its performance by considering different
+CNN networks, different device conﬁgurations, and dif-
+ferent numbers of participants. Additionally, we compareour model with two benchmark system models that use
+different algorithms.
+6) To the best of our knowledge, our work is the ﬁrst to plan
+the UA Vs’ trajectories while considering the latency of
+executing the distributed CNN tasks by considering the
+distances between cooperating devices and their effecton the interference.
+This article is organized as follows. Section IIpresents
+the related works, and Section IIIshows the system model,
+the problem formulation, and the RL model. Section IV
+presents the performance evaluation and simulation results of
+our approach. Finally, Section Vpresents the conclusions.
+II. R
+ELATED WORKS
+In this section, we present a literature review of distributed
+inference and path planning of multi-UA Vs while being on a
+mission.
+A. Distributed Inferences Systems
+The distributed CNN networks have become widely known
+because they assist resource-constrained machines and reduce
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:24:44 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 3 ---
+
+DHUHEIR et al.: DEEP REINFORCEMENT LEARNING 8187
+the time execution of classifying input data. Due to the
+exceptional performance of the distributed systems, theyhave been integrated into many applications, including
+image recognition and image classiﬁcation. The work by
+Teerapittayanon et al. [ 16] suggests that UA Vs work as a
+relaying device that captures images and frames from the
+ground. Then, the data is sent to MEC servers to process
+them and send the ﬁnal classiﬁcation decision back to theconnected UA Vs. This scenario depends on high-performance
+machines to process the data. Another technique was presented
+by Yang et al. [ 9], [17] in which the distribution of the model is
+based on the network quality, quality of the captured images,
+and layers. More speciﬁcally, the ﬁrst segment is executed
+in the data-generating UA V , while the rest is ofﬂoaded to the
+MEC server. The partition point depends on the network qual-
+ity and the quality of the images that determine the size of theDNN network. However, this approach does not consider the
+latency of the transmitted data, which affects the efﬁciency of
+ﬁnding the ﬁnal classiﬁcation decision.
+Another mainstream direction is to distribute the DNN
+model within the available resource-constrained devices (e.g.,
+UA Vs) in a way to accomplish the whole inference andmake the ﬁnal classiﬁcation decision within the UA Vs, with-
+out resorting to remote servers. Disabato et al. [ 18] proposed
+to distribute the CNN layers to the connected IoT devices.The classiﬁcation decision was made locally while considering
+the connected IoT devices’ memory usage and computational
+complexity. However, this work has not investigated the dis-tribution of incoming online requests, which is a challenging
+scenario in surveillance systems. Jouhari et al. [ 19]h a v ei n v e s -
+tigated using multi-UA Vs for surveillance and monitoring tasks
+in online scenarios. They focused on minimizing the latency of
+making the ﬁnal classiﬁcation decision by ﬁnding the optimallayer placement within UA V participants. However, the author
+considered a static path planning that does not take into
+account the allocation strategy and the latency of inferencecooperative computation. In this article, we propose a joint
+allocation and trajectory strategy that synchronizes the path
+of UA Vs with the required data sharing in order to minimizethe latency of distributed tasks. In our previous work [ 20], we
+studied an online scenario of distributing the CNN layers into
+a swarm of UA Vs, i.e., each UA V is dedicated to executing apart of the request. We also assumed in our previous work a
+constant data rate, i.e., the mobility of UA Vs was assumed to
+be homogeneous, and the UA Vs move while maintaining thesame distance between them. Nevertheless, UA Vs’ heteroge-
+neous mobility is a more realistic scenario where the distances
+between devices change, which affects the latency of collab-orative services presented by UA Vs. Therefore, in this article,
+we consider a heterogeneous scenario of moving UA Vs where
+the data rates change based on UA V distances, and the allo-
+cation of different CNN layers and path planning are chosen
+while mitigating the interference and minimizing the latency.
+B. UAVs Path Planning
+Planning the path of UA Vs has been investigated by many
+researchers. Demiane et al. [ 21] have proposed an approachwhere the monitored area is divided into equal cell sizes. The
+covered area is classiﬁed based on the necessity of UA Vs topass through these cells, i.e., some cells do not witness many
+incidents, and others are critical; hence, the UA Vs need to
+traverse regularly. In this work, the system model deals withone UA V to cover the whole area, which is not sufﬁcient to
+monitor a big area and provide services. Another approach is
+proposed by Samir et al. [ 22], where the UA Vs collect data
+from resource-constrained IoT devices on the ground and send
+them to a remote server to process them while optimizing
+the paths to cover the whole area. This model depends onthe environment and quality of the links between the UA Vs
+and the ground station. Gedawy et al. [ 23] introduced another
+scenario of trajectory path planning. In this approach, strate-
+gic locations are deﬁned, and the UA Vs plan their trajectories
+based on these strategic locations while consuming less energy.However, this study considers independent devices, and they
+do not present any service that requires the collaboration of
+UA Vs in which the main goal is to plan the UA Vs’ path with-out involving any computational task. In our scenario, each
+UA V is supposed to capture images/collect data from the cov-
+ered area, set up a CNN inference, and distribute it to theconnected UA Vs depending on their available resources while
+minimizing the classiﬁcation latency and planning their trajec-
+tory paths. The UA Vs are supposed to visit the crucial cellsmore often than other cells, which we call hot cells. The main
+goal of this surveillance system is to monitor the hot cells in
+the environment; therefore, we ensure that the hot cells are vis-ited at each time step. Our system model obligates the UA Vs
+to visit the hot cells each time step tand satisfy part of the
+service demand because these hot cells are more susceptible
+to accidents on the spot. We highlight here that the number of
+UA Vs should be at least equal to or greater than the numberof hot cells; hence, each hot cell should be monitored at each
+time step t. However, due to the different resource requests
+and limited resource capacities, the UA Vs move to delegatethe subsequent tasks to devices with available resources and
+minimize the delay of the distributed inferences.
+The existing literature on adopting UA Vs for different mis-
+sions while planning the UA Vs paths is investigated in many
+studies, such as those in [ 14] and [ 15], which use UA Vs as base
+stations to provide services to the ground users while planning
+the UA Vs’ trajectory paths. Another approach found in [ 24]
+uses multi-UA Vs as base stations to provide services to clusters
+containing ground users while they navigate to maximize thecoverage of the served users. Other kinds of literature plan the
+UA Vs’ trajectories in order to achieve monitoring and surveil-
+lance missions in order to make the UA Vs cover the wholearea [ 9]. Jouhari et al. [ 19] investigated the distribution of
+CNN layers into multiple UA Vs while considering already
+planned paths of UA Vs to allocate the layers and minimize
+the latency of CNN execution. In our study, we are dealing
+with a different context compared to [ 9], [14], and [ 15], which
+is CNN distribution for monitoring mission, and we optimize
+the UA Vs paths to assist the resource allocation and minimize
+the latency of the inference, which is not the case of [ 19].
+Multi-UA Vs with edge computing and path planning have been
+investigated in many research studies. Almost all the studies
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:24:44 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 4 ---
+
+8188 IEEE INTERNET OF THINGS JOURNAL, VOL. 10, NO. 9, 1 MAY 2023
+consider UA Vs as an edge computing device while planning
+their trajectory. Chang et al. [ 14] used an RL-based model
+to plan the paths of UA Vs until reaching their destination.
+Meanwhile, these UA Vs provide services to terminal users on
+the ground, playing the role of edge devices. Another approachwas introduced by Liu et al. [ 25]. This approach also used RL
+to draw UA Vs’ paths and provide edge computing services to
+ground users. The authors adopted the linear-based algorithmto conduct this process and evaluate the Quality of Service
+(QoS) for the terminal users who received UA Vs’ services.
+Different RL algorithms are used to plan the trajectory of
+the UA V swarm. The agents generally learn the optimal policy
+based on the reward and penalties they receive after selecting
+the path planning actions. Another technique presented in [ 26]
+and [ 27] used deep RL (DRL) to plan the trajectory paths for
+tracking an object in the ground in the presence of obstacles.Moon et al. [ 26] focused on tracking the object in the pres-
+ence of interference that comes from Line of Sight (LoS) and
+Non-LoS (NLoS); while Li and Wu [ 27] studied the usage of
+long short-term memory networks to approximate the states
+in the environments. All the presented studies in [ 26], [27],
+and [ 28] use multi UA Vs to accomplish a mission while plan-
+ning the trajectory of UA Vs in the presence of interference.
+However, they do not study the effect of the distance between
+the connected UA Vs on trajectory planning which affects theinterference and the execution time of predicting the targets.
+Some studies focused on studying the trajectory of UA Vs while
+collecting data from ground users, and they used differentDRL algorithms. The work in these studies evaluates the mini-
+mum completion time of collecting data [ 29], [30], [31]. Other
+works studied the trajectory planning of UA Vs while on a mis-
+sion by using machine-learning-based algorithms [ 32], [33],
+[34], [35], [36]. Although the previous works [ 29], [30], [31],
+[32], [33], [34], [35], [36] studied the trajectory of UA Vs while
+being involved on a mission, they did not consider studying
+the effect of trajectory on latency and interference, the effectof distances between UA Vs on the interference while UA Vs
+are moving, and the effect of UA Vs’ capacities on the latency
+calculations, which are the aim factors addressed in this article.
+III. D
+ISTRIBUTED CNN AND PATH PLANNING ON
+RESOURCE -CONSTRAINED UAV S
+This section introduces our system model for incorporating
+distributed CNN networks and planning the path of UA Vs. We
+formulate our system model as an optimization problem that
+seeks to ﬁnd the minimum latency between capturing an image
+from the ground and providing the ﬁnal classiﬁcation decision.The UA Vs are moving to monitor a speciﬁc area while a CNN
+network processes the incoming requests. Because the formu-
+lated problem is NP-hard, we introduce an RL system modelintended to plan the UA Vs’ trajectory path while capturing
+images from the ground to be classiﬁed.
+A. System Model
+Our system model is shown in Fig. 1. In this system, we
+divide the covered area into equal cell sizes, and the number of
+cells in the grid is denoted as C. Each UA V captures multiple
+Fig. 1. System model.
+images in real time and collaborates with other UA Vs to com-
+pute the classiﬁcation prediction of the captured images. In
+this scenario, the UA Vs pass through the whole area; how-ever, not all the cells have the same importance to visit, as
+shown in Fig. 1. Some areas are important and require UA Vs
+to visit more than others (e.g., expected ﬁre areas). Therefore,our system model is designed to surveil the area while focus-
+ing on the hot cell locations. We assume that the number of
+UA Vs needs to be greater than or equal to the number of hotcells to guarantee that at least one hot cell area is visited at
+each time step. For nonhot cell areas, the UA Vs can visit and
+capture requests from the visited areas. While the UA Vs movein the area, they need to satisfy two essential tasks, one is exe-
+cuting part of the requests based on their capabilities, and the
+other task is to plan their path in a way that minimizes the
+latency of calculating the ﬁnal classiﬁcation prediction. At the
+same time, the UA V needs to mitigate interference by locatingitself in a suitable position based on its distance from the rest
+of the UA Vs in the swarm. As the energy and capacities of
+UA Vs are limited, planning their paths is important to exploittheir resources more efﬁciently.
+If resources are not sufﬁcient to process the entire CNN
+inference, the UA V sends the output of the intermediate layerto other UA Vs to process the rest of the tasks. The monitored
+area might include different surveillance systems such as for-
+est ﬁre detection, tracking an object on the ground, bordersmonitoring, etc., which means multiple CNN models can be
+used according to the surveillance objectives.
+The size of images captured by different UA Vs is the
+same; however, the model can handle images of different sizes
+(e.g., based on the capturing camera). The processing time of
+the CNN depends on the type and architecture of the CNNnetwork being used to process the data. Moreover, the distri-
+bution system in our approach is per layer. Each layer will
+be assigned to one UA V , and based on the UA V capabilities,
+part of the inference is processed. If one UA V does not have
+enough resources to accomplish its task of the CNN layer,this part will be delegated to another UA V to process it until
+the whole classiﬁcation task is completed within the swarm.
+We highlight that for each request, all layers are computedfollowing the trained CNN model without applying any early
+exit strategy.
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:24:44 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 5 ---
+
+DHUHEIR et al.: DEEP REINFORCEMENT LEARNING 8189
+Furthermore, the latency is deﬁned as the delay from cap-
+turing an image from the ground until making the ﬁnalclassiﬁcation decision, and it is composed of two delays, com-
+putational and communication delays. The latency depends on
+the distribution of layers and the distances between UA Vs.We notify that the latency is impacted by the capacity of
+devices assigned to different layers and the distances/data rates
+between the communicating devices, which depend on the pathplanning. The communication latency is impacted by the num-
+ber of subsequent layers assigned to each UA V device. The
+computation latency of the same type of CNN is not the samefor all requests, which depends on the number of subsequent
+layers and the available capacities of the devices.
+The model consists of Nconnected UA Vs capturing images
+and feeding them to the CNN network. These UA Vs col-
+laborate to classify the input images onboard based on theircapacities. The system seeks to ﬁnd the suitable set of UA Vs
+that can achieve the best latency, i.e., minimizing the time
+of making the ﬁnal classiﬁcation decision. We consider sev-eral time frames in which each frame (e.g., a few minutes) is
+divided into Tequal time slots with a ﬁxed length (e.g., a few
+seconds). Let us assume that the ith UA V unit i∈Nis char-
+acterized by two important constraints: 1) maximum memory
+usage ¯m
+iand 2) maximum computational capacity ¯ci.I nt h i s
+model, each UA V i∈{1,..., N}is assumed to generate RQt
+i
+requests per time step tsuch that/summationtext
+iRQt
+i=RQt, where RQt
+denotes the total number of requests at t.
+In this work, the UA Vs are assumed to capture images from
+the ground, and the trained CNN model is used to classify the
+input references. Each UA V in the swarm has a copy of the
+trained model and accepts part of the tasks to execute it. The
+proposed distribution system is compatible with the typical
+CNN network that is designed into a pipeline of successivelayers, i.e., convolutional and ReLU, and without incorporat-
+ing residual blocks [ 37]. In this context, we assume Lto be
+the number of layers of the CNN model, which represents thenumber of subtasks that are distributed to the connected UA Vs
+to classify the input image. jrepresents the index of the layer
+where j∈{1,..., L}. Each layer has a memory requirement
+m
+jand a computation demand cj. The memory usage mj(in
+bytes) represents the number of weights that the layer jstores
+multiplied by the size of the data type intended to characterizethe parameters. The second requirement is the computational
+load c
+j, which is the number of multiplications that are pro-
+cessed to execute the layer j[38]. Therefore, the computational
+load requirement for the layer jis calculated as follows:
+cj=nj−1.s2
+j.nj.z2
+j (1)
+where nj−1is the number of input channels at layer j, which
+represents the total feature maps that come from the layer j−1,
+ands2
+jandz2
+jare the spatial ﬁlter size of the jth layer and the
+spatial size of the output map, respectively. The computationalload calculations of the fully connected layer jare the number
+of neurons n
+jof layer jmultiplied by the number of neurons
+nj−1of the layer j−1, and it is represented as follows:
+cj=nj−1.nj. (2)The memory requirements of layers are calculated as the num-
+ber of weights Wjof the current layer jby the number of bits
+bdedicated to storing the weight, and it is represented as
+mNc
+j=Wj.b. (3)
+All UA Vs are assumed to transmit a ﬁxed power Pto each
+other in which the received power at one UA V is Pt
+i,k=ht
+i,k.P,
+where ht
+i,kis deﬁned as the channel gain from UA V ito UA V
+kin the same time slot t. The channel gain is calculated as
+follows:
+ht
+i,k=C/summationdisplay
+v=1C/summationdisplay
+q=1h0
+d(v,q)2./Psi1t,i,q./Psi1t,k,v∀i∈N∀t∈T(4)
+where h0is deﬁned as the median of the mean path gain at
+reference distance d0=1m , d(q,v)represents the distance
+between the cell qthat contains UA V iand cell vthat contains
+UAV k, and/Psi1t,i,qrepresents a binary variable that takes 1 if
+the UA V iexists in cell qat time frame tand 0 otherwise.
+When UA V isends intermediate data to UA V kin time slot t,
+the achievable data rate can be calculated as follows:
+ρi,k(t)=Bt
+i,klog2/parenleftBigg
+1+Pt
+i,k
+σ2/parenrightBigg
+(5)
+where σ2is the thermal noise power, and Bt
+i,kis the transmis-
+sion bandwidth between UA V ito UA V kat time slot t.W e
+note that the Doppler effect is out of the scope of this article,
+and it will be considered in future work.
+B. Problem Formulation
+Our system model is designed to deal with real-time
+requests, ﬁnd the optimal placement of the layers in the
+available UA Vs, ﬁnd the optimal position of the connectedUA Vs, and plan the path they can follow. The UA Vs should
+avoid colliding with others and provide monitoring services
+to the covered area. We formulate this methodology as an
+optimization problem that seeks to ﬁnd the minimum latency
+of calculating the classiﬁcation prediction and plan the UA Vs’trajectory to accomplish their mission of monitoring a region.
+The proposed optimization problem depends on two deci-
+sion variables /Psi1
+t,i,qandδt,r,i,j, and they are deﬁned as
+follows:
+∀r∈RQt∀i,k∈N∀j∈L
+δt,r,i,j=⎧
+⎨
+⎩1,if UA V iexecutes the layer jof request r
+at time frame t
+0,otherwise(6)
+/Psi1t,i,q=/braceleftbigg1,if the UA V iexists at cell qat time instance t
+0,otherwise .
+(7)
+The objective function minimizes the latency of executing all
+decision variables at time frame T, which is shown in ( 8). We
+emphasize that we adopted the method of per-layer distribution
+as it is suitable for systems with a limited number of UA Vs
+and compatible with the UA V environment that we describedin the system model. In addition, the per-layer distribution
+leads to less data transmission, hence decreasing the energy
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:24:44 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 6 ---
+
+8190 IEEE INTERNET OF THINGS JOURNAL, VOL. 10, NO. 9, 1 MAY 2023
+consumption as same as reducing the dependency between
+UA V devices. Finally, to support the dynamic of the model(e.g., the change of requests rate and the change of the number
+of UA Vs joining or quitting for charging), the optimization
+process is executed periodically.
+Our problem is an integer linear programming (ILP)
+optimization and it is formulated as follows:
+min
+/Psi1t,i,q,δt,r,i,jT/summationdisplay
+t=1RQt/summationdisplay
+r=1N/summationdisplay
+i=1N/summationdisplay
+k=1,k/negationslash=iL−1/summationdisplay
+j=1δt,r,i,j.δt,r,k,j+1
+.Kr,j
+ρi,k(t)+N/summationdisplay
+i=1t(p)
+i+ts (8)
+s.t.
+RQt/summationdisplay
+r=1L/summationdisplay
+j=1δt,r,i,j.mj≤¯mi∀i∈N (8a)
+RQt/summationdisplay
+r=1L/summationdisplay
+j=1δt,r,i,j.cj≤¯ci∀i∈N (8b)
+∀r∈RQt∀j∈L∀t∈T
+N/summationdisplay
+i=1δt,r,i,j=/braceleftbigg1, ifj≤L
+0, otherwise(8c)
+∀t∈T∀j∈L∀i∈N∀r∈RQt,δt,r,i,j∈{0,1}
+(8d)
+∀t∈T∀i∈N∀v∈C,/Psi1 t,i,q∈{0,1} (8e)
+C/summationdisplay
+v=1/Psi1t,i,v=1∀i∈N∀t∈T (8f)
+N/summationdisplay
+i=1/Psi1t,i,v≤1∀v∈C∀t∈T (8g)
+N/summationdisplay
+i=1/Psi1t,i,q==1∀q∈/Omega1∀t∈T (8h)
+and where
+ts=T/summationdisplay
+t=1RQt/summationdisplay
+r=1N/summationdisplay
+k=1,k/negationslash=s¯δt,r,s,1.δt,r,k,1.Ks
+ρi,k(t)(9)
+t(p)
+i=T/summationdisplay
+t=1RQt/summationdisplay
+r=1L/summationdisplay
+j=1δt,r,i,j.cj
+ei. (10)
+Equation ( 8) calculates the total latency of making the ﬁnal
+classiﬁcation of the captured images, which consists of threemain parts.
+1) The latency t
+sin (9) is the time required by the UA V
+that captures the request from the ground to transmit itscollected data to the UA V computing the ﬁrst layer of
+this request. K
+sis the size of the data collected by the
+source UA V sfrom the ground. In ( 9),¯δt,r,i,1represents
+the complement of the decision variable δt,r,i,1.
+2)t(p)
+iis the total time required to compute all tasks
+assigned to device i, which is presented in ( 10). Thistime is deﬁned as the ratio between the computa-
+tional requirement cjof the layer to the number of
+multiplications eithat UA V ican process in a second.
+3) The time required to transmit the intermediate represen-
+tation of the input image from the UA V device ito the
+UAV device kthat is assumed to be connected in the
+swarm and can be represented in
+Kr,j
+ρi,k(t)(11)
+where Kr,jis the intermediate data generated from layer
+jof request r, andρi,krepresents the transmission data
+rate between the UA V device iand the UA V device k.
+It represents the distance and the quality of the trans-
+mission connection between UA Vs. Since UA Vs are
+moving, the value of ρi,kis changing according to the
+distance between the UA Vs over the time interval in the
+optimization. The data rate is calculated according to ( 5)
+as introduced in [ 39].
+The constraints in ( 8a) and ( 8b) are added to set a threshold
+for the maximum memory usage and the maximum computa-
+tional capacity of the UA Vs in the swarm, respectively. Thesethresholds are set to make the UA Vs work within the allow-
+able limit that respects their resources and to make the latency
+calculation compatible with the real models. Moreover, theconstraint in ( 8c) is added to ensure that each layer is com-
+puted by one UA V , and the constraints in ( 8d) and ( 8e) refer to
+the binary indication of the decision variables and they acceptonly the value of 0 or 1. The constraint in ( 8f) is set to ensure
+that each cell is visited only by one UA V at each time step.
+This condition is added to avoid collision between different
+UA Vs that cannot co-exist in the same area at the same time.
+Meanwhile, the constraint in ( 8g) is set to guarantee that each
+UA V visits only one cell at each time instance t. The constraint
+in (8h) refers to the hot cells that UA Vs need to traverse and
+capture images from them. We highlight that /Omega1denotes the set
+of hot cells in the grid. If the whole area should be monitored
+during the period T, the hot cells should include the indexes
+of all cells over time. Moreover, the size of hot cells must beequal to or less than the number of UA Vs.
+The optimization problem in ( 8) is NP-hard, and ﬁnding
+the optimal solution is quite difﬁcult because it is time con-suming and cannot be used to receive online requests and
+execute real-time classiﬁcations. In addition, our optimization
+problem changes periodically, and it assumes full knowl-edge of the set of incoming inferences. The UA Vs’ resources
+should also be reinitialized after computing the classiﬁca-
+tions. Hence, using the optimization ( 9) is not practical in
+the case of dynamic environments. Recently, RL has shown
+exemplary performance in dealing with dynamic and realistic
+models [ 40]. The RL systems can learn the optimal solu-
+tion from the knowledge of the environment states and make
+the best prediction from the available choices based on theprevious rewards. Moreover, RL systems have the advantage of
+continuous learning to adapt to any ﬂuctuations in the dynamic
+system models. In summary, to distribute the online classiﬁca-tions among UA Vs and ﬁnd their optimal path, we introduce
+an RL-based model that can approximate the optimal solution.
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:24:44 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 7 ---
+
+DHUHEIR et al.: DEEP REINFORCEMENT LEARNING 8191
+TABLE I
+LIST OF IMPORTANT KEYNOTATIONS
+Table Ipresents a summary of symbols presented in our work
+for ease of reference.
+C. Reinforcement Learning for Trajectory Path Planning and
+Inferences Distribution on Resource-Constrained
+Swarm of UAVs
+Finding the optimal solution to ( 8) is complex and time
+consuming due to the nonlinearity in ( 4) and the objective
+function; hence, it cannot be applied in real-time scenarios.
+To solve the problem, we adopted a real-time and dynamic
+solution, which is DRL. The learning process of RL modelsis done ofﬂine, and after the convergence of the algorithm and
+the allocation policy is learned, the actions will be taken in
+real time. Speciﬁcally, the deep DNN model that we adoptfor RL has two layers and 64 neurons for each layer, which is
+very light, and the system’s complexity is negligible; therefore,
+the RL solution can take on-the-ﬂy actions, and our algorithmcan handle the layers’ allocations and plan the UA Vs trajec-
+tory paths online. Our RL system model seeks to ﬁnd the
+set of UA V devices that collaborate to achieve the minimum
+classiﬁcation latency and plan their paths that further con-
+tribute to minimizing this latency. This section presents ourmethod of designing the system environment, sets of states and
+actions, developing a practical reward function, presenting the
+RL agent, and selecting the most appropriate RL technique.
+The RL agent chooses the actions based on the environ-
+ment states to maximize the long-term reward. Accordingly,the primary objective is to ﬁnd the optimal policy that accom-
+plishes the maximum reward. In the exploration phase, the
+agent learns by trying different action choices and receivingpositive or negative feedback in terms of reward. The agent
+learns from trial and error by interacting with the changes in
+the environment and accordingly adapting to it. During this
+phase, the RL agent gains experience from the rewards and
+penalties of each action, and after the process of exploration,it becomes ready to converge to the maximum reward policy.
+In our platform, the RL agent is doing two tasks (allocation
+and path planning decisions).
+At each time step, the RL agent chooses the location of each
+UA V and decides if this UA V can handle the current layer of
+the CNN. The decision taken depends on many factors thathave an impact on the distribution process, such as the trained
+CNN network, the remaining resources of the UA Vs, the loca-
+tion of the other UA Vs in the grid, the current layer, and thepositions of hot cells in the grid. Our RL-system model is rep-
+resented by a framework of Markov decision process (MDP)
+depicted by (S,A,P,R,γ).Srepresents the set of states, A
+is the set of actions, Pis the possible transition probabilities
+of the states, Ris the immediate rewards received for each
+action, and γrepresents the discount learning factor. The MDP
+elements are explained in detail in the following sections.
+1) Environment Modeling: The environment model of this
+system includes a set of UA Vs collaborating to accomplishonline inference requests. Let πdenote the stochastic policy
+in which π:S×A→[0,1]. The MDP environment model
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:24:44 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 8 ---
+
+8192 IEEE INTERNET OF THINGS JOURNAL, VOL. 10, NO. 9, 1 MAY 2023
+is set to receive the instructions from a centralized agent that
+takes actions At, receives rewards/penalties Rt, and learns the
+optimal policy π∗from the feedback it receives at each time
+step t. The agent seeks to ﬁnd the optimal policy π∗, which
+has the maximum value vπ∗(s)for all elements s∈S.T h e
+value set of vπ(s)represents the expected return of the reward
+function after applying action aon state swhile trying to reach
+the optimal policy, and it is expressed as follows:
+vπ(s)=Eat,st+1/parenleftbigg∞/summationdisplay
+k=1γk−tRk|St=s/parenrightbigg
+. (12)
+By receiving rewards and penalties, the agent can learn from
+the past experiences of the multidecisions, i.e., layers alloca-tion and the trajectory path, in order to increase the rewards
+R
+t. In our system model, one episode consists of multiple time
+steps. It represents a distribution of one request to the avail-able UA Vs while moving in the grid and avoiding colliding
+with each other. One time step trepresents the allocation of
+one layer of the CNN request in one of the UA Vs and thelocation of this UA V . In addition, each episode is independent
+of other episodes, and the reward is set to 0 at the beginning
+of each one. We note that our agent does not have visibility ofthe environment design nor information about the next state.
+Alternately, the agent learns the optimal policy π
+∗from the
+interaction with the environment, receiving rewards/penalties,
+i.e., the optimal policy π∗is a function to be learned by tak-
+ing action Atto the current state Stin order to move the agent
+to the next state St+1, i.e., π∗:S→A.F i g . 2depicts the
+representations of the states and actions of one episode. The
+episode length depends on the size of the CNN and the num-ber of UA Vs, in which the length of one episode is L×N,
+where Lis the number of layers and Nis the number of UA Vs.
+Hence, the episode length in each CNN network is different.
+2) States and Actions: In order to achieve high system
+performance, the states should include helpful information thatdescribes the environment sufﬁciently to the agent. Our system
+model is depicted in Fig. 3. The action vector is composed of
+two parts, allocation and trajectory planning, i.e., A=[a
+1,a2].
+The set of states Sincludes all the conﬁgurations that impact
+the transitions of UA Vs in the grid and the computations of dif-
+ferent CNN layers. Hence, at each time step, the informationreceived by the agent includes the following observations.
+1)l
+j:The current layer to be allocated.
+2)Ni:The current UA V .
+3)¯mi:The memory capacity of the UA V device i.
+4)¯ci:The computational load of the UA V device i.
+5){P∗
+s1,...,P∗
+sN}:The position of UA Vs in the grid.
+6){/Omega11,...,/Omega1N}:The position of hot cells in the grid.
+The model state is hence a vector that contains the follow-
+ing:{lj,Ni,mi,ci,{P∗
+s1,..., P∗
+sN},{/Omega11,...,/Omega1 N}}. We empha-
+size that iis the index of UA V devices, and /Omega1Nis the index
+of hot cells in the grid where the indices of UA Vs positionsand hot cells are known to the model, i.e., the length of the
+UA Vs position vector is the length of the grid containing the
+positions of the UA Vs in the grid. The vector is composed ofbinaries where 1 means that it is an index of UA V or hot cell.
+According to the described system design, the states set length
+Fig. 2. Episode representation of the RL model.
+is(2∗size(grid)+D).Drepresents the number of parame-
+ters (e.g., memory, computational load, current layer, etc.) that
+will be included in the states, which is equal to 4. In addi-
+tion, at the end of each time step, the memory, computationalcapacity, and the UA Vs’ positions are updated according to
+the taken action. Moreover, the current layer and current UA V
+device are also updated according to the number of runningtime steps. The updated data will be the input to the next time
+step. In addition, the shape of the action vector consists of
+two parts, one is the allocation part, which is a binary indexthat indicates whether to allocate or not. The other part is the
+index of the cell where the UA V should move.
+3) Reward Function: The reward function is an important
+parameter that needs to be well designed in order to get highsystem performance and lead to minimum latency in comput-
+ing the ﬁnal prediction. In RL systems, when the agent takes
+action A
+tfor the current state St, it gets feedback about the
+result which is represented as a reward. Our reward function is
+based on the ability of the RL agent to respect the constraints
+formulated in the problem ( 8)
+⎧
+⎪⎪⎪⎪⎪⎨
+⎪⎪⎪⎪⎪⎩Cons1: if/summationtext
+t
+j=N×⌊(t−1)/N⌋+1aj
+1=1 constraint ( 8c)
+Cons2: if j∈{N×⌊(t−1)/N⌋+1,..., t}→
+aj
+2/∈UA VsVisitedList constraints ( 8f)a n d( 8g)
+Cons3: if at
+1=1→mj≤¯miandcj≤¯ci
+constraints ( 8a)a n d( 8b).
+(13)
+Cons1 is added to make the sum of actions equal to 1,
+and it is equivalent to the constraint in ( 8c). This constraint
+ensures that the layer related to the steps in {N×⌊(t−1)/N⌋+
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:24:44 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 9 ---
+
+DHUHEIR et al.: DEEP REINFORCEMENT LEARNING 8193
+Fig. 3. RL system model.
+1,..., t}is assigned to only one UA V . Cons2 indicates that
+each UA V can visit one cell and can exist in one cell at each
+time step, and UA VsVisitedList is an empty list deﬁned at thebeginning of each layer that stores the cells UA Vs visit. Cons3,
+on the other hand, refers to the maximum threshold of the
+UA V resources to make sure that the chosen UA V has enoughresources to execute the speciﬁed layer of the request. Then,
+we deﬁne the instant reward, which refers to the total reward
+of respecting the constraints of the multitask altogether, i.e.,
+R
+t=Cons1 ∗Cons2 ∗Cons3 . (14)
+According to ( 14), if Cons1 is not respected, i.e., (Cons1 =0),
+this means that the related task is rejected and cannot be han-
+dled by any of the connected UA Vs due to the nonavailability
+of the UA Vs or this layer is assigned to multi-UA Vs at the sametime. Therefore, the reward is set to 0 as a penalty to encour-
+age the RL system to avoid these invalid cases. Moreover, if
+more than one UA V exists in the same cell in the grid, i.e.,(Cons2 =0), the step reward will be 0, and the system rec-
+ognizes this as a penalty. Finally, if Cons3 is not respected,
+i.e.,(Cons3 =0), this indicates that the chosen UA V does
+not have enough resources to handle the request. In this case,
+the immediate reward is equal to 0. The step reward will be
+equal to 1, if all the constraints are respected. In addition, theﬁrst time step, i.e., t=1, is dedicated to calculating the time
+delay of the transmission of the image to the UA V that will
+compute the ﬁrst layer, hence, the delay time (K
+s/ρs,i(t))of
+calculating the ﬁrst layer is added as a penalty to the total
+reward as indicated in ( 9). Then, in the remaining time steps,
+the time delay of calculating the computation and communi-cation latency equal to ((K
+j/ρi,k(t))+(cj/ei))as indicated in
+(9) is added as a penalty to the instant reward.
+In (15),Sfis denoted to the QoS factor. Particularly, this
+factor refers to the encouragement level of the agent to tra-
+verse through hot cells and accept requests. According to ( 15),
+when Sfbecomes higher, the reward R/Omega1becomes high, and
+it encourages the RL system to visit hot cells and provide
+services. In other words, the UA Vs should traverse throughthese cells and capture requests. According to this scenario, at
+each time step, the UA V traverses through hot cells, and eachhot cell has a demand service to be fulﬁlled. The demand
+vector of all hot cells is denoted by φ
+/Omega1.
+Hence, we deﬁne the reward related to the services that are
+offered to the hot cells as the same work that has been done
+in [25]
+R/Omega1=Sf
+1+/summationtext/Omega1
+i=1φ/Omega1(t). (15)
+4) RL Agent Design: The primary goal of the RL agent is
+to maximize rewards by experimenting with various environ-
+ment states and select actions. In this way, the agent learnsthe model’s optimal policy π
+∗from its surroundings. Finding
+the optimal policy starts by creating a strategy of the optimal
+set of action-values Q(St,At), which gives the agent a hint
+about the expected future reward of taking a speciﬁc action
+At. The function of action-value Q(St,At)of the RL agent,
+which represents the future expected reward and can depictthe performance/goodness of the selected action and is shown
+as follows:
+Q(s
+t,at)=Eat,st+1/parenleftbiggN/summationdisplay
+k=1γkRt+k|St=s,At=a/parenrightbigg
+(16)
+where γis the discount factor in which γ∈[0,1] and it
+represents the average of immediate reward to the long-term
+rewards. The differentiated equation of transitions in states and
+actions can be expressed as [ 26]
+Q(s,r)←Q(s,r)+α/parenleftBig
+Rt+γmax
+aˆQ(s,a)−Q(s,a)/parenrightBig
+(17)
+where αrepresents the learning factor.
+5) PPO Algorithm: PPO was introduced in [ 41], which
+belongs to the family of policy gradient methods. In order
+to improve the RL system performance and handle multitask
+operations, we chose the PPO as it can relax the complexconstraints and replace them with ﬂexible ones [ 42]. The PPO
+algorithm’s main goal can be summarized as follows:
+J
+PPO=Es,a/bracketleftbig
+min/parenleftbig
+η∗Aπold,clip(η,1−ε,1+ε)Aπold/parenrightbig/bracketrightbig
+(18)
+where ηrepresents the policy probability ratio and is calcu-
+lated as follows:
+η=π(a,s)
+πold(a,s). (19)
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:24:44 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 10 ---
+
+8194 IEEE INTERNET OF THINGS JOURNAL, VOL. 10, NO. 9, 1 MAY 2023
+Aπ=Q(st,at)−vπ(s), which refers to the advantage function
+that measures the quality of action compared to the actionsavailable in the state vector and can be calculated by using
+different methods [ 43]. The value function v
+π(s)measures the
+long-term reward of being in the state sfollowing the policy
+π, while Q(st,at)measures the long-term reward of taking
+speciﬁc action in the state vector sfollowing the policy π.ε
+is denoted to the PPO clip range [ 44]. In the case of Aπold>1,
+the output of the function ηbecomes very large, i.e., (larger
+than 1) in order to make the system performance higher; how-
+ever, this leads to unsuitability in the learning steps. PPOsolves this problem in ( 18) by restricting the value of ηto
+be in the range of [1 −ε,1+ε].
+In our system model, the distribution of participants varies
+and depends on the available capacities. Moreover, the system
+is dynamic due to the number of UA Vs joining or leaving theswarm, and the action space vector is related to the active
+UA V devices. Therefore, it is difﬁcult to apply traditional RL
+techniques to solve the layers allocation and planning of thetrajectory path of UA Vs, where Q-tables are adopted to keep
+the historical Q-values. We adopt DRL to solve the aforemen-
+tioned challenges and learn the parametric representation ofthe action-value function Q(s,a). The goal of the DRL is to
+minimize the loss function obtained as follows:
+L(θ)=E/bracketleftBigg/parenleftbigg
+R
+t+γmax
+¯aQ/parenleftbig
+¯s,¯a,¯θ/parenrightbig
+−Q(s,a,θ)/parenrightbigg2/bracketrightBigg
+(20)
+where Q(s,r)is approximated to Q(s,r,θ)andθrepresents
+the weights of deep learning networks.
+To stabilize our model’s training using the PPO algorithm
+and ensure the convergence of the system model, we used a
+variety of methods and techniques summarized in Algorithm 1.
+In this algorithm, we initialize the CNN network parametersthat will be used in the training process, where two copies of
+theQ-network with the same neural network conﬁguration and
+weights (lines 2 and 3). Then, we prepare the swarm of UA Vsfor random distribution in the grid after ensuring that these
+UA Vs respect our two main path planning constraints, which
+are described in Cons2 in ( 13) (lines 4–7). The training process
+generates a series of episodes that repeatedly occur (lines 9–
+41). The training process executes several sequential episodes
+(lines 10–29), then the buffer stores the experience tuples of thetrained episodes (lines 29–41). The agent generates a different
+set of discrete actions. The actions vector has two parts: the
+ﬁrst is the allocation distribution of inferences, and the secondis related to UA V path planning (line 14). Furthermore, if the
+constraints of 13are valid (line 15), the agent checks the type
+of layers it is processing and calculates penalties related tolatency (lines 16–36). Besides, if the chosen participant respects
+the constraints in ( 13), a step reward is added to the agent’s
+rewards (lines 19–22). Following the selection of a valid UA V ,
+a penalty is added to the total reward to represent the latency
+of processing that layer. The agent then examines the pathplanning constraints. If a UA V in the swarm does not coexist
+with another UA V , a reward is given to the agent (lines 23–25).
+A reward is also given to each UA V that passes through hotcells at each time step in order to encourage the swarm of
+UA Vs to traverse these hot cells (lines 26–28). Following that,Algorithm 1 RL Algorithm
+1:Initialization
+2:Randomly initialize the parameters θof the Q-network.
+3:Randomly initialize the parameters θold of the Q-network:
+θold←θ.
+4:Randomly distribute UA Vs in the grid:
+5:foreach UAV in C do
+6: distribute all UA Vs in the grid
+7:end for
+8:PPO2 training:
+9:foreach episode r∈Rdo
+10: foreach t∈Tdo
+11: foreach j∈{1,2,3,..., L}do
+12: foreach i∈{1,2,3,..., N}do
+13: S(i)={j,i,mj,cj,{/Omega11,/Omega12,...,/Omega1 N},
+{P∗s1,Ps2∗,..., P∗sN}}
+14: choose action Aibased on /epsilon1
+15: ifCons 1then equation ( 13)
+16: ifj=1then
+17: Rt=Rt−K1
+ρi,k(t)−cr,1
+ei
+18: else if j/negationslash=1then
+19: ifCons 3then equation ( 13)
+20: Ri=Ri−(Kr,s
+ρi,k(t)+cr,j
+ei)
+21: a2=i
+22: end if
+23: ifCons 2then equation ( 13)
+24: Rt=Rt+1 equation( 14)
+25: end if
+26: ifUAV(i)/∈/Omega1then
+27: Rt=Rt+R/Omega1 equation( 15)
+28: end if
+29: observe Si+1
+30: observe Rt
+31: update system with UA Vs new locations
+32: save(Si,Ai,ri,Si+1)in replay memory
+33: sample a minibatch of (Si,Ai,ri,Si+1)
+34: θold←θ
+35: error=Rt+γV(Si+1)−V(Si)
+36: end if
+37: end if
+38: end for
+39: end for
+40: end for
+41:end for
+the new state and total reward are computed to update the
+system of the new environment (lines 37 and 38). To improvedecision accuracy, we select random samples from the replay
+buffer (line 33) into a minibatch at each step. The saved values
+are used to update the network parameters (lines 34 and 35).The aforementioned mechanism is known as experience replay,
+and it is used to stabilize learning.
+IV . S
+IMULATION RESULTS AND ANALYSIS
+In this section, the evaluation of our system model is
+presented, and a comparison with other baseline and recently
+proposed models is conducted. To achieve a fair comparison,
+we applied the same conﬁguration of the environment in dif-ferent comparative methods. The same conﬁgurations include
+applying the same number and type of UA Vs, the same size
+of the cells, the same number and type of requests, and thesame number of cells. Parameters are described in the follow-
+ing paragraph. Furthermore, we evaluate our system in terms
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:24:44 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 11 ---
+
+DHUHEIR et al.: DEEP REINFORCEMENT LEARNING 8195
+TABLE II
+SIMULATION PARAMETERS
+of the accuracy of respecting different constraints, the latency
+of making ﬁnal classiﬁcation decisions, shared data, and theQoS of the system. In terms of QoS, we compare our results
+with two state-of-the-art works, which use the sigmoid demand
+algorithm and linear demand algorithm. The latency is deﬁnedas the delay from capturing an image from the ground until
+making the ﬁnal classiﬁcation decision. The shared data is the
+total data transmitted between devices in the swarm. Moreover,the accuracy is deﬁned as the percentage of respecting the con-
+straints of the two tasks (path planning and layers allocations)
+after the convergence. Finally, the QoS of our system modelis deﬁned as the level of visiting the hot cells and providing
+services to the hot cells.
+Our system covers a surveillance scenario. In the sim-
+ulation testing, we used three different CNN networks, a
+small CNN network, namely, LeNet (two convolutional lay-
+ers and three fully connected layers), which is trained with
+32×32×3 RGB sized image, a medium-sized CNN network,
+namely, AlexNet (ﬁve convolutional layers and three fullyconnected layers), which is trained with a 227 ×227×3
+RGB-sized image, and ﬁnally, the VGG16 CNN network
+(13 convolutional layers and 3 fully connected layers) whichis trained with a 224 ×224×3 RGB-sized image. The UA Vs
+are endowed with a camera to capture an image from the
+monitored area and launch the inference request.
+We adopted an area of 100 m ×100 m to be covered by
+the connected participants, in which we used 25 cells with
+20 m width and 20 m length. Furthermore, we used three dif-ferent types of UA Vs that belong to the family of Raspberry pi
+B+[45]. Particularly, all types are characterized by a 1.4-GHz
+64-bit quad-core processor and 1-GB RAM while they have adifferent number of multiplications per second e
+i[18] which
+are 560, 512, and 256. We emphasize that our classiﬁcation
+request generation follows a Poisson process. The algorithmof our system model is validated using the parameters sum-
+marized in Table II. We emphasize that these parameters are
+empirically chosen, and we believe that similar systems will
+perform identically.
+Figs. 4–6show the result of the variation of the cumula-
+tive rewards over the training episodes of LeNet, AlexNet,
+and VGG16, respectively. As shown in the ﬁgures, the ﬁrst
+process is the exploration, where the agent starts learningthe optimal policy and then starts increasing until it con-
+verges to the maximum cumulative reward. Moreover, VGG16
+Fig. 4. Average cumulative rewards for LeNet.
+Fig. 5. Average cumulative rewards for AlexNet.
+requires fewer episodes to converge and learn the optimalpolicy of executing the process and doing the multitask oper-
+ation because the episode length in VGG-16 is longer thanthe small CNN network such as LeNet, and the medium CNN
+network, AlexNet. We added to these graphs the line of max-
+imum reward that the RL policy tries to pursue. This line isimpossible to reach as we have a penalty related to latency.
+However, we can see that our algorithm can accomplish near-
+optimum results, and our system model is performing well.Fig. 7shows the convergence of penalties. In other words, it
+shows the main objective of the RL, which is minimizing the
+latency of calculating the classiﬁcation decision. It starts to behigh; then, the system learns how to decrease the penalty of
+calculating the latency until converging to the minimum that
+the swarm of UA Vs can achieve.
+In Fig. 8, we present the accuracy graphs for different CNN
+models. In these graphs, we show the capacity of respectingthe constraints, calculated after the convergence, which means
+after the system learns the optimal allocation as well as the
+path planning of the connected UA Vs that leads to the min-imum latency of executing the ﬁnal classiﬁcation decisions.
+The simulated results were conducted in three different CNN
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:24:44 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 12 ---
+
+8196 IEEE INTERNET OF THINGS JOURNAL, VOL. 10, NO. 9, 1 MAY 2023
+Fig. 6. Average cumulative rewards for VGG16.
+Fig. 7. Average penalties.
+networks, 5-layers LeNet, 8-layers Alexnet, and 16-layers
+VGG. The accuracy percentage of LeNet is 96.45%, AlexNetis 91.23%, and VGG16 is 82.50%.
+Due to the np-hardness of the problem in ( 8), it is difﬁ-
+cult to calculate the optimal solution; hence, we evaluated theproblem by calculating the suboptimal solution of the main
+objective function. To calculate the suboptimal solution, we
+ﬁxed one variable and run the optimization problem for theother one, and we tried to run it for the maximum of possible
+values. Then, the values that give the minimum latency are
+chosen.
+Figs. 9and10compare the solution of the suboptimal and
+RL in terms of cumulative latency and shared data. We adopt
+5-layer LeNet with Raspberry pi 3B +and 5 UA Vs in this
+evaluation. From the ﬁgures, the difference between the two
+solutions is negligible at the beginning; it increases as thenumber of requests increases to a max of 40% at 25 requests
+which is an extreme scenario that may not be realistic in the
+case of using ﬁve UA V devices.
+Fig. 11shows the total latency of batches of requests when
+using Raspberry pi devices with different memory capacities.
+Fig. 8. Accuracy comparison of different UA Vs.
+Fig. 9. Comparing optimal and RL solutions in terms of latency.
+Fig. 10. Comparing optimal and RL solutions in terms of shared data.
+As shown in the ﬁgure, as the memory capacities of the devices
+increase, the latency of the inference decreases. For example,the latencies of the devices when e=512 and e=560 are
+quite similar when the number of requests is low, and the
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:24:44 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 13 ---
+
+DHUHEIR et al.: DEEP REINFORCEMENT LEARNING 8197
+Fig. 11. Average total latency of batches of requests for different types of
+devices.
+Fig. 12. Cumulative shared data among devices with different memorycapacities.
+difference starts to be notiﬁed when the number of requests
+increases and the load becomes higher. The memory capacity
+becomes challenging at the higher number of requests, and
+the devices need to exploit all their resources to handle allrequests. Furthermore, we can see that the average total latency
+of 20 requests for the lowest device capacity is 10.68 s. It
+means that the latency per request is equal to 0.53 s. Whenhaving ten requests, the average latency is 5.34 s. For the high-
+est device capacity, for 20 requests, the average total latency
+is 5.22 s, where the average latency per request is 0.26 s, andin the case of having ten requests, the total average latency is
+2.6 s. This proves the capacity of our system to run inference
+requests with low latency.
+Fig. 12shows the shared data between UA V devices in the
+swarm. In this simulation, we compare different Raspberry pidevices while varying the capacity of the memory, and we
+adopt AlexNet as the network used for classiﬁcation. It is clear
+that as the memory capacity increases, the system incurs lessshared data. This result is related to the incapability of the
+UA Vs with low memory capacity to accomplish the whole
+Fig. 13. Minimum number of UA Vs to respect constraints, LeNet distribution
+using Raspberry pi 3B +device with ﬁve requests.
+Fig. 14. QoS simulation results.
+classiﬁcation onboard; hence they resort to distributing a part
+of the inference tasks.
+Our approach contains two essential tasks (layers allocation
+and path planning). In order to satisfy these two tasks, the
+number of UA Vs should be sufﬁcient to complete their tasks
+successfully, and there is a minimum number of UA V devicesin which lower than this number (threshold), the mission can-
+not be completed or completed with high latency and/or high
+interference due to their available resources. In Fig. 13,w e
+present the minimum number of UA Vs to start respecting the
+two constraints. Moreover, the minimum number of UA Vs
+required to satisfy the mission depends on the number of cells.Clearly, the larger the number of cells, the more UA Vs are
+required to achieve the mission.
+Figs. 14and15depict the QoS. The QoS is deﬁned as how
+many times the UA Vs visit the hot cells and provide services
+(capture requests and send them for classiﬁcation) to thesecells. The QoS coefﬁcient factor S
+fencourages the agent to
+visit these hot cells by increasing the total reward that is based
+on (15). Fig. 14shows that when the QoS coefﬁcient factor Sf
+is 0, i.e., there is no reward for covering hot cells, our RL-agent
+gives a result of around (0.56); however, when Sf=1, the
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:24:44 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 14 ---
+
+8198 IEEE INTERNET OF THINGS JOURNAL, VOL. 10, NO. 9, 1 MAY 2023
+Fig. 15. Convergence performance of rewards related to QoS for AlexNet,
+Sf=1.
+Fig. 16. Total latency of different models.
+agent knows that there is a reward from traversing through
+these hot cells, so it encourages the UA Vs to pass throughthese cells and provide services to them. We compared our
+result with two baseline works [ 14], [25], and we can see that
+when the QoS coefﬁcient increases, our model does better thanthe other two models and provide services to all the hot cells
+in the ground. In these works, the authors used multi-UA Vs to
+provide services to ground users, and these users have demandrequests that need to be accomplished while UA Vs plan their
+trajectory path to arrive at their destinations. The study in [ 14]
+used a sigmoid demand algorithm to fulﬁll the services of theusers, while the study in [ 25] used a linear demand algorithm.
+Our work outperforms these two works in which we assumed
+that we have hot cells, and inside these hot cells, demand
+services are needed to be fulﬁlled; hence, the UA Vs traverse
+through these cells and provide services. Our work is basedon the reward that is given to the agent, and when this reward
+is higher, the agent encourages the connected UA Vs to visit
+these cells; therefore, when the services factor of ( 15)i sh i g h ,
+the agent learns the optimal policy and cover these hot cells.
+Fig. 15shows the convergence of rewards related to QoS when
+Fig. 17. Accuracy comparison of different algorithms.
+using Raspberry pi with e=560. We can see that the model
+starts learning from past experiences until it converges to 1,
+which means that the swarm is able to provide services to all
+hot cells.
+Fig. 16shows a comparison of our system to the
+approach in [ 19], namely, optimal UA V-based layer distribu-
+tion (OULD). In this model, the authors minimize the latencyof the ﬁnal prediction of the captured requests after assign-
+ing CNN layers; however, the paths of UA Vs are static, and
+they are already planned for the UA Vs at the initialization ofthe system. In our approach, the UA Vs’ paths are optimized to
+minimize the latency of the ﬁnal prediction. For a fair compar-
+ison, we applied the same DRL algorithm, the PPO algorithm,
+with the same input parameters to both system models. It is
+clear that our system is outperforming OULD in terms oflatency as the paths of UA Vs are optimized to ﬁnd the trajec-
+tory that produces the least latency. Moreover, we compare our
+approach to two different baselines: 1) the greedy heuristic and2) the random selection strategy. In the heuristic solution, the
+paths are static, and the UA Vs’ availabilities are checked. The
+one that provides the least latency and has enough resources toexecute the subsequent layer will be chosen. We note that the
+requests are served one by one greedily. The main difference
+between the heuristic solution and the OULD approach is thatthe RL algorithm in OULD has the knowledge about the whole
+path that UA Vs follow; however, the heuristic solution has the
+knowledge of only the next location where the UA V will ﬂy;therefore the latency OULD system is better than the latency
+produced by the heuristic solution. In the random selection
+baseline approach, the UA Vs randomly move, and the resultof average latency is the worst due to the random movements
+of UA Vs, and hence it is not adequate for online transmis-
+sions. Compared to the OULD system, the heuristic solution,
+and the random selection, our system optimizes the UA V’s
+movements to minimize the delay of the captured requests;hence, it accomplishes the best results in terms of latency.
+In Fig. 17, we compare our PPO algorithm to a com-
+monly used RL algorithm, namely, the Actor–Critic algorithm.Both algorithms converge to the maximum reward represented
+by the black horizontal line in the ﬁgure. As we can see,
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:24:44 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 15 ---
+
+DHUHEIR et al.: DEEP REINFORCEMENT LEARNING 8199
+Fig. 18. Average cumulative rewards when varying the number of UA Vs.
+Fig. 19. Average cumulative rewards under a dynamic environment.
+the PPO algorithm outperforms the Actor–Critic algorithm in
+terms of optimality, even though the Actor–Critic convergesfaster. Clearly, the PPO algorithm takes more time to learn
+the optimal layers allocation and plan the path of UA Vs; how-
+ever, it learns a better policy compared to the Actor–Critic.Finally, the accuracy of respecting the constraints of PPO is
+94%, whereas Actor–Critic achieves 88%.
+Fig. 18refers to the comparison between swarms enclosing
+different numbers of UA Vs in terms of average cumulative
+rewards. As the number of UA Vs increases, the convergence
+to the maximum rewards becomes faster as the agent hasenough choices to choose from among the available UA Vs.
+In Fig. 19, we test changing the environment of the learning.
+This can help us test the prompt adaptability of our system
+to any changes knowing that the number of UA Vs can be
+increased or decreased at any time to go to the charging sta-tion, for example, and rejoin the swarm after a period of time
+when the battery is fully charged. Particularly, the system starts
+with three UA Vs, and it converges to the maximum rewards.After converging, one UA V is assumed to join the swarm.
+The accuracy is decreased as the agent tries to learn the newenvironment, then it can reconverge rapidly to the maximum
+rewards where four UA Vs are deployed. Decreasing the num-ber of UA Vs shows the same performance. More speciﬁcally,
+the cumulative rewards drop when the conﬁguration of the
+system changes and then increase again after a small learningperiod.
+V. C
+ONCLUSION
+In this article, we introduced a distributed system model of
+a swarm of UA Vs while planning the trajectory path of UA Vs.The system model is designed to overcome the limitations of
+classifying the captured image in remote servers by disrupt-
+ing the task into segments and executing these segments in theconnected UA Vs by exploiting the limited capacities of UA Vs.
+Simultaneously, the UA Vs draw their path to cover the moni-
+tored region and focus on hot cell locations to capture requests.
+We formulated the distributed system model as an optimization
+problem that seeks to minimize the latency of making theﬁnal classiﬁcation decision while ﬁnding the best path that the
+UA V can pass through to mitigate interference. The formulated
+problem is np-hard, and it is not adequate for real-time appli-cations. Therefore, we introduced an online solution based
+on the RL algorithm that is possible for dynamic models
+and suitable for real-time applications. Our simulation resultsdemonstrated the effectiveness of our proposed solution to
+minimize the latency and improve the accuracy of respect-
+ing the constraints. In our future work, we plan to study thesecurity of transmitting data as these applications require high-
+security transmission and achieve high reliability. Moreover,
+we plan to study the effect of interference on transmissionlatency when controlling channel communication under dif-
+ferent modes like an LoS and an NLoS. Furthermore, we plan
+to investigate the Doppler effect of moving UA Vs as it affectsthe interference of transmission between moving objects.
+A
+CKNOWLEDGMENT
+The ﬁndings herein reﬂect the work, and are solely the
+responsibility, of the authors.
+REFERENCES
+[1] M. B. Bejiga, A. Zeggada, A. Noufﬁdj, and F. Melgani, “A convolu-
+tional neural network approach for assisting avalanche search and rescueoperations with UA V imagery,” Remote Sens. , vol. 9, no. 2, p. 100,
+2017.
+[2] A. Al-Kaff, D. Martín, F. García, A. de la Escalera, and
+J. M. Armingol, “Survey of computer vision algorithms and applicationsfor unmanned aerial vehicles,” Expert Syst. Appl. , vol. 92, pp. 447–463,
+Feb. 2018.
+[3] S. Sawadsitang, D. Niyato, P.-S. Tan, and P. Wang, “Joint ground and
+aerial package delivery services: A stochastic optimization approach,”
+IEEE Trans. Intell. Transp. Syst. , vol. 20, no. 6, pp. 2241–2254,
+Jun. 2019.
+[4] N. Kalatzis, M. Avgeris, D. Dechouniotis, K. Papadakis-
+Vlachopapadopoulos, I. Roussaki, and S. Papavassiliou, “Edgecomputing in IoT ecosystems for UA V-enabled early ﬁre detection,”inProc. IEEE Int. Conf. Smart Comput. (SMARTCOMP) , 2018,
+pp. 106–114.
+[5] K. Kanistras, G. Martins, M. J. Rutherford, and K. P. Valavanis, “A
+survey of unmanned aerial vehicles (UA Vs) for trafﬁc monitoring,” in
+Proc. Int. Conf. Unmanned Aircraft. Syst. (ICUAS) , 2013, pp. 221–234.
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:24:44 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 16 ---
+
+8200 IEEE INTERNET OF THINGS JOURNAL, VOL. 10, NO. 9, 1 MAY 2023
+[6] Q. Wu et al., “A comprehensive overview on 5G-and-beyond networks
+with UA Vs: From communications to sensing and intelligence,” 2020,arXiv:2010.09317 .
+[7] J.-C. Padró, F.-J. Muñoz, J. Planas, and X. Pons, “Comparison of four
+UA V georeferencing methods for environmental monitoring purposes
+focusing on the combined use with airborne and satellite remote sensingplatforms,” Int. J. Appl. Earth Observ. Geoinf. , vol. 75, pp. 130–140,
+Mar. 2019.
+[8] L. Bashmal and Y . Bazi, “Learning robust deep features for efﬁcient
+classiﬁcation of UA V imagery,” in Proc. 1st Int. Conf. Comput. Appl.
+Inf. Security (ICCAIS) , 2018, pp. 1–4.
+[9] B. Yang, X. Cao, C. Yuen, and L. Qian, “Ofﬂoading optimization in
+edge computing for deep-learning-enabled target tracking by Internetof UA Vs,” IEEE Internet Things J. , vol. 8, no. 12, pp. 9878–9893,
+Jun. 2021.
+[10] A. Chriki, H. Touati, H. Snoussi, and F. Kamoun, “UA V-GCS centralized
+data-oriented communication architecture for crowd surveillance appli-cations,” in Proc. 15th Int. Wireless Commun. Mobile Comput. Conf.
+(IWCMC) , 2019, pp. 2064–2069.
+[11] H. Huang, Y . Yang, H. Wang, Z. Ding, H. Sari, and F. Adachi, “Deep
+reinforcement learning for UA V navigation through massive MIMOtechnique,” IEEE Trans. Veh. Technol. , vol. 69, no. 1, pp. 1117–1121,
+Jan. 2020.
+[12] Z. Zhao, K. M. Barijough, and A. Gerstlauer, “DeepThings: Distributed
+adaptive deep learning inference on resource-constrained IoT edge clus-ters,” IEEE Trans. Comput.-Aided Design Integr. Circuits Syst. , vol. 37,
+no. 11, pp. 2348–2359, Nov. 2018.
+[13] E. Baccour et al., “Pervasive AI for IoT applications: A survey
+on resource-efﬁcient distributed artiﬁcial intelligence,” IEEE Commun.
+Surveys Tuts. , vol. 24, no. 4, pp. 2366–2418, 1st Quart., 2022.
+[14] H. Chang, Y . Chen, B. Zhang, and D. Doermann, “Multi-UA V mobile
+edge computing and path planning platform based on reinforcementlearning,” IEEE Trans. Emerg. Topics Comput. Intell. , vol. 6, no. 3,
+pp. 489–498, Jun. 2022.
+[15] S. Jeong, O. Simeone, and J. Kang, “Mobile edge computing via a
+UA V-mounted cloudlet: Optimization of bit allocation and path plan-ning,” IEEE Trans. Veh. Technol. , vol. 67, no. 3, pp. 2049–2063,
+Mar. 2018.
+[16] S. Teerapittayanon, B. McDanel, and H.-T. Kung, “Distributed deep
+neural networks over the cloud, the edge and end devices,” inProc. IEEE 37th Int. Conf. Distrib. Comput. Syst. (ICDCS) , 2017,
+pp. 328–339.
+[17] B. Yang et al., “Intelli-eye: An UA V tracking system with Optimized
+machine learning tasks ofﬂoading,” in Proc. IEEE INFOCOM
+Conf. Comput. Commun. Workshops (INFOCOM WKSHPS) , 2019,
+pp. 1–6.
+[18] S. Disabato, M. Roveri, and C. Alippi, “Distributed deep convolutional
+neural networks for the Internet of Things,” 2019, arXiv:1908.01656 .
+[19] M. Jouhari et al., “Distributed CNN inference on resource-constrained
+UA Vs for surveillance systems: Design and optimization,” IEEE Internet
+Things J. , vol. 9, no. 2, pp. 1227–1242, Jan. 2022.
+[20] M. Dhuheir, E. Baccour, A. Erbad, S. Sabeeh, and M. Hamdi, “Efﬁcient
+real-time image recognition using collaborative swarm of UA Vs and con-
+volutional networks,” in Proc. Int. Wireless Commun. Mobile Comput.
+(IWCMC) , 2021, pp. 1954–1959.
+[21] F. Demiane, S. Sharafeddine, and O. Farhat, “An optimized UA V tra-
+jectory planning for localization in disaster scenarios,” Comput. Netw. ,
+vol. 179, Oct. 2020, Art. no. 107378.
+[22] M. Samir, S. Sharafeddine, C. M. Assi, T. M. Nguyen, and A. Ghrayeb,
+“UA V trajectory planning for data collection from time-constrained IoTdevices,” IEEE Trans. Wireless Commun. , vol. 19, no. 1, pp. 34–46,
+Jan. 2020.
+[23] H. Gedawy, A. Al-Ali, A. Mohamed, A. Erbad, and M. Guizani, “UA Vs
+smart heuristics for target coverage and path planning through strategiclocations,” in Proc. Int. Wireless Commun. Mobile Comput. (IWCMC) ,
+2021, pp. 278–284.
+[24] Y . Hu, M. Chen, W. Saad, H. V . Poor, and S. Cui, “Distributed multi-
+agent meta learning for trajectory design in wireless drone networks,”
+IEEE J. Sel. Areas Commun. , vol. 39, no. 10, pp. 3177–3192, Oct. 2021.
+[25] Q. Liu, L. Shi, L. Sun, J. Li, M. Ding, and F. Shu, “Path plan-
+ning for UA V-mounted mobile edge computing with deep reinforcementlearning,” IEEE Trans. Veh. Technol. , vol. 69, no. 5, pp. 5723–5728,
+May 2020.
+[26] J. Moon, S. Papaioannou, C. Laoudias, P. Kolios, and S. Kim, “Deep
+reinforcement learning multi-UA V trajectory control for target track-ing,” IEEE Internet Things J.
+, vol. 8, no. 20, pp. 15441–15455,
+Oct. 2021.[27] B. Li and Y . Wu, “Path planning for UA V ground target tracking via
+deep reinforcement learning,” IEEE Access , vol. 8, pp. 29064–29074,
+2020.
+[28] Y . Pan, Y . Yang, and W. Li, “A deep learning trained by genetic algo-
+rithm to improve the efﬁciency of path planning for data collection with
+multi-UA V ,” IEEE Access , vol. 9, pp. 7994–8005, 2021.
+[29] Y . Wang et al., “Trajectory design for UA V-based Internet of Things
+data collection: A deep reinforcement learning approach,” IEEE Internet
+Things J. , vol. 9, no. 5, pp. 3899–3912, Mar. 2021.
+[30] K. K. Nguyen, T. Q. Duong, T. Do-Duy, H. Claussen, and L. Hanzo,
+“3D UA V trajectory and data collection optimisation via deep reinforce-
+ment learning,” IEEE Trans. Commun. , vol. 70, no. 4, pp. 2358–2371,
+Apr. 2022.
+[31] Y .-J. Chen and D.-Y . Huang, “Joint trajectory design and BS association
+for cellular-connected UA V: An imitation-augmented deep reinforce-
+ment learning approach,” IEEE Internet Things J. , vol. 9, no. 4,
+pp. 2843–2858, Feb. 2022.
+[32] C. Cheng et al., “Machine-learning-aided trajectory prediction and con-
+ﬂict detection for Internet of aerial vehicles,” IEEE Internet Things J. ,
+vol. 9, no. 8, pp. 5882–5894, Apr. 2022.
+[33] R. Ding, Y . Xu, F. Gao, and X. Shen, “Trajectory design and access con-
+trol for air–ground coordinated communications system with multiagentdeep reinforcement learning,” IEEE Internet Things J. , vol. 9, no. 8,
+pp. 5785–5798, Apr. 2022.
+[34] P. Luong, F. Gagnon, L.-N. Tran, and F. Labeau, “Deep reinforce-
+ment learning-based resource allocation in cooperative UA V-assistedwireless networks,” IEEE Trans. Wireless Commun. , vol. 20, no. 11,
+pp. 7610–7625, Nov. 2021.
+[35] N. Cheng et al., “Space/aerial-assisted computing ofﬂoading for IoT
+applications: A learning-based approach,” IEEE J. Sel. Areas Commun. ,
+vol. 37, no. 5, pp. 1117–1129, May 2019.
+[36] C. Zhou et al., “Deep reinforcement learning for delay-oriented IoT task
+scheduling in SAGIN,” IEEE Trans. Wireless Commun. , vol. 20, no. 2,
+pp. 911–925, Feb. 2021.
+[37] K. He, X. Zhang, S. Ren, and J. Sun, “Deep residual learning for image
+recognition,” in Proc. IEEE Conf. Comput. Vis. Pattern Recognit. , 2016,
+pp. 770–778.
+[38] E. Baccour, A. Erbad, A. Mohamed, M. Hamdi, and M. Guizani,
+“RL-PDNN: Reinforcement learning for privacy-aware distributed neu-
+ral networks in IoT systems,” IEEE Access , vol. 9, pp. 54872–54887,
+2021.
+[39] U. Challita, W. Saad, and C. Bettstetter, “Interference management
+for cellular-connected UA Vs: A deep reinforcement learning approach,”
+IEEE Trans. Wireless Commun. , vol. 18, no. 4, pp. 2125–2140,
+Apr. 2019.
+[40] D. Liu, S. Xue, B. Zhao, B. Luo, and Q. Wei, “Adaptive dynamic pro-
+gramming for control: A survey and recent advances,” IEEE Trans. Syst.,
+Man, Cybern., Syst. , vol. 51, no. 1, pp. 142–160, Jan. 2021.
+[41] J. Schulman, F. Wolski, P. Dhariwal, A. Radford, and O. Klimov,
+“Proximal policy optimization algorithms,” 2017, arXiv:1707.06347 .
+[42] A. T. Azar et al., “Drone deep reinforcement learning: A review,”
+Electronics , vol. 10, no. 9, p. 999, 2021.
+[43] J. Schulman, P. Moritz, S. Levine, M. Jordan, and P. Abbeel, “High-
+dimensional continuous control using generalized advantage estimation,”
+2015, arXiv:1506.02438 .
+[44] E. Bøhn, E. M. Coates, S. Moe, and T. A. Johansen, “Deep reinforce-
+ment learning attitude control of ﬁxed-wing UA Vs using proximal policy
+optimization,” in Proc. Int. Conf. Unmanned Aircr. Syst. (ICUAS) , 2019,
+pp. 523–533.
+[45] H. Daryanavard and A. Hariﬁ, “Implementing face detection system on
+UA V using raspberry pi platform,” in Proc. Iranian Conf. Elect. Eng.
+(ICEE) , 2018, pp. 1720–1723.
+Marwan Dhuheir received the master’s degree
+from Kocaeli University, Kocaeli, Turkey, in 2019.
+He is currently pursuing the Ph.D. degree withthe Department of Information and Computing
+Technology, Hamad Bin Khalifa University, Doha,
+Qatar.
+His research interests include machine learning,
+unmanned aerial vehicles, wireless communications,
+deep reinforcement learning, and edge computing.
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:24:44 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 17 ---
+
+DHUHEIR et al.: DEEP REINFORCEMENT LEARNING 8201
+Emna Baccour received the Ph.D. degree in com-
+puter science from the University of Burgundy,Dijon, France, in 2017.
+She was a Postdoctoral Fellow with Qatar
+University, Doha, Qatar, on a project covering
+the interconnection networks for massive data cen-ters and then on a project covering video cachingand processing in mobile-edge computing networks.
+She currently holds a Postdoctoral Fellow with
+Hamad Ben Khalifa University, Ar-Rayyan, Qatar.Her research interests include data center networks,
+cloud, edge and mobile computing as well as distributed systems. She is also
+interested in distributed machine learning and reinforcement learning withapplication to IoT systems.
+Aiman Erbad (Senior Member, IEEE) received
+the B.Sc. degree in computer engineering from the
+University of Washington, Seattle, WA, USA, in2004, the Master of Computer Science degree inembedded systems and robotics from the University
+of Essex, Colchester, U.K., in 2005, and the Ph.D.
+degree in computer science from The Universityof British Columbia, Vancouver, BC, Canada, in2012.
+He is an Associate Professor and the ICT Division
+Head of the College of Science and Engineering,
+Hamad Bin Khalifa University, Doha, Qatar. Prior to this, he was an Associate
+Professor with the Computer Science and Engineering Department and the
+Director of Research Planning and Development, Qatar University, Doha, untilMay 2020. He also served as the Director of Research Support responsiblefor all grants and contracts from 2016 to 2018 and the Computer Engineering
+Program Coordinator from 2014 to 2016. His research received funding from
+the Qatar National Research Fund, and his research outcomes were publishedin respected international conferences and journals. His research interests spancloud computing, edge intelligence, Internet of Things, private and secure
+networks, and multimedia systems.
+Dr. Erbad received the Platinum Award from H.H. The Emir Sheikh Tamim
+bin Hamad Al Thani at the Education Excellence Day 2013 (Ph.D. cate-gory). He also received the 2020 Best Research Paper Award from Computer
+Communications, the IWCMC 2019 Best Paper Award, and the IEEE CCWC
+2017 Best Paper Award. He is an Editor of KSII Transactions on Internet and
+Information Systems and the International Journal of Sensor Networks and a
+Guest Editor of IEEE N
+ETWORK . He is the General Chair of ISNCC 2023.
+He also served as a Program Chair of IWCMC 2019 and IWCMC 2022, a
+Publicity Chair of the ACM MoVid Workshop 2015, a Local ArrangementChair of NOSSDA V 2011, and a Technical Program Committee Member in
+various IEEE and ACM international conferences (GlobeCom, NOSSDA V ,
+MMSys, ACMMM, IC2E, and ICNC). He is a Senior Member of ACM.
+Sinan Sabeeh Al-Obaidi received the B.Sc.
+degree in electrical engineering from Texas A&MUniversity at Qatar, Doha, Qatar, in 2011 throughan honorary scholarship from Her Highness Sheikha
+Moza Bint Nasser Al-Missnad, the M.Eng. and
+Ph.D. degrees from the Electrical EngineeringDepartment, Texas A&M University at CollegeStation, College Station, TX, USA, in 2014 and
+2018, respectively, through a scholarship offered by
+Qatar Research and Leadership Program from QatarFoundation.
+He currently directs a portfolio of projects in autonomous systems as the
+Manager of Engineering with the Research and Development Directorate,Barzan Holdings QSTP LLC, Doha, Research and Development—EngineeringDepartment for Defense and Security Applications.
+Mounir Hamdi (Fellow, IEEE) received the B.S.
+degree (Hons.) in electrical engineering (computer
+engineering) from the University of Louisiana at
+Lafayette, Lafayette, LA, USA, in 1985, and theM.S. and Ph.D. degrees in electrical engineering
+from the University of Pittsburgh, Pittsburgh, PA,
+USA, in 1987 and 1991, respectively.
+He is currently the Founding Dean of the College
+of Science and Engineering, Hamad Bin Khalifa
+University, Doha, Qatar. He was a Chair Professor
+and a Founding Member of The Hong Kong
+University of Science and Technology (HKUST), Hong Kong, where he wasalso the Head of the Department of Computer Science and Engineering.
+From 1999 to 2000, he was a Visiting Professor with Stanford University,
+Stanford, CA, USA, and the Swiss Federal Institute of Technology, Lausanne,Switzerland. His area of research is in high-speed wired/wireless networking,in which he has published more than 400 publications, graduated more 60
+M.S./Ph.D. students, and awarded numerous research awards and grants.
+Dr. Hamdi was awarded many best research paper awards, such as ICC and
+Globecom. In addition, he has frequently consulted for companies and gov-ernmental organizations in the USA, Europe, and Asia. He is also a frequent
+keynote speaker in international conferences and forums. He is/was on the
+editorial board of more than ten prestigious journals and magazines. He haschaired more than 20 international conferences and workshops. In addition to
+his commitment to research and academic/professional service, he is also a
+Dedicated Teacher and a Quality Assurance Educator. He received the Best10 Lecturer Award and the Distinguished Engineering Teaching AppreciationAward from HKUST. He is frequently involved in higher education quality
+assurance activities as well as engineering programs accreditation all over the
+world. He is a Fellow of the IEEE for his signiﬁcant contributions to the“design and analysis of high-speed packet switching.”
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:24:44 UTC from IEEE Xplore.  Restrictions apply. 

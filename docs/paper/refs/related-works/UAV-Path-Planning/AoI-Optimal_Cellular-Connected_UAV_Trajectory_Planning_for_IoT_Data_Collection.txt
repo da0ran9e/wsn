@@ -1,0 +1,650 @@
+--- PAGE 1 ---
+
+AoI-Optimal Cellular-Connected UA V Trajectory
+Planning for IoT Data Collection
+Amirahmad Chapnevis and Eyuphan Bulut
+Department of Computer Science, Virginia Commonwealth University
+401 West Main St. Richmond, V A 23284, USA
+{chapnevisa, ebulut }@vcu.edu
+Abstract —Unmanned Aerial Vehicles (UA Vs) can help data
+collection from ground sensors or Internet of Things (IoT) devices
+deployed even in hard to access areas and deliver them to their
+destinations as relays. However, the UA V trajectories should be
+planned carefully due to their limited battery lifetimes. Recently,
+Age of Information (AoI) has also been considered as a metric to
+quantify the freshness of the data collected during this process
+and the path of the UA Vs are aimed to be optimized considering
+AoI. However, existing studies have deﬁned the AoI of the
+collected data in the context of delivering the collected data to
+a speciﬁc destination only. Moreover, they assume the data is
+available at each IoT device before the UA V is dispatched. In
+this paper, we consider a set of base stations distributed in the
+area that a UA V travels through and deﬁne the AoI from the
+moment the data is generated till it is uploaded to any of the
+base stations by the cellular-connected UA V . We also consider
+data generation times at each IoT device requiring the UA V’s
+arrival to an IoT device after this time. Our goal is to minimize
+the maximum AoI of any collected data while also minimizing
+the mission time and the path of the UA V for energy saving. We
+model and solve the problem using Integer Linear Programming
+(ILP) and with a heuristic based solution. The results obtained
+in different scenarios show that heuristic approach can provide
+close to optimal ILP based results while running much faster.
+Index Terms —Cellular-connected UA V , path planning, age of
+information, data collection.
+I. I NTRODUCTION
+The ﬂexibility and maneuverability of Unmanned Aerial
+Vehicles (UA Vs) have enabled the usage of them in many ap-
+plications including but not limited to wireless communication,
+agriculture and search and rescue operations. In this study,
+we are interested in the application scenario where UA Vs
+are employed to collect data from ground sensor nodes or
+Internet-of-Things (IoT) networks as a relay node and deliver
+the collected data to their destination. In order to receive the
+data from IoT devices, the UA V needs to get close to each of
+them following a path and ﬁnally should stop at its mission
+end point.
+Since the UA Vs run on limited battery supply and can only
+stay in air for a limited time, their path during this data
+collection period has to be planned carefully. Moreover, the
+data generation times at each IoT device should be considered
+in this planning process as the UA V should only visit the IoT
+device after the data is generated at the device. In most of
+the existing studies [1]–[3], however, the data is considered
+to be available before the UA V starts its mission, which
+This work was supported in part by NSF award CNS-1647217.
+!"#!
+!"#"!"##
+!"#$!"#%
+!!!"
+!#
+"#"!
+"$"""%
+!$
+Fig. 1: An example scenario where a UA V collects data from
+ﬁve ground IoT devices considering their data generation times
+and uploads the collected data by visiting a base station.
+Age of Information is deﬁned from the moment the data is
+generated at each IoT device until it is uploaded.
+may not be the case as always in practice. After the data
+is collected from IoT devices, the delivery of them to their
+target destinations should be performed by the relay UA V
+considering the application requirements.
+The path planning problem in UA V-assisted IoT networks
+has recently been studied considering different objectives.
+These objectives include minimizing total energy consumed by
+the UA Vs [4], minimizing the connection outage time [5], and
+maximizing the throughput or the amount of data collected [6]
+from ground IoT devices. Since the timely delivery of infor-
+mation from the ground IoT devices is also important, the
+path planning of UA Vs in such scenarios has also been made
+considering a new metric called age of information (AoI) [7].
+Through this metric, the freshness of the information is aimed
+to be quantiﬁed once the data is delivered to the destination.
+While there are several studies [1]–[3], [7], [8] that consider
+AoI as the primary factor for determining the UA V paths, these
+studies typically assume that the data delivery occurs only
+when the UA V reaches a single destination. On the contrary,
+in this paper, we consider a more practical scenario where the
+cellular-connected UA V uploads the collected data to one of
+base stations in the area to deliver it to its destination (through
+Internet). Note that if the IoT device is already in range of a
+base station (BS), once the UA V downloads data from the IoT
+device, it can immediately upload to the BS. However, if there2023 IEEE 48th Conference on Local Computer Networks (LCN) | 979-8-3503-0073-4/23/$31.00 ©2023 IEEE | DOI: 10.1109/LCN58197.2023.10223376
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:21:54 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 2 ---
+
+Fig. 2: AoI calculation for the data of each IoT device in Fig. 1.
+is no coverage at the IoT device location by a BS, UA V carries
+the data until it comes into the coverage range of a BS. AoI in
+this scenario is deﬁned from the moment the data is generated
+till the data is delivered to a BS in the area by the UA V .
+An example scenario is illustrated in Fig. 1, with a UA V
+collecting data from several ground IoT devices one by one
+and uploading the data collected to one of the ground base
+stations on the route. Fig. 2 shows the AoI calculation for
+each data on this example scenario. Note that each UA V visits
+(e.g.,vi) the IoT device’s location to download its data after
+the data is generated (e.g., vi≥ti) and the AoI is computed as
+the time passes from the data generation time till it is uploa ded
+to a base station (e.g., ui−ti).
+Our goal in this paper is to ﬁnd the path of a UA V that
+will minimize the max AoI from any data collected from the
+ﬁeld, given the data generation times and locations of IoT
+devices. To the best of our knowledge, there is only one recen t
+work [9] that deﬁnes the AoI as it is considered in this study.
+However, that study aims only minimization of the worst case
+or maximum AoI without trying to optimize mission time and
+the path length for the UA V as well. The problem is modeled
+as a mixed integer convex optimization problem using graph
+theory and solved with CVX tools. Also, no heuristic-based,
+fast-running, practical solution is provided.
+The rest of the paper is organized as follows. We discuss
+the related work in Section II. In Section III, we provide the
+system model together with the assumptions made, the prob-
+lem statement, optimization model and our greedy heuristic
+based solution. In Section IV, we then provide our simulatio n
+results in various scenarios. Finally, we provide the concl uding
+remarks and discuss the future work in Section V.
+II. R ELATED WORK
+The path planning for UA Vs have been studied exten-
+sively [10] considering the variety of ways they have been
+adopted in different applications with different objectiv es. In
+these studies, different parameters such as mission time [5 ],
+[11], throughput [12], connection outage [13], antenna pat -
+terns [14] and coverage [15] have been considered while
+designing the path of the UA V(s).
+Recently, a new metric called Age of Information (AoI)
+has also been introduced [7] for UA V missions that aim to
+collect data from ground sensors or IoT devices and deliver
+them to their destinations. Since the timely delivery of the
+data as well as the freshness of the information obtained bythe system can be vital for some applications, this problem
+has attracted a lot of attention by various researchers [1]– [3],
+[7], [8], [10], [16]. The problem is also considered togethe r
+with other considerations such as wireless energy transfer [17],
+data acquisition mode selection, energy consumption [18], or
+power optimization [19] and solutions that are based on opti -
+mization techniques [7], [10], [20], dynamic programming [ 1]
+or learning models such as reinforcement learning [2], [16] ,
+[17] have been developed.
+Despite this extensive number of studies that consider AoI
+in the path planning of UA Vs, the delivery of the data is
+considered in terms of the data collection period by the
+UA Vs only and the communication of the UA V with the core
+network (and Internet) is mostly not focused. However, if th ere
+are multiple base stations deployed in the area, a cellular-
+connected UA V can use any of them to upload the collected
+data and depending on which base station is used the AoI for
+the speciﬁc IoT device can be different. Moreover, in most
+of the studies, the data at each ground node is assumed to
+be generated before the UA V dispatch whereas in a more
+practical setting data could be generated even after the UA V
+dispatch. While a recent work [9] looks at these points simila r
+to our work in this paper, it only considers AoI itself withou t
+considering the UA V mission time and path in the optimizatio n
+design thus can result in longer paths for the UA V . Moreover,
+the proposed solution in that study is based on only a high
+complexity optimization based approach while in this paper ,
+we also propose a heuristic based fast running solution.
+III. S YSTEM MODEL
+A. Assumptions
+We assume a system model with a UA V , represented by
+u, a setIof ground IoT devices and a set Gof ground base
+stations (GBS). Each IoT device is assumed to generate a data
+at some speciﬁc time deﬁned by the application. The location
+of IoT device iis represented by liand its data generation time
+is denoted by ti. Similarly, the location of GBS iis deﬁned
+byzi. The mission of the UA V is to begin its ﬂight from
+a starting location, LSand to arrive a ﬁnal point LFafter
+collecting data from ground IoT devices within a given time
+constraint Tmax, which is deﬁned as the maximum possible
+ﬂight time for the UA V and can be computed based on its
+hardware speciﬁcations. The collection of data from an IoT
+device happens when UA V arrives in the vicinity of the IoT
+device. More speciﬁcally, we assume that when the distance
+between the UA V and an IoT device is less than RI, the data
+can be transmitted. RIcan be determined by the transmission
+capabilities of the IoT device and can simply be considered
+as its range. The actual value of RIcan be computed by
+considering the signal level modeling (i.e., SNR) and the
+required transmission bandwidth for the speciﬁc applicati on
+data [5], [14]. The upload of the data from the UA V is assumed
+to happen to a nearby GBS when the UA V arrives in the range
+of a GBS, which is assumed to be RG. It is assumed that UA V
+can ﬂy with a maximum speed of Vat a ﬁxed altitude of H.
+Note that this will allow the UA V to communicate with the
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:21:54 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 3 ---
+
+Notations Description
+u The UA V that travels over the ﬁeld for data
+collection from a starting point to and end point.
+I The set of ground sensors or IoT devices.
+G The set of ground base stations (GBS).
+VD
+iThe time UA V visits the IoT device iand
+downloads the generated data.
+VU
+iThe time UA V uploads and delivers the data
+captured from IoT ito one of the GBSs.
+LS,LF Start and ﬁnal location of UA V , respectively.
+L,T The ordered set of critical locations and times
+on the UA V path, respectively.
+L(t) Location of the UA V at time t∈T.
+li Location of ground IoT device i.
+zi Location of GBS i.
+ci(t) Connection status of the UA V to IoT device i
+at timet∈T. It is equal to 1 if the UA V can
+communicate to the IoT iand receive the data
+at time t; otherwise, it is 0.
+ti The generation time of the data at IoT device i.
+di(t) Collection status of data from IoT device iat
+timet∈T. It is equal to 1 if the UA V collects
+IoT device i’s data at time t; otherwise 0.
+ui(t) Upload status of data that is downloaded from
+IoTito a GBS at time t∈T. It is equal to 1 if
+the UA V uploads the data downloaded from IoT
+ito one of the GBSs at time t; otherwise 0.
+gi(t) Connection status of the UA V to GBS iat time
+t∈T. It is equal to 1 if UA V can communicate
+to the GBS iand send the data at time t;
+otherwise, it is 0.
+G(t) If the UA V is in range of at least one GBS at
+timet∈T.
+RI Max distance/range for a IoT-UA V link to main-
+tain required SNR level.
+RG Max distance/range for a UA V-GBS link to
+maintain required SNR level.
+Tmax Maximum possible ﬂight duration for the UA V
+to reach the destination.
+TF The ﬁrst time the UA V arrives to the ﬁnal
+location (i.e., mission time).
+V Maximum speed of the UA V
+Amax Maximum AoI for the collected data.
+Dsum Total length of the path travelled by the UA V .
+TABLE I: Notations and their descriptions.
+ground IoT devices through Line-of-Sight (LoS) based signa l
+without having interference. The location of the UA V at time
+tis denoted by L(t)= (x(t),y(t),H) until its ﬂight ends at
+timeTmax.
+B. Problem Statement and ILP Formulation
+In the proposed problem a UA V needs to travel from an ini-
+tial point to collect data from all ground IoT devices and arr ive
+to its ﬁnal destination (which can be the same location as the
+initial starting point). Let L={L0,L1,L2,...,L2|I|,L2|I|+1}
+be the set of ordered locations that we are trying to identify
+on the route of the UA V . These locations correspond to the
+critical locations that deﬁne the path of the UA V which
+include the start ( LS) and end locations ( LF) as well as
+the download and upload locations for the data of each IoT
+device. Note that L0=LSandL2|I|+1=LF. We also deﬁne
+T={T0= 0,T1,T2,...,T2|I|,T2|I|+1=TF}as the set of
+times that the UA V is present at the corresponding locations
+inL, i.e.,L(Ti) =Li. Our main goal is to minimize themaximum AoI during this data collection process. In additio n
+to this primary objective, we also consider minimizing the
+mission time data as secondary goal, and also aim to minimize
+the length of the total path travelled by the UA V as a third
+objective. Under these objectives and the notations given i n
+Table I, we develop an Integer Linear Programming (ILP)
+based model as follows:
+min ( Amax)λ+(u(TF))Θ+Dsum (1)
+s.t. L(0) =LS (2)
+L(TF) =LF&TF≤Tmax (3)
+distLi+1
+Li≤V×(Ti+1−Ti),∀i∈[0,2|I|] (4)
+VD
+i≥ti,∀i∈ I (5)
+VU
+i≥VD
+i,∀i∈ I (6)
+ci(t) =/braceleftBigg
+1,ifdistL(t)
+li≤RI
+0,otherwise.,∀t∈T,∀i∈ I
+(7)
+di(t)≤ci(t),∀t∈T,∀i∈ I, (8)/summationdisplay
+∀t∈Tdi(t) = 1,∀i∈ I (9)
+VD
+i=/summationdisplay
+∀t∈T(di(t)×t)),∀i∈ I (10)
+gi(t) =/braceleftBigg
+1,ifdistL(t)
+zi≤RG
+0,otherwise.,
+∀t∈T,∀i∈ G (11)
+G(t) =min(1,/summationdisplay
+∀i∈Ggi(t)),∀t∈T (12)
+ui(t)≤G(t),∀i∈ I,∀t∈T (13)/summationdisplay
+∀t∈Tui(t) = 1,∀i∈ I (14)
+VU
+i=/summationdisplay
+∀t∈T(ui(t)×t),∀i∈ I (15)
+Amax= max/braceleftbig
+(VU
+i−ti)/bracerightbig
+,∀i∈ I (16)
+Dsum=2|I|/summationdisplay
+i=0distLi+1
+Li(17)
+where,distv
+urepresents the distance between two coordinates
+uandv.
+Here, in (1), we use the scalarization method (by multiply-
+ing the ﬁrst goal with a large constant, λ, and multiplying the
+second goal with another large constant, Θ, which is smaller
+than the ﬁrst one) and aim to ﬁrst minimize the maximum or
+worst-case AoI, then minimize the mission completion time
+(i.e., when the UA V arrives the ﬁnal location) and ﬁnally
+minimize the total travel path length of the UA V . In (2) and (3 ),
+we make sure the UA V is at the start location at the beginning
+and at the ﬁnal point at the end of its mission, respectively.
+In (4), the UA V is constrained to move not more than what its
+maximum speed allows between consecutive critical points o n
+the UA V path. Constraint (5) makes sure that UA V downloads
+the data after its generation at the IoT device. In addition,
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:21:54 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 4 ---
+
+!"# !"# !!
+!"# $%&'#(!"# #"!"# #($%&' 
+#"$%&' 
+#(!"#)*$%&' "!
+""
+"!" !"
+!!" 
+Fig. 3: Current and next IoT to be visited in greedy heuristic
+approach and the comparison of two possible paths.
+since the collected data can be uploaded to a GBS after it is
+collected from the IoT device, constraint (6) is added.
+In (7), the connectivity between the UA V and each IoT
+device is set based on the distance between the position of
+the IoT device and the UA V at that time. We then allow the
+collection of data by the UA V in range of IoT device in (8)
+and only one time as deﬁned in (9). In (10), we assign the
+UA V’s IoT visit time to its pre-deﬁned variable VD
+i, and to
+do this we multiply the value of di(t)bytand then compute
+the sum. Since di(t)is equal to 1 in only one of the ts, the
+value ofVD
+ibecomes equal to the IoT visit time. In (12), we
+check the location of the UA V to see if it is in the range of
+at least one GBS at time tor not. The variable G(t)equals
+to 1 if the UA V is in the range of at least one GBS and in
+order to calculate it, we sum the gi(t)(deﬁned in (11)) for all
+the GBSs at time t. If the UA V is in the range of at least one
+GBS, it has the ability to upload data on that GBS (13). In
+(14), we force the UA V to upload all the data in order to ﬁnish
+its mission. In (15), we assign the UA V’s GBS visit time for
+uploading data to its pre-deﬁned variable VU
+i, and to do this
+we multiply the value of ui(t)bytand then compute the sum
+for all the ts. In (16), we then compute max AoI for any data
+collected from all IoT devices. AoI here is deﬁned as the time
+elapsed from data generation time tito its delivery time at
+VU
+i. Finally, in (17), we calculate the total path length which
+is considered as the third priority in the objective functio n.
+C. Greedy Heuristic Approach
+While the ILP solution with a ﬁne grained grid will help
+obtain the optimal solution, its run time complexity will be
+high, thus in this part, we develop a greedy heuristic based
+solution that runs much faster. To this end, from the initial
+start location (or UA V’s current location Tcur), we ﬁrst ﬁnd
+the IoT device whose data could be uploaded the earliest if
+the UA V would go to that IoT device’s location directly and
+after getting its data goes to the closest GBS to upload. Note
+that if the UA V arrives earlier than the data generation time ,
+it needs to wait until the data is generated. Thus, we calcula te
+the following to ﬁnd this IoT device:
+imin= argmin {max(Ti
+d+Tcur,gi)+Ti
+u},Scenario Mission
+timeMax
+AoIAverage
+AoIPath
+length
+(a) Initial scenario (C) 29.63 4.48 1.12 59.24
+(a) Initial scenario (H) 32 12.51 4.69 51.61
+(b) Speed = 3 (C) 23.40 0.80 0.20 60.28
+(b) Speed = 3 (H) 24 1.01 0.57 61.78
+(c) Additional GBS/IoT (C) 33.78 6.80 1.70 66.54
+(c) Additional GBS/IoT (H) 37 12.91 5.61 60.53
+(d) Different data genera-
+tion times (C)27.78 3.60 0.72 50.15
+(d) Different data genera-
+tion times (H)29 4.00 1.65 49.44
+(e) IoT range = 0 (C) 33.24 8.19 2.04 66.65
+(e) IoT range = 0 (H) 33 13.04 4.35 57.15
+TABLE II: Simulation results for both ILP based model
+obtained by CPLEX (C) and heuristic based solution (H) for
+the scenarios in Fig. 4.
+whereTi
+dis the time it takes to arrive into the range of IoT
+deviceifrom its current location, Ti
+uis the time it takes to
+go from the download location to the upload location (i.e.,
+closest GBS range). These durations are also illustrated in
+Fig. 3 where IoT currepresents the current selected node, imin.
+Once this device is found, the UA V is then headed towards
+that IoT device’s location and stops when it enters into its
+range for data collection. At this point (e.g., d1in Fig. 3),
+we, however, do not let the UA V go directly to the closest
+GBS. Instead, we ﬁrst ﬁnd the next IoT device (e.g., IoT next
+in Fig. 3) that would be visited with the same criteria after
+the ﬁrst IoT’s data is uploaded in the closest GBS range (e.g. ,
+atu1in Fig. 3). Then, we compare the time duration for two
+different cases. In the ﬁrst case, we ﬁnd the AoI if the UA V
+visits the next IoT device after it uploads the ﬁrst one’s dat a
+to the closest GBS and goes to the next IoT device to get and
+upload its data (e.g., path that follows d1,u1,d2,u2in Fig. 3).
+In the second case, we ﬁnd the max AoI if the UA V would
+visit the next IoT device directly from the download locatio n
+of the current IoT device, then upload the data of both of
+them to the closest GBS from the next IoT’s data download
+location (e.g., path that follows d1,d12,u12in Fig. 3). If the
+latter provides smaller AoI, then the UA V goes to the next
+IoT’s location (e.g., d12fromd1); otherwise, the UA V ﬁrst
+uploads the ﬁrst one’s data and goes to the next IoT device’s
+download location (e.g., d2). The procedure is then repeated
+similarly until all IoT devices are visited and their data ar e
+uploaded.
+IV. S IMULATION RESULTS
+In this section, we provide simulation results in a set of
+different scenarios. We consider a map of size 20 by 20 units
+and consider different number of GBSs and IoT devices with
+different data generation times (shown in parenthesis next
+to device). The range for IoT-UA V communication is set as
+RI= 1 unit, while the range for UA V-GBS link is set as
+RG= 2 units. Each IoT device is assumed to be not in the
+coverage area of any of the GBSs to make the scenarios more
+challenging.
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:21:54 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 5 ---
+
+0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
+X coordinate01234567891011121314151617181920Y coordinate
+o
+startoend
+0.07.37
+9.21
+10.7413.9318.31
+19.48
+24.3924.4829.63
+i1(20)i2(10)i3(5)i4(15)
+(a)0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
+X coordinate01234567891011121314151617181920Y coordinate
+ostarto
+end
+0.05.05
+5.78
+10.0010.6715.1115.80
+20.0020.4923.40
+i1(20) i2(10)i3(5)i4(15)
+(b)0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
+X coordinate01234567891011121314151617181920Y coordinate
+o
+startoend
+0.007.36
+9.55
+10.7613.8618.30
+19.75
+24.3525.7129.17
+31.7733.78
+i1(20) i2(10)i3(5)i4(15)
+i5(25)
+(c)
+0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
+X coordinate01234567891011121314151617181920Y coordinate
+o
+starto
+end
+0.05.005.1910.01
+11.97
+15.0018.1522.5623.60
+27.78
+i1(5) i2(15)i3(10)i4(20)
+(d)0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
+X coordinate01234567891011121314151617181920Y coordinate
+ostarto
+end
+0.07.78
+12.0615.7320.58
+22.47
+27.6028.1933.34
+i1(20)i2(10)i3(5)i4(15)
+(e)
+Fig. 4: The UA V path for the ILP based model (black) and heuris tic approach (pink) for different scenarios. (a) Initial sc enario
+with 4 GBS and 4 IoT devices with UA V speed of 2 units, (b) when t he speed is set to 3 units, (c) with one additional GBS
+and one additional IoT device, (d) with different data gener ation times of IoT devices, (e) when IoT range ( RI) is set to almost
+zero i.e., UA V needs to be at the same coordinate with IoT to do wnload its data.
+Fig. 4 shows the UA V paths obtained via CPLEX from the
+described ILP model as well as by using the greedy heuristic
+approach in ﬁve different scenarios. The values of four metr ics
+(i.e., mission time, max and average AoI, and path length)
+associated with these scenarios are also provided in Table I I.
+First of all, within each scenario, we observe that the order
+of UA V visits of IoT devices and GBSs, determined by ILP,
+exhibits a certain resemblance to the heuristic outcome (th ough
+not entirely identical). For instance, in cases (b) and (d), both
+the ILP and heuristic approaches share the same visit order,
+leading to a comparable maximum AoI for these particular
+scenarios. However, in other cases, we observe different vi sit
+orders, thus a substantial disparity arises in the maximum A oI.
+Concerning path length, as the primary objective of ILP
+based solution is to minimize the maximum AoI, it occasion-
+ally compromises path length to achieve a lower maximum
+AoI. Consequently, the path lengths obtained in ILP solutio n
+in cases (a), (c), (d), and (e) exceed the path lengths obtain ed
+in the heuristic approach.
+In terms of mission time, both approaches yield similar andclosely aligned results across all cases. This observation is
+reasonable as both algorithms strive to visit all GBSs and Io Ts
+once, differing solely in the visit order.
+Next, we look at the impact of some parameters on the
+ILP results in some random scenarios. We ﬁrst look at the
+impact of number of IoTs on the maximum AoI when the
+other parameters are the same. To this end, we generate 100
+different scenarios with a speciﬁc number of randomly place d
+IoT devices on the map, while the GBS count stays ﬁxed as 4.
+We then calculate the average of the maximum AoI and UA V
+path length. The data generation time of IoT devices is set as
+the multiples of 5, i.e., ti= 5i. As it is shown in Fig. 5 (a),
+both the maximum AoI and UA V path length increases as the
+number of IoT devices increases.
+Next, we look at the impact of number of GBSs in the
+same way while keeping the number of IoT devices as 4. As
+shown in Fig. 5 (b), increasing the number of GBSs results in
+a reduction of the maximum AoI and UA V path length thanks
+to the more coverage provided with more GBSs.
+Finally, we look at the impact of scale used in our ILP
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:21:54 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 6 ---
+
+3 4 5 6 7
+Number of IoTs44.555.566.577.588.59Maximum Age of Information
+30405060708090
+UAV Path Length
+(a)3 4 5 6 7
+Number of GBSs44.555.566.577.588.59Maximum Age of Information
+30405060708090
+UAV Path Length
+(b)1 10 100
+Scale44.555.566.57Maximum Age of Information
+4042444648505254565860
+UAV Path Length
+(c)
+Fig. 5: Impact of varying (a) number of IoTs, (b) number of GBS s and (c) scale on maximum AoI and UA V path length in
+ILP results.
+model design, where the scale provides more ﬁner movement
+opportunity to the UA V and thus more precise results (the
+results in Fig. 4 are with scale 100). We obtained results for
+100 different scenarios with different scales while having 4 IoT
+devices and 4 GBSs. In Fig. 5 (c), we observe a signiﬁcant
+reduction in the maximum AoI when we increase the scale
+from 1 to 10, while there is only a slight reduction when the
+scale change from 10 to 100. The UA V travel distance remains
+the same across all scales with slight variations.
+V. C ONCLUSION
+In this paper, we have explored the path planning problem
+for a cellular-connected UA V considering minimization of t he
+maximum AoI for any data collected as the main criteria.
+Different from previous works, AoI is deﬁned as the time
+passes from the moment data is generated till it is uploaded
+to any of the nearby ground base stations by the UA V . We
+developed both an ILP based model and a greedy heuristic
+based algorithm to ﬁnd the path for the UA V . Through simu-
+lations with different scenarios, we have compared the resu lts
+obtained by both approaches and showed how their results
+differ in terms of several metrics.
+In the future work, we will consider an online algorithm
+for the UA V where only limited information about the IoT
+devices and the ﬁeld (e.g., GBS locations) is known. We
+will also consider multi-UA V scenarios and more realistic
+communication models.
+REFERENCES
+[1] J. Liu, X. Wang, B. Bai, and H. Dai, “Age-optimal trajector y planning
+for uav-assisted data collection,” in IEEE Conference on Computer
+Communications Workshops (INFOCOM WKSHPS) , 2018, pp. 553–558.
+[2] M. A. Abd-Elmagid, A. Ferdowsi, H. S. Dhillon, and W. Saad, “Deep re-
+inforcement learning for minimizing age-of-information in uav -assisted
+networks,” in IEEE Global Communications Conference (GLOBECOM) ,
+2019, pp. 1–6.
+[3] S. Zhang, H. Zhang, Z. Han, H. V . Poor, and L. Song, “Age of i nfor-
+mation in a cellular internet of uavs: Sensing and communicatio n trade-
+off design,” IEEE Transactions on Wireless Communications , vol. 19,
+no. 10, pp. 6578–6592, 2020.
+[4] C. Zhan and Y . Zeng, “Aerial–ground cost tradeoff for mult i-UA V-
+enabled data collection in wireless sensor networks,” IEEE Transactions
+on Communications , vol. 68, no. 3, pp. 1937–1950, 2019.[5] A. Chapnevis, I. G ¨uvenc ¸, L. Njilla, and E. Bulut, “Collaborative trajec-
+tory optimization for outage-aware cellular-enabled uavs, ” inIEEE 93rd
+Vehicular Technology Conference (VTC2021-Spring) , 2021, pp. 1–6.
+[6] K. K. Nguyen, T. Q. Duong, T. Do-Duy, H. Claussen, and L. Ha nzo, “3d
+uav trajectory and data collection optimisation via deep rei nforcement
+learning,” IEEE Transactions on Communications , vol. 70, no. 4, pp.
+2358–2371, 2022.
+[7] M. A. Abd-Elmagid and H. S. Dhillon, “Average peak age-of-
+information minimization in UA V-assisted IoT networks,” IEEE Trans-
+actions on Vehicular Technology , vol. 68, no. 2, pp. 2003–2008, 2018.
+[8] O. A. Amodu, U. A. Bukar, R. A. R. Mahmood, C. Jarray, and
+M. Othman, “Age of Information minimization in UA V-aided data
+collection for WSN and IoT applications: A systematic review, ”Journal
+of Network and Computer Applications , p. 103652, 2023.
+[9] G. Chen, C. Cheng, X. Xu, and Y . Zeng, “Minimizing the age of infor-
+mation for data collection by cellular-connected uav,” IEEE Transactions
+on Vehicular Technology , 2023.
+[10] S. Aggarwal and N. Kumar, “Path planning techniques for u nmanned
+aerial vehicles: A review, solutions, and challenges,” Computer Commu-
+nications , vol. 149, pp. 270–299, 2020.
+[11] H. Binol, E. Bulut, K. Akkaya, and I. Guvenc, “Time optimal multi-uav
+path planning for gathering its data from roadside units,” i nProc. of
+88th IEEE Vehicular Technology Conference (VTC-Fall) , 2018, pp. 1–5.
+[12] Q. Wu, Y . Zeng, and R. Zhang, “Joint trajectory and communi cation
+design for multi-uav enabled wireless networks,” IEEE Transactions on
+Wireless Communications , vol. 17, no. 3, pp. 2109–2121, 2018.
+[13] E. Bulut and I. Guevenc, “Trajectory optimization for ce llular-connected
+UA Vs with disconnectivity constraint,” in IEEE International Confer-
+ence on Communications (ICC) Workshops , 2018, pp. 1–6.
+[14] M. M. U. Chowdhury, S. J. Maeng, E. Bulut, and I. G ¨uvenc ¸, “3-
+d trajectory optimization in uav-assisted cellular network s considering
+antenna radiation pattern and backhaul constraint,” IEEE Trans. on
+Aerospace and Electronic Systems , vol. 56, no. 5, pp. 3735–3750, 2020.
+[15] J. Li, Y . Xiong, J. She, and M. Wu, “A path planning method f or sweep
+coverage with multiple uavs,” IEEE Internet of Things Journal , vol. 7,
+no. 9, pp. 8967–8978, 2020.
+[16] Z. Li, P. Tong, J. Liu, X. Wang, L. Xie, and H. Dai, “Learni ng-based
+data gathering for information freshness in uav-assisted io t networks,”
+IEEE Internet of Things Journal , 2022.
+[17] O. S. Oubbati, M. Atiquzzaman, H. Lim, A. Rachedi, and A. La kas,
+“Synchronizing uav teams for timely data collection and energ y trans-
+fer by deep reinforcement learning,” IEEE Transactions on Vehicular
+Technology , vol. 71, no. 6, pp. 6682–6697, 2022.
+[18] Z. Jia, X. Qin, Z. Wang, and B. Liu, “Age-based path plann ing and
+data acquisition in uav-assisted iot networks,” in IEEE International
+Conference on Communications (ICC) Workshops , 2019, pp. 1–6.
+[19] E. Eldeeb, J. M. de Souza Sant’Ana, D. E. P ´erez, M. Shehab, N. H.
+Mahmood, and H. Alves, “Multi-uav path learning for age and po wer
+optimization in iot with uav battery recharge,” IEEE Transactions on
+Vehicular Technology , 2022.
+[20] Y . Liao and V . Friderikos, “Energy and age pareto optimal trajectories in
+uav-assisted wireless data collection,” IEEE Transactions on Vehicular
+Technology , vol. 71, no. 8, pp. 9101–9106, 2022.
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:21:54 UTC from IEEE Xplore.  Restrictions apply. 

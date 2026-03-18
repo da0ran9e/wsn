@@ -1,0 +1,2085 @@
+--- PAGE 1 ---
+
+IEEE INTERNET OF THINGS JOURNAL, VOL. 12, NO. 11, 1 JUNE 2025 18279
+Low-AoI Data Collection for UA V-Assisted IoT
+With Dynamic Geohazard Importance Levels
+Xiuwen Fu, Member, IEEE ,T i a n l eW a n g , Pasquale Pace ,Member, IEEE ,
+Gianluca Aloi ,Member, IEEE , and Giancarlo Fortino ,Fellow, IEEE
+Abstract —After geohazards occur, conducting rapid and sus-
+tainable secondary geohazard monitoring plays a crucial role
+in reducing secondary geohazard risks. However, geohazard
+situations vary across different areas and dynamically changewith the development of geohazards. Therefore, ensuring timelydata collection and the ability to dynamically adjust to changes ingeohazards poses signiﬁcant challenges in geohazard monitoringscenarios. This article proposes a low-latency data collectionscheme considering data importance levels (LLDCL), whichprioritizes data collection from high-importance sensor nodes(SNs) while still collecting data from lower importance SNs.Given the potential for sudden events in geohazard monitoringscenarios that may require adjustments to the emergency levelsof monitoring points, this article introduces a deep reinforce-ment learning (DRL) algorithm for unmanned aerial vehicles(UA Vs) path planning based on weighted age of information(DRL-WAoI). This algorithm enables UA Vs to respond quicklyto dynamic environments by adjusting their ﬂight paths inreal time. Furthermore, considering the limited battery capacityof UA Vs, this article establishes a token-based energy tradingmodel between UA Vs and the base station (BS) to facilitateUA V recharging. Simulation experiments show that the LLDCLscheme can effectively adapt to the dynamically changing con-ditions of geohazard monitoring scenarios, providing a viablesolution for UA V data collection and transmission.
+Index Terms —Age of Information, data collection. deep rein-
+forcement learning (DRL), geohazard monitoring, path planning,unmanned aerial vehicles (UA Vs).
+I. I NTRODUCTION
+AFTER geohazards, conducting rapid and sustainable sec-
+ondary geohazard monitoring is crucial for reducing the
+risk and damage caused by secondary geohazards [1]. Primary
+monitoring is typically carried out immediately after the
+geohazard to assess damage and develop rescue plans, whilesecondary monitoring focuses on continuously tracking and
+evaluating potential risks as the disaster evolves. unmanned
+Received 30 October 2024; revised 7 December 2024 and 10 January 2025;
+accepted 6 February 2025. Date of publication 11 February 2025; date ofcurrent version 23 May 2025. This work was supported in part by the National
+Natural Science Foundation of China under Grant 61902238; in part by the
+China Postdoctoral Science Foundation under Grant 2021M692493; and inpart by the Shanghai Natural Science Foundation under Grant 23ZR1426400.(Corresponding author: Giancarlo Fortino.)
+Xiuwen Fu and Tianle Wang are with the Institute of Logistics Engineering
+College, Shanghai Maritime University, Shanghai 201306, People’s Republicof China (e-mail: xwfu@smu.edu.cn; tianle_wang2000@163.com).
+Pasquale Pace, Gianluca Aloi, and Giancarlo Fortino are with the
+Department of Informatics, Modeling, Electronics and System Engineering,
+University of Calabria, 87036 Rende, Italy (e-mail: p.pace@dimes.unical.it;aloi@dimes.unical.it; fortino@dimes.unical.it).
+Digital Object Identiﬁer 10.1109/JIOT.2025.3540508aerial vehicles (UA V)-assisted IoT systems, which do not
+rely on ground infrastructure and can be rapidly deployed,are considered a feasible method for monitoring secondary
+geohazards [2]. In this scenario, UA Vs can deploy numerous
+sensor nodes (SNs) in the affected area and collect data fromthese SNs to obtain information about the geohazard, aiding
+rescue personnel in identifying potential secondary geohazard
+risks [3].
+Compared to primary monitoring, secondary monitoring
+places greater emphasis on the timeliness of data. Excessive
+data latency can reduce the quality and signiﬁcance of thecollected data, making it essential to minimize the latency
+of important data as much as possible [4]. Additionally,
+since secondary geohazards develop dynamically, the IoTsystem needs to continuously adjust its monitoring strategy in
+response to changes in the geohazard situation. For example, in
+the early stages of a geohazard, comprehensive data collection
+and monitoring of all geohazard monitoring points within
+the task area are necessary due to limited knowledge ofthe local geohazard situation. However, once a preliminary
+understanding of the geohazard is obtained, the focus can shift
+to monitoring key regions. Furthermore, if new emergenciesarise, the IoT system need to readjust the monitoring plan to
+adapt to the new circumstances.
+Despite signiﬁcant development in UA V-assisted IoT
+systems, there are still many challenges in achieving dynamic
+response and low-latency data collection in the geohazard
+monitoring scenarios mentioned above.
+1) Due to the limited battery capacity of UA Vs, a single
+UA V cannot access all dispersed SNs in one task when
+the collection area is large. Therefore, multiple UA Vsneed to work together to complete data collection from
+all SNs.
+2) Increasing the frequency of data collection from SNs
+reduces data latency, thereby enhancing the timeli-
+ness of environmental monitoring and improving thelikelihood of early hazard detection. However, not all
+SNs contribute equally to the monitoring process. SNs
+located in critical areas or closely related to the mon-itored geohazard provide more valuable and actionable
+data. Therefore, to improve monitoring in these key
+regions, it is crucial to prioritize data collection fromhigh-importance SNs. By assigning a higher collection
+frequency to these priority nodes, we can minimize
+data latency in critical areas, enabling more real-timedetection of environmental changes and ensuring a more
+2327-4662 c/circlecopyrt2025 IEEE. All rights reserved, including rights for text and data mining, and training of artiﬁcial intelligence
+and similar technologies. Personal use is permitted, but republication/redistribution requires IEEE permission.
+See https://www.ieee.org/publications/rights/index.html for more information.Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:14:13 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 2 ---
+
+18280 IEEE INTERNET OF THINGS JOURNAL, VOL. 12, NO. 11, 1 JUNE 2025
+effective geohazard response. This strategy involves
+categorizing SNs based on their importance and tailoringdata collection rates to reﬂect their relevance.
+3) Due to the uncertainties in geohazard monitoring scenar-
+ios, the emergency level of geohazard monitoring pointsmay change dynamically as the event unfolds. Therefore,
+the importance levels of SNs need to be updated in real
+time, and UA Vs should be able to promptly adjust theirﬂight paths accordingly;
+4) UA V charging spots are often scarce in geohazard mon-
+itoring scenarios. The process of charging or replacingUA V batteries takes a certain amount of time, which
+inevitably affects the data collection efﬁciency of UA Vs.
+Therefore, an efﬁcient UA V charging strategy needs to
+be developed.
+Based on the challenges mentioned above, this article
+proposes a low-latency data collection scheme considering
+data importance levels (LLDCL), which achieves dynamic
+path planning and efﬁcient charging for UA Vs in geohazard
+monitoring scenarios. The main contributions of this article
+are as follows.
+1) To address the dynamic and sudden nature of geo-
+hazards, a LLDCL is proposed. This scheme assigns
+different importance levels to SNs based on the geo-
+hazard situation in different areas. By guiding UA Vs
+to prioritise data collection from SNs with higher
+importance levels, and rationally allocating the ﬂight
+and charging times of UA Vs, the system can achievelow-latency data collection in response to the dynamic
+changes in the geohazard situation.
+2) To enable UA Vs to autonomously make decisions and
+dynamically plan ﬂight paths in response to changing
+geohazard situations, a deep reinforcement learning
+(DRL) algorithm for UA Vs path planning based on
+weighted Age of Information (AoI), named “DRL-WAoI”, is proposed. The algorithm uses weighted AoI
+to guide multiple UA Vs to collect data from SNs with
+different importance levels and generate ﬂight paths of
+UA Vs. To achieve efﬁcient charging of UA Vs, a token-
+based energy trading model between UA Vs and the base
+station (BS) is proposed, where UA Vs collect data from
+SNs in exchange for charging tokens.
+3) Through extensive simulations, the proposed data col-
+lection scheme has been validated to ensure both
+low latency and the importance of data. Under this
+scheme, UA Vs can make autonomous decisions accord-
+ing to changes in the geohazard situation, thus enablingdynamic path planning and efﬁcient charging for UA Vs.
+The proposed system has been validated as effective
+and superior by comparison with the latest UA V data
+collection systems.
+The remainder of this article is organized as follows.
+Section IIsummarizes related work. Section IIIintroduces the
+system model. Section IVpresents the proposed data collection
+scheme. Section Vprovides the experimental results. Finally,
+this article concludes with a summary and discussion of future
+work.II. L
+ITERATURE REVIEW
+As a rapidly deployable and efﬁcient data collection scheme,
+UA V-assisted IoT systems are widely applied in emergencyrescue scenarios, such as geohazards, ﬂoods, and forest ﬁres.
+These systems enable emergency rescue personnel to obtain
+timely and accurate data to support rescue decision making.Two main aspects of UA V-assisted IoT have attracted consid-
+erable attention: 1) data collection and 2) charging scheduling.
+In this section, we summarize the related literature in thesetwo areas.
+The ﬂight path planning of UA Vs is critical to the
+performance of the entire data collection system. Many
+researchers have focused on optimizing efﬁciency and min-
+imizing delays in this process. Chen et al. [5]designed a
+clustering-based algorithm that categorizes a limited number
+of areas into different clusters. They used mixed integer
+linear programming to determine the ﬂight path of UA Vs,thereby minimizing the task completion time of UA Vs.
+Han et al. [6]proposed a two-layer optimization approach to
+optimize UA Vs deployment with a novel encoding strategy.They used an improved dandelion algorithm to plan UA Vs
+ﬂight. Liu et al. [7]proposed a multipopulation genetic
+algorithm combined with convex optimization techniques tojointly optimize task assignment, waypoint selection, and ﬂight
+paths of UA Vs. This approach achieved the minimization of
+AoI for data collection by users. Zhou et al. [8]used the
+monarch butterﬂy optimization algorithm for UA Vs’ ﬂight
+path planning and introduced a UA V-assisted sleep scheduling
+algorithm to ensure network coverage while extending networklifetime. Wang et al. [9]proposed a heuristic algorithm using
+adaptive large neighborhood search for multiperiod UA Vs
+path planning. Yi et al. [10] proposed a UA V-assisted data
+collection algorithm based on DRL. By employing a Markov
+decision process (MDP), they identiﬁed the optimal ﬂightpaths for UA Vs and the transmission scheduling for sensors,
+achieving a weighted minimization of AoI. Feng et al. [11]
+proposed a joint path planning and resource scheduling schemefor UA Vs. They introduced an intelligent prediction mech-
+anism to forecast the service demands of emergency area
+devices and established a dynamic path planning scheme.Seid et al. [12] proposed a model-free DRL-based collabo-
+rative computation ofﬂoading and resource alposition scheme
+in an air-to-ground network for emergency situations. Byusing adaptive learning to derive efﬁcient solutions from
+dynamic A2G networks, the scheme minimizes task execution
+delays and energy consumption. Liu et al. [13] proposed a
+distributed multiagent DRL solution that utilizes convolutional
+neural networks to extract spatial features and integrates a
+distributed prioritized experience replay. Abedin et al. [14]
+proposed an agile DRL model based on experience replay,
+along with an efﬁcient real-time paths strategy for UA Vs.Oubbati et al. [15] proposed a DRL framework to improve
+UA V performance in terms of energy consumption, coverage
+and routing efﬁciency. Sun et al. [16] proposed a UA Vs path
+planning algorithm based on twin delayed deep deterministic
+policy gradient. This algorithm optimizes UA V ﬂight speeds,
+hovering positions, and data collection bandwidth allocation
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:14:13 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 3 ---
+
+FU et al.: LOW-AoI DATA COLLECTION FOR UA V-ASSISTED IoT WITH DYNAMIC GEOHAZARD IMPORTANCE LEVELS 18281
+jointly to minimize the weighted sum of expected average AoI,
+propulsion energy and transmission energy of IoT devices.Xu et al. [17] proposed a three-step learning method based
+on DRL to minimize the task completion time of UA Vs.
+Wang et al. [18] proposed a path planning algorithm that
+continuously and adaptively adjusts the motion of UA Vs to
+minimize the task completion time while considering ﬂight
+maneuver and throughput constraints. Liu et al. [19] proposed
+a deep Q-network-based approximate optimal solution scheme,
+which minimizes the AoI of SNs by jointly optimizing the
+ﬂight path of UA Vs and the energy harvesting schedule ofSNs. Tarekegn et al. [20] proposed a dynamic scalable control
+strategy for UA Vs based on DRL. This approach uses a time
+series convolutional neural network for link quality estimation
+and integrates a deep Q-learning algorithm to optimize UA V
+movement, aiming to maximize communication coverage andnetwork connectivity.
+The limited battery capacity and power of UA Vs prevent
+them from supporting prolonged mobility and communication,necessitating their return to the BS for recharging [21].I n
+recent years, several researchers have paid attention to the
+problem of recharging UA Vs.
+Lv et al. [22] proposed an online algorithm for UA Vs
+charging scheduling and charging station energy management
+based on Lyapunov optimization. By designing a chargingincentive mechanism under conditions of information asym-
+metry, the algorithm avoids the risks of grid overload and
+high-energy consumption, while increasing the endurance ofUA Vs. Zhu et al. [23] proposed a wireless power transfer
+(WPT) scheme for in-ﬂight charging of UA Vs. By using a
+scheduling algorithm based on DRL for UA Vs, the system’s
+task completion rate and charging efﬁciency are improved.
+Ribeiro et al. [24] proposed a hybrid integer linear pro-
+gramming model aimed at coordinating UA Vs and mobile
+charging spots to synchronize at speciﬁc time and space
+coordinates. They introduced a heuristic method combin-ing genetic algorithms for constructive adjustment, enabling
+synchronized usage of UA Vs and mobile charging spots.
+Yin et al. [25] proposed a wireless communication system
+model assisted by wirelessly powered UA Vs. By using UA Vs
+act as aerial BSs and jointly optimizing resource alloca-
+tion and BS placement, they achieved maximization of thedownlink sum rate. Trotta et al. [26] proposed a scheduling
+strategy based on distributed game theory. By using a bio-
+inspired scheme using attractive/repulsive spring forces, theyachieved maximum coverage of target positions by UA Vs
+and efﬁcient recharging of UA Vs at ground charging spots.
+Chai and Lau [27] proposed an online design for UA V-
+assisted wireless caching that optimizes UA V ﬂight paths,
+transmission power, and cache content scheduling jointly. By
+deriving the optimal control strategy from an approximate
+Bellman equation and employing an Actor–Critic-based online
+reinforcement learning algorithm, UA Vs can autonomouslydecide whether to continue along its ﬂight path to serve users
+or return to the charging station based on real-time obser-
+vations. Hassija et al. [28] proposed a scheduling algorithm
+for UA Vs competing for charging slots under criticality and
+task deadline constraints. They used game theory to modelenergy transactions between UA Vs and charging spots, aiming
+for cost-optimal and efﬁcient UA V charging. Liu et al. [29]
+used mobile multipurpose vehicles as mobile BSs to replace
+the batteries of UA Vs with insufﬁcient energy, and proposed a
+multiobjective deep Q-network algorithm to implement online
+UA V charging scheduling decisions, thereby reducing sensor
+failure time. Chen et al. [30] proposed a topology-based
+method to optimize UA V routing and developed a scenario-based UA V charging station planning stochastic optimization
+model, which reduces the investment costs of UA V ﬂeets
+under random delivery demands and improves operationalefﬁciency. Salameh et al. [31] designed a RL-based UA V
+trajectory algorithm, which searches for appropriate locations
+of available charging stations within the area and intelligently
+plans UA V movement and ﬂight decisions to enhance detection
+and tracking performance.
+Table Icompares existing research on UA V path planning
+and charging strategies. It is evident that current research
+primarily focuses on general data collection scenarios. In these
+scenarios, the data collected by all SNs do not show signiﬁcant
+differences in importance. However, in geohazard monitoring
+scenarios, the varying emergency levels of different monitoredareas result in differing importance levels for SNs across
+regions, and these levels can change as the geohazard situation
+evolves. Therefore, in geohazard monitoring scenarios, UA Vsshould be able to make quick and appropriate responses based
+on the current importance levels of SNs during data collection.
+This speciﬁc task requirement makes existing UA V-assistedIoT data collection schemes less satisfactory in geohazard
+monitoring scenarios. Therefore, to achieve efﬁcient operation
+of UA V-assisted IoT in geohazard monitoring scenarios, we
+need to address the following challenges: 1) how to design
+UA Vs data collection strategies to enable coordinated cooper-ation between UA Vs; 2) how to assign and dynamically adjust
+the importance levels of SNs in response to changes in the
+geohazard situation; 3) how to generate UA Vs ﬂight paths andenable real-time adjustments of these paths to accommodate
+changes in the importance levels of SNs; and 4) how to
+design UA Vs charging strategies to minimize the impact ofthe charging process on data collection. These challenges
+mentioned above are the main focus of this study.
+III. S
+YSTEM MODEL AND PROBLEM FORMULATION
+A. System Description
+In this study, we focus on geohazard monitoring sce-
+narios in remote areas, where the monitoring regions are
+vast and inaccessible to vehicles or personnel. In suchenvironments, traditional methods of investigation become
+impractical. Therefore, we propose using UA Vs to deploy SNs
+as a solution to cover these hard-to-reach areas. Speciﬁcally,
+the UA Vs carry the SNs, transport them to the predeﬁned
+locations, and deploy them into the monitoring area throughaerial dropping. Once deployed, the SNs operate indepen-
+dently to monitor geohazards. At the same time, we consider
+that environmental obstacles (e.g., trees, buildings, or uneventerrain) may interfere with communication links between SNs,
+leading to signal attenuation, blockage, or even fragmentation
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:14:13 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 4 ---
+
+18282 IEEE INTERNET OF THINGS JOURNAL, VOL. 12, NO. 11, 1 JUNE 2025
+TABLE I
+SUMMARY OF RELATED WORK AND OURWORK
+of the sensor network into multiple subnetworks [32].T h i s
+fragmentation hinders multihop transmission of data to the BS,
+making it difﬁcult for most SNs to transmit data effectively.
+To address these issues, UA Vs not only deploy the SNs butalso serve as communication relays, directly collecting data
+from the SNs and reliably transmitting it to the BS.
+To better illustrate the role of UA Vs in geohazard monitoring
+scenarios, we present a UA V-assisted IoT system in Fig. 1.
+In this system, we have prior knowledge of the position
+information and emergency level of the geohazard monitoringpoints that need attention. By using UA Vs to randomly scatter
+SNs, KSNs have been deployed on the ground to collect
+environmental information. Due to challenges in data transmis-
+sion from the SNs, UUA Vs are equipped as communicationrelay nodes to upload data from SNs to the ground BS.
+This article considers only one ground BS. We assume that
+all UA Vs are equipped with aerial wireless communication
+models, capable of long-distance data transmission with theground BS [33],[34]. Considering the limited energy of UA Vs
+batteries, the ground BS is equipped with a charging spot that
+uses radio frequency (RF) charging, allowing for charging ofup to one UA V at a time. The speciﬁc task of UA Vs is to collect
+data from dispersed SNs on the ground, upload this data to the
+ground BS, and return to the ground BS to recharge UA Vs’battery as needed. The sets of UA Vs and SNs are denoted as
+U={u,1≤u≤U}andK={k,1≤k≤K}, respectively.
+We deﬁne this system as a time-slot system. The total task time
+T
+totalis divided into Nequal time slots, denoted as Ttotal=Nτ,
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:14:13 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 5 ---
+
+FU et al.: LOW-AoI DATA COLLECTION FOR UA V-ASSISTED IoT WITH DYNAMIC GEOHAZARD IMPORTANCE LEVELS 18283
+Fig. 1. System model.
+TABLE II
+EMERGENCY LEVEL OF GEOHAZARD MONITORING POINTS
+where τis the duration of each time slot. The set of time slots
+are denoted as N={n,1≤n≤N}.
+B. Sensor Node Settings
+Geohazards are more likely to occur in regions with fragile
+geological environments and relatively poor slope stability.
+These regions are considered potential geohazard risk regions
+and therefore require special attention. Geohazard monitoring
+points are speciﬁcally designated locations used to monitor and
+assess potential geohazard risks within these regions. Typicallyequipped with sensors and devices, these monitoring points
+collect real-time data on geological conditions, rainfall, soil
+moisture, and other critical factors, providing a scientiﬁc basisfor informed decision making [35]. Based on the insights
+of geological experts in [9]regarding the classiﬁcation and
+grading of monitoring conditions, this article categorizesgeohazard monitoring points into four emergency levels. This
+classiﬁcation considers characteristics, such as the types of
+geohazards, geological stability conditions, and threat ranges.Level I indicates a normal emergency status, while Level IV
+represents the highest emergency level. Table IIshows the
+relationship between the current stability status and dangerlevels of geohazard monitoring points and their corresponding
+emergency levels. The meanings of the different emergency
+levels are as follows.
+1)Level I: Stable, indicating that there are no signiﬁcant
+risks in the region, suitable for normal operations.
+2)Level II: Caution, indicating some potential risks that
+require moderate attention.
+3)Level III: Unstable, indicating relatively high risks that
+necessitate enhanced monitoring and early warning.
+4)Level IV: Extremely unstable, indicating very high risks
+that require immediate response measures.
+Considering the challenges of low-deployment accuracy
+and poor controllability when UA Vs drop SNs, we adopt theFig. 2. Correlation between geohazard monitoring points and importance
+level of SNs.
+method of deploying a large number of SNs to ensure coverage
+of critical areas. However, this approach poses challenges for
+the UA V’s data collection tasks. Due to the limited batterycapacity of UA Vs, it may not be possible to access all SNs in
+a single mission. Therefore, we map the emergency levels of
+geohazard monitoring points to the importance levels of SNs,ensuring that in emergency situations, UA Vs prioritize collect-
+ing data from SNs with higher importance levels. Speciﬁcally,
+the importance level of a SN is determined based on itsdistance from the geohazard monitoring point. The importance
+levels of SNs are classiﬁed into four levels, denoted as /Psi1
+I,/Psi1II,
+/Psi1IIIand/Psi1IV, representing the sets of SNs at each importance
+level. The closer a SN is to a geohazard monitoring point,
+the higher its importance level. Conversely, if a SN is furtheraway from the geohazard monitoring point, it is classiﬁed
+into the lowest importance level set /Psi1
+I. In cases where there
+are geohazard monitoring points around a SN, we use thehighest mapped importance level as the standard. As shown in
+Fig. 2, the position information of the geohazard monitoring
+points divides the network into layers from the center tothe edge. SNs closer to the geohazard monitoring point have
+higher importance levels, while those farther away experience
+gradually decreasing importance levels, reaching Level I aftersurpassing a certain distance. Furthermore, since geohazard
+situations evolve over time, it is necessary for the system to
+update the emergency levels of geohazard monitoring pointsbased on the latest conditions, thereby dynamically adjusting
+the importance levels of SNs.
+C. UAV Models
+1) UAV Mobility Model: In geohazard monitoring scenar-
+ios, the ground environment is often complex. Therefore,UA Vs need to ﬂy at a certain altitude to avoid contact with
+ground objects. To simplify the problem, we assume that
+UA Vs ﬂy at an appropriate altitude Hto avoid obstacles,
+which is a common assumption in most UA V-assisted IoT
+research [17],[19]. The position of UA Vu at the nth time slot
+is denoted as q
+u[n]=[xu[n],yu[n],H]T, where u∈Uand
+n∈N.W eu s e θu[n]∈[0,2π)to represent the movement
+direction of UA Vu at the nth time slot, and υu[n]∈[0,υmax]
+to represent the ﬂight speed of UA Vu at the nth time slot. The
+UA V’s position at the nth time slot depends on its movement
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:14:13 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 6 ---
+
+18284 IEEE INTERNET OF THINGS JOURNAL, VOL. 12, NO. 11, 1 JUNE 2025
+direction θu[n] and speed υu[n], and is updated using the
+following formula:
+qu[n]=qu[n−1]+υu[n]·τ·[cosθu[n],sinθu[n]]T(1)
+where τis the duration of one time slot, and
+[cosθu[n],sinθu[n]] is the movement direction in the horizontal
+plane. This formula allows us to calculate the UA V’s updated
+position at each time step based on its previous position,speed, and movement direction. Thus, the speed of UA Vu at
+thenth time slot can be expressed as
+υ
+u[n]/Delta1=/bardblqu[n]−qu[n−1]/bardbl/τ≤υmax. (2)
+We denote the position of the SN as qk=[xk,yk,0]T,k∈K.
+At the nth time slot, the Euclidean distance between UA Vu
+and SN kcan be expressed as
+du,k[n]=/bardblqu[n]−qk/bardbl. (3)
+Similarly, The position of the BS is qBS=[xBS,yBS,0]T,
+and the distance between UA Vu and the BS is du,BS[n]=
+/bardblqu[n]−qBS/bardbl.
+The time required for UA Vu to return to the BS is deter-
+mined based on the distance du,BS[n] between the UA V and
+the BS, and the UA V’s velocity υu[n]. The return time Tret
+u[n]
+can be expressed as
+Tret
+u[n]=du,BS[n]
+υu[n]. (4)
+After completing the charging, the UA V will replan its data
+collection task and ﬂight path, and directly ﬂy to the newdata collection point without returning to its previous position.
+The ﬂight time required for the UA V to reach the new data
+collection point can be expressed as
+T
+new
+u[n]=du,new[n]
+υu[n](5)
+where du,new[n] is the distance from the UA V’s current position
+to the new data collection point.
+2) UAV Energy Model: This article adopts the energy
+consumption model for rotary-wing UA Vs from [36].I fU A V u
+ﬂies at a speed of /bardblυu[n]/bardblat the nth time slot, then the
+propulsion power consumption of UA Vu can be expressed as
+Ppro
+u[n]=P0/parenleftBigg
+1+3/bardblυu[n]/bardbl2
+U2
+tip/parenrightBigg
++P1/parenleftBigg/radicalBigg
+1+/bardblυu[n]/bardbl4
+4υ4
+0−/bardblυu[n]/bardbl2
+2υ2
+0/parenrightBigg1
+2
++1
+2d0ρs0A/bardblυu[n]/bardbl3(6)
+where P0andP1are the blade proﬁle power and the induced
+power of UA Vs during hovering, respectively; υ0is the mean
+induced velocity of the rotor during hovering; Utipis the tip
+speed of the rotor blades; ρis the air density; d0,s0andA
+are the fuselage drag ratio, rotor solidity and rotor disk area,respectively. According to (6), when the UA V ﬂight speed is
+zero, the hovering power of the UA V is P(0)=P
+0+P1.Therefore, the energy consumption of UA Vu at the nth time
+slot can be expressed as
+Epro
+u[n]=τPpro
+u[n]. (7)
+If UA Vu takes off at the n0th time slot, then the total energy
+consumption of UA Vu at the nth time slot is/summationtextn
+n=n0τPpro
+u[n]≤
+Emax, where Emaxis the energy limit of UA Vs. We denote the
+remaining energy of UA Vu at the nth time slot as eu[n]=
+Emax−/summationtextn
+n=n0τPpro
+u[n].
+RF signals, as alternating electromagnetic signals that carry
+energy, can be directly converted into current through RF
+energy harvesting technology and devices, either to chargebatteries or to extend the operating time of UA Vs [23].
+In this study, we assume that future advancements in RF
+energy harvesting and WPT technologies will make wirelessUA V charging feasible. This assumption is based on the
+ongoing progress in WPT technology as observed in recent
+research [37],[38],[39], and aims to explore the potential
+impact of these advancements on UA V charging models and
+operational strategies.
+While UA Vs could indeed return to the BS for battery
+replacement or contact charging, we argue that wireless charg-
+ing offers distinct advantages in speciﬁc scenarios, particularly
+in remote or hard-to-reach areas. First, wireless charging
+eliminates the need for physical contact between the UA V
+and the charging station, which is a signiﬁcant advantageover contact-based charging. This reduces the need for com-
+plex maintenance and the challenges associated with battery
+replacement in traditional charging systems. Furthermore,WPT offers ﬂexibility and automation, allowing UA Vs to
+recharge without halting their operations completely. UA Vs
+can autonomously recharge, reducing the need for manual bat-tery replacement, which becomes cumbersome and inefﬁcient
+in scenarios involving a large number of UA Vs or extensive
+task areas. Additionally, considering the application scenarioof our study, which involves remote or difﬁcult-to-access
+regions, battery replacement typically requires more complex
+infrastructure and additional personnel support, making it lessfeasible in such challenging environments.
+To enhance the efﬁciency of radiated power, this article
+considers a ﬁxed-point charging method using directional
+antennas. Accounting for the Ohmic losses of the antennas,
+antenna gain is employed to characterize their directivity. Thegain is proportional to directivity, with the proportionality fac-
+tor dependent on the antenna design. Accordingly, the received
+power of UA Vu at the nth time slot can be expressed as
+P
+rec
+u[n]=PtGtGrλ2
+/parenleftBig
+4πd2
+u,BS[n]/parenrightBig2(8)
+where Ptis the transmitted power from the transmitting
+antenna, Gtand Grare the gains of the transmitting and
+receiving antennas, respectively, and λis the wavelength
+of the electromagnetic wave. According to [23], the energy
+conversion efﬁciency of RF charging decreases as the charging
+distance increases. The energy obtained by UA Vu in charging
+mode at the nth time slot can be expressed as
+Erec
+u[n]=τPrec
+u[n]. (9)
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:14:13 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 7 ---
+
+FU et al.: LOW-AoI DATA COLLECTION FOR UA V-ASSISTED IoT WITH DYNAMIC GEOHAZARD IMPORTANCE LEVELS 18285
+Assume that the amount of energy UA Vu needs to replenish
+in the nth time slot is Ereq
+u[n], then the charging time Tcha
+u[n]
+can be calculated based on the received power and required
+energy as
+Tcha
+u[n]=Ereq
+u[n]
+Precu[n](10)
+where Ereq
+u[n] is the required energy replenishment for UA Vu
+in the nth time slot. From (10), it is clear that, under constant
+received charging power, the charging time Tcha
+u[n] is directly
+proportional to the required energy replenishment Ereq
+u[n], i.e.,
+the more energy required, the longer the charging time. This
+relationship indicates that charging time is not only dependenton the received power but is also directly inﬂuenced by the
+charging demand. The duration of the charging time will
+directly impact the UA V’s energy recovery rate, which inturn affects its subsequent task execution and ﬂight planning.
+For example, in cases of insufﬁcient energy, longer charging
+times may lead to task delays or reduced efﬁciency, whileshorter charging times will improve the timeliness of task
+execution.
+3) UAV Communication Channel Model: When relaying
+geohazard monitoring data, the communication betweenUA Vs, SNs, and BS can be divided into two processes:
+1) the SN-to-UA V transmission process and 2) the UA V-to-BS
+transmission process.
+1)SN-to-UAV Transmission Process: The communication
+channel model between UA Vs and ground SNs is classiﬁed
+into Line-of-Sight (LoS) and non-LoS (NLoS) communicationmodels. The path loss for these models at the nth time slot
+can be, respectively, expressed as
+PL
+LoS
+u,k[n]=20 log/parenleftbigg4πfcdu,k[n]
+υc/parenrightbigg
++κLoS (11)
+PLNLoS
+u,k[n]=20 log/parenleftbigg4πfcdu,k[n]
+υc/parenrightbigg
++κNLoS (12)
+where fcis the carrier frequency, υcis the speed of light, and
+κLoSandκNLoS are the path loss factors for the LoS and NLoS
+models, respectively. According to [16],[36], and [40],t h e
+probability of LoS communication at the nth time slot can be
+expressed as
+PLoS
+u,k[n]=1
+1+z0exp/parenleftBig
+−z1/parenleftBig
+180
+πsin−1/parenleftBig
+H
+du,k[n]/parenrightBig
+−z0/parenrightBig/parenrightBig(13)
+where z0and z1are propagation parameters dependent
+on the carrier frequency and the speciﬁc environment.
+The elevation angle in degrees is given by θu,k[n]=
+(180/π)sin−1([H/du,k[n]]). The probability of NLoS com-
+munication is given by PNLoS[n]=1−PLoS[n]. The average
+path loss between the SN and the UA V at the nth time slot
+can then be expressed as
+PLAv
+u,k[n]=PLoS
+u,k[n]×PLLoS
+u,k[n]+/parenleftBig
+1−PLoS
+u,k[n]/parenrightBig
+PLNLoS
+u,k[n].(14)
+In addition to path loss, the channel gain his assumed to
+follow a Rayleigh distribution [41]. Consequently, the squared
+channel gain, X=|h|2, follows an exponential distribution,with its probability density function (PDF) and cumulative
+distribution function (CDF), respectively, expressed as
+f(X)=1
+PRuexp/parenleftbigg
+−X
+PRu/parenrightbigg
+(15)
+F(X)=1−exp/parenleftbigg
+−X
+PRu/parenrightbigg
+(16)
+where PRuis the average received power. Considering both
+path loss and channel gain, the received power of UA Vu at the
+nth time slot can be expressed as
+PRu[n]=B0log2/parenleftBigg
+1+PTk|h[n]|2
+σ2/parenrightBigg
+(17)
+where B0is the channel bandwidth, σ2is the power of
+the additive white Gaussian noise (AWGN) at the receiver,and PT
+kis the transmission power of SN k. Under average
+conditions, the received power can be simpliﬁed as
+PRu[n]=10 log PTk−PLAv
+u,k[n]. (18)
+2)UAV-to-BS Transmission Process: In an open suburban
+scenario, an effective service link can be established between
+UA Vs and the BS [42]. This article adopts a LoS dominant
+channel model, considering large-scale path loss and small-
+scale Rician fading [43]. The channel power gain at the nth
+time slot can be expressed as
+hu,BS[n]=/radicalbig
+Lu,BS[n]/Omega1u,BS (19)
+where Lu,BS[n] is the large-scale average channel power gain
+in the nth time slot, expressed as
+Lu,BS[n]=β0d−αu,BS
+u,BS[n] (20)
+where β0is the channel gain parameter at a reference distance
+(one meter), and αu,BSis the path loss exponent. The small-
+scale fading /Omega1u,BSfollows a Rician distribution, with the PDF
+expressed as
+f/Omega1u,BS(X)=/parenleftbig
+Ku,BS+1/parenrightbig
+e−Ku,BS
+¯/Omega1u,BSexp/parenleftBigg
+−/parenleftbig
+Ku,BS+1/parenrightbig
+X
+¯/Omega1u,BS/parenrightBigg
+×I0⎛
+⎝2/radicalBigg
+Ku,BS/parenleftbig
+Ku,BS+1/parenrightbig
+X
+¯/Omega1u,BS⎞
+⎠,X≥0 (21)
+where Ku,BSis the Rician factor representing the ratio of the
+power of the LoS component to the power of the multipathscattering component, and I
+0(·)is the zero-order modiﬁed
+Bessel function. Speciﬁcally, when Ku,BS=0, the model
+simpliﬁes to a Rayleigh fading channel; when Ku,BS→∞ ,
+the model converges to an AWGN channel. According to (20),
+the path loss exponent αu,BSin the nth time slot can be
+expressed as
+αu,BS[n]=LdB[n]+βdB
+10 log/parenleftbig
+du,BS[n]/parenrightbig (22)
+where LdB[n]=10 log(Lu,BS[n])andβdB=10 log(β)are
+the path loss and channel power gain parameters in dB,respectively. Given that the elevation angle of the UA V and the
+BS is θ
+u,BS[n]=(180/π)sin−1((H/du,BS[n])), based on the
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:14:13 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 8 ---
+
+18286 IEEE INTERNET OF THINGS JOURNAL, VOL. 12, NO. 11, 1 JUNE 2025
+Fig. 3. Packet arrival and delivery process at each SN and its AoI.
+air-to-ground channel model proposed in [44], the path loss
+f r o mU A V ut ot h eB Si nt h e nth time slot can be expressed as
+PLu,BS[n]=(ηLoS−ηNLoS)PLoS
+u,BS[n]+PLNLoS
+u,k[n](23)
+where ηLoSandηNLoS are the excess path losses for LoS
+and NLoS propagation, respectively. The calculations for theLoS probability P
+LoS
+u,BS[n] and NLoS path loss PLNLoS
+u,k[n]a r e
+consistent with the aforementioned formulas. By replacing
+PLu,BS[n] with LdB[n], the angular path loss exponent can be
+further expressed as
+αu,BS[n]=N/summationdisplay
+n=1ηLoS−ηNLoS
+10Nlog(dn)PLoS
+u,BS[n]+N/summationdisplay
+n=1PLNLoS
+u,k[n]+βdB
+10Nlog(dn)
+=z2·PLoS
+u,BS[n]+z3 (24)
+where z2and z3are determined by environmental features
+and system frequency. From (24), it is clear that this model
+considers the effects of both LoS and NLoS propagation,
+effectively reﬂecting the channel characteristics in actual
+geological disaster monitoring scenarios. By incorporating
+random variables and probability distributions, this model caneffectively simulate the randomness of the channel, aligning
+with the dynamic feedback mechanism of the environmen-
+tal state in the RL framework. This combination providesUA V decision making with realistic and reliable channel
+information, aiding RL algorithms in learning and optimizing
+path planning and data transmission strategies under varyingenvironmental conditions.
+D. AoI Model
+AoI is an important metric for measuring data freshness
+and has garnered signiﬁcant attention. Therefore, this article
+uses AoI as the core metric for evaluating data latency. In this
+article, SNs transmit data to UA Vs in the form of data packets,
+which are then uploaded by UA Vs to the BS. We use o
+k[n]t o
+represent the transmission status of SN k’s data packet to UA Vs
+at the nth time slot. If SN kuploads a data packet to UA Vs
+at the nth time slot, then ok[n]=1; otherwise, ok[n]=0. As
+shown in Fig. 3,i fS N ksuccessfully transmits the latest data
+packet to UA Vs, then the AoI of SN kis recalculated and set
+to zero. Otherwise, the AoI of SN klinearly increases by one.Therefore, during the UA Vs’ data packet transmission, the AoI
+of SN kat the nth time slot can be expressed as
+Qk[n]=/braceleftbigg0, ifok[n]=1
+Qk[n−1]+1,otherwise. (25)
+If UA Vs do not upload a new data packet to the BS, the
+AoI of all SNs increases linearly by one. If the data packet
+uploaded by UA Vs contains the latest data packet of a SN,the AoI of that SN is updated. We use Z
+k[n] to represent the
+transmission status of SN k’s data packet from UA Vs to the
+BS at the nth time slot, where Zk[n]=1 indicates that UA Vs
+successfully uploaded the data packet of SN k, and Zk[n]=0
+indicates that UA Vs did not upload the data packet or did not
+collect the data packet. In the time-slot system, the AoI of SNkat the nth time slot can be expressed as
+A
+k[n]=/braceleftbiggQk[n−1]+1, ifZk[n−1]=1
+min/braceleftbig
+Ak[n−1]+1,Amax
+k/bracerightbig
+,otherwise(26)
+where Amax
+kis the maximum AoI value of SN k, representing
+the upper limit of data freshness that the system can tolerate.As noted in [19] and [45], excessively delayed data holds
+no value in IoT systems that rely on timely information.
+Therefore, we deﬁne a maximum AoI value to reﬂect thistolerance limit. When the AoI exceeds this threshold, a penalty
+is imposed on the system, reducing the occurrence of excessive
+delays. The value of A
+max
+kdepends on the speciﬁc system
+conﬁguration and can vary according to the use case. The
+range of AoI values is denoted as Ak/Delta1={1,2,3,..., Amax
+k}.
+For each SN, it is necessary to collect and record the AoI
+of its data packets so that the system can make appropriate
+decisions based on the sampling information of SNs. At thesame time, considering that the importance of different SNs
+and their data types and historical data varies for the system,
+it is important to prioritize the collection of data from SNswith higher importance levels. To achieve this, we categorize
+the data importance levels of SNs into four levels from low to
+high, and assign corresponding weights to their AoI. We useω
+k[n] to represent the importance level of SN kat the nth time
+slot, assigned values one, two, three, and four, respectively,
+corresponding to the four importance levels from low to high.Therefore, the weighted average AoI of all SNs at the nth time
+slot can be expressed as
+¯A[n]=1
+K/parenleftBigg
+αK/summationdisplay
+k=1Ak[n]+(1−α)βK/summationdisplay
+k=1ωk[n]Ak[n]/parenrightBigg
+(27)
+where αis a weighting coefﬁcient used to balance the general
+AoI and the weighted AoI. When α=1, the system calculates
+the general average AoI of all SNs. When α=0, it computes
+the weighted average AoI, which accounts for the varying
+importance levels of the SNs. βis an importance adjustment
+coefﬁcient that controls the impact of the SNs’ importancelevels on the AoI. When β=0, the AoI remains equal across
+all SNs, regardless of their importance levels. As βincreases,
+the AoI of SNs with higher importance levels becomes moresigniﬁcant. The impact of these two coefﬁcients on system
+performance is further discussed in Section V-A.
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:14:13 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 9 ---
+
+FU et al.: LOW-AoI DATA COLLECTION FOR UA V-ASSISTED IoT WITH DYNAMIC GEOHAZARD IMPORTANCE LEVELS 18287
+Fig. 4. Flowchart of the LLDCL scheme.
+E. Problem Formulation
+Our goal is to minimize the weighted average AoI of
+all SNs by optimizing the ﬂight paths of the UA Vs. In
+this optimization problem, the primary optimization variablesinclude the UA V’s ﬂight speed υ
+u[n] and movement direction
+θu[n], data collection duration τsen
+u[n], and charging duration
+τcha
+u[n]. These variables play a crucial role in minimizing the
+weighted average AoI. Furthermore, other constraints, such
+as time and energy limitations, as well as restrictions on
+the size of AoI, further constrain the UA V’s movement anddata collection process. This optimization problem can be
+expressed as
+P1: min
+{υu[n],θu[n],τsenu[n],τchau[n]}1
+NN/summationdisplay
+n=1¯A[n] (28)
+s.t., 0 ≤υu[n]≤υmax∀u∈U∀n∈N (29)
+0≤θu[n]<2π∀u∈U∀n∈N (30)
+τmov
+u[n]+τcol
+u[n]+τsen
+u[n]+τcha
+u[n]≤τ∀u∈U∀n∈N(31)
+eu[n]≥Eth∀u∈U∀n∈N (32)
+0≤Ak[n]≤Amax
+k∀n∈N (33)
+where (29) and (30), respectively, indicate that the ﬂight
+speed and ﬂight direction of UA Vs should satisfy kinematicconstraints. Constraint (31) indicates that the sum of subslots
+for UA Vs in each time slot should not exceed the upper bound
+of the time slot, as detailed in Section IV-D .(b). Constraint (32)
+indicates that the remaining energy of UA Vs should not fall
+below the minimum requirement. Constraint (33) indicates that
+the AoI of collected SNs should not exceed the upper bound.
+IV . L
+OW-LATENCY DATA COLLECTION SCHEME
+A. Framework of LLDCL Scheme
+This article proposes a LLDCL to address the dual require-
+ments of low latency in UA V data collection and rapid
+response to geohazards. The speciﬁc process of this schemeis shown in Fig. 4. First, to reduce the complexity of the
+task, after each update of the emergency level of geohazard
+monitoring points, we use a fuzzy threshold-based Gaussian
+mixture algorithm to divide the sensor network deployed at
+the geohazard monitoring points into clusters and determinecluster head nodes. UA Vs collect data from each cluster head
+node to obtain data from SNs of the entire cluster and then
+establish a long-distance transmission channel with the groundBS to upload this data [46]. During the data collection process,
+if UA Vs lack sufﬁcient energy to complete the task, they canreturn to the BS for recharging. To achieve ﬂexible and efﬁ-
+cient recharging of UA Vs, we model the recharging behavior
+between UA Vs and the BS as a negotiated energy tradingmodel. UA Vs engage in energy transactions with the BS based
+on their immediate needs, using a game theory model to
+simultaneously enhance the utility and revenue of UA Vs. Inresponse to the dynamic environment where the importance
+levels of SNs may change, we propose a DRL-WAoI. This
+algorithm guides a group of UA Vs to collect SN data fromdispersed cluster head nodes, achieving the tasks of data
+collection, data uploading, and UA V recharging by minimizing
+the weighted AoI and considering UA V energy constraints.Through these steps, the ﬂight paths and recharging times of
+UA Vs are jointly optimized.
+It should be noted that our proposed scheme relies on the
+precise position information of ground SNs. Therefore, during
+the preparation phase of the task, UA Vs need to traverse theentire task area to collect this position information of SNs.
+Subsequently, UA Vs can perform subsequent data collection
+tasks based on the position information of SNs. UA Vs onlyneed to traverse the task area again and update the position
+information of SNs when there is a change in the status of the
+sensor network.
+B. Clustering of Sensor Nodes
+To enhance the efﬁciency of UA V data collection, we
+recluster the sensor network following each update of theemergency levels at geohazard monitoring points. Within
+each cluster, one SN is selected as the cluster head node,
+responsible for collecting data from other SNs and uploadingit to the UA Vs when they come within communication range.
+During the clustering process, we consider two situations: ﬁrst,
+isolated SNs, which form independent clusters with the SNitself serving as the cluster head node and the second, for
+sensor network subnets, we select the SN closest to the BS as
+the cluster head node to minimize the UA Vs’ ﬂight distance.
+Given the varying emergency levels at different geohazard
+monitoring points, we assign different importance levels to
+the SNs. When UA Vs cannot access all SNs in one task, we
+prioritize data collection from those with higher importance
+levels. In emergencies, prompt transmission of this data to theBS is critical. To facilitate this, we propose a Gaussian mixture
+clustering algorithm based on fuzzy thresholds, which divides
+the sensor network into multiple subnets. This algorithm cate-gorizes SNs within each subnet into two types based on fuzzy
+thresholds: 1) deterministic SNs, which have ﬁxed cluster
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:14:13 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 10 ---
+
+18288 IEEE INTERNET OF THINGS JOURNAL, VOL. 12, NO. 11, 1 JUNE 2025
+assignments and 2) fuzzy SNs, located at the boundaries
+of clusters, whose assignments depend on the importancelevels of the clusters. This adaptive clustering algorithm
+enables effective allocation of SNs in fuzzy clustering areas,
+ensuring expedited data collection for higher priority SNsduring emergencies.
+In our study, we employ the Gaussian mixture model
+(GMM) for clustering SNs. GMM is a probabilistic methodthat assumes data samples are generated from multiple
+Gaussian distributions, allowing it to effectively capture the
+overlaps and fuzzy boundaries between different clusters,surpassing simpler methods like k-means. A key advantage of
+GMM in our context is its ability to manage the complexity
+associated with the positions and importance levels of SNs,
+some of which may lie near cluster boundaries. The soft
+classiﬁcation capability of GMM is essential, enabling eachSN to belong to multiple clusters with varying degrees of
+membership. This ﬂexibility facilitates prioritization in emer-
+gency scenarios, ensuring timely attention to SNs with higherimportance levels. While the locations of the SNs are precisely
+known, this fuzzy classiﬁcation based on importance levels
+enhances responsiveness in emergencies. Additionally, GMMrequires the number of individual Gaussian models to be
+predetermined, necessitating prior speciﬁcation of the number
+of clusters C. To determine the appropriate number of clusters
+C, we ﬁrst apply an adaptive k-means algorithm to provide
+an initial estimate of Cfor the subsequent GMM clustering.
+Speciﬁcally, we randomly select KSNs as the initial cluster
+centers (with the initial value of Kset to the number of
+geohazard monitoring points). Then, we calculate the distance
+between each SN and each cluster center, assigning the SNs
+to the nearest cluster center. After several iterations, if the
+distance between any two SNs exceeds the communicationradius, we increase the value of Kby one. This process
+is repeated until, after several iterations, all SNs meet the
+communication radius requirement, at which point the iterationends. The ﬁnal value of Kis then used as the number of
+clusters Cfor the GMM. The initial application of the k-
+means algorithm ensures the validity of the clustering andimproves the overall efﬁciency of the clustering process. The
+data sample x
+kof SN kis multidimensional, encompassing
+both position information and importance level, and its PDFcan be expressed as
+p(x
+k|μc,/pi1c)
+=1
+(2π)D/2|/pi1c|1/2exp/parenleftbigg
+−1
+2(xk−μc)T/pi1−1
+c(xk−μc)/parenrightbigg
+(34)
+where μcand/pi1care the mean and covariance matrix of xk
+in the cth GMM component, respectively, and Dis the data
+dimension. Thus, the probability distribution of the GMM canbe expressed as
+P(x
+k)=C/summationdisplay
+c=1ϑcp(xk|μc,/pi1c) (35)
+where ϑcis the weight of the cth GMM component, following/summationtextC
+c=1ϑc=1.
+Fig. 5. Clustering with GMM.
+Given the number of clusters Cand the probability density
+of the GMM, we use the expectation-maximization (EM)
+algorithm to estimate the parameters /Theta1=(μc,/pi1c,ϑc).T h e
+EM algorithm introduces latent variables to obtain the maxi-
+mum likelihood estimation of model distribution parameters,iterating until the likelihood function converges. To simplify
+solving the likelihood function for data points generated by
+the GMM, we take the logarithm, which can be expressed as
+L(/Theta1)=lnK/productdisplay
+k=1p(xk|μ,/pi1,ϑ )
+=K/summationdisplay
+k=1ln/parenleftBiggC/summationdisplay
+c=1ϑcp(xk|μc,/pi1c)/parenrightBigg
+. (36)
+The EM algorithm consists of two steps: 1) the expectation
+step (E-Step) and 2) the maximization step (M-Step). First, we
+randomly assign initial parameters /Theta1=(μc,/pi1c,ϑc).I nt h e
+E-Step, based on the initial values or the parameters from theprevious iteration, the probability that SN kbelongs to cluster
+ccan be calculated by
+γ
+c(xk)=ϑcp(xc|μc,/pi1c)
+/summationtextC
+c=1ϑcp(xc|μc,/pi1c). (37)
+In the M-Step, based on the results from the E-Step, the
+model parameters /Theta1=(μc,/pi1c,ϑc)are updated, which can
+be expressed as
+⎧
+⎪⎪⎪⎨
+⎪⎪⎪⎩μ
+c=/summationtextK
+k=1γc(xk)xk/summationtextK
+k=1γc(xk)
+/pi1c=/summationtextK
+k=1γc(xk)(xc−μc)/summationtextK
+k=1γc(xk)
+ϑc=1
+K/summationtextK
+k=1γc(xk). (38)
+Through GMM clustering, we divide SNs into deterministic
+SNs and fuzzy SNs. The center of a cluster is determined bythe parameter μ
+c, and the shape and size of the cluster are
+determined by the covariance /pi1c. When the importance levels
+of two clusters with fuzzy boundaries differ, the fuzzy bound-ary SNs are assigned to the cluster with the lower importance
+level. Algorithm 1 describes the details of clustering SNs.
+For better understanding, we provide an illustration of
+clustering results using the GMM clustering method in Fig. 5.
+In the ﬁgure, 55 SNs are randomly distributed, with darkercolor blocks indicating higher importance levels of SNs in
+those areas. Using the GMM clustering method, we divide
+these SNs into 14 clusters, prioritizing higher importanceSNs into a single cluster. For fuzzy SNs, we assign them to
+clusters with lower importance levels because our primary goal
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:14:13 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 11 ---
+
+FU et al.: LOW-AoI DATA COLLECTION FOR UA V-ASSISTED IoT WITH DYNAMIC GEOHAZARD IMPORTANCE LEVELS 18289
+Algorithm 1: Clustering of SNs
+Input: The set of SNs K, the set of importance level /Psi1,
+termination threshold ε.
+Output: The set of cluster C.
+1: Initialize Gaussian mixture distribution parameters
+/Theta1=(μc,/pi1c,ϑc)and cluster number C
+2:repeat
+3: Calculate the center positions of Cclusters based on K
+4: Calculate the distance lfrom each SN k∈Kto the
+cluster center
+5: ifexist l>lmaxthen
+6: C←C+1
+7: end if
+8:Until not exist l>lmax
+9: E-Step: Based on the current parameters /Theta1=(μc,/pi1c,ϑc),
+compute γc(xk)as in (37)
+10:M-Step: Update parameters /Theta1/prime=(μ/primec,/pi1/primec,ϑ/primec)as in (38)
+b a s e do nt h e γc(xk)computed in the E-Step
+11:while |/Theta1−/Theta1/prime|>ε do
+12: Repeat E-Step and M-Step13:end while
+14:Adjust probabilities according to the level of importance15:C←∅
+16:Assign SNs to each cluster, and update C
+17:Select the SN closest to the BS within each cluster as the
+cluster head node
+18:return C
+is to prioritize higher importance levels of SNs during data
+collection, especially in emergency situations. By allocatingfuzzy SNs to clusters with lower importance levels, we
+minimize competition for the limited communication and data
+collection resources of UA Vs between less critical SNs andthose with higher importance levels. This strategy ensures that
+UA Vs can focus on the timely collection of key information
+from high-importance levels of SNs, reducing potential delaysor data collection conﬂicts. Additionally, assigning fuzzy SNs
+to clusters with lower importance levels helps balance the load
+across different clusters, allowing for more efﬁcient utilizationof UA V resources. This approach prevents the overloading of
+clusters with higher importance levels and ensures timely data
+collection from the most critical SNs. Subsequently, we selectthe SN closest to the BS within each cluster as the cluster
+head node.
+C. UAV Scheduling Charging
+Due to the limited battery capacity of UA Vs, they cannot
+continuously perform data collection tasks. Therefore, we have
+equipped the ground BS with a UA V charging spot. When a
+UA V’s energy is insufﬁcient to complete the remaining datacollection tasks, it can return to the BS for recharging. In
+traditional UA V-assisted IoT systems, UA Vs typically collect
+data from SNs within their current communication range and
+relay it to the BS. They then move to the next position to
+continue data collection and relaying. This process is repeateduntil UA Vs are forced to return to the BS for charging due
+to low battery. However, this data collection and recharging
+method is inefﬁcient. First, once UA Vs’ batteries are depleted,they take a long time to fully charge. Second, if the BS has
+limited charging spots available for UA Vs and there is a lackof effective communication and coordination among UA Vs, it
+can result in UA Vs returning to the BS without knowing theavailability of charging spots, leading to queues and waiting
+times for charging.
+Based on the above considerations, we would like UA Vs to
+be able to obtain energy at a lower ﬂight cost (shorter distance
+for UA Vs to return to the BS) and a lower waiting cost (shorter
+waiting time for UA V charging). To achieve this, we propose atoken-based energy trading model. In this model, we consider
+UA Vs as buyers and the BS as the seller. UA Vs collect data
+to exchange for a corresponding number of tokens, which arethen used to pay the BS for the amount of energy purchased.
+We denote the amount of energy provided by the BS to UA Vu
+asD
+u, the minimum energy requirement of UA Vu as Qmin
+u,
+and the cost of energy requested by UA Vu as pu. Therefore,
+the fulﬁllment capability of UA Vu can be expressed as
+FCu=duln/parenleftbiggDu
+pu−Qmin
+u
+pu+φu/parenrightbigg
+(39)
+where du>0 and φu>0 are predeﬁned factors for UA Vu,
+and both are dimensionless. This ensures that all terms within
+the formula are consistent in units and can be subtracted. Theutility of UA Vu can be expressed as
+UT
+u=RCu(FCu−ETu×Du×tu)
+−(1−RCu)×LFu×Du (40)
+where RCuis the repayment capability of UA Vu, deﬁned as the
+ratio of successful repayments of tokens by UA Vu within the
+repayment time to the total number of transactions. We use RSu
+to represent the number of successful repayments of tokens
+by UA Vu within the repayment time, and RF uto represent the
+number of token repayment failures by UA Vu. Therefore, RCu
+can be expressed as
+0<RCu=RSu
+RSu+RFu≤1. (41)
+ETurefers to the extra token interest charged by the BS for
+allowing UA Vu to use tokens within the speciﬁed time tu.LFu
+is the ﬁne amount, which is the late fee imposed on UA Vu in
+the event of delayed repayment. The late fee LFuis calculated
+as the difference between the actual repayment time of UA Vuand the deadline set by the BS, multiplied by the interest rate
+ET
+ufor the tokens borrowed by UA Vu from the BS within the
+time tu. The relationship between the values of ETuandLFu
+is given by
+LFu=ηu×(Tu−tu)×ETu (42)
+where Tuis the time at which UA Vu repays the tokens to the
+BS, and ηu>1 is a predeﬁned coefﬁcient.
+The utility of the BS includes the additional tokens collected
+from UA Vu as interest, as well as the penalty amount incurred
+if UA Vu fails to repay the requested tokens within the time tu.
+The expenses of the BS can be expressed as
+/Lambda1=Du×tu×ou (43)
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:14:13 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 12 ---
+
+18290 IEEE INTERNET OF THINGS JOURNAL, VOL. 12, NO. 11, 1 JUNE 2025
+where ouis the unit cost of tokens that UA Vu requests from
+the BS. Therefore, the monetary advantage of the BS can beexpressed as
+MA=CS
+u(ETu×Du×tu−/Lambda1)
++(1−CSu)×LFu×Du (44)
+where CSu∈[0,1] is the credit score that the BS assigns to
+UA Vu, where a higher credit score indicates higher trustwor-
+thiness by the BS.
+In this article, the BS, acting as the seller, can make
+decisions in advance by adjusting the late fee LFu.T h eU A V s ,
+acting as the buyers, decide the amount of additional power Du
+based on the late fee situation. Both parties aim to maximize
+economic beneﬁts, thus continuously inﬂuencing and adjusting
+their decisions. To achieve Nash equilibrium, we employ theStackelberg game method to maximize the economic beneﬁts
+of both UA Vs and the BS. The overall structure of this game
+can be expressed as
+G=/braceleftbig
+(U∪{BS}),{UT
+u}u∈U,{MA},Du,LFu/bracerightbig
+. (45)
+We use backward induction to derive the game equilibrium
+deﬁned in (45). By differentiating the UA V utility UTu
+from (40) with respect to Du, we obtain
+∂UTu
+∂Du=RCu×du
+Du−Qminu×pu+φu×pu
+−RCu×ETu×tu−(1−RCu)×LFu.(46)
+We solve (∂UTu/∂Du)=0 to obtain the relationship
+between the UA Vu’s token amount Duand the late fee LFu
+provided by the BS, which can be expressed as
+Du=RCu×du
+RCu×ETu×tu+(1−RCu)LFu+li (47)
+where li=Qmin
+u×pu−φu×pu. We substitute (47) into (44)
+to obtain the utility of the BS, which is expressed as
+MA=RCudu[CSuETutu−CSutuou+(1−CSu)LFu]
+RCuETutu+(1−RCu)LFu
++li(CSuETutu−CSutuou+(1−CSu)LFu).(48)
+To achieve the Stackelberg Equilibrium, the charging station
+needs to communicate with the UA Vs to obtain their ﬂightpaths and iteratively reach this equilibrium. The ﬂight paths
+of the UA Vs will be introduced in the next section.
+D. UAV Path Planning
+In geohazard monitoring scenarios, the development of geo-
+hazards is dynamic and constantly changing. In order to timely
+grasp the geohazard information in key areas, UA Vs need
+to make autonomous decisions and adjust their ﬂight paths
+accordingly based on actual needs. Traditional path planning
+algorithms struggle to meet this requirement. Therefore, wepropose a DRL-WAoI. This algorithm formulates the data
+collection and ﬂight path planning of UA Vs as a MDP based on
+discrete time. It is deﬁned by a tuple (S,V,P,R,γ), where S
+is the state space, Vis the action space, Pis the state transition
+function, Ris the reward function, and γ∈[0,1] is thediscount factor. The state space, action space, state transition,
+and cost of the MDP problem are deﬁned as follows.
+1)State Space: The system’s state space is deﬁned as
+S
+/Delta1={ A[n],ω[n],QSN[n],QUAV[n],EUAV[n],RL[n],CS[n],
+TUAV[n],RA[n]}, consisting of nine components. Speciﬁcally,
+A[n]=(A1[n],..., AK[n])is the AoI of SNs at the nth time
+slot;ω[n]=(ω1[n],...,ω K[n])is the importance levels of
+SNs at the nth time slot; and QSN[n]=(q1[n],..., qK[n])
+is the positions of SNs at the nth time slot. These three
+state variables describe the system’s static environmental
+information, providing the agent with basic environmentalawareness, and are stored in the ﬁrst layer of the network.
+Q
+UAV[n]=(q1[n],..., qU[n])is the position of the UA Vs
+at the nth time slot; EUAV[n]=(e1[n],..., eU[n])is the
+remaining energy of the UA Vs at the nth time slot; RL[n]=
+(RL1,BS[n],..., RLU,BS[n])is the path loss between the UA Vs
+and the BS at the nth time slot; CS[n]=(CS1[n],..., CSU[n])
+is the charging status of each UA V at the nth time slot,
+where CSu[n]∈{0,1}, with zero indicating that UA Vu is not
+charging and one indicating that UA Vu is charging; TUAV[n]=
+(Tcha
+1[n],..., Tcha
+U[n])is the remaining charging time of each
+UAV at the nth time slot, in terms of the time slot length;
+RA[n]=(RA1[n],..., RAU[n])is the return status of each
+UAV at the nth time slot, where RAu[n]∈{0,1}, with zero
+indicating that UA Vu does not need to return to the BSand one indicating that UA Vu will return to the BS. This
+decision is learned by the agent based on the UA V’s current
+position and energy state. These six state variables describethe system’s dynamic information, providing the agent with
+critical information needed for task decisions regarding each
+UA V , and are stored in the second layer of the network.
+It is important to note that while we describe the state
+space in two groups to highlight the role of different types of
+information, these groupings do not correspond to the “ﬁrst
+layer” or “second layer” in the neural network. In fact, all
+state variables are later ﬂattened into a uniﬁed input vector,which is then processed by the DNN model. At the beginning
+of each time slot, the system updates these state variables and
+uses them to decide whether the UA Vs should perform datacollection or charging.
+2)Action Space: The system’s action space is deﬁned as
+V
+/Delta1={(θu[n],lu[n],τsen
+u[n],τcha
+u[n]),u=1,2,..., U}, where
+au[n]=(θu[n],lu[n],τsen
+u[n],τcha
+u[n])is the action of UA Vu
+at the nth time slot. The action of each UA V consists of four
+components: 1) the movement direction θu[n]∈[0,2π);2 )t h e
+movement distance lu[n]∈[0,τυ max]; 3) the data collection
+duration τsen
+u∈[0,τ]; and 4) the charging duration τcha
+u[n]∈
+[0,τ]o fU A V ua tt h e nth time slot. These actions form a
+single decision process within each time slot and are executed
+sequentially during each time slot. When the UA V is in the
+return state, i.e., RAu[n]=1, the UA V’s movement direction
+θu[n] is set to the angle from its current position to the BS,
+expressed as
+θu[n]=atan2(yBS−yu[n],xBS−xu[n]) (49)
+where atan2 (·)returns the angle between UA Vu and the BS.
+The UA V’s movement distance lu[n] is the minimum of the
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:14:13 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 13 ---
+
+FU et al.: LOW-AoI DATA COLLECTION FOR UA V-ASSISTED IoT WITH DYNAMIC GEOHAZARD IMPORTANCE LEVELS 18291
+current distance to the BS and the maximum movement
+distance τυmaxfor the current time slot, expressed as
+lu[n]=min/parenleftbig
+τυmax,du,BS[n]/parenrightbig
+. (50)
+Here, we further divide each time slot τof UA Vu based
+on the actions performed by UA Vs: ﬂight subslot τmov
+u, where
+the UA V ﬂies to a new position; data collection subslot τcol
+u,
+where the UA V hovers and collects data from SNs; data upload
+subslot τsen
+u, where the UA V uploads the collected data to
+the BS; charging subslot τcha
+u, where the UA V remains at
+the BS for charging. In addition, the charging duration is
+constrained by the charging status CSu[n]. Charging duration
+is only effective when CSu[n]=1. The total duration of the
+four subtime slots should not exceed the upper bound τof the
+time slot, expressed as
+τmov
+u+τcol
+u+τsen
+u+τcha
+u≤τ. (51)
+Once the total time of the subslots reaches the upper bound
+τof the time slot, all ongoing actions will be terminated, and
+execution will continue in the next time slot. Additionally,
+special attention needs to be paid to the switching logicbetween charging and data collection. Speciﬁcally, when the
+UA V is charging, it will not collect data, and after charging,
+the UA V will leave the BS and resume planning data collectiontasks.
+3)State Transition: This describes the transition from s[n]
+tos[n+1] based on the system model. At the nth time slot, if
+the UA V is in the data collection state, there are two possible
+scenarios: if SN kmeets the data transmission conditions with
+any UA V , then o
+k[n]=1. Otherwise, SN kis unable to
+upload the latest data packet, resulting in ok[n]=0; otherwise,
+ok[n]=0, indicating the SN kcannot upload the latest data
+packet. If the UA V collects the data packet from SN kand
+meets the data upload conditions, then Zk[n]=1; otherwise,
+Zk[n]=0, indicating that the UA V cannot upload the data
+packet from SN kto the BS. The AoI of the data packet will
+be updated according to (25) and(26).
+If UA Vu is in the data collection state, i.e., CSu[n]=0,
+the UA V’s remaining energy decreases over time. The energy
+consumption Epro
+u[n]a tt h e nth time slot is evaluated by (6),
+and the remaining energy of UA Vu can be expressed as
+eu[n]=max/parenleftbig
+0,eu[n−1]−Epro
+u[n]/parenrightbig
+. (52)
+If UA Vu is in the charging state, i.e., CSu[n]=1, the
+energy level of the UA V increases based on the charging time.
+The energy gained by UA Vu, denoted as Erec
+u[n], is evaluated
+by(9), and the remaining energy of UA Vu can be expressed as
+eu[n]=min/parenleftbig
+Emax,eu[n−1]+Erec
+u[n]/parenrightbig
+. (53)
+Additionally, the remaining charging time for UA Vu
+will decrease during the charging process, which can be
+expressed as
+Tcha
+u[n+1]=max/parenleftBig
+0,Tcha
+u[n]−τcha
+u[n]/parenrightBig
+. (54)
+If the remaining charging time Tcha
+u[n]=0, it indicates that
+UA Vu has completed charging and can resume data collection.
+At this point, the charging state CSu[n]=0, and UA Vu willrestart its ﬂight path planning and data collection task from
+the BS.
+4)Reward: To balance the AoI and ensure safe and efﬁcient
+UA V operations, the system cost is modeled as a weighted
+combination of the average AoI ¯A[n] (according to (27))o f
+all SNs and the weighted penalties associated with energy-
+related issues and improper actions. We set the penalty values
+with reference to [13],[15], and [36]. The penalty values are
+designed to encourage UA Vs to follow operational constraints
+and prioritize safe decisions. We categorize the penalties into
+two main components: 1) the energy-related penalty Pe[n] and
+2) the potential penalty Pf[n], which results from improper
+actions by the UA V (e.g., boundary violations, task failures,
+or energy depletion).
+The energy-related penalty Pe[n] is introduced to ensure
+UA Vs prioritize returning to the BS when their energy is low.Speciﬁcally, if the remaining energy e
+u[n] of UA Vu falls below
+the minimum energy threshold Eth, the UA V is expected to
+return to the BS for charging. If the UA V does not returnin time or continues its mission with insufﬁcient energy, it
+incurs a penalty. Additionally, a higher penalty is imposed if
+the UA V runs out of energy. The energy-related penalty canbe expressed as
+P
+e[n]=⎧
+⎨
+⎩PV1,ifeu[n]=0
+PV2,if 0<eu[n]<Eth
+0,otherwise(55)
+where PV1is a higher penalty for UA Vs that deplete their
+energy, and PV2is a lower penalty for UA Vs with insufﬁcient
+energy.
+The potential penalty is imposed when the UA V performs an
+improper action, such as violating operational constraints (e.g.,boundary violations, failure to collect data, or transmission
+issues). The penalty P
+f[n] is set to a positive value if an
+improper action is detected; otherwise, it is zero. The potential
+penalty can be expressed as
+Pf[n]=/braceleftbiggPV3,if an improper action occurs
+0,otherwise(56)
+where PV3is a ﬁxed penalty for improper actions that cause
+mission failure or performance degradation.
+The total cost associated with a given state-action pair s[n]
+and a[n] incorporates both the AoI and the penalties. This
+system cost C(s[n],a[n])can be expressed as
+C(s[n],a[n])=¯A[n]+χ1Pe[n]+χ2Pf[n] (57)
+where χ1andχ2are tuning coefﬁcients that adjust the
+relative importance of the energy-related penalty Pe[n] and
+the potential penalty Pf[n] in the total cost. These coefﬁcients
+enable the algorithm to balance energy efﬁciency and AoIoptimization, prioritizing UA V actions that lead to better
+overall performance. During the training process, if the UA V
+consistently performs improper actions, the penalty weightsχ
+1andχ2are dynamically adjusted to further guide the UA V
+toward optimal operational strategies.
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:14:13 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 14 ---
+
+18292 IEEE INTERNET OF THINGS JOURNAL, VOL. 12, NO. 11, 1 JUNE 2025
+TABLE III
+SUMMARY OF DRL-WA OIM ODEL ARCHITECTURE
+Our goal is to ﬁnd an optimal strategy π∗to maximize the
+expected discounted reward. Under the policy π, the expected
+reward within a ﬁnite time slot horizon Nis expressed as
+¯Rγ,π/Delta1=Eπ/bracketleftBiggN−1/summationdisplay
+n=0γnr[n]|s0/bracketrightBigg
+(58)
+where r[n]=−C(s[n],a[n])is the immediate cost, Eπis the
+expectation following the policy π, and s0is the initial state
+of the system. Therefore, the optimal policy for this problem
+isπ∗=arg max π¯Rγ,π.
+1) Proximal Policy Optimization Method: When solving
+for the optimal policy, we apply proximal policy optimization
+(PPO) to overcome the issue of large sampling bias during thesolving process. First, we provide the deﬁnitions of relevant
+parameters in PPO: the action-value function Q
+π(s[n],a[n]),
+the state-value function Vπ(s[n]), and the advantage function
+Aπ(s[n],a[n]), represented can be expressed as follows:
+Qπ(s[n],a[n])=Es[n+1],a[n+1],...,/bracketleftBigg∞/summationdisplay
+l=0γlr[n+l]/bracketrightBigg
+(59)
+Vπ(s[n])=Ea[n],s[n+1],...,/bracketleftBigg∞/summationdisplay
+l=0γlr[n+l]/bracketrightBigg
+(60)
+Aπ(s[n],a[n])=Qπ(s[n],a[n])−Vπ(s[n]). (61)
+We use generalized advantage estimation (GAE) to balance
+the bias and variance of value estimates. The formula for GAE
+can be expressed as
+A[n]=∞/summationdisplay
+l=0(γφ)lκV[n+l] (62)
+where φis used to balance bias and variance, and κV[n+l]
+can be calculated by
+κV[n]=r[n]+γVπ/prime(s[n+1])−Vπ/prime(s[n]). (63)
+We deﬁne the probability ratio of the updated policy
+function πθ(a[n]|s[n])to the old policy function πθ/prime(a[n]|s[n])
+asηθ, which is expressed as
+ηθ=πθ(a[n]|s[n])
+πθ/prime(a[n]|s[n]). (64)
+Therefore, the loss function of PPO can be expressed as
+Fig. 6. Architecture of DRL-WAoI.
+JPPO(θ)=
+E/bracketleftbigg
+min/parenleftbiggηθAπ/prime(s[n],a[n]),
+clip(ηθ,1−δ,1+δ)Aπ/prime(s[n],a[n])/parenrightbigg/bracketrightbigg
+.(65)
+The PPO clip function can limit the policy update ratio
+within the range [1 −δ,1+δ], thereby making the training
+process more stable.
+2) Framework of DRL-WAoI: Due to the complexity
+of decision-making problems, directly applying PPO poses
+signiﬁcant challenges. To address this, we adopt a Trainer–
+Worker distributed computing architecture, consisting ofmultiple working threads and a training thread, to improve
+training efﬁciency. The overall architecture of DRL-WAoI is
+shown in Fig. 6. This architecture consists of three parts: 1) the
+global PPO model; 2) worker models; and 3) the trainer model.
+To provide further clarity on the structure and components,
+the architecture is summarized in Table III. In this framework,
+each worker model receives a policy copy θ
+πfrom the global
+PPO model.
+In addition to improving computational efﬁciency, our
+decision-making framework prioritizes effective coordination
+among multiple UA Vs. To achieve this, we opted for a cen-tralized DRL model that integrates state information from the
+entire system and uses a uniﬁed reward function to guide UA V
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:14:13 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 15 ---
+
+FU et al.: LOW-AoI DATA COLLECTION FOR UA V-ASSISTED IoT WITH DYNAMIC GEOHAZARD IMPORTANCE LEVELS 18293
+behavior. This approach avoids the agent-level competition
+that can arise from independent rewards in multiagent DRLmodels. By providing a global perspective, the centralized
+model enhances coordination among UA Vs, ensuring decisions
+are made with full system awareness. Moreover, it acceleratesconvergence during training by leveraging integrated state
+information, enabling faster learning of optimal strategies.
+This is particularly important in our geohazard monitoringapplication, where timely and coordinated actions are essential
+for efﬁcient data collection and minimizing the weighted
+AoI. Given these advantages, we adopted the centralizedDRL approach to optimize UA V path planning, ensuring both
+system efﬁciency and reliability.
+Once the overall framework was established, we imple-
+mented the DRL-WAoI algorithm using several components to
+manage complex state information and ensure optimal decisionmaking. In the global PPO model, the DRL-WAoI algorithm
+utilizes CNN to extract features x[n] from UA Vs, SNs and
+the BS. Additionally, a gated recurrent unit (GRU), based onRNN, is employed to consider the temporal information of
+neighboring time slots. Speciﬁcally, the CNN output is con-
+nected with the last action a[n−1], the last reward r[n−1],
+and the current path loss PL
+u,BS[n] of UA Vs to enrich the
+feature x[n]. Then, we utilize the GRU sequence to integrate
+information from neighboring time slots by transmitting thecorresponding hidden state h. Subsequently, the output of the
+GRU is used as input for the standard Actor–Critic model to
+calculate the loss. In our PPO framework, all components ofthe state space are ﬂattened into an input vector before being
+passed to the deep neural network. This vector contains both
+static and dynamic state information, ensuring the PPO model
+can simultaneously process state data from various sources.
+By doing so, the network can make comprehensive decisionsat each time slot, optimizing task execution.
+The Critic network Qpredicts the cumulative reward
+obtained by UA Vs from time step ntoN. The Critic network is
+updated by minimizing the loss function, which is expressed as
+L=(G[n]−Q(s[n]))
+2(66)
+where G[n]=r[n]+γr[n+1]+...+γN−n+1r[N−1]+
+γN−nQ(s[N])represents the total expected reward sum up
+to time slot N, and Q(s[n])is the estimated value. The
+Actor network expresses the policy πthrough the probability
+distribution over actions a[n] for each state s[n]. We use a
+clipped objective function to derive the movement actions and
+collection actions for each UA V , which can be expressed as
+J/parenleftbig
+θπ/parenrightbig
+=/hatwideE/bracketleftBig
+min/parenleftBig
+ηθˆA[n],clip(ηθ,1−δ,1+δ)/parenrightBig
+ˆA[n]/bracketrightBig
+.(67)
+The global PPO model interacts independently
+with the local environment. At each state transition
+(s[n],a[n],s[n+1]), the current reward r[n] is obtained
+using (58), and the objective function J(θπ)is computed.
+Subsequently, the gradient of the objective function J(θπ)is
+sent to the gradient buffer of the Trainer network, and the
+current time slot is updated by incrementing n=n+1. After
+receiving gradients from all workers, the Trainer optimizes
+the global PPO model using gradient descent methods. WithAlgorithm 2: Worker
+Input: The parameters of actor network μ,critic network Q,
+CNN and GRU.
+Output: The parameters of network in μandQ.
+1: Initialize μ,Qand buffer Din each local thread
+2:forEpisode in 1,2, do
+3: Initialize current state s[n], GRU, hidden state h, and clear
+upD
+4: while n<Ndo
+5: Get feature representaton x[n]
+6: Get sequential joint features from GRU7: Derive a[n] for all UA Vs, by sampling from policy πin
+actor network
+8: while u<Udo
+9: Calculate optimal action a
+u[n]=(θu[n],lu[n],tcu[n])
+10: Receive the overall collected data and calculate next
+position from UA Vu
+11: u←u+1
+12: end while
+13: Calculate current reward14: Update Dbys[n]
+15: n←n+1
+16: end while
+17:π
+θ(a[n]|s[n])←πθ/prime(a[n]|s[n])
+18: while n<Ndo
+19: Sample a mini batch experience from D
+20: Compute gradients πandQ
+21: Send gradients to trainer22: Wait until notiﬁcation from trainer23: Copy parameters to each worker’s local model24: n←n+1
+25: end while
+26:end for
+27:return μ,Q
+Algorithm 3: Trainer
+Input: The parameters of network in μandQ.
+Output: The latest average gradients.
+1: Initialize global PPO gradient buffer, discount factor γin the
+single background thread
+2:while n<Ndo
+3: while i<Imaxdo
+4: Wait until all workers have sent gradients5: Update global PPO model with average gradients6: Clear global gradient buffers7: Notify all workers8: i←i+1
+9: end while
+10: n←n+1
+11:end while
+12:return the latest average gradients
+each update of the policy copy θπ, we stabilize the training
+process by using the average gradients from all workers. Thespeciﬁc algorithm implementation process is illustrated in
+Algorithms 2and3.
+V. E
+XPERIMENTAL RESULTS
+A. Experimental Setup
+In our experiment, we deﬁne the task area as a square
+geohazard monitoring region measuring 2 km ×2k m .T h i s
+area includes one ground BS, 24 geohazard monitoring points
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:14:13 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 16 ---
+
+18294 IEEE INTERNET OF THINGS JOURNAL, VOL. 12, NO. 11, 1 JUNE 2025
+TABLE IV
+CHANGES IN EMERGENCY LEVELS OF GEOHAZARD MONITORING POINTS
+(a) (b)
+(c)
+Fig. 7. Simulation experiment of geohazard monitoring scenarios. (a) 0ro
+period. (b) 1stperiod. (c) 2ndperiod.
+randomly distributed, and 256 SNs. The position of the BS
+is ﬁxed, while the geohazard monitoring points are randomly
+distributed, and SNs are randomly scattered based on the posi-tions of the geohazard monitoring points. It should be noted
+that the number of cluster heads is determined by the proposed
+algorithm, which adapts to the varying emergency levels ofgeohazard monitoring points. Speciﬁcally, we ﬁrst use the k-
+means algorithm to estimate the number of clusters based on
+a ﬁxed radius, providing a preliminary count before reﬁning itwith the GMM. In actual geohazard monitoring scenarios, the
+emergency levels of geohazard monitoring points adjust with
+changes in the geohazard situation. To simulate these changing
+geohazard monitoring scenarios, we model the variation of
+emergency levels of geohazard monitoring points over threeperiods, as detailed in Table IV.
+To visually depict the changes in geohazard monitoring
+scenarios, Fig. 7employs varying shades of four colors to
+represent the emergency levels of geohazard monitoring points
+and the importance levels of SNs. Deep red signiﬁes thehighest emergency level IV , while the other three lighter colors
+signify Levels III, II, and I, respectively. The initial emergencylevels of geohazard monitoring points in the monitoring area
+are shown in Fig. 7(a). Among the 24 different geohazard
+monitoring points, eight are at emergency Level IV , three atLevel III, ﬁve at Level II, and eight at Level I. Fig. 7(b)
+and (c) depict the situations after two adjustments to the
+emergency levels of the geohazard monitoring points. Afterthe ﬁrst adjustment, the emergency levels of one geohazard
+monitoring point changed to Level I, one to Level II, one to
+Level III, and two to Level IV . After the second adjustment, theemergency level of one geohazard monitoring point changed
+to Level I, two to Level II, three to Level III, and one to
+Level IV . Considering the emergency priority, UA Vs should
+prioritize collecting data from SNs near geohazard monitoring
+points currently at emergency Level IV during each period.
+Considering the scale of the geohazard monitoring area
+mentioned above, we reference the performance of the
+Lightning F-28 UA V , produced by EFUA V company, in thesimulation experiment. This UA V is capable of vertical takeoff
+and landing, and can carry a variety of sensors for mapping,
+geohazard monitoring, data collection, and other ﬁelds. Themaximum ﬂight time of this UA V is [100,140] min, and in
+our experiment, we set the maximum ﬂight time T
+maxof the
+UA V to [80,120] min. The maximum ﬂight speed of thisUA V is 20 m/s. In our energy trading model, we set the
+predeﬁned factors d
+uandφuof the UA Vu to the intervals
+[1,5] and [5,7], respectively. The cost of energy required forUA Vu, denoted as p
+u, is within the range of [6,15] tokens.
+The interval for the minimum energy requirement Qmin
+uof
+UA Vu is [50,60] kJ. The predeﬁned credit rating factor depends
+on the credit rating of UA Vu, denoted as CSu, and is in the
+range of [0,1]. The charging distance is set to 0.3 m, at whichpoint the RF charging efﬁciency is approximately 60%. All
+simulation experiments are conducted on a precision 7920
+tower workstation equipped with an Intel Xeon Gold 6230RCPU @ 2.10 GHz and an NVIDIA Quadro RTX 5000 graphics
+card. For speciﬁc UA V and environmental parameter settings,
+please refer to Table V.
+In our DRL-WAoI algorithm, we use DNNs with two hidden
+layers as Actor and Critic networks. ReLU activation functions
+are applied to all hidden layers. To prevent overﬁtting, weemploy L
+2weight decay of 10−2. Gradient clipping is utilized
+to mitigate exploding gradients. Layer normalization in CNNs
+and GRUs also helps in avoiding gradient explosions. Table VI
+provides speciﬁc hyperparameters used for training.
+B. Performance Analysis of DRL-WAoI
+First, as shown in Fig. 8, we present the variations of
+cumulative reward [Fig. 8(a)] and weighted average AoI
+of SNs [Fig. 8(b)] throughout the training process. In this
+context, an episode is deﬁned as a complete training cycle inwhich the UA Vs execute a sequence of actions, gather data
+from the SNs, and receive feedback in the form of rewards.
+Each episode begins when the UA V starts its operation andconcludes when either the speciﬁed task is completed or the
+predetermined time step is reached. This iterative process
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:14:13 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 17 ---
+
+FU et al.: LOW-AoI DATA COLLECTION FOR UA V-ASSISTED IoT WITH DYNAMIC GEOHAZARD IMPORTANCE LEVELS 18295
+TABLE V
+PARAMETERS OF AA V AND ENVIRONMENT SIMULATION
+TABLE VI
+TRAINING PARAMETERS OF DRL-WA OI
+enables the Actor–Critic network to continuously learn and
+adapt, reﬁning its strategy with each episode. Consequently,this enhances the cooperation capabilities of the UA Vs and
+leads to more effective data collection strategies. From both(a) (b)
+Fig. 8. Variations of (a) cumulative reward and (b) weighted average AoI
+of SNs during the training process.
+Fig. 9. Variation of weighted average AoI with changes in the number ofUAVs.
+ﬁgures, we can observe signiﬁcant ﬂuctuations in the curves
+during the initial training stage. This is because the estimatesfrom the proximity are imprecise, leading to substantial loss
+for the Actor–Critic network. However, after a period of
+training and adjustment with a sufﬁcient number of samples,
+the loss of the Actor–Critic network stabilizes. On the other
+hand, from Fig. 8(b), we can see that the weighted average
+AoI of SNs decreases over time. This means that our model
+is exploring and learning a better strategy to reduce the AoI
+of SNs. Additionally, using the Trainer–Worker architectureand GRU sequence modeling, we can rapidly minimize and
+stabilize our loss. After approximately 2000 episodes, the loss
+begins to saturate with very small ﬂuctuations, indicating thatthe three UA Vs have learned to cooperate and our algorithm
+has converged.
+Fig. 9shows the variation in the system’s weighted average
+AoI with different numbers of UA Vs. As shown, the system’s
+weighted average AoI decreases gradually as the number of
+UA Vs increases. This is because more UA Vs can expand taskcoverage and improve data collection efﬁciency, particularly
+for SNs with lower importance levels or those that are sparsely
+deployed, resulting in more comprehensive data collection.When the number of UA Vs reaches an extreme, where the
+number of UA Vs equals the number of SNs, the weighted
+average AoI approaches zero. In this scenario, each SN can
+transmit data promptly without delay. However, the ﬁgure also
+shows that the rate of decrease in the weighted average AoIdiminishes as the number of UA Vs increases. This suggests
+that simply increasing the number of UA Vs does not lead to
+continuous or signiﬁcant reductions in the weighted averageAoI and may instead result in redundancy and resource waste.
+It is important to highlight that our study focuses on scenarios
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:14:13 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 18 ---
+
+18296 IEEE INTERNET OF THINGS JOURNAL, VOL. 12, NO. 11, 1 JUNE 2025
+Fig. 10. Impact of balancing weighting coefﬁcient αand importance
+adjustment coefﬁcient βon the system’s weighted average AoI.
+with limited resources, such as emergency geohazard moni-
+toring, where the number of UA Vs is typically constrained.Therefore, in subsequent experiments, we set the number
+of UA Vs to three, aligning with the actual challenges of
+emergency geohazard monitoring. Our objective is to optimizeUA V usage under limited resource conditions.
+Fig. 10shows the impact of the weighting coefﬁcient α,
+which balances general AoI and weighted AoI, and the impor-tance adjustment coefﬁcient β, which controls the inﬂuence of
+importance levels on AoI, on the system’s weighted average
+AoI. As observed in the ﬁgure, when the value of αapproaches
+one, the importance level of each SN is treated equally,
+resulting in a uniform weighted average AoI for the system.
+Conversely, a smaller value of αassigns greater weight to
+SNs with higher importance levels, signiﬁcantly impacting the
+weighted average AoI. When the value of βis zero, there
+is no difference in weighted AoI among SNs with different
+importance levels. As βincreases, the gap in weighted AoI
+between different importance levels widens, indicating thatcollecting data from higher importance SNs will have a greater
+effect on the system’s weighted average AoI. By adjusting the
+values of αandβ, we can balance the weight between general
+AoI and weighted AoI as needed and control the extent to
+which importance levels inﬂuence the weighted AoI. Based on
+these observations, we set the weight parameter αto 0.8 and
+the parameter βto 1 for our experiments.
+Fig. 11(a)–(c), respectively, show the ﬂight paths of UA Vs
+over 0–200 steps in 0 episodes, 1000 episodes, and 2000episodes of training. As shown in Fig. 11(a), due to inaccurate
+initial proximal estimates, the Actor–Critic network adopts
+a random strategy. At this stage, the three UA Vs gathertogether, and their ﬂight paths are not reasonable. As shown
+in Fig. 11(b), with an increase in training episodes, the UA Vs
+start to cooperate and divide tasks among themselves, but
+the collected ﬂight paths are still not accurate. As shown in
+Fig. 11(c), after more episodes of training, the UA Vs’ ﬂight
+paths become distinct and can better surround the SNs to carry
+out data collection tasks.
+In our DRL-WAoI algorithm, we use multiple workers to
+improve the training speed. To verify whether multiple workers
+can reduce the time cost of training, the number of workers in(a) (b)
+(c)
+Fig. 11. Flight paths of UA Vs at 0–200 steps in (a) 0 episode, (b) 1000
+episode, and (c) 2000 episode.
+(a) (b)
+Fig. 12. Impact of the number of workers in PPO on (a) cumulative rewardduring training and (b) training time cost to achieve −2000 reward.
+the distributed computing framework is increased from ﬁve to
+thirteen, with results shown in Fig. 12.F i g . 12(a) shows the
+cumulative reward value iteration curves for different numbers
+of workers. It can be observed that as the number of workers
+increases, the cumulative reward value converges more rapidly,indicating that more workers effectively reduce the training
+time. The time taken to reach a cumulative reward value of
+−2000 over 20 consecutive episodes for different numbers of
+workers is also recorded, as shown in Fig. 12(b). It can be
+clearly seen that increasing the number of workers between
+ﬁve and nine signiﬁcantly accelerates reaching a cumulative
+reward value of −1300. However, beyond nine workers,
+the improvement in convergence speed of the cumulativereward value becomes limited. Therefore, this study adopts a
+distributed architecture with nine workers.
+C. Performance Analysis of Trading Model
+Fig. 13shows the variation of the utility value of the
+BS with respect to changes in late fee. The utility value of
+the BS initially increases and then decreases as the late fee
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:14:13 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 19 ---
+
+FU et al.: LOW-AoI DATA COLLECTION FOR UA V-ASSISTED IoT WITH DYNAMIC GEOHAZARD IMPORTANCE LEVELS 18297
+Fig. 13. Variation of the utility value of the BS with changes in late fee.
+Fig. 14. Variation of the utility of UA Vs with changes in the late fee.
+Fig. 15. Variation of power provided by the BS with changes in late fee.
+increases. This is because the motivation for UA Vs to accept
+tokens decreases when the late fee exceeds a certain threshold.Therefore, after a certain increase in late fee, the utility of the
+BS starts to decrease.
+Fig.14shows the variation in the utility value of UA Vs with
+respect to changes in the late fee. From (40), it can be seen that
+as the late fee increases, the utility value of UA Vs decreases.
+Therefore, Stackelberg game is used to negotiate the optimallate fee with the BS in order to maximize the utility of both
+UA Vs and the BS.
+Fig.15shows the variation of the amount of power provided
+by the BS to UA Vs as the late fee increases. As shown in
+the ﬁgure, as the late fee increases, the expected amount of
+power replenished by UA Vs decreases. From (48), it can be
+understood that the power provided by the BS to UA Vs is
+inversely proportional to the late fee.
+Fig.16provides a comparison of the utility values of UA Vs
+between the random model and the proposed model. In the
+random model, both the late fee and the expected replenishedpower for UA Vs are randomly selected and remain unchanged,
+resulting in a lower utility value compared to the proposedFig. 16. Comparison of UA V utility values in the random model and the
+proposed model.
+(a) (b)
+(c)
+Fig. 17. Flight paths of UA Vs in (a) 0–200 steps, (b) 200–400 steps, and
+(c) 400–600 steps.
+model. However, in the proposed model, the late fee varies
+with the expected replenished power of UA Vs until the utility
+values of both the BS and UA Vs are maximized.
+D. Performance Analysis of LLDCL
+Fig. 17(a)–(c) shows the ﬂight paths of UA Vs under the
+LLDCL scheme during three periods (0–200, 200–400, and
+400–600 steps). From Fig. 17(a), it can be seen that SNs are
+clustered using the GMM algorithm, which clusters the SNsbased on their positions and importance levels, resulting in 79
+clusters where SNs within each cluster can communicate with
+each other. We select the SN closest to the BS in each cluster
+to act as the cluster head node, facilitating communication
+between the cluster and the UA V . For isolated SNs that cannotcommunicate with others, they form their own clusters and
+act as their own cluster heads. As shown in Fig. 17(a), at
+the ﬁrst period (0–200 steps), SNs with higher importancelevels are mainly distributed in the left-center, upper-right, and
+lower-right task areas. Consequently, the UA Vs’ ﬂight paths
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:14:13 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 20 ---
+
+18298 IEEE INTERNET OF THINGS JOURNAL, VOL. 12, NO. 11, 1 JUNE 2025
+(a) (b)
+(c)
+Fig. 18. Average AoI heatmaps of SNs during (a) 0–200 steps, (b) 200–
+400 steps, and (c) 400–600 steps.
+are densely concentrated in these task areas. In the second
+period (200–400 steps), as shown in Fig. 17(b), the importance
+level of the left-center SNs decreases, causing UA Vs to focus
+more on collecting data from the upper-right and lower-rightSNs, resulting in ﬂight paths that concentrate more in these
+two task areas. In the third period (400–600 steps), as shown in
+Fig.17(c), the importance level of the left-center SNs increases
+while that of the lower-right decreases, prompting UA Vs to
+prioritize data collection from the left-side SNs, leading todenser ﬂight paths in the left task area. Therefore, under the
+LLDCL scheme, UA Vs adjust their ﬂight paths according to
+changes in the importance levels of SNs, prioritizing datacollection from SNs with higher importance levels.
+The ultimate goal of the LLDCL scheme is to minimize the
+system’s weighted average AoI. By prioritizing the collectionof data from SNs with higher importance levels, it ensures
+that critical data is collected in a timely manner, which
+is crucial in scenarios, such as geohazard monitoring. Theweighted average AoI reﬂects the overall performance of the
+system, particularly concerning the timeliness of high-priority
+data. However, to provide more granular insights, especiallyregarding the performance of SNs with different importance
+levels and spatial distributions, we introduced the average
+AoI as a supplementary metric in the performance analysis.Through experiments analyzing the average AoI, we further
+demonstrate how the LLDCL scheme adjusts UA V ﬂight paths
+to balance the overall data collection from SNs with both high
+and low-importance levels.
+Fig. 18(a)–(c) shows the average AoI heatmaps of SNs
+during three periods (0–200, 200–400, and 400–600 steps).
+In the ﬁrst period (0–200 steps), as shown in Fig. 18(a), the
+relatively uniform distribution of SNs with higher importancelevels results in a lower overall AoI heatmap of SNs in the
+task area. In the second period (200–400 steps), as shown in(a) (b)
+(c)
+Fig. 19. Scatter plot of average AoI of SNs during (a) 0–200 steps, (b) 200–
+400 steps, and (c) 400–600 steps.
+Fig.18(b), UA V ﬂight paths concentrate on the upper-right and
+lower-right regions, leading to a decrease in the AoI heatmapof SNs in the upper area, while the AoI heatmap remains high
+in the lower-left. In the third period (400–600 steps), as shown
+in Fig. 18(c), UA V ﬂight paths shift to the left side, resulting in
+decreased AoI heat of lower SNs. Therefore, under the LLDCL
+scheme, adjustments in UA V ﬂight paths effectively reduce theAoI of SNs with higher importance levels.
+Fig. 19(a)–(c) shows the distribution of the average AoI
+of SNs during three periods (0–200, 200–400, and 400–600 steps). As shown in Fig. 19(a), since the data collection
+task has just begun, the overall average AoI of SNs is relatively
+low. However, it is also evident that some SNs with higherimportance levels have been collected. In Fig. 19(b) and (c),
+as the data collection task progresses, the overall average AoI
+of the system increases. The distinction between SNs withhigh and low-importance levels becomes more apparent, with a
+large number of high-importance SNs being collected, whereas
+only a small number of low-importance SNs are collected.This is because, during clustering, a few high-importance SNs
+are grouped into the same cluster with other high-importance
+SNs. Thus, under the LLDCL scheme, UA Vs prioritize the
+collection of data from SNs with higher importance levels.
+E. Scheme Comparison
+We compare our scheme (LLDCL) with two data collection
+schemes.
+1)GSDRL [41]:This scheme assumes that different
+SNs have different timeliness priorities. It models the
+data collection process as a sequential decision-making
+problem, choosing between two different optimization
+strategies based on the speciﬁc environment. WhenUA Vs have completed the tasks for all SNs, it optimizes
+the data collection strategy to minimize the average
+AoI. When UA Vs cannot collect data from all SNs, itprioritizes completing tasks for high-priority nodes and
+collects as much data as possible from regular nodes.
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:14:13 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 21 ---
+
+FU et al.: LOW-AoI DATA COLLECTION FOR UA V-ASSISTED IoT WITH DYNAMIC GEOHAZARD IMPORTANCE LEVELS 18299
+(a) (b)
+(c)
+Fig. 20. Flight paths of UA Vs in three schemes: (a) GSDRL, (b) DRL-eFresh,
+and (c) LLDCL.
+2)DRL-eFresh [47]:This scheme employs a distributed
+DRL approach. Unlike ours, its objective is to maximizedata collection rates and geographical fairness among
+points of interests (POIs), while minimizing energy
+consumption across all UA Vs and maintaining data
+freshness per time slot. For fairness, we use the same
+CNN layers, number of workers and hyperparameters,but this scheme does not differentiate between the
+importance levels of SNs during data collection.
+We compare the aforementioned two schemes with our
+proposed scheme, ﬁxing the number of UA Vs to three, which
+collect data from 256 SNs. We only compare the impact of
+the three schemes on the average AoI of SNs during theﬁrst period (0–200 steps). Fig. 20(a)–(c) shows the UA V
+ﬂight paths for the three schemes in the ﬁrst period. As
+shown in Fig. 20(a), in this scenario, since UA Vs cannot
+collect data from all SNs, they prioritize collecting data from
+high-importance SNs—speciﬁcally, the high-importance SNs
+located in the upper right and lower right areas. Fig. 20(b)
+shows that when considering data collection rates and UA V
+energy consumption, UA Vs hover closer to the BS in two
+densely populated areas. As shown in Fig. 20(c), the UA V
+ﬂight paths of our proposed scheme are more dispersed,
+balancing the collection of data from both high-importance
+and lower-importance SNs while prioritizing the former.
+Fig. 21(a)–(c) shows the average AoI distribution of SNs
+across different importance levels under the aforementionedﬂight paths of the three schemes. As shown in Fig. 21(a), due
+to the GSDRL scheme prioritizing data collection from high-
+importance SNs, SNs at Level I are not collected. In contrast,DRL-eFresh does not consider the importance levels of SNs,
+resulting in a relatively uniform distribution of average AoI(a) (b)
+(c)
+Fig. 21. Scatter plot of average AoI of SNs in three schemes: (a) GSDRL,
+(b) DRL-eFresh, and (c) LLDCL.
+Fig. 22. System average AoI in three schemes.
+across different importance levels, as shown in Fig. 21(b).
+Compared to Fig. 21(a)–(c) shows that in our proposed
+scheme, data collection occurs across SNs of all importance
+levels, with higher importance levels being collected morefrequently.
+Fig. 22shows the average AoI of SNs with different
+importance levels for the three schemes. As can be seen fromthe ﬁgure, the GSDRL scheme does not collect data from
+importance Level I SNs, resulting in the highest average AoI
+for these importance levels, while importance Level IV hasthe lowest average AoI. The DRL-eFresh scheme maintains a
+relatively balanced average AoI across all levels of SNs. The
+LLDCL scheme takes into account SNs with lower impor-
+tance levels, resulting in lower average AoI for importance
+Levels I-IV compared to the GSDRL scheme. Additionally,the average AoI for higher importance levels, Level III and IV ,
+is lower than that of the DRL-eFresh scheme. Furthermore,
+the LLDCL scheme achieves a lower overall average AoIcompared to the other two schemes, further demonstrating the
+advantages of our approach in geohazard monitoring scenarios.
+F . Complexity Analysis
+In the LLDCL scheme, the clustering process begins with
+the selection of cluster head nodes. Initially, we use the
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:14:13 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 22 ---
+
+18300 IEEE INTERNET OF THINGS JOURNAL, VOL. 12, NO. 11, 1 JUNE 2025
+k-means algorithm to estimate the number of clusters based on
+a ﬁxed radius. This step helps determine the number of clustersrequired before applying the GMM for further reﬁnement. By
+adopting this two-step approach, we can adaptively identify
+clusters that correspond to the varying emergency levels ofgeohazard monitoring points. This ensures that the clustering
+structure reﬂects the dynamic and hierarchical nature of these
+points, enabling efﬁcient resource allocation and optimizeddata collection according to geohazard risk levels. The com-
+plexity of the k-means algorithm is O(N
+c·NK·Nt), where
+NCis the number of clusters, NKis the number of SNs, and
+Ntis the number of iterations. The complexity of the GMM
+isO(NC·NK·Nt·D2), where Dis the dimensionality of the
+data, which is three in this context. Therefore, the overall
+complexity of clustering is O(/summationtextNC
+i=1(i·NK·Nt)+NC·NK·Nt·
+D2)=O(NK·Nt·N2
+C+NC·NK·Nt·D2). To maximize the
+beneﬁts of the energy trading model, we continuously iterate
+and adjust the late fee. The algorithmic complexity of this
+process is O(NU·NLF), where NUis the number of UA Vs and
+NLFis the maximum value of the late fee. Finally, we use
+the DRL-WAoI algorithm to plan the real-time ﬂight paths of
+UA Vs. The DRL-WAoI algorithm consists of a CNN, a GRU,
+and an Actor–Critic network. Its complexity depends on the
+dimensionality of the input layer state, the number of networklayers, and the number of neurons in the hidden and output
+layers. We use N
+WandNGto represent the number of network
+layers in the CNN and the Actor–Critic network, respectively.N
+CNN
+iand NAC
+irepresent the number of neurons in the ith
+layer of the CNN and the Actor–Critic network, respectively.
+NeandNfrepresent the size of the CNN kernel and output
+features, respectively. NGRU
+inandNGRU
+hrepresent the size of the
+input features and hidden features of the GRU, respectively.
+Therefore, the complexity of the neural network in the DRL-WAoI algorithm is O(/summationtext
+NW
+i=1(N2
+e·N2
+f·NCNN
+i−1·NCNN
+i)+NGRU
+in·
+NGRU
+h+NGRU
+h+NU·/summationtextNG
+i=1(NAC
+i−1·NAC
+i)). The total complexity
+of the proposed scheme is O(NK·Nt·N2
+C+NC·NK·Nt·
+D2+NU·NLF+/summationtextNW
+i=1(N2
+e·N2
+f·NCNN
+i−1·NCNN
+i)+NGRU
+in·
+NGRU
+h+NGRU
+h+NU·/summationtextNG
+i=1(NAC
+i−1·NAC
+i)). Since the LLDCL
+scheme periodically saves parameters during training, in actual
+operation, UA Vs’ next actions can be determined based on the
+trained parameters and the current state. This helps efﬁcientlyplan and execute UA V data collection tasks while avoiding
+excessive performance loss and hardware burden.
+VI. C
+ONCLUSION
+For geohazard monitoring scenarios, this article proposes a
+LLDCL. This article assigns different importance levels to SNsand introduces a DRL-WAoI to achieve dynamic path planning
+for UA Vs in geohazard monitoring scenarios. Additionally,
+this article establishes a token-based energy trading model
+between UA Vs and the BS to facilitate efﬁcient UA V recharg-
+ing. Simulation experiments show that, compared to existingdata collection schemes, this proposed scheme demonstrates
+superior performance in terms of system AoI while ensuring
+low latency and high importance of data. In this work, wemainly focus on scenarios with a single BS. However, due
+to the typically large areas of geohazard monitoring areas,a single BS often cannot cover all affected areas. Moreover,
+when geohazards occur in geographically challenging envi-ronments, such as forests and valleys, the ﬂight areas for
+UA Vs may be restricted. Therefore, future research can focus
+on collaborative data collection and obstacle avoidance pathplanning for UA Vs in multiple BS scenarios.
+R
+EFERENCES
+[1] G. Mei, N. Xu, J. Qin, B. Wang, and P. Qi, “A survey of Internet
+of Things (IoT) for geohazard prevention: Applications, technologies,and challenges,” IEEE Internet Things J. , vol. 7, no. 5, pp. 4371–4386,
+May 2020.
+[2] R. Khalid, Z. Shah, M. Naeem, A. Ali, A. Al-Fuqaha, and
+W. Ejaz, “Computational efﬁciency maximization for UA V-assisted MECnetworks with energy harvesting in disaster scenarios,” IEEE Internet
+Things J. , vol. 11, no. 5, pp. 9004–9018, Mar. 2024.
+[3] M. Ren, X. Fu, P. Pace, G. Aloi, and G. Fortino, “Collaborative data
+acquisition for UA V-aided IoT based on time-balancing scheduling,”IEEE Internet Things J. , vol. 11, no. 8, pp. 13660–13676, Apr. 2024.
+[4] H. Chen et al., “Mobility-aware ofﬂoading and resource allocation for
+distributed services collaboration,” IEEE Trans. Parallel Distrib. Syst. ,
+vol. 33, no. 10, pp. 2428–2443, Oct. 2022.
+[5] J. Chen, C. Du, Y . Zhang, P. Han, and W. Wei, “A clustering-based
+coverage path planning method for autonomous heterogeneous UA Vs,”
+IEEE Trans. Intell. Transp. Syst. , vol. 23, no. 99, pp. 25546–25556,
+Dec. 2022.
+[6] S. Han, K. Zhu, M. Zhou, and X. Liu, “Joint deployment optimization
+and ﬂight trajectory planning for UA V assisted IoT data collection: A
+bilevel optimization approach,” IEEE Trans. Intell. Transp. Syst. , vol. 23,
+no. 11, pp. 21492–21504, Nov. 2022.
+[7] C. Liu, Y . Guo, N. Li, and X. Song, “AoI-minimal task assignment
+and trajectory optimization in multi-UA V-assisted IoT networks,” IEEE
+Internet Things J. , vol. 9, no. 21, pp. 21777–21791, Nov. 2022.
+[8] M. Zhou, H. Chen, L. Shu, and Y . Liu, “UA V-assisted sleep scheduling
+algorithm for energy-efﬁcient data collection in agricultural Internet ofThings,” IEEE Internet Things J. , vol. 9, no. 13, pp. 11043–11056,
+Jul. 2022.
+[9] W. Wang, C. Fang, and T. Liu, “Multiperiod unmanned aerial vehicles
+path planning with dynamic emergency priorities for geohazards mon-itoring,” IEEE Trans. Ind. Informat. , vol. 18, no. 12, pp. 8851–8859,
+Dec. 2022.
+[10] M. Yi, X. Wang, J. Liu, Y . Zhang, and B. Bai, “Deep reinforcement
+learning for fresh data collection in UA V-assisted IoT networks,” inProc. IEEE INFOCOM Conf. Comput. Commun. Workshops (INFOCOMWKSHPS) , 2020, pp. 716–721.
+[11] W. Feng et al., “UA V-enabled SWIPT in IoT networks for emergency
+communications,” IEEE Wireless Commun. , vol. 27, no. 5, pp. 140–147,
+Oct. 2020.
+[12] A. M. Seid, G. O. Boateng, S. Anokye, T. Kwantwi, G. Sun, and G. Liu,
+“Collaborative computation ofﬂoading and resource allocation in multi-
+UA V-assisted IoT networks: A deep reinforcement learning approach,”
+IEEE Internet Things J. , vol. 8, no. 15, pp. 12203–12218, Aug. 2021.
+[13] C. H. Liu, Z. Dai, Y . Zhao, J. Crowcroft, D. Wu, and K. K. Leung,
+“Distributed and energy-efﬁcient mobile crowdsensing with charging
+stations by deep reinforcement learning,” IEEE Trans. Mobile Comput. ,
+vol. 20, no. 1, pp. 130–146, Jan. 2021.
+[14] S. F. Abedin, M. S. Munir, N. H. Tran, Z. Han, and C. S. Hong,
+“Data freshness and energy-efﬁcient UA V navigation optimization: A
+deep reinforcement learning approach,” IEEE Trans. Intell. Transp. Syst. ,
+vol. 22, no. 9, pp. 5994–6006, Sep. 2021.
+[15] O. S. Oubbati, M. Atiquzzaman, A. Baz, H. Alhakami, and
+J. Ben-Othman, “Dispatch of UA Vs for urban vehicular networks: A
+deep reinforcement learning approach,” IEEE Trans. Veh. Technol. ,
+vol. 70, no. 12, pp. 13174–13189, Dec. 2021.
+[16] M. Sun, X. Xu, X. Qin, and P. Zhang, “AoI-energy-aware UA V-
+assisted data collection for IoT networks: A deep reinforcement learningmethod,” IEEE Internet Things J. , vol. 8, no. 24, pp. 17275–17289,
+Dec. 2021.
+[17] S. Xu, X. Zhang, C. Li, D. Wang, and L. Yang, “Deep reinforce-
+ment learning approach for joint trajectory design in multi-UA V IoTnetworks,” IEEE Trans. Veh. Technol. , vol. 71, no. 3, pp. 3389–3394,
+Mar. 2022.
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:14:13 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 23 ---
+
+FU et al.: LOW-AoI DATA COLLECTION FOR UA V-ASSISTED IoT WITH DYNAMIC GEOHAZARD IMPORTANCE LEVELS 18301
+[18] Y . Wang et al., “Trajectory design for UA V-based Internet of Things
+data collection: A deep reinforcement learning approach,” IEEE Internet
+Things J. , vol. 9, no. 5, pp. 3899–3912, Mar. 2022.
+[19] L. Liu, K. Xiong, J. Cao, Y . Lu, P. Fan, and K. B. Letaief, “Average AoI
+minimization in UA V-assisted data collection with RF wireless power
+transfer: A deep reinforcement learning scheme,” IEEE Internet Things
+J., vol. 9, no. 7, pp. 5216–5228, Apr. 2022.
+[20] G. B. Tarekegn, R.-T. Juang, H.-P. Lin, Y . Y . Munaye, L.-C. Wang,
+and M. A. Bitew, “Deep-reinforcement-learning-based drone base stationdeployment for wireless communication services,” IEEE Internet Things
+J., vol. 9, no. 21, pp. 21899–21915, Nov. 2022.
+[21] B. Di Martino, M. Rak, M. Ficco, A. Esposito, S. Maisto, and
+S. Nacchia, “Internet of Things reference architectures, security and
+interoperability: A survey,” Internet Things , vols. 1–2, pp. 99–112,
+Sep. 2018.
+[22] L. Lv et al., “Contract and Lyapunov optimization-based load scheduling
+and energy management for UA V charging stations,” IEEE Trans. Green
+Commun. Netw. , vol. 5, no. 3, pp. 1381–1394, Sep. 2021.
+[23] K. Zhu et al., “Aerial refueling: Scheduling wireless energy charging
+for UA V enabled data collection,” IEEE Trans. Green Commun. Netw. ,
+vol. 6, no. 3, pp. 1494–1510, Sep. 2022.
+[24] R. G. Ribeiro, L. P. Cota, T. A. Euzébio, J. A. Ramírez, and
+F. G. Guimarães, “Unmanned-aerial-vehicle routing problem withmobile charging stations for assisting search and rescue missions in
+postdisaster scenarios,” IEEE Trans. Syst., Man, Cybern., Syst. , vol. 52,
+no. 11, pp. 6682–6696, Nov. 2022.
+[25] S. Yin, L. Li, and F. R. Yu, “Resource allocation and basestation
+placement in downlink cellular networks assisted by multiple wire-less powered UA Vs,” IEEE Trans. Veh. Technol. , vol. 69, no. 2,
+pp. 2171–2184, Feb. 2020.
+[26] A. Trotta, M. Di Felice, F. Montori, K. R. Chowdhury, and L. Bononi,
+“Joint coverage, connectivity, and charging strategies for distributedUA V networks,” IEEE Trans. Robot. , vol. 34, no. 4, pp. 883–900,
+Aug. 2018.
+[27] S. Chai and V . K. Lau, “Online trajectory and radio resource
+optimization of cache-enabled UA V wireless networks with con-
+tent and energy recharging,” IEEE Trans. Signal Process. , vol. 68,
+pp. 1286–1299, 2020.
+[28] V . Hassija, V . Saxena, and V . Chamola, “Scheduling drone charging for
+multi-drone network based on consensus time-stamp and game theory,”Comput. Commun. , vol. 149, pp. 51–61, Jan. 2020.
+[29] N. Liu et al., “Dynamic charging strategy optimization for UA V-assisted
+wireless rechargeable sensor networks based on deep Q-network,” IEEE
+Internet Things J. , vol. 11, no. 12, pp. 21125–21134, Jun. 2024.
+[30] Z. Chen, Z. Hu, Z. Bao, and W. Xu, “UA V charging station planning
+and route optimization considering stochastic delivery demand,” IEEE
+Trans. Transp. Elect. , vol. 10, no. 4, pp. 9328–9341, Dec. 2024.
+[31] H. B. Salameh, A. Othman, and M. Alhafnawi, “Optimized charging-
+station placement and UA V trajectory for enhanced uncertain target
+detection in intelligent UA V tracking systems,” Int. J. Cogn. Comput.
+Eng., vol. 5, pp. 367–378, Aug. 2024.
+[32] T. K. Rodrigues, S. Verma, Y . Kawamoto, N. Kato, M. M. Fouda,
+and M. Ismail, “Smart handover with predicted user behavior usingconvolutional neural networks for WiGig systems,” IEEE Netw. , vol. 38,
+no. 4, pp. 190–196, Jul. 2024.
+[33] J. G. Andrews, T. Bai, M. N. Kulkarni, A. Alkhateeb, A. K. Gupta,
+and R. W. Heath, “Modeling and analyzing millimeter wave cellularsystems,” IEEE Trans. Commun. , vol. 65, no. 1, pp. 403–430, Jan. 2017.
+[34] M. R. Akdeniz et al., “Millimeter wave channel modeling and cellular
+capacity evaluation,” IEEE J. Select. Areas Commun. , vol. 32, no. 6,
+pp. 1164–1179, Jun. 2014.
+[35] S. Verma, Y . Kawamoto, and N. Kato, “Energy-efﬁcient group pag-
+ing mechanism for QoS constrained mobile IoT devices over LTE-a
+pro networks under 5G,” IEEE Internet Things J. , vol. 6, no. 5,
+pp. 9187–9199, Oct. 2019.
+[36] Z. Li, P. Tong, J. Liu, X. Wang, L. Xie, and H. Dai, “Learning-based
+data gathering for information freshness in UA V-assisted IoT networks,”
+IEEE Internet Things J. , vol. 10, no. 3, pp. 2557–2573, Feb. 2023.
+[37] S. Fu et al., “Energy-efﬁcient UA V-enabled data collection via wireless
+charging: A reinforcement learning approach,”
+IEEE Internet Things J. ,
+vol. 8, no. 12, pp. 10209–10219, Jun. 2021.
+[38] S. Wu, C. Cai, L. Jiang, J. Li, and S. Yang, “Unmanned aerial
+vehicle wireless charging system with orthogonal magnetic structure andposition correction aid device,” IEEE Trans. Power Electron. , vol. 36,
+no. 7, pp. 7564–7575, Jul. 2021.[39] S. S. H. Yazdi et al., “A wireless charging system based on a DR-IPT to
+power a UA V from distribution poles,” IEEE Trans. Ind. Appl. , vol. 59,
+no. 6, pp. 7757–7770, Nov.-Dec. 2023.
+[40] R. Liu et al., “DRL-UTPS: DRL-based trajectory planning for unmanned
+aerial vehicles for data collection in dynamic IoT network,” IEEE Trans.
+Intell. Veh. , vol. 8, no. 2, pp. 1204–1218, Feb. 2023.
+[41] Y . Hu, Y . Liu, A. Kaushik, C. Masouros, and J. S. Thompson, “Timely
+data collection for UA V-based IoT networks: A deep reinforcement
+learning approach,” IEEE Sensors J. , vol. 23, no. 11, pp. 12295–12308,
+Jun. 2023.
+[42] S. Verma, T. K. Rodrigues, Y . Kawamoto, M. M. Fouda, and N. Kato,
+“A survey on multi-AP coordination approaches over emerging WLANs:
+Future directions and open challenges,” IEEE Commun. Surveys Tuts. ,
+vol. 26, no. 2, pp. 858–889, 2nd Quart., 2024.
+[43] Y . Liu, K. Xiong, Y . Lu, Q. Ni, P. Fan, and K. B. Letaief, “UA V-aided
+wireless power transfer and data collection in Rician fading,” IEEE J.
+Sel. Areas Commun. , vol. 39, no. 10, pp. 3097–3113, Oct. 2021.
+[44] A. Al-Hourani, S. Kandeepan, and S. Lardner, “Optimal LAP altitude
+for maximum coverage,” IEEE Wireless Commun. Lett. , vol. 3, no. 6,
+pp. 569–572, Dec. 2014.
+[45] X. Wang, M. Yi, J. Liu, Y . Zhang, M. Wang, and B. Bai, “Cooperative
+data collection with multiple UA Vs for information freshness inthe Internet of Things,” IEEE Trans. Commun. , vol. 71, no. 5,
+pp. 2740–2755, May 2023.
+[46] R. Lai et al., “Energy-efﬁcient scheduling in UA V-assisted hierarchical
+wireless sensor networks,” IEEE Internet Things J. , vol. 11, no. 11,
+pp. 20194–20206, Jun. 2024.
+[47] Z. Dai, C. H. Liu, R. Han, G. Wang, K. K. Leung, and J. Tang, “Delay-
+sensitive energy-efﬁcient UA V crowdsensing by deep reinforcementlearning,” IEEE Trans. Mobile Comput. , vol. 22, no. 4, pp. 2038–2052,
+Apr. 2023.
+Xiuwen Fu (Member, IEEE) received the Ph.D.
+degree in mechatronics from Wuhan University of
+Technology, Wuhan, China, in 2016.
+He was a Visiting Researcher with the University
+of Calabria, Arcavacata, Italy. He is currently
+an Assistant Professor with Shanghai Maritime
+University, Shanghai, China. He has authored morethan 40 papers in international publications. Hisresearch interests include Internet of Things, oppor-
+tunistic network, wireless sensor network, and
+complex network system.
+Tianle Wang received the B.S. degree from
+Zijin College, Nanjing University of Science and
+Technology, Nanjing, China in 2022. He is cur-rently pursuing the M.S. degrees in control scienceand engineering with Shanghai Maritime University,
+Shanghai, China.
+His research interests include unmanned systems,
+Internet of Things, and wireless sensor networks.
+Pasquale Pace (Member, IEEE) received the
+Ph.D. degree in information engineering from theUniversity of Calabria, Arcavacata, Italy, in 2005.
+He was a Visiting Researcher with the CCSR,
+University of Surrey, Guildford, U.K., and with
+Georgia Institute of Technology, Atlanta, GA,USA. He is currently an Associate Professor
+of Telecommunications with the Department of
+Computer Engineering, Modeling, Electronics andSystems, University of Calabria. He has authoredmore than 100 papers in international publications,
+including journals, conferences, and book chapters on wireless and mobile
+systems, protocols, modeling, and simulation. His research interests includecooperative communications, cognitive networks, sensor and self-organizednetworks, interoperability of IoT platforms and devices, and networks for
+artiﬁcial intelligence applications.
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:14:13 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 24 ---
+
+18302 IEEE INTERNET OF THINGS JOURNAL, VOL. 12, NO. 11, 1 JUNE 2025
+Gianluca Aloi (Member, IEEE) received the Ph.D.
+degree in systems engineering and computer sci-ence from DEIS Department, University of Calabria,Arcavacata, Italy, in 2003.
+In 2004, he joined the University of Calabria,
+where he is currently an Assistant Professorof Telecommunications with the Department ofInformatics, Modeling, Electronics and System
+Engineering. His main research interests include
+spontaneous and reconﬁgurable wireless networks,cognitive and opportunistic networks, sensor and
+self-organizing wireless networks, and IoT technologies.
+Giancarlo Fortino (Fellow, IEEE) received the
+Ph.D. degrees in computer engineering from theUniversity of Calabria (Unical), Arcavacata, Italy, in2000, respectively.
+He is a Professor of Computer Engineering
+with the Department of Informatics, Modeling,Electronics, and Systems, Unical. He is alsoan Adjunct Professor with Wuhan University of
+Technology, Wuhan, China, and the Senior Research
+Fellow with Italian National Research Council ICARInstitute. He is the author of over 700 papers in
+international journals, conferences, and books. He is the Co-Founder and the
+CEO of SenSysCal S.r.l., Rende, Italy, a Unical spinoff focused on innovativeIoT systems. His research interests include agent-based computing, wireless(body) sensor networks, and Internet of Things.
+Prof. Fortino is currently the member of the IEEE SMCS BoG and the
+Former Chair of the IEEE SMCS Italian Chapter.
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:14:13 UTC from IEEE Xplore.  Restrictions apply. 

@@ -23,6 +23,9 @@
 #include "ns3/node-container.h"
 #include "ns3/packet.h"
 
+#include <map>
+#include <set>
+
 namespace ns3
 {
 namespace wsn

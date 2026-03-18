@@ -1,0 +1,571 @@
+--- PAGE 1 ---
+
+Holistic Path Planning for
+Multi-Drone Data Collection
+Jonathan Diller
+Colorado School of Mines, USA
+jdiller@mines.eduPeter Hall
+Colorado School of Mines, USA
+peterhall@mines.eduQi Han
+Colorado School of Mines, USA
+qhan@mines.edu
+Abstract —This paper presents how to plan for and deploy a
+team of Unmanned Aerial V ehicles (UA Vs) to collect data from
+wireless sensors while minimizing collection latency. We propose
+a holistic solution for this problem where we ﬁrst form an ofﬂine
+plan while considering communication and energy constraints
+then derive an online strategy for the UA Vs to handle sensor
+failures and the stochastic nature of wireless communication.
+For ofﬂine planning, we propose a heuristic-based algorithm
+that turns the problem into a variation of the V ehicle Routing
+Problem. For our online strategy, we propose a coupled ofﬂine-
+online algorithm that adapts UA V behavior as needed. We
+evaluate our algorithms through extensive simulations as well
+as a proof-of-concept implementation on a physical UA V and
+wireless sensor testbed.
+Index T erms —UA V path planning, data collection
+I. I NTRODUCTION
+Wireless sensors are used in a variety of application areas
+including environmental, ﬂora and fauna, industrial, urban,
+military and health monitoring. Traditionally, these sensors
+have been connected to form larger networks so that data can
+be forwarded to a central data center through multi-hop routing
+[1]. A drawback to this approach is that the nodes closest to
+data sinks become weak points in the network. To mitigate this
+problem, a lot of research has looked into collecting data via
+mobile agents, so called “data-mules” [2]. Unmanned Aerial
+Vehicles (UA Vs) are often proposed for data-muling because
+they can easily traverse rugged terrain and reach areas that are
+challenging for humans and ground robots to access. Rotary
+UA Vs (commonly called drones) are particularly well adapted
+for data collection because of their agility and the ability to
+hover in place while communicating with ground nodes.
+Although drones have many advantages for data-muling,
+there are several challenges that must be considered when
+planning routes for data collection tasks. One major challenge
+in using drones is their ﬁnite on-board energy storage, re-
+quiring them to periodically recharge or change out on-board
+batteries. Another challenge is that drones take much longer
+to collect data from sensors compared with the traditional
+connected network approach. This motivates the need to form
+optimal collection paths and minimize the total data collection
+time.
+There are several proposed path planning algorithms in
+recent literature for minimizing data collection time via drones.
+Common solutions for multi-drone scenarios include biology
+inspired approaches such as genetic algorithms [3] or antcolony algorithms [4], advanced Traveling Salesman Problem
+solvers [5], and learned methods [6]. Although some of
+these works consider drone energy constraints, none of them
+incorporate swapping out batteries to extend the range of the
+drones.
+Another key aspect that is missing in current solutions is
+taking a holistic approach to solve the data-muling problem.
+Due to the stochastic nature of wireless communication, a data
+collection plan found ofﬂine may falter during deployment
+when sensors become weak and stop responding. Additionally,
+none of the existing literature has evaluated their proposed
+solution on a physical testbed with wireless sensors and an
+autonomous drone.
+In this study, we formulate a holistic framework for minimiz-
+ing the maximum data latency in the multi-drone data muling
+problem. We deﬁne data latency as the time lapsed from the
+beginning of the data collection mission until a particular piece
+of sensor data has been returned to the data sink.
+In this paper we make the following contributions.
+1) We present a holistic framework that goes from cen-
+tralized, ofﬂine planning to decentralized, online control
+decision making for the multi-drone data muling prob-
+lem.
+2) We design an ofﬂine multi-drone path planning algo-
+rithm for collecting data from wireless sensors that
+accounts for realistic drone energy consumption and
+incorporates battery swaps in the planning process.
+3) We propose a coupled ofﬂine-online strategy for dealing
+with the stochastic nature of wireless communication.
+4) We evaluate our holistic approach through extensive
+simulations and on a physical testbed consisting of a
+drone and multiple wireless sensor nodes.
+II. P ROBLEM FORMULA TION
+We consider a scenario with nwireless sensors deployed
+throughout a three-dimensional space Xbased on application
+needs. Let S={s1,s2,···,sn}be the set of all sensors, each
+of which is static. Let the position of siin three-dimensional
+space be xi∈X , which is known a priori. Each sensor is
+gathering application-speciﬁc data that must be collected by a
+drone and returned to a data center located at xb∈X . LetA=
+{a1,a2,···,ak}be a set of kdrones that will be launched
+from the data center at xband must collect all of the captured
+data from the sensors and return it to xb. We assume that
+2222023 19th International Conference on Distributed Computing in Smart Systems and the Internet of Things (DCOSS-
+IoT)
+2325-2944/23/$31.00 ©2023 IEEE
+DOI 10.1109/DCOSS-IoT58021.2023.000462023 19th International Conference on Distributed Computing in Smart Systems and the Internet of Things (DCOSS-IoT) | 979-8-3503-4649-7/23/$31.00 ©2023 IEEE | DOI: 10.1109/DCOSS-IOT58021.2023.00046
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:21:49 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 2 ---
+
+  ruav   
+ ri''
+ ri'   ri  
+  ri'  α - β  
+Fig. 1: Example of the service range of a sensor. The green
+circles represent the communication ranges for sensor iand
+the drone, respectively, while the purple ellipse represents the
+data transmission range.
+each drone will maintain a constant altitude (ﬂight-level) α.
+We formally deﬁne a drone sub-tour Tas an ordered sequence
+of points in Xthat start and end with xb.
+A. Communication Model
+We deﬁne servicing a sensor as a drone connecting wire-
+lessly with a sensor and collecting all data held on that
+sensor. We deﬁne the communication range of device aas
+the farthest straight-line distance that another device bcan be
+away from aand still receive data packets from a. To service
+a sensor, the drone and sensor must be within each other’s
+communication range, which we term the data transmission
+range . Given communication ranges r/prime/prime
+iandruavfor sensor si
+and a drone, respectively, then the data transmission range is
+r/prime
+i=min(r/prime/prime
+i,ruav). Suppose that siis deployed at altitude
+βand the drone’s ﬁxed operating altitude is α. We deﬁne
+the service range as the distance away from the zenith of
+siat altitude αthat the drone must be to communicate with
+si. This makes si’s service range ri=/radicalbig
+r/prime2
+i−(α−β)2.
+Figure 1 depicts these varying distances. We assume that
+r/prime/prime
+iandruav are both known a priori because they can be
+measured experimentally while deploying the sensors.
+The wireless sensors in Shave varying volumes of data to
+be collected. Let tibe the amount of time that a UA V must be
+within the service range of sensor sito collect all of the data
+fromsi. Determining tican be done using methods such as
+the Transmission Model described in [5]. For simplicity, we
+disregard how varying distances may impact tiand leave this
+for future work.
+LetTibe a drone sub-tour. Each Tiwill be accompanied
+by a sensor list, Si, of all sensors to be serviced on Ti. The
+total time spent servicing the sensors on Tiwill be
+ts(Si)=/summationdisplay
+l∈S itl (1)
+We assume that only a single sensor will communicate with
+the drone at a time but acknowledge that in practice packet
+collision can be handled by the MAC layer protocol.
+B. Energy Model
+Drones have limited on-board energy, usually in the form
+of batteries, and can only operate for so long before needing
+to either swap-out batteries or recharge. Previous works haveshown that drone power consumption is a function of drone
+speed [7], [8], which was veriﬁed by [9]. Let P(v)be the
+function that maps speed vto power. If given an approximation
+forP(v)and a battery’s parameters, we could determine the
+total operating time of the drone. Let
+st(v)=BrateVbat
+P(v)(2)
+be the total operating time of the drone while moving at speed
+vwhereBrate is the battery depletion rate (in amp-seconds)
+andVbatis the battery voltage. We will assume that the drone’s
+speed is ﬁxed during the data collection mission (ether moving
+at a predetermined speed vmor hovering, denoted as vh=0).
+Letsmbe the total amount of time that the drone can travel
+atvmandshbe the total amount of time that the drone can
+hover. Formally,
+sm=st(vm)=BrateVbat
+P(vm), (3)
+sh=st(vh)=BrateVbat
+P(vh). (4)
+We base a drone’s energy budget on potential-seconds of
+travel (ρ). Initially, a drone starts with smρbased on a full
+battery. If the Euclidean distance from location xitoxjis
+di,jthen ﬂying from xitoxjwill consume f(i, j)=di,j
+vmρ. To convert time spent hovering into ρwe use the ratiosm
+sh,
+so hovering for a duration of tseconds will consumesm
+shtρ.
+We denote tias the amount of time required to service sensor
+si(in real time) and t/prime
+i=sm
+shtias amount of ρrequired to
+servicesi.
+Each sub-tour Tican be viewed as a sequence of edges,
+(i,j), that connect consecutive waypoints xi,xj∈T i. The
+total time to travel through each sub-tour Tiwill be
+td(Ti)=/summationdisplay
+(i,j)∈T idi,j
+vm(5)
+The total time to complete sub-tour Ti,ttot
+i, will be the sum of
+the time to travel through the sub-tour and the time to service
+all sensors on the sub-tour. Mathematically,
+ttot
+i=ts(Si)+td(Ti) (6)
+Similarly, the total energy, stot
+ito complete Tiinρwill be
+stot
+i=/summationdisplay
+(i,j)∈T if(i, j)+/summationdisplay
+l∈S it/prime
+l (7)
+Each drone ajwill have a collection of sub-tours, Kj, that
+contains one or more sub-tours and sensor list pairs, TiandSi,
+respectively. Between consecutive sub-tours, the drone must
+have its battery swapped out at the data center. Let tbbe the
+time required to swap out batteries. Then the total mission
+duration of drone ajwill be
+Ttot
+j=/summationdisplay
+{Ti,Si}∈K jttot
+i+tb (8)
+Note that for the ﬁrst sub-tour of each vehicle tb=0 .W e
+would also like to point out that tbis only the time required
+223
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:21:49 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 3 ---
+
+to swap-out batteries and the distance required to travel back
+to the data center at the end of each sub-tour is included in
+eachTi.
+C. Problem Deﬁnition
+We can now formally deﬁne the Multi-Drone Data-Muling
+Problem (MDDMP). Given a set of nsensors, data center
+location (xb), and a team of kdrones, ﬁnd a set of drone
+routes such that
+min max
+jTtot
+j,j∈A (9)
+where every sensor siis in anSj, and
+stot
+j≤sm,j∈A (10)
+III. H OLISTIC PAT H -PLANNING FRAMEWORK
+This work presents a holistic framework for solving the
+Multi-Drone Data-Muling Problem (MDDMP) that ﬁrst looks
+at ofﬂine planning then online adaptive strategies. Figure 2
+shows an overview of our holistic framework for the data-
+muling problem.
+We ﬁrst ﬁnd an ofﬂine solution to the MDDMP that
+ﬁnds sub-tours for individual drones while considering energy
+constraints. We then use a coupled ofﬂine-online strategy that
+ﬁrst pre-processes the found sub-tours in the ofﬂine plan
+then deploys an online plan on the individual drones. During
+mission execution, the drones record mission statistics, such as
+actual communication ranges and data collection times, which
+we then use as feedback to update our approximations in the
+ofﬂine planner for the next time the drones are deployed.
+MDDMP
+Planning
+Sensor
+OrderingAdaptive
+online controllerOffline Online
+Centralized,
+offline planner
+Coupled Offline-Online
+StrategyOffline Plan
+Online
+PlanDeployment
+Statistics
+Fig. 2: Overview of our holistic framework.
+A. Centralized Ofﬂine Planner
+Algorithm 1 lists the details of our ofﬂine algorithm for the
+MDDMP. We start by ﬁxing m, the total number of sub-tours,
+on line 1. We then consider the point above each sensor and
+treat the problem as a traditional Vehicle Routing Problem
+(VRP) with mvehicles, which we solve on line 3. Once we
+have found a solution to the VRP, we attempt to improve
+each sub-tour by using a variety of route tightening heuristics
+on lines 4-8. We then verify that our found tours are under
+the energy budget expressed in Equation (10) and run a job
+scheduling algorithm to assign sub-tours to drones on lines 9-
+11. We then increment the ﬁxed number of sub-tours and
+repeat these steps until we either no longer see an improvement(a) (b)
+Fig. 3: Example results of the standard VRP solution ( a) and
+the tightening heuristics ( b).
+in worst latency and mis a multiple of the number of drones
+ormhas become larger than the number of sensors and return
+the best found set of sub-tours. We term our algorithm VRP+T .
+There are many known approaches to solve the VRP. For
+this work, we propose ﬁrst clustering the vertices into m
+clusters using Lloyd’s k-means clustering algorithm. For each
+of the clusters, we add xb(the data center’s location) into
+the cluster and treat the cluster as an input for a Traveling
+Salesperson Problem (TSP) and use a heuristics-based TSP
+solver [10] for each problem instance.
+For route tightening heuristics, we consider the service
+range of each sensor (the maximum distance a drone can be
+away from a sensor and still collect data) and attempt to move
+the position of each waypoint. Consider a set of three adjacent
+waypoints, wi,w j,w k, on a sub-tour. We attempt to move
+wjto a new position that still services sj(the sensor that
+matches to wj) using a variety of heuristics such as ﬁnding
+the closest point along the perimeter of the service range of
+sjto the straight line between wiandwk. If we can ﬁnd
+a new position for wjthat improves the total travel time,
+then we update wj’s position in the sub-tour and continue
+to cycle through the waypoints of each sub-tour until no more
+improvements can be found. We call these route improvement
+Algorithm 1 Multi-Drone Data-Muling Algorithm
+Input:S: set of sensor, xb: data center position
+Output: K: set of drone tours
+1:m←1
+2:while stopping condition not met do
+3:T←solve -VRP (S, x b,m)
+4: while improvement found do
+5: for(i,j)and(j,k)∈T do
+6: attempt to update j
+7: end for
+8: end while
+9: ifeachTi∈T is under energy budget then
+10:Km←job-scheduling (T)
+11: end if
+12:m←m+1
+13: end while
+14: return best found Km
+224
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:21:49 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 4 ---
+
+
+    	
+
+
+
+
+
+
+ !"
+ !"
+(a)
+	
+	
+	
+
+
+
+
+
+
+
+(b)
+Fig. 4: Graph of worst latency from simulation results while
+increasing the number of sensors ( a) and the density of the
+sensors ( b).
+steps tightening heuristics because they resemble pulling on
+a rope that runs through several ﬁxed rings until it is tight.
+Figure 3 shows an example of this process.
+Observe that solving the VRP will be dominated by the
+underlying TSP solver. The solver in [10] has an approximate
+time complexity of O(n2.2)and will dominate the time
+complexity of the tightening heuristics and common heuristics-
+based job-scheduling algorithms [11]. The outer while-loop
+will run at most ntimes, making the total runtime of our
+Multi-Drone Data-Muling Algorithm O(n3.2). However, in the
+average case we do not anticipate the outer while-loop to run
+ntimes, giving us a runtime between O(n2.2)andO(n3.2).
+B. Coupled Ofﬂine-Online Strategy
+We propose the following strategy to adapt drone behavior
+during deployment: Suppose that at waypoint withe drone
+must communicate with sensor si. If the drone is unable
+to communicate with siwhile at wi, then the drone moves
+towards position w/prime
+i, the point directly above sensor siat
+the drone’s ﬂight-level. While moving, the drone continuously
+attempts to connect to si. If the drone connects to si,i t
+stops and services the sensor. If the drone reaches w/prime
+iwithout
+connecting to si, then the drone gives up attempting to service
+the sensor and continues the sub-tour.
+When there are multiple sensors for a single waypoint
+that are not responding, we propose using a preassembled
+visit ordering. Before deploying the drone, the sensors for
+each waypoint can be ordered by solving a Hamiltonian path
+that goes from the waypoint, visits the location above each
+sensor, then terminates at the next waypoint on the sub-tour.
+We propose determining the preassembled ordering ofﬂine to
+avoid having the drone perform a computationally intensive
+task during deployment.
+IV . S IMULATION EV ALUA TIONS
+In this section we evaluate our holistic solution for the
+Multi-Drone Data-Muling problem through simulation. We
+generated sets of randomized sensor deployment maps for
+evaluation. Unless otherwise stated, the simulation inputs have
+a varying number of sensors from 10 to 200 in increments of
+10 (25 maps at each increment) with a random data service
+	
+	
+
+	
+	
+
+
+
+ !"
+ !"
+(a)
+    	
+
+
+
+
+
+ !"
+(b)
+Fig. 5: Graph of worst latency from simulation results while
+increasing the number of drones ( a) and impact on computa-
+tion time as the number of sensors increase ( b).
+range from 20 mto 50 mfor each sensor and an average sensor
+density of150 sensors
+1km2.
+A. Ofﬂine Algorithm Evaluation
+We compare our algorithm ( VRP+T ) against three baseline
+approaches: (1) a greedy algorithm ( Greedy ), (2) the greedy
+algorithm plus our tightening heuristics ( Greedy+T ), and (3)
+our own algorithm without including the tightening heuristics
+(VRP ).
+a)Varying Number of Sensors: Figure 4a shows the
+worst data latency of running our algorithm and the baseline
+approaches while increasing the number of sensors with three
+drones. On average, our algorithm outperforms the standard
+Greedy approach by 20.7%, the Greedy+T approach by 10.2%
+and the standard VRP by 12.5%.
+b)Varying Sensor Density: Figure 4b shows the worst
+data latency while varying sensor densities from30sensors
+1km2
+up to200 sensors
+1km2 with three drones and 100 sensors. Our
+algorithm outperforms the Greedy approach by 22.7%, the
+Greedy+T approach by 12.0% and the VRP by 13.9%.
+c)Varying Number of Drones: Figure 5a shows the
+worst data latency on graphs with 100 sensors while varying
+the number of drones from 1 up to 10. Our algorithm outper-
+forms the Greedy approach by 28.8%, the Greedy+T approach
+by 24.4% and the VRP by 11.0%.
+d) VRP+T Runtime: Figure 5b shows the runtime of
+our VRP+T algorithm as the number of sensors increases. For
+reference, the function f(n)=2.4×10−5n2.39was ﬁtted
+to the runtime results. This supports our assertion that in the
+average case the runtime is closer to that of the TSP solver at
+O(n2.2)than the theoretical worst case of O(n3.2).
+B. Online Strategy Evaluation
+To evaluate the performance of our online strategy, we
+used the realistic Ardupilot Software in the Loop simulator
+for drone movement and the NS-3 networking simulator with
+transmission powers randomized over a normal distribution to
+simulate a stochastic network environment.
+We compared our strategy against a failure agnostic ap-
+proach that skips sensors when they fail to respond. Figure 6a
+shows the worst data latency while increasing the number
+225
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:21:49 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 5 ---
+
+
+	
+	
+
+	 !"
+
+#
+	
+"$
+(a)
+	
+	
+
+	 !
+
+"
+	
+!#
+(b)
+Fig. 6: Graph of the volume of data collected in the realistic
+simulator while increasing the number of sensors ( a) and the
+density of the sensors ( b).
+of sensors with a single drone. We found a 12.8% increase
+in total data collected when compared against the failure-
+agnostic approach. Figure 6b shows the worst data latency
+while increasing sensor density from30sensors
+1km2to200 sensors
+1km2
+with 50 sensors and a single drone. When increasing sensor
+density we found a 14.3% increase in data collected over the
+baseline. This shows that our online, adaptive strategy for
+collecting data from wireless devices was effective in handling
+sensor communication failures.
+V. F IELD TEST
+To validate the coupled ofﬂine-online methodology, we pro-
+totyped the problem setup on a physical testbed. For wireless
+sensors, we used a mix of Raspberry Pi 4’s and Raspberry Pi
+3B+’s. We added an additional “phantom” sensor that was not
+/g1/g2/g2 /g3/g2/g2 /g4/g2/g2 /g2 /g4/g2/g2 /g3/g2/g2 /g1/g2/g2 /g5/g2/g2
+/g6/g7/g8/g9/g9/g10/g11/g12/g13/g14/g15/g16/g17/g18/g19/g20/g5/g2/g2/g1/g2/g2/g3/g2/g2/g4/g2/g2/g2/g4/g2/g2/g21/g7/g8/g9/g9/g10/g11/g12/g13/g14/g15/g16/g17/g18/g19/g20
+Fig. 7: Drone and one of the RPs used for prototype (top left
+and right, respectively) and ﬁeld test results (bottom). The blue
+circle with yellow dots are the predicted RP service ranges and
+node locations. The green lines depict the ofﬂine plan while
+the red lines are the UA V’s GPS trace during test execution.actually deployed to represent a wireless sensor that has gone
+dead. For the UA V , we used the platform described in [12].
+Figure 7 shows the output of the ofﬂine plan found using
+our VRP+T algorithm and the actual GPS trace of the drone.
+The VRP+T algorithm found a solution with a worst latency
+of 126.3 seconds while the actual worst latency on the physical
+testbed was 236.3 seconds. This difference was expected
+because it is challenging to accurately predict communication
+ranges prior to deployment. The drone was able to eventually
+connect to all sensors except for the phantom sensor.
+VI. C ONCLUSIONS
+In this work we presented a holistic approach to the Multi-
+Drone Data-Muling problem. We ﬁrst solved this problem
+ofﬂine where we minimize data latency while applying re-
+alistic drone energy constraints and a model for limited com-
+munication range. We then proposed a coupled ofﬂine-online
+algorithm that adapts the drone’s plan during deployment. We
+evaluated our framework through extensive simulations and
+prototyped the scenario on a physical testbed. For future work,
+we see a need to further improve ofﬂine planning models that
+more accurately compare to online deployment.
+REFERENCES
+[1] A. Mainwaring, D. Culler, J. Polastre, R. Szewczyk, and J. Anderson,
+“Wireless sensor networks for habitat monitoring,” in Proceedings of
+the 1st ACM international workshop on Wireless sensor networks and
+applications , 2002, pp. 88–97.
+[2] D. Kim, B. H. Abay, R. Uma, W. Wu, W. Wang, and A. O. Tokuta,
+“Minimizing data collection latency in wireless sensor network with
+multiple mobile elements,” in Proceedings of the IEEE International
+Conference on Computer Communications (INFOCOM) , 2012, pp. 504–
+512.
+[3] S. Alfattani, W. Jaafar, H. Yanikomeroglu, and A. Yongacoglu, “Multi-
+uav data collection framework for wireless sensor networks,” in IEEE
+Global Communications Conference (GLOBECOM) , 2019, pp. 1–6.
+[4] Z. Qin, A. Li, C. Dong, H. Dai, and Z. Xu, “Completion time mini-
+mization for multi-uav information collection via trajectory planning,”
+Sensors , vol. 19, no. 18, p. 4032, 2019.
+[5] C. Mao, J. Liu, and L. Xie, “Multi-uav aided data collection for age
+minimization in wireless sensor networks,” in IEEE International Con-
+ference on Wireless Communications and Signal Processing (WCSP) ,
+2020, pp. 80–85.
+[6] Y . Pan, Y . Yang, and W. Li, “A deep learning trained by genetic
+algorithm to improve the efﬁciency of path planning for data collection
+with multi-uav,” IEEE Access , vol. 9, pp. 7994–8005, 2021.
+[7] Z. Liu, R. Sengupta, and A. Kurzhanskiy, “A power consumption model
+for multi-rotor small unmanned aircraft systems,” in IEEE International
+Conference on Unmanned Aircraft Systems (ICUAS) , 2017, pp. 310–315.
+[8] Y . Zeng, J. Xu, and R. Zhang, “Energy minimization for wireless
+communication with rotary-wing uav,” IEEE Transactions on Wireless
+Communications , vol. 18, no. 4, pp. 2329–2345, 2019.
+[9] F. Shan, J. Luo, R. Xiong, W. Wu, and J. Li, “Looking before crossing:
+An optimal algorithm to minimize uav energy by speed scheduling
+with a practical ﬂight energy model,” in Proceedings of the IEEE
+International Conference on Computer Communications (INFOCOM) ,
+2020, pp. 1758–1767.
+[10] K. Helsgaun, “An effective implementation of the lin–kernighan travel-
+ing salesman heuristic,” European journal of operational research , vol.
+126, no. 1, pp. 106–130, 2000.
+[11] S. K. Sahni, “Algorithms for scheduling independent tasks,” Journal of
+the ACM (JACM) , vol. 23, no. 1, pp. 116–127, 1976.
+[12] J. Diller, P. Hall, C. Schanker, K. Ung, P. Belous, P. Russell, and Q. Han,
+“Iccswarm: A framework for integrated communication and control in
+uav swarms,” in Proceedings of the Eighth Workshop on Micro Aerial
+V ehicle Networks, Systems, and Applications (DroNet ’22) , 2022, pp.
+1–6.
+226
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:21:49 UTC from IEEE Xplore.  Restrictions apply. 

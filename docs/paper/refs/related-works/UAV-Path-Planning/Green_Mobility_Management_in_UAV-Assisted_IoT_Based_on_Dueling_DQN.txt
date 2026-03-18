@@ -1,0 +1,725 @@
+--- PAGE 1 ---
+
+Green Mobility Management in UA V-Assisted IoT
+Based on Dueling DQN
+Wenqi Liu, Pengbo Si, Enchang Sun, Meng Li, Chao Fang, Yanhua Zhang
+Faculty of Information Technology,
+Beijing University of Technology
+Beijing, China
+lwqi@emails.bjut.edu.cn
+Abstract —In most cases, the batteries of sensor nodes in the
+Internet of Things (IoT) are usually constrained by size and
+weight, and are difﬁcult to recharge or replace. In traditional
+wireless sensor networks, data is transmitted in a multi-hopmanner, which may cause the high data transmission delay andunbalanced trafﬁc load. In this paper, an Unmanned Aerial
+V ehicle (UA V)-assisted IoT architecture is introduced, in which
+UA V is utilized to achieve low-latency and seamless-coverage
+acquisition of the sensing data. Furthermore, based on the recent
+advances on deep reinforcement learning algorithms, consideringboth data delay requirements and network energy consumption, areal-time ﬂight path planning scheme of the UA V in the dynamicIoT sensor networks has been proposed based on dueling deepQ-network (DQN). Besides, the grid-based method is used to
+handle the network state modeling, which effectively reduces
+the complexity of the proposed scheme. Simulation results show
+that the proposed scheme signiﬁcantly improves the network
+performance.
+Index T erms—UA V-assisted IoT, green mobility management,
+ﬂight path, deep reinforcement learning, grid-based method
+I. I NTRODUCTION
+As one of the most signiﬁcant advances in recent years
+on communication and networking technologies, Internet of
+Things (IoT) facilitates the interconnection among almosteverything for real-time and delay-tolerant information ex-
+change. Speciﬁcally, IoT is playing an important role in
+environment monitoring, agriculture, manufacturing, militaryscenarios, among others, thanks to its strong capability of
+collecting the ﬁeld data for further big data analysis, intel-
+ligent learning and decision making in data centers or edgecomputing devices [1].
+The data collection part of IoT suffers from the similar
+problem as traditional wireless sensor networks: the energyholes caused by the battery drain of IoT nodes which are
+constrained by size and weight with limited battery capacity.
+Fortunately, unmanned aerial vehicle (UA V) has attractedmuch attention and been intensively studied, due to its greatconvenience on deployment and programming [2][3]. Thecommunication devices loaded on UA Vs can be utilized as thebase stations or access points with controlled mobility to cover
+the isolated data islands for effective data uploading, and to
+This work was jointly supported by the National Natural Science Founda-
+tion of China under Grant 61671029, and Beijing Nova Program under Grant
+XX2017095.increase the life time of the IoT network [4]. By introducing
+UA Vs into IoT and forming UA V-assisted IoT, the network
+disruption problem can be greatly solved [5].
+In the UA V-assisted IoT, UA Vs act as mobile sinks (MS),
+of which patrol path planning becomes one of the key issues
+affecting the system performance. In [6], the authors propose astochastic compressive data collection protocol named SMITEfor mobile wireless sensor networks, the sensor nodes in thenetwork transmit the data to the aggregation nodes, and theMS moves randomly to collect the data from the aggregation
+nodes. A grid-based load-balanced routing method (GLRM)
+has been studied in [7]. The authors adopt the virtual grid-
+based method, with which the forwarding nodes are electedaccording to the number of packets carried by the nodes,the Euclidean distance from the center of the grid, and theremaining energy of the nodes. MSs collect the data fromthe forwarding nodes according to the pre-set path. However,real-time path planning is ignored in both [6] and [7]. To solvethis problem, a weighted rendezvous planning (WRP) methodis proposed to select the Rendezvous Points (RPs), and the
+mobile sink only visits the RPs for information collection [8].
+The travelling salesman problem (TSP) algorithm is introduced
+in this work to calculate the shortest path of the MS traversingthe RP nodes, thus reducing the data transmission delay. How-
+ever, issues such as quality-of-service (QoS), computational
+complexity, energy consumption, etc., are still open and maydramatically affect its application in real scenarios.
+On the other hand, deep learning meets reinforcement learn-
+ing and the resulting major breakthrough in machine learning
+is already reshaping our world. Deep reinforcement learning(DRL) is widely applied as a generous-purpose algorithmwith strong capability of making optimal action decisionsand abstracting high-level features from complex scenes [9].
+Google DeepMind team has proposed deep Q-network (DQN)
+in 2015 [10], achieving results beyond human in Atari games.AlphaGo [11] and AlphaGo Zero [12] also achieve a very highlevel in Go games. After that, DeepMind team made furtherimprovements based on DQN, namely Double DQN [13],which establishes a target DQN that calculates the maximumQ value. Dueling DQN [14] is another major improvement.
+It divides the Q-value function into two parts, representingthe value function of the environment state and the advantage
+978-1-5386-8088-9/19/$31.00 ©2019 IEEE Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:24:28 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 2 ---
+
+function of the action, respectively, avoiding the repeated
+calculation of the values of the same states, and making thegoal of the network learning more clear and stable.
+To achieve green UA V-assisted IoT, a layered network
+architecture is introduced and a real-time UA V path planning
+scheme is proposed in this paper. The mobility of the UA V iscontrolled by the moving direction action decisions to mini-mize power consumption while meeting the delay constraints.The system is formulated as a dynamic decision optimization
+problem, which is solved by dueling DQN and grid-based
+method. The main contributions of this paper are as follows.
+•The decision sub-layer, the MS sub-layer and the con-vergence sub-layer are introduced in the UA V-assisted
+IoT architecture to handle the machine learning, the UA V
+management and the data aggregation issues, respectively.
+•Considering the different data transmission delay con-
+straints from different types of sensing nodes, a priority-based model is adopted. Besides, we use the grid-based
+method to formulate the system as a discrete one.
+•We introduce dueling DQN to optimally and efﬁciently
+solve the real-time UA V path planning problem, anduse Google TensorFlow as the simulation platform todemonstrate the signiﬁcant performance improvement.
+The rest of this paper is organized as follows. In Section II,
+the network architecture of the UA V-assisted IoT is described.We present the system model in Section III. Then, in SectionIV , the problem of the UA V path planning is formulated as aDRL process. Simulation results are presented and discussedin Section V and conclusions are drawn in Section VI.
+II. N
+ETWORK ARCHITECTURE
+A four-layer network architecture is introduced as in Fig.
+1 in this section. Sensing layer, access layer, infrastructurelayer and application layer devices are connected via wiredor wireless channels to provide the internetworking of things,with UA Vs as mobile sinks.
+A. Sensing Layer
+Sensing layer in the network is responsible for sensing and
+collecting environmental information or ﬁeld data, composed
+of massive IoT information acquisition devices such as sen-sors, cameras, GPS devices, among others.
+B. Access Layer
+Access layer provides wireless access to the core networks
+and the data processing services. Different from radio access
+networks (RANs) in 5G and other cellular networks, the access
+layer in UA V-assisted IoT systems can be divided into two sub-layers, i.e., convergence sub-layer and MS sub-layer. Collec-
+tion points (CP) in the convergence sub-layer are selected from
+the nodes in the sensing layer, responsible for collecting andaggregating the data from the sensing nodes. The aggregateddata is then transmitted to the upper MS sub-layer, which is
+composed of access points with controlled mobility, such asUA Vs and unmanned ground vehicles (UGVs). These mobilesinks move around over the CP nodes, based on the pathsplanned in the real-time manner.C. Infrastructure Layer
+Infrastructure layer in the network architecture is responsi-
+ble for receiving various data collected by the access layer
+and uploading the data to the application layer for furtherprocessing and storage. Communication satellites, 4G/5G base
+stations, LoRa base stations, NB-IoT base stations and road-
+side units (RSUs) are typical devices in the infrastructure layer.
+D. Application Layer
+User sub-layer in the application layer provides the platform
+to support various user applications (APPs). The other sub-
+layer in the application layer, decision sub-layer, facilitatesthe information processing and data analytics with machinelearning and big data techniques. The optimization of the UA V
+path planning and CP node selecting is also executed in this
+sub-layer. Note that the algorithms in the decision sub-layer
+are deployed in the form of APPs as well.
+E. Energy Consumption and Delay Issues
+The IoT end terminals are generally small-scale devices
+powered by batteries. Thus, dead devices may result in fault
+routes and a disruptive network topology. Speciﬁcally, keepingthe CP nodes in the convergence sub-layer alive is signiﬁcantlyimportant due to their key function of collecting and aggre-gating the data from the sensing layer. UA Vs in the networkalso consume much energy, and their power optimization iskey to the system performance. Besides, due to the natureof complexity in IoT, different sensors may generate thedata packets with different delay constraints. In this case,computing and communication resources could be scheduledwith different priorities. Considering both energy consumption
+^ĞŶƐŝŶŐ>ĂǇĞƌ
+^ĞŶƐŽƌ
+^ĞŶƐŽƌ^ĞŶƐŽƌ^ĞŶƐŽƌĐĐĞƐƐ>ĂǇĞƌŽŶǀĞƌŐĞŶĐĞ^ƵďͲůĂǇĞƌD^^ƵďͲůĂǇĞƌ
+/ŶĨƌĂƐƚƌƵĐƚƵƌĞ>ĂǇĞƌƉƉůŝĐĂƚŝŽŶ>ĂǇĞƌ
+ŽŵŵƵŶŝĐĂƚŝŽŶ
+^ĂƚĞůůŝƚĞZ^h
+WŶŽĚĞƐŽŵŵƵŶŝĐĂƚŝŽŶ
+ĂƐĞ^ƚĂƚŝŽŶhƐĞƌ^ƵďͲůĂǇĞƌ
+ĞĐŝƐŝŽŶ
+^ƵďͲůĂǇĞƌ
+hs h's
+Fig. 1. UA V-assisted IoT architecture.
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:24:28 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 3 ---
+
+and delay issues, in this paper, we aim to achieve the tradeoff
+by DRL formulation of the system.
+III. S YSTEM MODEL
+The system model including network model and energy
+model is presented in this section.
+A. Problem Description
+For simplicity, the single MS scenario is considered in this
+paper. Real-time path planning for the UA V in the system
+is studied, taking into account the dynamic delay constraintsand the problem of energy holes. The randomly distributedsensor nodes in the sensing layer generate the sensing datapackets periodically, and the selected CP nodes upload thecollected data to the MS within its communication range. TheMS moves based on the path that is planned in the real-timemanner, and forwards the data to the application layer viabase stations or access points in the infrastructure layer. Pathplanning decisions are made at the servers in the decision sub-layer and then distributed to the MS. The main objective inthis paper is to minimize the power consumption of the CP
+nodes while meeting the delay constraints, by the means of
+optimizing of the UA V patrol paths.
+B. Network Model
+AnNm×Nm area is considered as the target area with the
+coverage of the UA V-assisted IoT system. The area is divided
+into grids. A CP node is selected in each grid to collect theinformation from the sensors in the grid, and transmit the datato the UA V . Here, direct communication among the nodes inone grid is assumed. Let the center of each grid to be the pointthat the UA V stays for receiving the data from the CP node.Thus, as shown in Fig. 2, a graph G(V,E )covering the target
+area can be obtained by connecting all the center points of the
+grids, where VandErepresent the center point of the grid
+and the edge connecting the points, respectively. Besides, the
+UA V can change its location to be above the center point ofany grid for data collection, along the edge of the graph G
+with the step length l(e)at each time slot, where l(e)is the
+length of edge e∈E.
+C. Energy Consumption Model
+The sensors, MS and CPs are wireless devices with limited
+energy supply. Sensor nodes transmit data to the nearby CP ,and thus their energy consumption can be ignored. We only
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Fig. 2. The area with virtual grids.consider the energy efﬁciency of MS and CPs in this paper.
+In the process of transmission control protocol (TCP) com-
+munication, the energy consumption of TCP protocol in the
+receiving terminal is much smaller than that of the transmittingterminal, so we only consider the energy consumption of datatransmission in the receiving terminal. It is assumed that theMS moves with approximately the same distance in each time
+slot, and this energy consumption is E
+g. In time slot Ti, deﬁne
+the amount of data collected by the MS from the CPs as ki,
+and every continuous Nmtime slots as a round. Then, the
+energy consumption of the MS in a round is
+EMS=/summationdisplay Nm
+i=1(Ee×ki+Eg), (1)
+where the energy consumption of the MS for collecting each
+data unit from the CPs is Ee. According to the deﬁnition of
+energy efﬁciency in [15], the energy efﬁciency of MS can be
+written as
+γ(ki)=/summationtextNm
+i=1ki
+EMS. (2)
+Consequently, more data K=/summationtextNm
+i=1kicollected in every
+Nmtime slots by the MS contributes to the higher the energy
+efﬁciency.
+The communication energy consumption of the CP is com-
+posed of the energy for collecting data from sensor nodes,
+represented by ECP
+R, and the energy for transmitting the data
+to the MS, represented by ECP
+T.W eh a v e
+ECP=ECP
+R+ECP
+T. (3)
+Similarly, at time instance t, the energy consumption of the
+CP receiving kjbits from the sensor nodes in the same grid
+is
+ECP
+R=ECP
+r×kj. (4)
+TCP protocol is adopted in the data transmission between
+the CPs and the MS. TCP is connection-oriented, and itscommunication process can be basically divided into threeparts: data processing and encapsulation, establishing connec-
+tion, and releasing connection. Then, in each communicationprocess with TCP , the ﬁxed energy consumption of the trans-
+mitting terminal is
+E
+TCP=Eh+Ec+Er, (5)
+whereEh,Ec, andErare energy consumptions for data
+processing and encapsulation, establishing connections, andreleasing connections, respectively.
+At time instance t, if the CP sends data to the MS, the
+energy consumption of the CP is
+E
+CP
+T=ECP
+t×kj+ETCP, (6)
+whereECP
+tis the unit energy consumption of the CP in the
+process of the data transmission based on TCP . Due to the
+unstable channel state in the IoT environment, we have
+ECP
+t=ST/RCP− MS, (7)
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:24:28 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 4 ---
+
+where
+ST=SR/hj, (8)
+and
+RCP− MS=Wlog2(1 +SR/n0). (9)
+Here,STrepresents the transmission power of the CP , SRis
+the receiving power of the MS, hjis the channel attenuation
+factor,RCP− MSrepresents the ﬁxed data rate between the CP
+and the MS, Wrepresents the channel bandwidth, and SR/n0
+is the SNR.
+Then, at time instance t, the energy consumption of the
+communication between the CP and the MS is
+ECP=ECP
+r×kj+SR/hj
+Wlog2(1 +SR/n0)×kj+(Eh+Ec+Er).
+(10)
+The energy efﬁciency model of the CP is
+ε(kj,hj)=kj
+ECP. (11)
+It can be observed from (11) that the energy consumption
+of the CP is related to the channel attenuation factor hjand
+the amount of transmitted data kj, and the larger hjandkj
+improves the energy efﬁciency.
+IV . DRL-B ASED MS P AT H PLANNING
+In this section, the system is formulated as a DRL problem.
+The MS is considered as an agent. The following assumptions
+are taken.
+•We only consider the data collection of the MS at the
+center of the grid, ignoring the data collected when
+moving.
+•In the same grid, the most stringent delay of the data is
+used as the delay of the grid.
+A. Data Prioritization
+In order to ensure the immediate transmission of data with
+the most strict delay constraint in the case of limited trans-mission resources at the MS, the data is prioritized accordingto the data delay constraints and the energy consumption.
+Data should be collected and uploaded within the constraints.
+Consequently, the data packets whose delay is close to its
+delay constraint should have higher delay priority. Thus, thedelay priority is written as
+α(t)=k
+j
+Tm−t, (12)
+whereTmis the latency constraint for the data.
+According to (2) and (11), the energy consumption depends
+on the amount of data kjcollected by the MS in each time
+slot, the amount of data kjsent by the CP node to the MS,
+and the channel state hj. The energy consumption priority is
+deﬁned as
+β(ki,kj,hj)=A1·γ(ki)+A 2·ε(kj,hj), (13)
+whereA1andA2are weight coefﬁcients. Then, we deﬁne the
+priority function as
+P(t,ki,kj,hj)=B1·α(t)+B 2·β(ki,kj,hj), (14)whereB1andB2are weight coefﬁcients. Furthermore, the
+priority function values are equally divided into L segments to
+obtain the grids of different priorities p={p0,p1,p2,···,pl},
+where the priority function values Pl∈/parenleftbig
+Pmin
+l,Pmax
+l/bracketrightbig
+. Here
+Pmin
+l andPmax
+l represent the minimum and maximum priority
+function values of the priority pl, respectively.
+B. System State
+To utilize the DRL model, we map the grid network model
+to an RGB image, with different colors representing different
+priorities. In each time interval Tduring the MSs one-step
+movement, some data is generated at a random location, and
+the total amount of data in the network remains the same
+roughly. Therefore, the state of the system changes for every
+time interval T, and the system state is
+s(t)=s(nT)=⎡
+⎢⎣sn
+1,1···sn
+1,N
+.........
+sn
+N,1···snN,N⎤
+⎥⎦=(e0,e1,···,en),
+(15)
+wheresn
+p,q=ck(k=0,1,···,m)represents the priority in
+each grid. Consequently, the network has e0,e1,···,en,n+1
+possible states.
+C. Action Space
+In the UA V-assisted IoT, action a(t)is the direction that the
+MS moves at t. As shown in Fig. 3, the action space of the
+system is deﬁned as A,
+a(t)={m|m∈A}. (16)
+D. Reward Function
+The reward function is the evaluation when taking an action
+with a certain state in reinforcement learning. In this paper,
+the priority of the data packet in the grid received by the MS
+after taking the action is adopted as this evaluation.
+At time instance t, the reward function is deﬁned as
+a piecewise function according to the priority pat=
+{pat,0,pat,1,pat,2,······,pat,l}of the data in the grid where
+the agent is located after the action a(t)is taken. It can be
+represented as
+R(at)=rl,pat,l, (17)
+whererl=Pmin
+l+Pmax
+l
+2. Higher data priority of the grid
+received by the MS contributes to higher the reward value.Then, the optimization goal of the system is written as
+max/summationdisplay
+t∈[0,nT ]R(at),
+s.t.a t∈A.(18)
+Ϭϭ
+Ϯϯ ϰϱ ϲ
+ϳϴ
+Fig. 3. System action space.
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:24:28 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 5 ---
+
+Algorithm 1: Dueling DQN algorithm in UA V-assisted
+IoT.
+Initialization.
+Initialize parameters of main DQN: ω=θ.
+Initialize parameters of target DQN: ω/prime=θ.
+Initialize the experience buffer M.
+Initialize the probability of random actions e.
+Training.forj∈[J]do
+Reset environment state s.
+fort∈[T]do
+Randomly select a probability p∈(0,1).
+ifp≤ethen
+Randomly select an action: a
+t∈A.
+else
+at=a r gm a x aQ(s,a;ω).
+end if
+Execute the action at.
+Obtain the experience (st,at,rt,st+1)and store
+them into the experience buffer M.
+Getτsamples from the experience buffer M.
+Calculate the target Qvalue using
+Ytarget =Rt+1
++γQ target(st+1,arg max a(Q(st+1,at+1;ω),ω/prime)).
+Calculate the loss value by the loss function
+L(ω)=
+E[(r t+γmax aQ(st+1,at+1;ω/prime)−Q(st,at;ω))2].
+Update parameters with Adam Optimizer.Updatee.
+end for
+end for
+E. Path Planning Algorithm Based on Dueling DQN
+With the formulation of system states, action space and
+reward function of the system, we use dueling DQN to trainthe MS for moving path planning. In the system formulatedin this paper, the change of the MSs location and the trans-mission/generating of the sensing data causes the transition ofthe system state in each time slot. To capture this behavior of
+the system, the experience replay mechanism [16] is adopted.
+Massive exploration is performed by the MS, and then in each
+time slot, the system state s, the action a, the obtained reward
+valuer, and the next state s
+/primeafter taking the action aare stored
+in the memory as (s,a,r,s/prime). A sample set Dis also formed,
+and samples are extracted randomly to update the network.
+The process is as shown in Algorithm 1.
+Fig. 4. RGB image based on network states.TABLE I
+SIMULA TION PARAMETERS
+Parameters Values
+Main DQN learning rate 0.0001
+Target DQN learning rate 0.001
+Discount factor 0.99
+Update frequency 4
+Pre-training steps 20000
+Total steps 50000
+Number of steps per round 100
+V. S IMULA TION RESULTS ANDDISCUSSIONS
+In this section, the simulation results of the mobility man-
+agement scheme in green UA V-assisted IoT is presented and
+analyzed, comparing with the existing classical mechanismsincluding random path and ﬁxed path planning. The Nm×Nm
+area is divided into 100 grids. According to the data pri-
+oritization presented before, the grid data is divided into 6
+levels,P
+at={Pat,0,Pat,1,······,Pat,5}. The reward values
+are also set according to (17). We use Ubuntu 16.04 as theoperating system, and TensorFlow 1.0.0 as platform for oursimulation to implement dueling DQN.
+Based on the grid and the data priority, the system state
+is mapped to an RGB image as shown in Fig.4, differentcolors representing different priorities. Simulation parameters
+are shown in Table I.
+Fig.5 shows the performance of the MS with different
+random moving probabilities. The MS generates samples for
+learning during its movement, with the decreasing probability
+of random movement and the increasing probability of movingaccording to the generated action from the learning network.As the number of iterations grows, the probability of random
+movement reduces gradually to a predetermined value e.A s
+we can see from this ﬁgure, lower eprovides better system
+performance with the cost of slower convergence. If we use
+e=0 , the network converges after about 25500 iterations
+with the converged performance evaluation 60.5. If e=0.1
+is adopted, 15000 iterations brings the converged performance
+      (YDOXDWLRQYDOXH
+(SLVRGHH 
+H 
+H 
+Fig. 5. Performance evaluation with different random motion probabilities.
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:24:28 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 6 ---
+
+
+u u u uu u u$YHUDJHUHZDUGSHUWLPHVORW
+1XPEHURIJULGV'5/6WUDWHJ\
+)L[HG6WUDWHJ\
+5DQGRP6WUDWHJ\
+u
+Fig. 6. Comparison of system performance with different grid numbers.
+value 54.8.
+In Fig. 6, we compare the average reward in all time slots of
+the three schemes with different number of grids but the same
+data density. Here, data density is deﬁned as the probability
+of grids with data to transmit in the network. It is obviouslyobserved that the average reward of DRL-based real-time pathplanning scheme is obviously higher than the others with
+the same number of grids, indicating that the DRL-based
+intelligent agent learns the data priority in different grids.Besides, this ﬁgure also shows that the number of grids is notthe key factor affecting the system performance dramatically.We also draw the conﬁdential interval in this ﬁgure with theconﬁdential level 90%. It can observed that most results are
+close to the average value.
+Furthermore, the system performance of our proposed
+scheme depends on data density, which can be seen in Fig.7. As the increasing of data density, the DRL-based schemeshows signiﬁcant performance degradation. This is becausehigher data density usually results in larger state space, whichbrings too much computational complexity and may serious-
+ly affect the learning performance. The other two existing
+schemes do not suffer from high data density. However, ourscheme always performs much better than the existing ones
+with the conﬁdential level 90%, even when the data density is
+high.
+VI. C
+ONCLUSIONS
+In this paper, considering the random distribution of sensing
+nodes and the resulting unbalanced trafﬁc load in UA V-
+assisted IoT systems, a green and real-time MS path planningscheme has been proposed, with the objective of reducingpower consumption while meeting the delay constraints fordifferent data types. The grid-based method was adopted toformulate UA V path planning as a dueling DRL problem withreduced state space and computational complexity. Extensive
+simulation results shown in this paper indicate the signiﬁcant
+performance improvement of the proposed scheme compared
+to existing ones.    $YHUDJHUHZDUG
+'DWDGHQVLW\'5/6WUDWHJ\
+)L[HG6WUDWHJ\
+5DQGRP6WUDWHJ\
+Fig. 7. Average system reward with different network density.
+REFERENCES
+[1] J. Yick, B. Mukherjee, and D. Ghosal, “Wireless sensor network survey,”
+Computer Networks , vol. 52, no.12, pp. 2292-2330, Aug. 2008.
+[2] P . Si, F. R. Y u, R. Yang, and Y . Zhang, “Navigation Data-Assisted
+Opportunistic Spectrum Scheduling for Network-Based UA V Systems:
+A Parallel Restless Bandits Formulation,” Wireless Personal Communi-
+cations , vol. 85, no. 1, 2015.
+[3] N. H. Motlagh, T. Taleb, and O. Arouk, “Low-Altitude Unmanned Aerial
+V ehicles-Based Internet of Things Services: Comprehensive Survey and
+Future Perspectives,” IEEE Internet of Things Journal , vol. 3, no. 6,
+2016.
+[4] Y . Zeng, and R. Zhang, “Energy-Efﬁcient UA V Communication With
+Trajectory Optimization,” IEEE Transactions on Wireless Communica-
+tions , vol. 16, no. 6, pp. 3747-3760, 2017.
+[5] V . Sharma, M. Bennis, and R. Kumar, “UA V-Assisted Heterogeneous
+Networks for Capacity Enhancement,” IEEE Communications Letters ,
+vol. 20, no. 6, pp. 1207-1210, 2016.
+[6] L. Guo, R. Beyah, and Y . Li, “SMITE: A stochastic compressive data
+collection protocol for Mobile Wireless Sensor Networks,” in IEEE
+INFOCOM, 2011.
+[7] Q. Liu, K. Zhang, J. Shen, Z. Fu, and N, Linge, “GLRM: An improved
+grid-based load-balanced routing method for WSN with single controlledmobile sink,” in Proceedings of the 18th International Conference on
+Advanced Communication Technology(ICACT), 2016.
+[8] H. Salarian, K. W. Chin, and F. Naghdy, “An Energy-Efﬁcient Mobile-
+Sink Path Selection Strategy for Wireless Sensor Networks,” IEEE
+Transactions on V ehicular Technology, vol. 63, no. 5, pp. 2407-2419,
+2014.
+[9] Q. Liu, J. Zhai, Z. Zhang, et al, “A survey on Deep Reinforcement
+Learning,” Chinese Journal of Computers, 2018.
+[10] V . Mnih, K. Kavukcuoglu, D. Silver, et al, “Human-level control through
+deep reinforcement learning,” Nature, vol. 518, no. 7540, 2015.
+[11] D. Silver, A. Huang, C. J. Maddison, et al, “Mastering the game of Go
+with deep neural networks and tree search,” Nature, vol. 529, no. 7587,
+pp. 484-489, 2016.
+[12] D. Silver, J. Schrittwieser, K. Simonyan, et al, “Mastering the game of
+Go without human knowledge,” Nature, vol. 550, no. 7676, pp. 354-359,
+2017.
+[13] H. V . Hasselt, A. Guez, and D. Silver, “Deep Reinforcement
+Learning with Double Q-learning,” [Online]. Available:http://arxiv.org/abs/1509.06461v1
+[14] Z. Wang, T. Schaul, M. Hessel, et al, “Dueling network architectures for
+deep reinforcement learning,” arXiv preprint arXiv:1511.06581, 2015.
+[15] W. Jiang, and G. Cheng, “Optimization and quantitative evaluation
+mechanism of energy efﬁciency model on wireless sensor networks,”
+Journal of Harbin Institute of Technology, vol. 46, no. 5, pp. 87-94,
+2014.
+[16] L. J. Lin, “Reinforcement learning for robots using neural networks,”
+Ph.d.thesis Carnegie Mellon University, 1993.
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:24:28 UTC from IEEE Xplore.  Restrictions apply. 

@@ -1,0 +1,591 @@
+--- PAGE 1 ---
+
+ UAV as a Data Ferry for a Sparse Adaptive WSN   
+Pejman A. Karegar and Adnan Al-Anbuky  
+Electrical and Electronic Engineering  
+Auckland University of Technology  
+Auckland, New Zealand 
+Email: {pejman.karegar, Adnan.Anbuky}@aut.ac.nz 
+ 
+ 
+Abstract —Using UAVs as mobile data ferries can amplify groun d 
+network performance by mitigating the impact of hor izontal radio 
+pollution on the environment. Designing an energy-e fficient UAV 
+communication with a randomly distributed ground se nsors via 
+enhancing the ground network structure dependent to  the UAV 
+path has been one of the challenges for the UAV-ass isted WSN 
+data gathering efforts. This paper aims at developi ng an approach 
+c a l l e d  ‘ U A V  F u z z y  T r a v e l  P a t h ’  t h a t  s u p p o r t s  U A V  s m ooth 
+trajectory planning in gathering data of distribute d wireless 
+sensors over a large space. The dynamic orchestrati on of ground 
+wireless sensors grouping has been considered in th is paper for 
+improving the network performance in data collectio n. This offers 
+a more dynamic and flexible network that interact w ith the UAV 
+planned path. Preliminary results of testbed simula tions reflect 
+that the proposed software define ground network sy stem has 
+presented promising outcomes in terms of network performances 
+such as network latency and packet delivery rate.  Further work 
+is required for testing the scheme on a wider range  of software 
+defined WSN and UAV flight formations. 
+ 
+Keywords—Unmanned Aerial Vehicle (UAV), Wireless Sen sor 
+Networks (WSN), Fuzzy UAV route, UAV path Planning 
+I. INTRODUCTION  
+In the last decades, WSNs have witnessed explosive growth 
+among the research hot topics. Radio pollution and energy 
+efficiency are of significant challenges within lon g range ground 
+network communication. There are various approaches to 
+mitigate the energy usage and radio pollution of ground 
+networks. One solution is through the usage of UAV which 
+offers more flexibility and manoeuvrability in both  data 
+capturing and coverage capabilities’ used cases. This can 
+significantly reduce the energy consumption of the entire system 
+by timely scheduling the air-to-Ground communication based 
+on the UAV’s presence [1]. In this regard, Chiaraviglio, L. et al. 
+[2] have proposed an energy-efficient approach for UAV-aided 
+cellular network used case that provides preferable  
+performances in both throughput maximization and en ergy 
+optimisation based on realistic scenarios.  Considering wireless 
+network energy efficiency and fairness in UAV-enabled data 
+gathering used case, Software-Defined Network (SDN)  
+approach has recently attracted much attention, whe re the 
+control plane has been separated from the data plan e using a 
+central controller such as a cloud computation proc essor. The 
+control plane carries the logical processes and all  relevant 
+decisions regarding managing network structure, whi le the data 
+plane delivers the packets towards the most appropr iate 
+interfaces which is the cloud processing centre. The separation of these two planes allows to route traffic intelli gently and 
+optimally reorchestrate the network structures base d on the 
+network requirement performances to benefit WSN in terms of 
+network components’ energy usages [3]. This paper a ims at 
+taking advantage of designing low-complexity and sm ooth 
+trajectory that enables the UAV to interact with up dated SNs 
+representatives through SDN reorchestration process . The main 
+contributions of the paper are summarized as follow . First, we 
+apply the concept of software defined WSN on UAV fl ight path 
+region called ‘UAV Fuzzy Path’ considering the abil ity for 
+dynamic network reorchestration. This offers the fl exibility for 
+the UAV path design through the re-election of the gateways 
+within the ground sensor nodes to fit the relaxed p ath. Next, we 
+utilise a software defined dynamic topology reorche stration 
+process in which the role of network components has  been 
+identified based on a proposed fitness model. To fa cilitate the 
+communication interaction between the UAV and the g round 
+network, an SDN-enabled control/data packet frame has been 
+designed to transfer the control/data plane through both 
+configuration and execution phases. The rest of thi s paper is 
+organized as follows. In the next section, we discu ss previous 
+related works. Section III presents the proposed al gorithms. 
+Section IV evaluates the proposed algorithm through extensive 
+simulations. Section V concludes this paper and giv es some 
+future work suggestions.  
+II. RELATED  WORK 
+Numerous studies have dealt with data collection us ed cases 
+of the UAV from a distributed sensor network where the UAV 
+visits the sensor nodes one by one or through the sensor nodes 
+representatives. The aim is to maximise the network  
+performance by mitigating the risk of high network latency and 
+packet drop rate to identify the shortest UAV path that can serve 
+the maximum data points within the permissible oper ational link 
+during a limited flight time. To this end, Karunani thy et al. [4] 
+utilised UAV as an intelligent data collector for water irrigation 
+application in which a number of randomly distributed sensor 
+nodes disseminated their data to the UAV based on a suggested 
+UAV-Ground communication structure. To minimise sig nal 
+attenuation, they proposed a communication transact ion 
+diagram in which the UAV initiates the communicatio n by 
+broadcasting a beacon signal to the corresponding S Ns. To 
+guarantee that the relevant sensing data packets ha ve been 
+uploaded to the UAV properly, Samir et al. [5] has suggested a 
+novel data collection algorithm from the time const rained IoT 
+devices. However, with rising the number of distributed sensor 
+284
+978-1-6654-9927-9/22/$31.00 ©2022 IEEE APCC 20222022 27th Asia Pacific Conference on Communications (APCC) | 978-1-6654-9927-9/22/$31.00 ©2022 IEEE | DOI: 10.1109/APCC55198.2022.9943645
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:23:44 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 2 ---
+
+nodes in the field, the complexity of the system is  excessively 
+high that declines the data capturing fairness among the network 
+components. The Software defined Network (SDN) concept has 
+been reflected in multiple applications such as off loading the 
+computation of UAV-assisted vehicles network to exe cute 
+computationally complex and time-sensitive tasks wh ile at the 
+same time mitigating the risk of higher network latency and 
+packet drop rate [6]. Zhang et al. [7] have also ut ilised SDN 
+concept at internet of UAVs where the entire networ k can 
+“forward looking” the uploaded information to potentially idle 
+nodes in order to achieve the optimized system perf ormance [8]. 
+Furthermore, to examine the realistic communication  link prior 
+to the real-world implementation testing, there are  several 
+methods to virtualise the network behaviour within the cloud 
+[9]. Many researchers now consider WSN virtualizati on as a key 
+enabling technology in their WSN deployments. Achar yya et al. 
+[10] propose the WSN virtualization unit which util ises Cooja 
+network simulator running the virtual sensor cloud model that 
+supports SDN concept. Al-Hamid et al. [11] suggest the concept 
+of virtualisation for the vehicular network formati on and 
+grouping. Moreover, Samir et al. [12] have utilised a novel 
+design for UAV-aided vehicular networks to process fresh 
+information before the carried information loses its value prior 
+to transferring to the UAV. The UAV data gathering method can 
+be enhanced through the analysis of the UAV flight path and the 
+integration with softwarization concept. In our pre vious work 
+[13], the preliminary idea of fuzzy path approach has been 
+studied. In this paper, the proposed approach consi ders a 
+geographical grouping structure with one or more re presentative 
+nodes that can act as ground data collection point( s). 
+Nomination of the active collection points will the n be made 
+according to the proposed fitness model design within the cloud. 
+This not only leads to a more efficient and smooth UAV travel 
+planning but can help to route the network traffic fairly. The 
+UAV smooth flight path should be aligned with the u pdated 
+network structure analysis bringing fairness on the  power 
+consumption of gateway capable nodes per round. The  scheme 
+has been modelled and tested using Contiki Cooja ne twork 
+simulator.  
+ 
+III. SYSTEM MODEL 
+UAV based data collection is typically based on eit her 
+direct communication with individual nodes or through group 
+representative nodes (are referred to as gateways).  Based on this 
+arrangement, while the grouping offers more efficient approach 
+for communicating the data, it still restricts the UAV path for 
+collecting the data to limited options once physica l topology of 
+each group on ground sensor nodes is set. The quest ion here is, 
+can we relax the options for the UAV path by allowi ng the 
+gateways to be selected to align with the global da ta collection 
+path? This allows for the groups topologies to be r edefined 
+through software dynamically. Here, the gateways co uld be 
+software redefined to suite the travel route defini tion. The above 
+stated concept of creating what we refer to as a ‘F uzzy flight 
+Path’ utilizes the capability to software redefine the groups 
+representatives or network topology to align with t he UAV flight smooth path. The fuzzy path concept is based on the  capability 
+of switching the sensor node from a leaf node funct ionality to a 
+gateway one. These sensor nodes are referred as gat eway-
+capable nodes. The proposed topology organization e ases the 
+UAV path design by bringing the efficient and smoot h path 
+within the proposed UAV path fuzzy range and offeri ng the 
+flexibility of adaptive gateway selection closer to  the UAV path. 
+An example of smooth UAV path has been shown in Fig.1-IV. 
+The proposed model is highly dependent on the perce ntage of 
+gateway-capable nodes distribution. As shown in Fig .1 I-IV, the 
+nominated gateways have been represented with solid -line 
+circles for each group while the remining potential  gateways 
+have been depicted with dashed-line circles in the network 
+structure.  
+ 
+           
+I. II. 
+              
+                              III.                                                                                       IV. 
+Fig.1 the design of fuzzy route and smooth path wit h various distribution of 
+gateway-capable nodes (from Fig. I to Fig. IV. the distribution of gateway-
+capable nodes increased)  
+ 
+A. The proposed network communication system 
+The proposed network communication structure plan 
+is based on dividing the entire system into three m ain 
+communicating sub-units: Ground Network, Drone, Clo ud 
+stations. Ground Network may contain three types of  nodes that 
+are identified as three main roles in WSN. These ar e Leaf, 
+Router and Gateway roles. A given node may have one  or more 
+of these roles at the same time. The drone station is the mobile 
+vehicle serves to capture the data from ground and relay it to 
+the cloud over the Internet for real-time post-processing 
+assessments and virtualization of main stations. Th e network 
+communication messages are split into two main mess ages: 
+sensing data information messages and control infor mation 
+messages. As the main goal of data acquisition effo rt is on 
+passing the sensing data information messages, the control 
+information messages have the responsibility to con vey the 
+ground network topological configuration data such as election 
+data from the cloud-level to the ground network and  assigning 
+the optimal functions to each component of the netw ork in the 
+285
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:23:44 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 3 ---
+
+initial configuration phase. The proposed generic t opological 
+arrangement has been depicted in Fig.2. The communi cation 
+dialogue among the three acting sub-units includes both 
+configuration planning and data collection executio n phases. 
+Configuration planning phase aims at: 
+1. Collecting the control data by the UAV on available  
+gateways and the relevant nodes that can access the m 
+and passing the control data to the Cloud. 
+2.  Cloud level analysis of the collected control data and 
+identifying the elected gateways and related networ k 
+structure and operational parameters. 
+3.  Passing the outcomes of the analysis from cloud to  the 
+ground networks within control data information 
+offering the updated ground networks set up. 
+The data collection execution phase is a subsequent  phase 
+running the UAV movement within the designed update d fuzzy 
+route in collecting the ground sensing data. 
+ 
+B. Various roles in the network system 
+I. Leaf node 
+These nodes are predefined as leaf nodes prior to t he UAV 
+traveling; They are not in direct connection with t he UAV either 
+through the control information transmission phase or data 
+gathering phase. Leaf nodes have the key functional ity of the 
+data acquisition from connected sensors and passing  the sensing 
+data information as well as the critical control in formation to 
+the upper-level routers or gateways. Leaf nodes als o have the 
+capability of being software redefined, both throug h a given 
+upper-level router or through operational functiona lities such as 
+activation or deactivation of a given query or data processing 
+function.  
+ 
+II. Router-Capable node 
+These nodes have the capability to be software defi ned as 
+a fully functioned Router node or a reduced functio ned Leaf 
+node by the control packets received through the ga teway. Once 
+they have been elected as routers, they can transfer the 
+information from other leaf nodes through multi-hop  
+communication protocol to an upper-layer router or active 
+gateway(s). They are assumed not to have direct con nectivity 
+with the UAV. Their roles as routers/leaf nodes are  assigned by 
+the UAV in the initial configuration phase.  
+ 
+III. Gateway-Capable node 
+These nodes have the capability to be software defi ned to 
+act as Gateways, Routers, and/or Leaf nodes. Since they have 
+been distributed in random positions within each gr oup, they 
+can offer different network topologies such as tree or star ones 
+for each group depending on their updated softwariz ed 
+functionalities. They also define the fuzzy region of the UAV 
+path. Once they have been elected as the Gateways f or a given 
+network of sensors, they have been assigned to capt ure the data 
+information coming from the leaf and router nodes a nd forward 
+that to the drone in the execution phase. Their rol es have been notified by the drone in the configuration phase. I n a large-scale 
+distribution of networks, the topological arrangeme nt may 
+consist of more than one node configured as a gatew ay by the 
+remote cloud server. Although the presence of multi ple 
+gateways causes distributed burst of data forwarded  to the 
+drone, utilising multiple gateways in a large-scale  can help to 
+prevent rapid energy draining of the limited number  of 
+gateway-configured nodes, and it improves the relia bility by 
+mitigating the risk of the failure of a single gate way. It will also 
+help offering the wider option of UAV fuzzy route w here the 
+route can dynamically be changed to suit either the drone flight 
+path or the ground role redistribution in balancing the energy 
+expenditure. 
+ 
+ 
+Fig.2 topological arrangement for WSN data gatherin g 
+  
+IV. Drone-level 
+The UAV serves as an access point to the remote clo ud 
+server via acting as an upper-level router between the Gateways 
+and the cloud platform (for both upstream flow of c ontrol data 
+of the topological setting phase relevant to availa ble regional 
+nodes and the normal operational process of data co llection 
+phase and downstream flow of reconfiguration of sta tions). 
+Once the ground networks are defined, the UAV can r esume 
+regular ground sensing data collection. 
+ 
+V. Cloud-level computation 
+The UAV transfers the status of the ground nodes ca pability 
+data to the cloud where the decisions for gateway and router 
+elections have been made by utilising a proposed fi tness model. 
+Once the decisions have been made, the UAV fuzzy region as 
+well as the elected gateways and routers for each g roup are 
+assigned to each node’s ID within the remote cloud server. Later, 
+the decisions return to the elected routers and gat eways as well 
+as their specified leaf-nodes through the notificat ion messages 
+to reorchestrate the ground network configuration. Furthermore, 
+the cloud here is the main station for post-process ing of the real-
+world data information acquired from drone and virt ualising the 
+network components and topology.  
+286
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:23:44 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 4 ---
+
+C. Communication messages 
+The communication among the UAV and ground is based on a 
+set of control/sensing data information messages th at needs to 
+be passed over the cloud to either get the network configured 
+during the configuration phase or gather the sensing data 
+through execution phase. The sequence diagram of the 
+messages’ transmission within the control and data flow 
+execution phases has been depicted in Fig.3. The 
+communication messages transaction among each netwo rk 
+component has been designed as follows: 
+Once the gateway nodes receive _  (message 
+number one in Fig.3) from the UAV, they pass the me ssage to 
+the routers and lower-level leaf nodes to inform about the 
+presence of the UAV. Then the nodes switch their tr ansmitter on 
+to broadcast their initial predefined functionaliti es (Leaf node, 
+potential router, or potential gateway), along with  the sensor’s 
+position, the magnitude of   and battery power level which 
+are three criteria on defining the fitness model el ection over 
+cloud computation ( _  within message number two in Fig. 
+3). The proposed packet frame format for _  in UAV-
+Ground communication is suggested based on Fig. 4. The first 
+message field of the payload within the proposed fr ame involves 
+the transferring time slot along with the ID of the  corresponding 
+Router/Gateway. The next three packet fields involve 
+‘maximum capacity’, ‘current number of connected no des’ and 
+‘current level’ reflecting the updated ground netwo rk structure. 
+The ‘maximum capacity’ packet field places a bounda ry on the 
+maximum number of supported nodes (leaf or lower-le vel router 
+nodes) of each router/gateway node. The ‘current number of 
+connected nodes’ field represents the current numbe r of attached 
+nodes (leaf/lower router nodes) to the router/gatew ay. The 
+‘current level’ message field stands for the level of the 
+corresponding node with respect to the higher-level  gateway. 
+Finally, the last three fields consist of the three  operational 
+factors associated with gateway/router own data inc luding 
+‘RSSI’, ‘battery level’ and ‘relative location’ whi ch are the key 
+factors in fitness model decision making. The lengt h of data 
+frame body for _  is highly dependent on the number of 
+ground networks transferring to the UAV in the init ial 
+configuration phase, which is assumed variable here . 
+ 
+ 
+Fig. 3 Sequence diagram illustrating the messages t ransmission through control 
+and data information dissemination phases Then, once the election decision has been made with in the 
+remote cloud server, the UAV serves to notify the u pdated 
+elected gateways and routers on their new roles by disseminating 
+ messages (messages number three). The potential ro uters 
+and gateways that are not selected as router and gateway have 
+been switched over to the role of reduced functione d leaf nodes 
+( message notifies the updated function definition p lus 
+information about the SSID of the lower and upper-l evel nodes).  
+ 
+ 
+Fig.4 the control packet frame design in configurat ion phase on UAV-Ground 
+network 
+ 
+The suggested data packet frame for  on notifying on 
+the updated ground functionalities is designed as F ig.5. Besides 
+the ‘SSID’ segment of transferred packet field in t he notification 
+data frame, the ‘functionality’ packet field repres ents the 
+updated functionality of the potential node (either  Gateway or 
+Router). This packet field consists of 2 octets cre ating multiple 
+functional messages by utilising a binary code. Fur thermore, 
+within the ‘SSID Lower-Level’ segments, the node ID s of 
+involved leaf nodes or lower routers have been assi gned. The 
+‘SSID Higher-Level’ packet specifies the ID of a hi gher-level 
+node either a Gateway or a router. These two segmen ts in the 
+packet frame design reflect the number of updated u pper level 
+and lower-level connections per node. These packet frames are 
+relayed to the potential router/gateway nodes in in itial 
+configuration phase to redefine the functionality o f the potential 
+nodes plus to reorchestrate the entire network stru cture based on 
+the updated connections among nodes. For assigning the lower-
+level nodes to the higher-level ones (such as assigning a number 
+of leaf nodes to a specified router), the Euclidean  distance 
+among the leaf nodes and the router has been considered for 
+updated groups’ formation. The length of data frame  body for 
+ is highly dependent on the number of potential 
+routers/gateways distributed in the network, which is considered 
+as variable here.  
+ 
+ 
+Fig.5 packet frame design for notification messages  coming from the UAV to 
+the Ground (Routers and Gateways) 
+ 
+Finally in the software-defined execution phase, on ce the 
+UAV returns to the elected gateways, the normal flo w of sensed 
+data from the leaf nodes relaying to the elected ro uter and 
+gateway (messages number 4) resumes and passes over  the 
+UAV (message number 5).  
+287
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:23:44 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 5 ---
+
+D. Fitness election model 
+The suggested parameters in the fitness model elect ion 
+process for the involved potential gateways and routers are 
+briefly expressed as: Link quality based on Radio Signal 
+Strength Intensity (RSSI):  The link quality between a UAV 
+and its neighbour gateways is obtained by using the  information 
+of received signal strength indication (RSSI) of re ceived 
+packets. The link quality between UAV and each netw ork 
+component, LQ can be expressed as [6]: 
+ 
+  =
+
+−
+
+
+         (1)  
+ 
+Here,  is the total number of RSSI samples received on 
+the UAV from each gateway and  is the RSSI value of the -
+th sample. Lower the LQ parameter is the higher lik elihood of 
+electing as gateway and router node. Battery power level:  The 
+battery level of each participant router/gateway  is another 
+parameter in fitness election model. More the gatew ay and 
+router participate in the data flow dissemination, the amount of 
+their remained batteries is dropped more. Fuzzy path distance 
+factor:  The portion of proximity of the UAV smooth path to  
+the gateway-capable nodes  is presumed as another factor for 
+gateway/router election process. The intention here is to 
+manipulate the data gathering UAV path to get it closer to the 
+smooth deigned path sequentially which can be done as a part 
+of cloud computation. Consequently, the fitness mod el for the 
+gateway/router election is mathematically expressed  as bellow: 
+ 
+_ =  ×   +× +×                (2) 
+ 
+   is the link quality factor of the gateway node th 
+received on the UAV.  is the battery power level of gateway 
+node th.  is the fuzzy path distance factor of gateway node 
+th.  ,  and  denote three weights assigned for each of three 
+parameters dependent on the priority of each factor  based on the 
+updated network structure.  
+ 
+IV. MODEL  TESTING  AND  EVALUATION   
+Based on the defined step process of software defin ed 
+communication system among the network components, the 
+model has been categorized into the proposed major sub 
+processes as following. The preliminary model on gr ound 
+network has been analysed based on Contiki Cooja ne twork 
+simulator. 
+ 
+A. Software defined configuration phase simulation 
+outcomes 
+The ground simulation model consists of three group s of 
+nodes (Leaf, Router and Gateway nodes) which are di spersed 
+randomly on the field to pass the control/sensing data 
+information to the UAV and cloud for initial/post p rocessing 
+computations. The communication transactions among one group of sensor nodes considering the initial confi guration 
+phase have been illustrated within Fig. 6. The aver age network 
+latency performance measure has been calculated for  each hop 
+by Cooja network simulator. The control packet fram e has been 
+defined the same as the proposed packet frame in th e last 
+section. As shown in Fig.6, after receiving the _  from 
+the UAV on the receiver of each node, the communication 
+transaction is initiated from the leaf nodes to upp er levels. In 
+the second round, once the remote server works out on the 
+election of software defined nodes, the UAV returns  to inform 
+the elected routers and gateways on their new roles  based on the 
+proposed packet frame designed on Fig. 5. On the next round, 
+the network structure is reconfigured based on the new 
+functions allocation and the UAV captures the lates t data based 
+on the updated router and gateway node’s functional ity. Table. 
+1 has depicted the network performance for the desi gned 
+configuration phase for one transaction of control data flow.   
+ 
+ 
+Fig.6 the simulated network architecture for one sp ecified group 
+ 
+Table.1 the network performance for the designed in itial configuration phase 
+for one transaction of control data flow 
+Leaf Node Transmitted Packets 9 Packets 
+Router Transmitted Packets     12 Packets + Packets disseminated 
+by other Lower-Level Nodes 
+Accumulated Packets 
+ Received on GW 33 Packets 
+Transmission Rate/Polling 
+Rate  () 1 Sample per Second 
+Number of Hops First 
+Hop  
+Latency Second 
+Hop 
+Latency  Third 
+Hop 
+Latency End-to-
+end 
+Latency 
+Average Network Latency 
+() 455 480 535 1520 
+ 
+B. Software defined execution phase simulation outc omes 
+The air-to-ground communication interaction among t he 
+UAV and gateway nodes has been simulated in CupCarb on. It 
+is presumed that the UAV starts its trajectory from  a point 
+outside the communication window of gateways and 
+sequentially travels through each gateway’s connect ivity 
+window and finally departs from the associated wind ow of last 
+gateway. The percentage of the gateway-capable nodes’ 
+distribution, D, is scaled up from 5% to 30% of the  entire sensor 
+nodes population to evaluate the network communicat ion 
+288
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:23:44 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 6 ---
+
+performance. Furthermore, the impact of UAV velocit y on the 
+network efficiency has been assessed. Fig. 7 has in dicated the 
+impact of different ranges of UAV speed on the pack et delivery 
+ratio starting from  = 5 /  to  = 40 / . With increasing 
+the UAV speed, the number of dropped packets has been 
+grown, since the UAV has shorter time to communicat e with 
+the gateways.  
+ 
+Fig.7 the effect of increasing the speed of the UAV  on Packet Delivery 
+Ratio [13] 
+ 
+ 
+V. CONCLUSION AND FUTURE WORK  
+This work introduced a concept that could offer an energy 
+efficient UAV assisted WSN data gathering model. Th e 
+approach uses software defined network for the dist ributed 
+sensor networks over large spaces. The dynamic orch estration 
+of the ground network has been contributed by provi ding 
+flexibility in setting the UAV flight path. This of fers potentials 
+for efficient UAV data collection mission in both f ield coverage 
+and flight energy consumption. The ground network 
+performance has been improved through the WSNs capa bility 
+for dynamically assigning the data routing nodes ba sed on the 
+UAV trajectory within a region called fuzzy path. F or future 
+work, further validation of this concept through fi ne tuning of 
+the UAV path and WSN dynamics and reducing the over head 
+required for the dynamic orchestration within vario us used 
+cases, scales of networks and operation domains wil l be 
+conducted.   
+VI. ACKNOWLEDGMENTS   
+This work is supported by New Zealand Callaghan 
+Innovation Funding for Auckland University of Technology 
+and Envico Ltd. under the contract number of 
+EACTE1901/PROP-65197-FELLOW-EACTE. 
+ 
+REFERENCES  
+[1]    Zhan, C., Y. Zeng, and R. Zhang, “Energy -eff icient data collection in 
+UAV enabled wireless sensor network”, IEEE Wireless  Communications 
+Letters, 2017, pp. 328-331. 
+[2]      Chiaraviglio, L., D’Andreagiovanni, F., Li u, W., Gutierrez, J. A., Blefari-
+Melazzi, N., Choo, K. K. R., & Alouini, M. S., “Mul ti-area throughput and 
+energy optimization of UAV-aided cellular networks powered by solar panels 
+and grid”. IEEE Transactions on Mobile Computing, 2 020, 2427-2444. 
+[3]    B. G. Assefa and Ö. Özkasap, “A survey of en ergy efficiency in SDN: 
+Software-based methods and optimization models”, J.  Netw. Comput. 
+Appl., vol. 137, pp. 127_143, 2019. 
+[4]      Karunanithy, K. and B. Velusamy. “Energy efficient cluster and travelling 
+salesman problem-based data collection using WSNs f or Intelligent water 
+irrigation and fertigation”. Measurement, 2020, pp. 107835. 
+[5]     Samir, M., Sharafeddine, S., Assi, C. M., N guyen, T. M., & Ghrayeb, A., 
+“UAV trajectory planning for data collection from t ime-constrained IoT 
+devices”. IEEE Transactions on Wireless Communicati ons, 2019, pp. 34-46. 
+[6]   Pu, C., “Link-quality and traffic-load aware routing for UAV ad hoc 
+networks”. In 2018 IEEE 4th International conferenc e on collaboration and 
+internet computing (CIC), PA, USA, 2018, pp. 71-79. IEEE. 
+[7]    Zhang, C., Dong, M., & Ota, K., “Deploying S DN control in Internet of 
+UAVs: Q-learning-based edge scheduling”. IEEE Transactions on Network and 
+Service Management, 2021, 18(1), 526-537.  
+[8]     Zhang, C., Dong, M., & Ota, K., “Deploying SDN cont rol in Internet of UAVs: 
+Q-learning-based edge scheduling”. IEEE Transactions on Network and Service 
+Management, 2021, 526-537. 
+[9]       Al-Hamid, D. Z . and A. Al-Anbuky, “ Vehicular Grouping Protocol: Towards 
+Cyber Physical Network Intelligence ”. 2021 IEEE International Conferences on 
+Internet of Things (iThings) , 2021, IEEE. 
+[10]  Acharyya, I.S., A. Al-Anbuky, and S. Sivaramakrishnan, “Software-
+defined sensor networks: towards flexible architect ure supported by 
+virtualization”. 2019 Global IoT Summit (GIoTS), Aarhus, Denmark. IEEE. 
+[11]   Al-Hamid, D.Z. and A. Al-Anbuky, “Vehicular grouping and network 
+formation: virtualization of network self-healing”.  International Conference on 
+Internet of Vehicles, Paris, France, 2018, Springer . 
+[12]    A Samir, M., Assi, C., Sharafeddine, S., Eb rahimi, D., & Ghrayeb, A., 
+“Age of information aware trajectory planning of UA Vs in intelligent 
+transportation systems: A deep learning approach”. IEEE Transactions on 
+Vehicular Technology, 2020, 69(11). 
+[13]     Karegar, P. A., & Al-Anbuky, A., “Travel P ath Planning for UAV as a 
+Data Collector for a Sparse WSN”. 17th Internationa l Conference on 
+Distributed Computing in Sensor Systems (DCOSS), Vi rtual Event, 2021, pp. 
+359-366, IEE
+ 
+289
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:23:44 UTC from IEEE Xplore.  Restrictions apply. 

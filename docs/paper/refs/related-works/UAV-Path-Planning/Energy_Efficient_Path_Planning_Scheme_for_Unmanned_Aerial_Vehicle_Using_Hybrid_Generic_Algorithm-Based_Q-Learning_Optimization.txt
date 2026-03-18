@@ -1,0 +1,1423 @@
+--- PAGE 1 ---
+
+Received 9 November 2023, accepted 29 November 2023, date of publication 19 December 2023,
+date of current version 29 January 2024.
+Digital Object Identifier 10.1 109/ACCESS.2023.3344455
+Energy Efficient Path Planning Scheme for
+Unmanned Aerial Vehicle Using Hybrid Generic
+Algorithm-Based Q-Learning Optimization
+RASHID A. SAEED
+1, (Senior Member, IEEE), ELMUSTAFA SAYED ALI
+2,
+MAHA ABDELHAQ3, (Member, IEEE), RAED ALSAQOUR
+4, (Member, IEEE),
+FATIMA RAYAN AWAD AHMED5, AND ASMA MOHAMMED ELBASHIR SAAD6
+1Department of Computer Engineering, College of Computers and Information Technology, Taif University, Taif 21944, Saudi Arabia
+2Department of Electronics Engineering, College of Engineering, Sudan University of Science and Technology (SUST), Khartoum 11111, Sudan
+3Department of Information Technology, College of Computer and Information Sciences, Princess Nourah bint Abdulrahman University, P.O. Box 84428,
+Riyadh 11671, Saudi Arabia
+4Department of Information Technology, College of Computing and Informatics, Saudi Electronic University, Riyadh 11673, Saudi Arabia
+5Computer Science Department, Prince Sattam bin Abdulaziz University, Riyadh 65131, Saudi Arabia
+6Department of Physics, College of Science and Humanities, Prince Sattam Bin Abdulaziz University, Al-Kharj 16273, Saudi Arabia
+Corresponding author: Maha Abdelhaq (msabdelhaq@pnu.edu.sa)
+This work was supported in part by Princess Nourah bint Abdulrahman University under Project PNURSP2023R97; in part by Princess
+Nourah bint Abdulrahman University, Riyadh, Saudi Arabia; and in part by the Deanship of Scientific Research, Taif University.
+ABSTRACT Efficient path planning optimization strategies are required to maximize flying time while
+consuming the least energy. This research offers a novel approach for energy-efficient path planning
+for Unmanned Aerial Vehicles (UA Vs) that combines a hybrid evolutionary algorithm and Q-learning
+while accounting for the UA V’s velocity and distance from obstacles. To overcome the constraints of
+traditional optimization approaches, the hybrid methodology combines genetic algorithms and Q-learning.
+The suggested approach optimizes path-planning decisions based on real-time information by considering
+the UA V’s velocity and distance from obstacles. Genetic Algorithm (GA) creates a wide collection of
+candidate pathways. In contrast, Q-learning uses reinforcement learning to make educated selections based
+on the UA V’s present velocity and proximity to static obstacles. This integration allows the UA V to modify
+its path dynamically based on its energy requirements and environmental constraints. The main goal is
+to develop a UA V path planning scheme capable of dealing with obstacle-filled environments to improve
+energy efficiency and collision avoidance during flight missions. Our experimental results show that the
+hybrid technique outperforms the classical GA method in terms of energy efficiency by significantly
+reducing energy consumption while maintaining a suitable collision rate and the best path cost to the desired
+locations. The analysis results improve the performance of the hybrid GA/QL algorithm by more than 57.14%
+compared to classical GA.
+INDEX TERMS AI, energy efficiency, path planning, unmanned aerial vehicles, energy optimization, hybrid
+genetic algorithm, Q-learning, obstacle avoidance, GA.
+I. INTRODUCTION
+Unmanned aerial vehicles (UA Vs) have received a lot of
+interest in recent years because of their diverse uses in
+domains like surveillance, monitoring, delivery, and aerial
+The associate editor coordinating the review of this manuscript and
+approving it for publication was Guillermo Valencia-Palomo
+ .photography [1]. However, UA Vs’ limited onboard energy
+storage capacity continues to be a significant concern, lim-
+iting their operational capabilities and flying endurance.
+Path planning optimization methods must efficiently maxi-
+mize flight time and minimize energy consumption, allow-
+ing UA Vs to complete complex missions with limited
+resources [2]. Path planning algorithms for UA Vs have
+13400
+2023 The Authors. This work is licensed under a Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 License.
+For more information, see https://creativecommons.org/licenses/by-nc-nd/4.0/ VOLUME 12, 2024
+--- PAGE 2 ---
+
+R. A. Saeed et al.: Energy Efficient Path Planning Scheme for UAV
+traditionally depended on deterministic approaches, such
+as A∗or Dijkstra’s algorithm, which consider static envi-
+ronments and stated objectives. While these approaches
+can uncover plausible pathways, they frequently fail to
+optimize energy efficiency or adapt to changing mission
+requirements [3]. To solve these constraints, current research
+has looked into incorporating artificial intelligence (AI)
+approaches into path planning optimization, allowing UA V to
+make informed decisions based on real-time data and learning
+from previous experiences.
+Swarm intelligence (SI) algorithms have emerged as
+powerful tools for optimizing the path planning of UA Vs.
+Inspired by social insect collective behaviour and other
+natural occurrences, these algorithms provide decentralized
+and self-organized solutions to complicated optimization
+problems [4]. Generic algorithm (GA) and Particle Swarm
+Optimization (PSO) have been widely utilized to opti-
+mize UA V trajectories while considering issues such as
+obstacle avoidance, mission objectives, and energy effi-
+ciency. Ant Colony Optimization (ACO) replicates ant
+foraging behaviour and has been used to discover ideal
+UA V paths while taking topography, meteorological condi-
+tions, and mission requirements into account [5]. Another
+UA V path planning approach that considers dynamic
+environments and real-time limitations is Bee Colony
+Optimization (BCO), which is inspired by honeybee
+behaviour.
+Hybrid swarm intelligence systems have shown potential
+in optimizing UA V path planning, particularly in complicated
+circumstances. Even with their achievements, issues like scal-
+ability and in-the-moment decision-making still arise. As a
+result, combining them with machine learning methods and
+attending to safety and security issues will improve path
+planning optimization and guarantee effective, flexible, and
+mission-focused UA V operations.
+This study proposes a novel approach for energy-efficient
+path planning optimization in UA Vs by integrating a hybrid
+genetic algorithm and Q-learning. The suggested algorithm
+uses both techniques’ advantages to overcome conventional
+approaches’ drawbacks. Genetic algorithms provide a global
+search by producing a wide variety of possible iterations.
+In contrast, using reinforcement learning, Q-learning makes
+selections depending on the UA V’s velocity and proximity to
+obstacles. The program may dynamically adjust the UA V’s
+course based on real-time input by combining these two
+strategies, maximizing energy consumption while consider-
+ing mission-specific limits.
+The primary goal of this project is to increase the
+energy efficiency of UA Vs by developing an optimized
+path-planning algorithm that considers both global search
+capabilities and real-time decision-making. The hybrid
+genetic algorithm and Q-learning approach take the UA V’s
+velocity and closeness to obstacles into account, allowing it
+to discover energy-efficient pathways that avoid collisions
+and optimize flying time. We intend to demonstrate our
+suggested strategy’s higher performance and effectivenessthrough comprehensive simulations and comparisons with
+existing path-planning algorithms.
+A. STUDY MOTIVATION
+This study used a Genetic Algorithm (GA) and Q-learning
+combination to solve a UA V path planning energy efficiency
+challenge. These are some of the goals that this study can
+address:
+■Minimize Energy Consumption: The suggested method
+enables the UA V to identify the optimum path that min-
+imizes overall energy consumption, ensuring resource
+efficiency.
+■Minimize Collision Rate: The Hybrid GA/QL tech-
+nique allows for the calculation of the collision rate,
+which indicates the likelihood of the UA V collid-
+ing with objects, and the identification of pathways
+that minimize the collision rate, providing safe and
+collision-free navigation.
+■Minimize Cost/Time: The Hybrid GA/QL assesses the
+fitness of everyone in the population, showing the cost
+or time required to achieve the goal, and allowing for
+the discovery of paths that minimize the cost or time
+required to complete the mission, optimizing efficiency
+and productivity.
+■Optimize Path Planning: The use of GA and Q-learning
+together seeks to determine the best pathways for the
+drones. The goal may be to find paths that optimize
+several characteristics such as distance, velocity, and
+obstacle avoidance, resulting in efficient and successful
+navigation.
+B. THE CONTRIBUTIONS
+The study makes prospective contributions by conduct-
+ing novel research using the proposed approach for
+energy-efficient path planning optimization.
+■Hybrid Optimization Approach: Examine the effective-
+ness of combining GA with Q-learning in a hybrid
+optimization strategy for UA V path planning, and eval-
+uate how the interaction of these two algorithms might
+lead to better solutions in terms of energy consumption,
+collision rate, best cost, and overall performance.
+■The trade-off between Adaptive Exploration and
+Exploitation: Investigate methods for dynamically
+adjusting the Q-learning process’ exploration and
+exploitation rates. Examine how an adaptive strategy
+can produce greater convergence and more effective path
+planning by balancing the exploration of new paths with
+the knowledge that has been acquired based on two
+parameters such as UA V velocity and its safe distance
+from the obstacles.
+■Obstacle Avoidance: this allows for the incorporation of
+dynamic obstacle avoidance skills.
+Overall, the main contribution is to advance energy-efficient
+path planning optimization for UA Vs, with the potential
+to greatly improve operating capabilities, prolong flight
+VOLUME 12, 2024 13401
+--- PAGE 3 ---
+
+R. A. Saeed et al.: Energy Efficient Path Planning Scheme for UAV
+endurance, and enable effective resource utilization in a wide
+range of applications. We note that the proposed study is
+important because it addresses some of the challenges in the
+field of UA V technology, which are related to energy effi-
+ciency and the ability to adapt to complex environments. The
+proposed solution enables to improvement of path planning to
+reduce energy consumption by adjusting speed according to
+the safe distance between UA V and obstacles which may con-
+tribute significantly to building UA V systems and promoting
+responsible and sustainable use.
+The rest of this paper is structured as follows: Section II
+presents a technical overview of UA V path planning optimiza-
+tion. The modelling and problem formulation are presented
+in Section III. Section IVexamines the techniques and the
+proposed hybrid genetic algorithm-based Q-learning strategy.
+Section Vprovides the simulation setup and experimental
+results, and Section VIdiscusses them. Finally, Section VII
+provides the paper’s conclusion.
+II. TECHNICAL BACKGROUND
+Much research has recently been done to address the issues
+of optimizing energy-efficient path planning for unmanned
+aerial vehicles (UA Vs). Researchers have investigated various
+ways, including merging classical algorithms with mod-
+ern optimization techniques and artificial intelligence (AI)
+methodologies [5]. Most combination approaches attempt to
+build algorithms capable of adapting to dynamic situations,
+avoiding obstacles, optimizing velocity control, and coordi-
+nating many UA Vs [6]. These approaches seek to improve
+energy efficiency, mission capabilities, and the ability of
+UA Vs to function effectively in various settings.
+Recent studies have shown that swarm algorithms (SA) and
+machine learning (ML) algorithms can help UA V plan their
+paths more energy-efficient manner. These methods enable
+efficient computing while navigating complex settings. Addi-
+tionally, these methods can be integrated to boost UA V
+path planning’s energy efficiency and process optimization.
+Poudel et al., 2021 describe a hybrid path planning (HPP)
+algorithm for effective data collection by assuring the shortest
+collision-free path for UA V emergencies. The probabilistic
+roadmap (PRM) technique creates the shortest trajectory map
+in the proposed HPP scheme. The optimized artificial bee
+colony (ABC) approach is used to better distinct path restric-
+tions in a three-dimensional environment. Regarding flight
+time, energy consumption, convergence time, and flight path,
+the findings of the results reveal that the proposed HPP beats
+the PRM and standard ABC schemes significantly.
+Yuwen et al. 2021 provide the deep learning trained by GA
+(DL-GA) technique for addressing the issues of multi-UA V
+path planning in difficult settings. The authors emphasize
+the need for well-planned pathways to lower UA V numbers
+and energy consumption. The innovative DL-GA approach
+combines the GA and DL taking use of the speed and
+problem-solving skills of DL. GA takes data from many
+circumstances to train a deep neural network. This results in
+quick path optimization, especially suitable for scenarios withtight deadlines. The experimental findings show that DL-GA
+beats GA in solving speed without sacrificing optimization
+capacity.
+Wang et al. 2022 consider the UA V’s energy usage and
+the data gathering model. The proposed study aims to create
+a multi-objective UA V path planning model using improved
+particle swarm optimization and genetic algorithms. It sug-
+gests a hybrid method (IPSO-GA) to properly plan the
+UA V data-collecting path. Simulated trials therefore assess
+the effectiveness of this approach. The experimental results
+demonstrate that the hybrid method (IPSO-GA), based on
+enhanced particle swarm optimization and genetic algorithms
+can successfully build a path that effectively covers all data
+nodes while requiring the fewest number of UA Vs.
+Balasubramanian et al. 2022, the present study aims to
+develop an optimal energy-efficient path planning algorithm
+by combining the well-known Modified Ant Colony Opti-
+mization (MACO) algorithm and a Memory-Efficient A∗
+Algorithm (MEA∗) for obstacle avoidance in a three-
+dimensional (3D) environment and path access optimized for
+minimum power use. The proposed method combines the
+two effective algorithms mentioned above to improve the
+UA V path planning task. The hybrid method enables avoiding
+obstacles and finding an efficient path. During the simula-
+tion, the UA V attained the best trajectory during flight tests,
+and the total power consumption of the UA V was com-
+pared using the MACO-MEA∗algorithm which obtained
+21% lower power consumption and 55% faster execution time
+than the MACO-A∗technique.
+Dongcheng et al. 2022 proposed study focuses on
+quality-oriented UA V path planning and addresses local
+dynamic hierarchical planning and global static planning.
+Shorter planning timeframes and improved execution effi-
+ciency are achieved by developing a three-dimensional UA V
+path planning model and optimizing the A∗algorithm, search
+strategy, step size, and cost function. Furthermore, the sug-
+gested scheme incorporates the dynamic exploration factor
+into QL to tackle the exploration-exploitation conundrum
+and facilitates local dynamic path modifications. When these
+methods are combined, an algorithm for global-local hybrid
+UA V path planning is produced. The suggested model and
+algorithm are useful for tackling path planning concerns asso-
+ciated with UA Vs, such as dependability, security, and safety,
+as evidenced by simulation results that show how well they
+improve path quality.
+Saeed et al., 2022 reviewed the features and characteris-
+tics of many swarm optimization techniques, including ant
+colony optimization (ACO), fruit fly optimization (FOA),
+artificial bee colony (ABC), and particle swarm optimization
+(PSO). Furthermore, the paper thoroughly assesses the most
+important papers on drone path planning algorithms. The
+authors concentrated on the swarm algorithm’s influence and
+performance in drone path planning. They described one of
+the most commonly used algorithms to enhance the trajectory
+of drones relying on swarm intelligence, as well as its impact
+on the optimal path cost of drones. The results of the ACO
+13402 VOLUME 12, 2024
+--- PAGE 4 ---
+
+R. A. Saeed et al.: Energy Efficient Path Planning Scheme for UAV
+algorithm’s performance study in a 3D and 2D-dimensional
+environment are presented and discussed, and then the ACO’s
+performance is compared to the upgraded ACO algorithm.
+The suggested approach achieves fast convergence, hence
+speeding up the path-planning process.
+Faten et al., 2023, give a thorough systematic analysis of
+the literature on path-planning methods for multiple UAS.
+The review focuses on biologically inspired algorithms in
+particular because of their potential to solve issues related
+to multiple UA V path planning problems. A taxonomy of
+existing algorithms is also offered, along with a description
+of their evolution in the literature. The study presents an
+organized and comprehensible overview of bio-inspired path-
+planning algorithms for academics interested in this field. The
+provided classification is significant because it allows for the
+study of different bio-inspired UA V path-planning algorithms
+within a single framework and highlights the main design
+elements of the algorithms to allow for extensive comparison.
+Ahmed et al, 2023, provide an energy-efficient coverage
+path planning algorithm to handle the coverage path planning
+problem. The goal is to build a collision-free coverage path
+that consumes the least energy while covering the full region.
+During the simulation, the flight path was optimized and
+the number of rotations was lowered to save energy. The
+proposed method divides the ROI into cells depending on the
+UA V camera footprint. The coverage path planning problem
+is then developed, and the precise solution is determined. The
+proposed strategy provides a better solution in an acceptable
+period for small-scale problems. However, for large-scale
+issues, the technique fails to develop a solution in a reasonable
+time.
+Alejandro et al., 2024, use Q-learning to self-adapt
+the drone tasks and improve path planning through
+obstacles-based map environment by learning from its suc-
+cesses and mistakes. The study used five different-sized
+maps, each with a unique set of obstacles and a different
+number of drones. The number of actions each drone took to
+complete the task in each trial was counted to determine the
+quality of the results. The suggested method yields findings
+indicating that the system achieves solutions with fewer
+movements as the number of UA Vs rises. The results indicate
+that applying the Q-learning method in path planning suits
+working on maps with obstacles.
+According to what was discussed in the related works, it is
+clear that the Swarm intelligence (SI) algorithms and ML
+used together to optimize energy-efficient UA V path planning
+have several benefits, including the ability to learn from data,
+tap into collective intelligence, manage complicated settings,
+and increase compute efficiency [6]. These methods can be
+combined to create effective and flexible path planning for
+UA Vs, enhancing energy consumption and overall UA V per-
+formance. The various techniques shown in figure 1can be
+utilized to enhance path planning for UA V.
+In UA V path planning, various classical path planning
+methods have been widely employed. Most of these algo-
+rithms are concerned with determining the shortest orleast-cost path from a starting point to a destination while
+considering static settings and stated objectives [7]. While
+they work well in simple circumstances, they frequently fail
+to adapt to changing impediments or optimize energy con-
+sumption. The following algorithms and methodology are
+employed in the UA V path planning strategy to optimize
+energy usage.
+FIGURE 1. Intelligent approaches for energy-efficient path planning
+optimization.
+A. GENETIC ALGORITHMS (GA)
+Due to their capacity to operate in complex and dynamic
+situations, genetic algorithms (GAs) have become increas-
+ingly popular in UA V path planning optimization. For GAs
+to work, a population of candidate paths represented by chro-
+mosomes must be generated. These candidate paths must be
+repeatedly evolved using genetic operators like mutation and
+crossover [8]. GAs can search a large solution space and find
+energy-efficient paths by considering a variety of prospective
+paths and assessing their fitness considering predetermined
+objectives.
+The GA uses genetic operators like mutation and crossover
+during evolution to produce new offspring by fusing and
+altering the fittest members of the preceding generation [9],
+[10]. Iteratively, the area covered and the energy used by each
+created path are considered during the fitness evaluation. The
+UA V energy consumption model considers flight direction,
+altitude, and speed variables. Up until a termination criterion,
+such as a maximum number of iterations or convergence
+of fitness values, is met, the GA continues to evolve the
+population, favouring individuals with higher fitness [10].
+VOLUME 12, 2024 13403
+--- PAGE 5 ---
+
+R. A. Saeed et al.: Energy Efficient Path Planning Scheme for UAV
+FIGURE 2. Flowchart of GA algorithm.
+The fittest chromosome from the last generation repre-
+sents the optimal course for the UA V to take to achieve
+an energy-efficient flight while covering the whole region
+of interest. The GA procedure is demonstrated in the steps
+below. The flowchart of a general algorithm is shown
+in Figure 2.
+■Chromosome Representation: The GA chromosome is
+a series of waypoints the UA V must navigate. Each
+waypoint is denoted by Wi(x, y) or Wi(x, y, z) for the
+waypoint’s 2D or 3D coordinates.
+■Population Initialization: Create a population of chro-
+mosomes with a size of N and initialize it as P =
+[C1,C2,..., CN], where each chromosome Cidenotes
+a potential path, the UA V could take.
+■Fitness Evaluation: Assess the fitness of each chro-
+mosome in the population using the following fitness
+function.
+Fitness (C i)=W1×Coverage (C i)+W2×proximity (C i)
+(1)
+where, coverage (C i) is the region of interest that is covered
+by following the path indicated by chromosome Ci, and prox-
+imity (C i) is the distance between the path and any obstacles.
+■Selection: Select parents from the population using a
+selection method such as tournament or roulette wheel
+selection with S selection rate.
+■Crossover: To generate child chromosomes, perform
+crossover between selected parent chromosomes with a
+crossover rate of C.■Mutation: To introduce random alterations, apply muta-
+tion to the offspring chromosomes, with a mutation
+rate of M. The mutation can include changing specific
+waypoints or adding/deleting waypoints.
+■Fitness Evaluation (Offspring): Using the same fitness
+function as before, assess the fitness of the offspring
+chromosomes.
+■Elitism: Keep the best individuals (elite chromosomes)
+from the previous generation intact in the next gen-
+eration. An elitism rate of E determines the elite
+chromosomes [10].
+■Termination Condition: When a termination criterion
+is satisfied, such as reaching a maximum number of
+iterations (Max Iterations) or achieving fitness value
+convergence [9], terminate the GA evolution process.
+■Optimal Solution: In the final generation, the fittest
+chromosome reflects the optimal path the UA V should
+take to accomplish energy-efficient flight while covering
+the whole area of interest.
+The UA V can effectively navigate the surroundings, avoid-
+ing obstacles and preserving energy throughout its mission
+using the GA for energy-efficient path planning. The ability
+of the GA to explore a varied collection of possible paths
+and optimize fitness based on both coverage and energy con-
+sumption allows the UA V to discover an optimal option that
+balances mission requirements with energy efficiency [10].
+B. Q-LEARNING (QL) ALGORITHM
+Q-learning, a type of reinforcement learning technique, has
+been used to optimize UA V path planning. Reinforcement
+learning enables the UA V to learn from its interactions with
+its surroundings, allowing it to make intelligent decisions
+based on rewards or penalties [11]. Q-learning algorithms
+learn the best policy that minimizes energy consumption and
+maximizes rewards depending on the UA V’s current state by
+expressing the path planning problem as a Markov Decision
+Process (MDP).
+The following stages are utilized in the procedure for the
+Q-learning algorithm in the context of UA V energy-efficient
+path planning [12]. The Q-learning flowchart is depicted in
+Figure 3.
+■State Representation: The UA V’s current condition dur-
+ing the path planning process is represented by the letter
+S, which stands for the UA V’s status. The state may
+contain details about the UA V’s location, speed, sepa-
+ration from obstacles, and other pertinent factors [13].
+■Action Representation: Define the UA V’s actions as
+A, which represents the range of potential actions the
+UA V may do in a specific condition. Actions that can
+be taken in path planning include choosing the next
+waypoint, modifying velocity, and altering altitude.
+■Q-table: Keep track of a Q-table called Q (S, A) where
+the learnt Q-values for each state-action pair are kept.
+The Q-values show the anticipated future benefits of
+performing a particular action at a particular condition.
+13404 VOLUME 12, 2024
+--- PAGE 6 ---
+
+R. A. Saeed et al.: Energy Efficient Path Planning Scheme for UAV
+FIGURE 3. QL algorithm flowchart.
+■Initialization: Initialize the Q-table with random values
+or zeros.
+■Exploration vs. Exploitation: An exploration-exploitation
+trade-off parameter, such as epsilon (), is used to
+balance the exploration of novel behaviours and the uti-
+lization of learnt knowledge. Choose a random action
+with probability or, with probability 1-, the action with
+the highest Q-value during the learning process [14].
+■Q-value Update Rule: Update the Q-values based on
+the Q-learning approach.
+■Reward Assignment: Assign awards based on energy
+efficiency and task fulfilment goals. Assign good
+awards for efficiently reaching waypoints, and negative
+rewards for collisions or excessive energy use [14].
+■State Transition: Based on the selected course of action
+and the existing environmental conditions, update the
+UA V’s state. This entails modifying the position, speed,
+altitude, and other pertinent aspects of the UA V.
+■Termination Condition: When a termination criterion is
+satisfied, such as reaching a maximum number of itera-
+tions or achieving Q-value convergence, the Q-learning
+process is terminated.
+■Optimal Solution: The UA V is guided by the learnt
+Q-values in the Q-table to choose actions and make
+educated decisions that result in energy-efficient path
+planning and successful mission completion.
+C. HYBRID GA/QL APPROACHES
+To optimize UA V path planning, hybrid approaches that mix
+evolutionary algorithms and reinforcement learning methodshave shown promise. These methods build various possible
+courses using genetic algorithms’ global search capabilities
+and then apply reinforcement learning to adjust and refine
+the paths based on current data [15]. Hybrid algorithms may
+efficiently balance exploration and exploitation by combining
+these two methods, which enhances energy efficiency and
+adaptability.
+The fitness evaluation is the foundation for a broad
+framework for executing the hybrid genetic algorithm and
+Q-learning approach in the UA V energy-efficient path plan-
+ning context. The fitness value is the problem’s optimal
+solution [16]. It uses the chromosome value with the best
+fit out of all those compared at each iteration. A new chro-
+mosome is formed for each cycle, along with its fitness
+rating.
+Learning makes it possible to assess each chromosome’s
+fitness within the GA population. The cumulative rewards
+earned throughout the Q-learning process can be used to
+assess fitness [17]. Update the Q-values based on the
+Q-learning equation using the hybrid technique afterward.
+It enables to expression of the state of the UA V using per-
+tinent variables such as location, velocity, and distance from
+obstacles and balances the exploration of new actions with
+the exploitation of obtained knowledge using an exploration-
+exploitation trade-off parameter [18]. The Q-values based
+on the hybrid GA-Q-learning are updated according to the
+following equation.
+Q (S, A) =(1−α)×Q (S, A)
++α×(R+γ×max [Q(S′,A′)]) (2)
+where, Q (S, A) represents the Q-value for state S and
+action A. αis the learning rate. R is the reward received after
+taking action A at state S. γis the discount factor determining
+future rewards’ importance. S′represents the next state and
+A’ represents the next action. max [Q(S′, A′)] represents the
+maximum Q-value for the next state.
+D. REQUIRED SCHEME
+Developing algorithms that solve obstacle avoidance with
+minimal energy consumption in real-time path planning
+approaches is a prominent priority in UA V path plan-
+ning optimization. To enable UA Vs to detect and avoid
+static obstacles during flight, the goal of the needed
+scheme must include a potential field-based approach, veloc-
+ity obstacles, and reactive collision avoidance [19]. The
+proposed scheme considers the UA V’s current position,
+velocity, and distance from obstacles to construct safe
+and energy-efficient pathways. The generated pathways are
+made up of straight-line segments that connect all the
+given control points a UA V must cover from start to fin-
+ish[20]. Such a path is unsuitable for a UA V to follow
+since it necessitates immediate angular velocity and energy
+changes.
+VOLUME 12, 2024 13405
+--- PAGE 7 ---
+
+R. A. Saeed et al.: Energy Efficient Path Planning Scheme for UAV
+FIGURE 4. UAV path planning system model.
+III. MODELING AND PROBLEM FORMULATION
+The energy-efficient path planning problem in our suggested
+approach is established by specifying the waypoints the UA V
+will visit while travelling from start to end locations. The fol-
+lowing sections describe our proposed study’s general energy
+and optimized solution models.
+The UA V path planning system model is shown in figure 4.
+The UA V is tasked with locating the target position in a
+2-dimensional environment while avoiding collisions with
+objects and using as little energy as possible. The coordinate
+system (x, y) serves as the definition of the 2D environment
+space. Within this area, the UA V can move around freely. The
+UA V needs to reach a specified spot where the environment
+is known as the target location.
+The UA V will move from its starting point toward its
+target while avoiding collisions with obstacles. The optimal
+path (shortest) for the UA V’s travel is chosen depending on
+the distance from obstacles, and make velocity balancing at
+which it moves through them, which will achieve energy
+efficiency.
+A. UAV GENERAL ENERGY MODELLING
+By defining the energy consumption by ecijdue UA V travel
+from point i to point j, the UA V travelling decision will take
+place according to i and j waypoints coordinates by the αiβi
+andαjβjrespectively [20]. The following equation calculates
+the distance between the current UA V as i waypoint and
+possible future obstacles as j waypoint.
+disntance ij=/radicalig/parenleftbig
+αi−αj/parenrightbig2+/parenleftbig
+βi−βj/parenrightbig2(3)
+The energy expended along this travelling path based on
+the distances between i and j waypoints denoted by xij[21]can be used to solve the energy-efficient path design problem.
+Min/summationdisplayn
+i=1/summationdisplayn
+j=1ecij×xij (4)
+where, eijbe the energy consumption between waypoints i
+and j. and xijrepresents whether UA V at i will be assigned to
+the end location j. the ecijcan be calculated by the following
+equation.
+ecij=Pv×t (5)
+where, Pvis the power required to perform travelling with
+velocity v across time t. In the suggested study, the UA V must
+calculate its velocity and distance from the obstacle to move
+in a safe environment. When the UA V travels along a path that
+consumes EC per unit distance, the total energy consumption
+cost can be estimated as follows [21].
+ECT=ecij×disntance ij+ecij×tv (6)
+where, tvrepresents the time discretization when a UA V must
+hover for some time along its path to avoid colliding with
+obstacles.
+B. ENERGY-BASED VELOCITY AND DISTANCE CONTROL
+MODELING
+Our problem definition aims to reduce the overall UA V path
+planning energy consumption. The goal is to determine a path
+that gets to the desired location while balancing energy use,
+UA V speed, and closeness to obstacles. By setting additional
+variables of a given scenario, as t denotes the time index or
+discretized time step. vtdenote the UA V’s velocity at time t.
+anddtbe the distance from the UA V to the nearest obstacle
+at time t.
+13406 VOLUME 12, 2024
+--- PAGE 8 ---
+
+R. A. Saeed et al.: Energy Efficient Path Planning Scheme for UAV
+The issue is determining how to define an energy model
+that ties the velocity and control inputs of the UA V to energy
+usage [22]. Let E(v t,ut), where vtis the UA V velocity and
+utis the control input such as power setting, representing
+the energy consumption of the UA V at time t. The UA V
+characteristics will determine this model, such as its power
+consumption.
+A function that considers the UA V dynamics and control
+inputs might be employed to represent energy consumption.
+This issue is addressed by developing an objective function
+to lower the overall energy consumption on the track [23].
+The total energy consumed throughout all time steps might be
+referred to as the objective function given by the following.
+Minimize/summationdisplay
+tE(vt,ut) (7)
+To change how important these variables are to the objec-
+tive function, weights or scaling factors can be applied for
+velocity and the separation from obstacles. Let αandβbe
+the scaling factors for velocity and distance, respectively.
+It is possible to express the modified objective function as
+follows.
+Minimize/summationdisplay
+t(α×E(vt,ut)+β×f(dt)) (8)
+where the function f(d t) measures how far obstacles are
+from the system and how much energy they consume. The
+exact relationship between distance and energy consumption
+determines the shape that f (dt)will take. The speed and
+distance constraints from obstacles are included to ensure
+UA V safety and feasibility during the route planning process.
+These constraints are as follows.
+■UA V speed limits: vmin≤v_t≤vmax, where vminand
+vmaxare the minimum and maximum allowable speeds,
+respectively.
+■Minimum distance from obstacles: dt≥dmin, where dmin
+is the pre-defined minimum safe distance.
+■Other dynamics UA V limitations also will be considered
+including limitations on acceleration, communication
+cost, and Radius of UA V for collision detection.
+According to the preceding equations, the goal is to reduce
+the number of rotations while minimizing energy consump-
+tion by optimizing the energy problem function based on the
+UA V velocity and distance from the obstacles [23]. To tackle
+our optimization problem, we employed a hybrid GA with
+QL technique to discover the optimum path with the least
+amount of energy. We assume in our suggested approach that
+the present UA V location to its end point calculations are
+straight lines in an obstacle-free environment. When comput-
+ing collision-free pathways, the UA V is assumed to be in a 2D
+plane to consume the least energy and spend the least path
+cost[24].
+IV. METHODOLOGY AND PROPOSED SOLUTION
+An energy-efficient path planning technique is provided to
+develop solutions for optimal path planning with low energyusage. The algorithms utilized include GA and Q-learning,
+which allow the UA V path planning to be optimized to ensure
+a realistic collision-free path. We set the traveling coordinates
+for UA Vs to (x i,yi) and (x j,j) respectively. The suggested
+hybrid GA and Q-learning technique would allow the UA V
+to identify the best path-planning solutions while travelling
+through the provided coordinates. The best solution is based
+on optimizing the GA fitness function by Q-learning to learn
+and update the best solution results during population calcu-
+lation and other fitness functions based on two criteria, the
+UA V velocity and distance from the obstacles. Algorithm 1
+describes the proposed energy-efficient path planning com-
+putational approach.
+The hybrid GA-QL algorithm begins with the population
+being initialized using the Genetic Algorithm (GA). Process
+in algorithm 2 evaluates the fitness of each chromosome
+in the population. The GA then evolves the population by
+performing selection, crossover, and mutation operations on
+the offspring chromosomes, resulting in fitter offspring chro-
+mosomes. The Q-table is then initialized using the fittest
+chromosomes from the GA [24].
+The Q-learning method is used to select the best course
+of action for each state. The Q-value is updated using the
+Q-learning equation, considering the reward and the max-
+imum Q-value for the following state. The UA V moves to
+the next state based on the action selected, and the process
+is repeated until convergence or the maximum number of
+iterations is reached. Throughout the process, the hybrid
+technique uses a -greedy policy to balance exploration and
+exploitation [25]. The state and action are updated, and the
+incentive is assigned based on mission fulfilment and energy
+efficiency. The stages in the flowchart are repeated until the
+termination condition is reached.
+The proposed algorithm depicts the processes involved
+in the hybrid GA-Q-learning strategy for optimizing UA V
+energy-efficient path planning. It shows how the GA and
+Q-learning components collaborate to refine the solution iter-
+atively and converge on an optimal path. Furthermore, when
+calculating velocity and distance fitness, the dynamic scaling
+factor technique is applied to improve the capacity to modify
+the relative relevance or weightage given to the velocity and
+distance fitness components. Algorithm 3depicts the scaling
+factor approach technique.
+The hybrid GA-based Q-learning optimization makes it
+possible to dynamically change the relative relevance of the
+velocity and distance fitness components based on the learned
+Q-values by applying this dynamic scaling factor to those
+components. The scaling factor rises as the Q-value rises,
+emphasizing the significance of the corresponding fitness
+component in total fitness assessment [26]. It is important
+to keep in mind that the precise formulation and parame-
+ters of the dynamic scaling factor may change based on the
+problem’s demands and the Q-learning algorithm’s unique
+characteristics. Experiment and adjustment may be required
+to determine the best values for k that produce the desired per-
+formance and balance between the fitness components [27].
+VOLUME 12, 2024 13407
+--- PAGE 9 ---
+
+R. A. Saeed et al.: Energy Efficient Path Planning Scheme for UAV
+Algorithm 1 Hybrid GA/Q-Learning Optimization
+input: variables, UA V parameters, population size, max generations
+setfitness, energy consumption, collision rate, and best cost arrays
+setQ-table and UA V positions arrays
+forgeneration=1: max generations do
+calculate travelling time;
+calculates GA fitness by Equation (1)
+setnumber of elite (elite percentage, population size)
+calculates the elite indices(fitness)
+findthe next generation by population (elite indices)
+findthe number of offspring (population size – number elite)
+fori=1: number of offspring do
+use tournament selection to find parents & apply crossover to find a new solution
+fori=1: population size do
+calculates velocity, and distance
+state index =state index (velocity, distance)
+ifstate Index <exploration rate then
+action=get random action(population)
+else
+action=get best action (Q (state index))
+end if
+findnew velocity & new distance based on action and new position
+calculating velocity and distance fitness by Algorithm 3
+ifnext state index <=number of states then
+findnext Q value based on max Q value for next state index
+calculate reward =calculate reward (new distance) +calculate reward (new velocity)
+calculate Q (state index, action) by Equation (2)
+setpopulation (velocity) =new velocity; population (distance) =new distance;
+end if
+population (find (fitness ==min(fitness), 1));
+Best offspring =offspring/next state index;
+Next Generation =concatenate (next Generation, best offspring);
+evaluate fitness by Algorithm 2
+find best population, best fitness
+calculate energy Consumption, collision Rate, best Cost, path Lengths
+end for
+end for
+Algorithm 2 Evaluated Fitness Function
+initialize function
+input: communication Range, collision Radius, path Weight, communication Weight,
+collision Weight
+forgeneration=1: population do
+calculate energy consumption and collision rate
+set path cost =sum (population, 2);
+calculate velocity fitness and distance fitness
+both fitness =velocity fitness +distance fitness
+evaluated fitness =both fitness +path weight ×path cost +communication weight ×
+energy consumption +collision weight ×collision Rate
+end for
+According to the demands or priorities of the challenge,
+the scaling of the fitness values emphasizes or de-emphasizes
+elements of the fitness evaluation process. The proportionalweighting of velocity and distance fitness in assessing overall
+fitness can be customized using this scaling factor [28]. The
+GA evolves the population through its actions, producing
+13408 VOLUME 12, 2024
+--- PAGE 10 ---
+
+R. A. Saeed et al.: Energy Efficient Path Planning Scheme for UAV
+Algorithm 3 Dynamic Scaling Factor Approach
+initialize state and action for Q-table using fittest chromosomes
+fori=1: population size do
+Ifconvergence is not reached and maximum iterations are not exceeded then
+observe current state
+choose action using Q-learning algorithm (based on ε-greedy policy)
+update Q-value using Q-learning equation
+transition to next state based on the chosen action
+assign reward based on energy efficiency and mission completion
+update state and action
+end if
+initialize Dynamic Scaling Factor Approach
+Setscaling factor parameters k (magnitude), β(control), and Q(Q-value)
+calculate dynamic scaling factor based on problem requirements or priorities
+scaling =k×(1 – exp (-β ×Q));
+evaluate fitness =scaling ×velocity fitness +(1 - scaling) ×distance fitness
+update velocity fitness using the scaling factor
+update distance fitness using the scaling factor
+end for
+FIGURE 5. UAV path selection scenario.
+offspring with fitter chromosomes and modified fitness val-
+ues. In assessing the fitness of the offspring, the scaling
+factor influences how important velocity and distance are on
+a relative basis.
+V. SIMULATION SCENARIO AND PARAMETERS
+Given an obstacle-filled region of interest and a UA V, the goal
+is to discover an energy-efficient way for the UA V to navigate
+while covering the whole area of interest. The path plan-
+ning problem is an optimization challenge to minimize the
+UA V’s energy consumption while assuring mission success.
+We consider an area of interest in a 2D space, represented as a
+rectangular rectangle with dimensions (X ×Y) for a specified
+scenario of UA V path planning optimization [28], [29], [30],
+[31]. Moreover, we assume 6 static obstacles in the area
+of interest, represented as polygons or circles with known
+positions and shapes. By setting that the UA V has a maximumvelocity ( Vmax), maximum altitude (A max), and a predefined
+battery capacity (B c) that determines its energy limitations.
+Figure 5shows the UA V best path selection scenario.
+In the given scenario, the UA V must move and be able to
+navigate the region of interest using the best possible path.
+The best path (shortest) is a set of waypoints with (x, y)
+coordinates that completely cover the area and avoid hitting
+any obstacles. The scenario considers most constraints, those
+related to coverage, obstacle avoidance, and UA V operation,
+to account for the best path planning [32]. However, energy
+consumption should be considered as one of the limitations
+affecting the optimization of the path planning because the
+UA V can take a long time to travel if the route is not chosen
+considering the effect of energy consumption.
+In the scenario, a hybrid algorithm is introduced to enable
+optimal path planning to avoid obstacles based on distance
+from the obstacles and to adjust the UA V velocity based
+VOLUME 12, 2024 13409
+--- PAGE 11 ---
+
+R. A. Saeed et al.: Energy Efficient Path Planning Scheme for UAV
+TABLE 1. Parameter simulation.
+on the path and distance parameters. The UA V can identify
+potential collision risks by continuously measuring the dis-
+tances from obstructions. The velocity is changed to steer
+clear of the obstruction when the distance drops below a
+predetermined threshold (min distance). The usage of hybrid
+Genetic Algorithm (GA)/Q-Learning, and distance-based
+velocity adjustment all help to discover the target’s path
+efficiently [33], [34], [35]. The UA V tests out different paths,
+velocities, and techniques to arrive at the target in the shortest
+amount of time. The UA V can manoeuvre easily around
+obstacles, avoiding needless turns, and providing the shortest
+possible overall path through dynamic speed adjustments to
+ensure energy efficiency.
+During its flight, the UA V must pass over the entire respec-
+tive area. This can be described as a constraint that ensures
+that each point in the region of interest is a specific distance
+from the drone path. UA V must avoid collisions with barriersto comply with the obstacle avoidance limitation [36]. This
+can be described as a limitation that prevents the UA V’s path
+from crossing any obstacles. Operational limits for UA Vs’
+velocity, distance and capability must fall within predefined
+ranges. The simulation results presented in this study for eval-
+uating the effectiveness of the proposed strategy are based on
+simulation scenario settings according to the criteria specified
+in Table 1.
+VI. SIMULATION RESULTS AND DISCUSSION
+The simulations make a comparison for the following
+evaluations.
+■Evaluation experiment of optimization method GA and
+QL approach
+■Evaluate the impact of Velocity and distance fitness
+dynamic scaling
+■Compare the performance of hybrid GA-based
+Q-learning against GA for UA V optimizing the
+energy-efficient path planning approach
+The testing and evaluation experiments are performed to
+assess the validity and effectiveness of proposed methods by
+using MATLAB 2020 as follows.
+A. EVALUATION EXPERIMENT OF OPTIMIZATION
+METHOD
+With the UA V task moving from start to end point, both GA
+and hybrid GA-based Q-learning optimization methods are
+simulated. The distance and velocity calculations are based
+on the chromosomal process with a population size of 40 at
+the start. The other GA parameters with the highest rate are
+as follows: mutation is set to 0.01, and crossover is set to 0.7.
+We obtained the path length and optimal fitness functions
+after simulating the algorithms with different iteration num-
+bers of 200, 4002, 600, and 800, as shown in Table 2 [37]. The
+optimal fitness function represents the difference between
+the cost and revenue functions. In addition, the path length
+describes the path that the UA V takes in meters.
+The results show that in all iteration numbers, the hybrid
+GA-based Q-learning provides a superior and optimal com-
+putation impact than GA. This suggests that the proposed
+hybrid GA-based Q-learning performs better computation-
+ally. Furthermore, the hybrid GA-based Q-learning continues
+to perform better as the number of iterations increases [38].
+As can be seen, the fitness function for GA in 600 and
+800 iterations yields almost the same value 0.4, but the hybrid
+GA-based Q-learning yields substantially better values rang-
+ing from 0.3 to 0.2. Both algorithms produce near values in
+all iteration numbers for path length. However, the hybrid
+GA-based Q-learning uses less path length, which means it
+performs better than standard GA [39].
+Furthermore, the results consider the computations of var-
+ious fitness function average values (minimum, maximum,
+and mean) for both GA and hybrid GA-based Q-learning with
+iteration numbers of 200, 400, 600, and 800. Figure 6shows
+how the suggested hybrid GA-based Q-learning improves
+performance during the UA V experiment.
+13410 VOLUME 12, 2024
+--- PAGE 12 ---
+
+R. A. Saeed et al.: Energy Efficient Path Planning Scheme for UAV
+FIGURE 6. Average min, max and mean fitness function values of GA and GAQL using different iteration
+times.
+VOLUME 12, 2024 13411
+--- PAGE 13 ---
+
+R. A. Saeed et al.: Energy Efficient Path Planning Scheme for UAV
+FIGURE 6. (Continued.) Average min, max and mean fitness function values of GA and GAQL using different iteration
+times.
+TABLE 2. Path length and fitness function for GA and hybrid GA-based Q-learning.
+According to the statistical findings in (a), (b), (c), and (d)
+related to Figure 6, hybrid GA-based Q-learning allows the
+UA V to fly in a smooth flight path with high fitness function
+indices [40]. Figure 6 (a, b,c, and d)shows that hybrid GA-
+based Q-learning produces the best statistical fitness function
+values across all iterations. This indicates that our suggested
+method performs better when compared to traditional GA and
+allows most simulation times to locate the optimal options for
+path planning optimization.
+B. IMPACT OF VELOCITY AND DISTANCE DYNAMIC
+FITNESS SCALING
+The suggested scheme enables the hybrid GA-based
+Q-learning processes to dynamically modify the fitnessscaling of UA V velocity and distance from obstacles accord-
+ing to the Q states [41]. The effects of the scaling parameters
+for velocity and distance from obstacles on the GA and hybrid
+GA-based Q-learning method for UA V energy-efficient path
+planning optimization are shown in Tables 3and4. When
+employing the dynamic fitness scaling with 1000 iterations,
+the evaluation of both GA and hybrid GA-based Q-learning
+is seen.
+As demonstrated in table 3, dynamic changes in veloc-
+ity scaling factors between [0, 1] with a constant distance
+factor of 0.5 positively impact the process of hybrid GA-
+based Q-learning, providing improved performance in total
+energy consumption, collision rate, and best cost. The same
+results were obtained in table 4for the influence of a change
+13412 VOLUME 12, 2024
+--- PAGE 14 ---
+
+R. A. Saeed et al.: Energy Efficient Path Planning Scheme for UAV
+TABLE 3. Impact of velocity scaling factors with distance factor=0.5 in 1000 iterations.
+TABLE 4. Impact of distance from obstacles scaling factors with velocity facotr=0.5 in 1000 iterations.
+in distance scaling factors between [0, 1] with a constant
+velocity factor of 0.5 [42], [43], [44], [45], [46]. The ability
+to change the relative priority or weightage assigned to these
+two fitness components in the overall fitness evaluation is
+improved by including a scaling factor in computing velocity
+fitness and distance fitness. The dynamic scaling of both
+velocity and distance scaling factors allows the UA V path to
+be evaluated based on the safe path and energy problem needs
+using valuable Q learning.The results in Tables 3and 4show that modifying
+the proposed velocity and distance scaling factors will
+affect the balance between the importance of velocity
+and distance in the fitness evaluation [47]. By approxi-
+mating the values of speed and distance while travelling
+from start to finish point over barriers, adjusting the mea-
+surement values for each of the two parameters deter-
+mines the ideal values according to the path planning
+requirements.
+VOLUME 12, 2024 13413
+--- PAGE 15 ---
+
+R. A. Saeed et al.: Energy Efficient Path Planning Scheme for UAV
+C. PERFORMANCE OF GA-BASED QL PATH PLANNING
+OPTIMIZATION
+In terms of total energy consumption, collision rate, best
+fitness, and best path cost, the overall performance of hybrid
+GA-based Q-learning for energy-efficient path planning opti-
+mization is obtained. Figure 7compares the effectiveness of
+hybrid GA-based Q-learning to GA regarding overall energy
+consumption [48]. Because the Q-learning process can move
+the drone towards energy-efficient paths by accurately find-
+ing the learned policy, which depends on the quality of the
+reward function and the training process related to several fac-
+tors such as the rate of UA V speed and distance to obstacles,
+the hybrid GA based Q-learning consumes less energy than
+GA[49].
+Figure 7shows that GA consumes more energy and is
+constant throughout iterations, whereas hybrid GA-based
+Q-learning consumes less energy, particularly at higher iter-
+ations. In general, the reduced energy consumption estimates
+obtained by Hybrid GA-based Q-Learning suggest their
+success in discovering more energy-efficient pathways for
+the UA V.
+Figure 8compares the collision rate results for hybrid
+GA-based Q-learning to GA. The collision rate results for
+GA range between 59% and 49%. These findings suggest
+that the GA method has a rather high collision rate during
+the path design process. The values vary, but they are often
+higher [50]. The Hybrid GA-QL technique, on the other
+hand, consistently shows a reduced collision rate, with values
+ranging from 48% to 47% over the same repetitions. These
+findings indicate that the Hybrid GA-based QL strategy is
+more effective in lowering collision rates during UA V path
+planning [51]. Lower collision rates imply that the pathways
+provided by the Hybrid GA-QL technique can better avoid
+obstacles and keep the UA V on a safer path.
+Figure 9depicts the best fitness for GA across 1000 iter-
+ations, with values ranging from 240 to 245 [52]. These
+findings suggest that GA can obtain somewhat acceptable
+fitness values during the path design. In contrast, the Hybrid
+GA-based QL strategy regularly outperforms GA, with fit-
+ness scores ranging from 237 to 241 over 1,000 repetitions.
+These findings suggest that the Hybrid GA-QL strategy is
+slightly more effective in identifying trajectories with higher
+fitness while optimizing UA V trajectory planning [53], [54].
+Figure 10depicts the cost findings for GA against
+the Hybrid GA-based QL method. Over 1000 iterations,
+GA shows a range of values from 46 to 70. These results
+show that GA achieves various cost values during the path
+planning process. However, the values fluctuate and in certain
+cases, larger costs are obtained [55]. On the other hand, the
+Hybrid GA-QL technique consistently displays lower cost
+values, ranging from 45 to 38 over the same 1000 cycles.
+These findings imply that the Hybrid GA-QL approach is
+more effective in finding lower-cost paths during UA V path
+planning optimizations.
+Overall results show that in several areas of UA V path
+planning optimizations, the hybrid GA-QL strategy performs
+FIGURE 7. Performance of hybrid GA-based Q-learning in terms of energy
+consumption.
+FIGURE 8. Performance of hybrid GA based Q-learning in term of
+collision rate.
+better than Genetic Algorithms (GA) [56]. In comparison to
+GA, hybrid GA-QL frequently delivers lower energy usage,
+collision rates, and cost values. This shows that the hybrid
+GA-QL method is superior at creating energy-efficient path-
+ways that prevent collisions and maximize mission goals.
+D. PERFORMANCE LIMITATIONS AND POTENTIAL
+IMPACTS
+According to performance results, the proposed hybrid
+GA-QL algorithm for UA V path planning shows good char-
+acteristics. However, it may also have several limitations and
+possible issues in real-world scenarios. First, in real-time
+applications, the computation and temporal complexity of
+the technique may cause decision delays, which may not
+be acceptable for time-sensitive UA V missions. The limi-
+tation lies in the requirement for specific tuning regarding
+the dynamic scaling factors according to UA V missions.
+Although the proposed algorithm shows that the dynamic
+factors adjusting will enhance the path planning, it is required
+to by intelligently optimized based on the real-time UA V
+mission.
+13414 VOLUME 12, 2024
+--- PAGE 16 ---
+
+R. A. Saeed et al.: Energy Efficient Path Planning Scheme for UAV
+FIGURE 9. Performance of hybrid GA-based Q-learning in terms of best
+fitness.
+FIGURE 10. Performance of hybrid GA-based Q-learning in terms of best
+cost.
+Secondly, one typical limitation of GA is the ability to
+adjust to unforeseen challenges or quickly changing sur-
+roundings may be constrained. Its responsiveness to real-time
+decision-making and real-world unpredictability may be
+hampered by QL reliance on pre-defined obstacles. The third
+issue is balancing energy efficiency with mission success
+or speed in addition to limitations related to scalability.
+We expect that the optimizing energy efficiency by the pro-
+posed algorithm can conflict with the requirement for speedy
+mission completion, even though it is essential for extending
+the UA V operational time. Balancing between meeting mis-
+sion objectives on schedule and preserving energy must be
+carefully handled during real-time missions by adjusting the
+parameters related to GA, QL and dynamic scaling velocity
+and distance factors.
+VII. CONCLUSION AND FUTURE WORKS
+To plan UA V paths that are both energy-efficient and consider
+the speed and proximity of obstacles, this study introduces
+a novel hybrid genetic algorithm and Q-learning path plan-
+ning optimizations approach. The suggested approach offers
+a practical response to the problems associated with UA Venergy consumption while considering dynamic settings and
+mission-specific limits. The experimental outcomes highlight
+the hybrid approach’s potential for real-world UA V applica-
+tions in diverse settings by showcasing its energy efficiency
+and robustness superiority.
+The innovative hybrid genetic algorithm and Q-learning
+path planning optimization approach for UA V path plan-
+ning that was successfully developed displayed extraordinary
+capabilities in solving the dual issues of energy efficiency and
+collision avoidance. Compared to GA without optimization,
+our results demonstrate the outstanding performance of the
+hybrid technique in reducing energy consumption by 43%
+while retaining a low collision rate of 75%. Q-learning sub-
+stantially contributes to the UA V path planning optimization
+scenario by enabling dynamic, energy-efficient, and safe nav-
+igation [57]. Its ability to learn and adapt based on previous
+experiences makes it an essential component of the hybrid
+genetic algorithm and Q-learning strategy, ultimately leading
+to improved results in terms of reduced energy consumption
+and decreased collision rates [58], [59].
+Future research will concentrate on dynamic obstacle
+avoidance, optimal velocity control, integrating environmen-
+tal parameters, multi-UA V coordination, and real-time adapt-
+ability for UA Vs. By addressing these issues, progress can
+be made in developing algorithms that can handle dynamic
+obstacles, optimize velocity based on energy consumption
+models, adapt to changing environmental conditions, effi-
+ciently coordinate multiple UA Vs, and dynamically adjust
+path planning in real-time. Deep reinforcement learning
+(DRL) can improve UA V path planning performance by
+addressing the limitations above by autonomously learning
+complex policies, making it well-suited for dynamic and
+unpredictable environments. DRL will help further improve
+energy efficiency and performance in UA V operations with
+the ability to address complex constraints.
+DATA AVAILABILITY STATEMENT
+The datasets generated during and/or analyzed during the
+current study are available from the corresponding author on
+reasonable request
+CONFLICTS OF INTEREST
+‘‘The authors declare no conflict of interest.’’
+REFERENCES
+[1] G. Ahmed, T. Sheltami, A. Mahmoud, and A. Yasar, ‘‘Energy-efficient
+UA Vs coverage path planning approach,’’ Comput. Model. Eng. Sci.,
+vol. 136, no. 3, pp. 3239–3263, 2023.
+[2] L. E. Alatabani, R. A. Saeed, E. S. Ali, R. A. Mokhtar, O. O. Khalifa,
+and G. Hayder, ‘‘Vehicular network spectrum allocation using hybrid
+NOMA and multi-agent reinforcement learning,’’ in Sustainability Chal-
+lenges and Delivering Practical Engineering Solutions, G. H. A. Salih and
+R. A. Saeed, Eds. Cham, Switzerland: Springer, 2023, pp. 151–158.
+[3] F. Aljalaud, H. Kurdi, and K. Youcef-Toumi, ‘‘Bio-inspired multi-UA V
+path planning heuristics: A review,’’ Mathematics, vol. 11, no. 10, p. 2356,
+May 2023.
+[4] M. Y. Arafat, M. M. Alam, and S. Moh, ‘‘Vision-based navigation tech-
+niques for unmanned aerial vehicles: Review and challenges,’’ Drones,
+vol. 7, no. 2, p. 89, Jan. 2023.
+VOLUME 12, 2024 13415
+--- PAGE 17 ---
+
+R. A. Saeed et al.: Energy Efficient Path Planning Scheme for UAV
+[5] S. Rezwan and W. Choi, ‘‘Artificial intelligence approaches for UA V
+navigation: Recent advances and future challenges,’’ IEEE Access, vol. 10,
+pp. 26320–26339, 2022.
+[6] A. Khan, J. P. Li, M. K. Hasan, N. Varish, Z. Mansor, S. Islam, R. A. Saeed,
+M. Alshammari, and H. Alhumyani, ‘‘PackerRobo: Model-based robot
+vision self supervised learning in CART,’’ Alexandria Eng. J., vol. 61,
+no. 12, pp. 12549–12566, Dec. 2022.
+[7] E. Balasubramanian, E. Elangovan, P. Tamilarasan,
+G. R. Kanagachidambaresan, and D. Chutia, ‘‘Optimal energy efficient
+path planning of UA V using hybrid MACO-MEA* algorithm: Theoretical
+and experimental approach,’’ J. Ambient Intell. Humanized Comput.,
+vol. 14, no. 10, pp. 13847–13867, Oct. 2023.
+[8] C. Yan and X. Xiang, ‘‘A path planning algorithm for UA V based on
+improved Q-learning,’’ in Proc. 2nd Int. Conf. Robot. Autom. Sci. (ICRAS),
+Wuhan, China, Jun. 2018, pp. 1–5.
+[9] S. Cui, Y. Chen, and X. Li, ‘‘A robust and efficient UA V path planning
+approach for tracking agile targets in complex environments,’’ Machines,
+vol. 10, no. 10, p. 931, Oct. 2022, doi: 10.3390/machines10100931.
+[10] J. D. S. Arantes, M. D. S. Arantes, C. F. M. Toledo, O. T. Júnior, and
+B. C. Williams, ‘‘Heuristic and genetic algorithm approaches for UA V path
+planning under critical situation,’’ Int. J. Artif. Intell. Tools, vol. 26, no. 1,
+Feb. 2017, Art. no. 1760008.
+[11] E. S. Ali, M. K. Hasan, R. Hassan, R. A. Saeed, M. B. Hassan, S. Islam,
+N. S. Nafi, and S. Bevinakoppa, ‘‘Machine learning technologies for
+secure vehicular communication in Internet of Vehicles: Recent advances
+and applications,’’ Secur. Commun. Netw., vol. 2021, pp. 1–23, Mar. 2021.
+[12] A. G. Gad, ‘‘Particle swarm optimization algorithm and its applications:
+A systematic review,’’ Arch. Computat. Methods Eng. , vol. 29, no. 5,
+pp. 2531–2561, 2022.
+[13] S. Gadal, R. Mokhtar, M. Abdelhaq, R. Alsaqour, E. S. Ali, and R. Saeed,
+‘‘Machine learning-based anomaly detection using K-mean array and
+sequential minimal optimization,’’ Electronics, vol. 11, no. 14, p. 2158,
+Jul. 2022.
+[14] G. C. S. Passos and M. H. Barrenechea, ‘‘Genetic algorithms applied to
+an evolutionary model of industrial dynamics,’’ EconomiA, vol. 21, no. 2,
+pp. 279–296, May 2020, doi: 10.1016/j.econ.2019.09.002.
+[15] H. Zhang and X. Shi, ‘‘An improved quantum-behaved particle swarm
+optimization algorithm combined with reinforcement learning for AUV
+path planning,’’ J. Robot., vol. 2023, Apr. 2023, Art. no. 8821906.
+[16] S. Jung, ‘‘Development of path planning tool for unmanned system consid-
+ering energy consumption,’’ Appl. Sci., vol. 9, no. 16, p. 3341, Aug. 2019.
+[17] K. B. de Carvalho, I. R. L. de Oliveira, D. K. D. Villa, A. G. Caldeira,
+M. Sarcinelli-Filho, and A. S. Brandão, ‘‘Q-learning based path planning
+method for UA Vs using priority shifting,’’ in Proc. Int. Conf. Unmanned
+Aircr. Syst. (ICUAS), Dubrovnik, Croatia, Jun. 2022, pp. 421–426, doi:
+10.1109/ICUAS54217.2022.9836175.
+[18] L. E. Alatabani, E. S. Ali, R. A. Mokhtar, O. O. Khalifa, and R. A. Saeed,
+‘‘Robotics architectures based machine learning and deep learning
+approaches,’’ in Proc. 8th Int. Conf. Mechatronics Eng. (ICOM), Kuala
+Lumpur, Malaysia, Aug. 2022, pp. 107–113, doi: 10.1049/icp.2022.2274.
+[19] H.-Y. Lee, H. Shin, and J. Chae, ‘‘Path planning for mobile agents using
+a genetic algorithm with a direction guided factor,’’ Electronics, vol. 7,
+no. 10, p. 212, Sep. 2018, doi: 10.3390/electronics7100212.
+[20] L. Xu, X. Cao, W. Du, and Y. Li, ‘‘Cooperative path planning optimization
+for multiple UA Vs with communication constraints,’’ Knowl.-Based Syst.,
+vol. 260, Jan. 2023, Art. no. 110164, doi: 10.1016/j.knosys.2022.110164.
+[21] L. E. Alatabani, E. S. Ali, R. A. Mokhtar, R. A. Saeed, H. Alhumyani, and
+M. K. Hasan, ‘‘Deep and reinforcement learning technologies on Internet
+of Vehicle (IoV) applications: Current issues and future trends,’’ J. Adv.
+Transp., vol. 2022, Apr. 2022, Art. no. 1947886.
+[22] M. B. Hassan, R. A. Saeed, O. Khalifa, E. S. Ali, R. A. Mokhtar, and
+A. A. Hashim, ‘‘Green machine learning for green cloud energy effi-
+ciency,’’ in Proc. IEEE 2nd Int. Maghreb Meeting Conf. Sci. Techn. Autom.
+Control Comput. Eng. (MI-STA), May 2022, pp. 288–294.
+[23] M. M. Saeed, R. A. Saeed, M. A. Azim, E. S. Ali, R. A. Mokhtar, and
+O. Khalifa, ‘‘Green machine learning approach for QoS improvement
+in cellular communications,’’ in Proc. IEEE 2nd Int. Maghreb Meeting
+Conf. Sci. Techn. Autom. Control Comput. Eng. (MI-STA), May 2022,
+pp. 523–528.
+[24] B. Mohammed et al., ‘‘Performance evaluation of multiaccess edge
+computing for blended learning services,’’ in Proc. 21st Int. Learn.
+Technol. Conf. (L&T), 2024. [Online]. Available: https://www.effat
+university.edu.sa/english/conferences/lt/pages/default.aspx[25] S. A. H. Mohsan, N. Q. H. Othman, Y. Li, M. H. Alsharif, and M. A. Khan,
+‘‘Unmanned aerial vehicles (UA Vs): Practical aspects, applications, open
+challenges, security issues, and future trends,’’ Intell. Service Robot.,
+vol. 16, no. 1, pp. 109–137, Jan. 2023, doi: 10.1007/s11370-022-00452-
+4.
+[26] S. A. H. Mohsan, M. A. Khan, F. Noor, I. Ullah, and
+M. H. Alsharif, ‘‘Towards the unmanned aerial vehicles (UA Vs):
+A comprehensive review,’’ Drones, vol. 6, no. 6, p. 147, Jun. 2022, doi:
+10.3390/drones6060147.
+[27] F. A. Alqurashi, F. Alsolami, S. Abdel-Khalek, E. S. Ali, and R. A.
+Saeed, ‘‘Machine learning techniques in Internet of UA Vs for smart
+cities applications,’’ J. Intell. Fuzzy Syst., vol. 42, no. 4, pp. 3203–3226,
+Mar. 2022.
+[28] T. Murata and Y. Aoki, ‘‘GA-based Q-learning to develop compact control
+table for multiple agents,’’ in New Achievements in Evolutionary Compu-
+tation. Rijeka, Croatia: InTech, 2010.
+[29] R. H. Aswathy, P. Suresh, M. Y. Sikkandar, S. Abdel-Khalek,
+H. Alhumyani, R. A. Saeed, and R. F. Mansour, ‘‘Optimized tuned
+deep learning model for chronic kidney disease classification,’’ Comput.,
+Mater. Continua, vol. 70, no. 2, pp. 2097–2111, 2022.
+[30] J. Orr and A. Dutta, ‘‘Multi-agent deep reinforcement learning for multi-
+robot applications: A survey,’’ Sensors, vol. 23, no. 7, p. 3625, Mar. 2023.
+[31] P. Du, X. He, H. Cao, S. Garg, G. Kaddoum, and M. M. Hassan, ‘‘AI-based
+energy-efficient path planning of multiple logistics UA Vs in intelli-
+gent transportation systems,’’ Comput. Commun., vol. 207, pp. 46–55,
+Jul. 2023.
+[32] S. Poudel and S. Moh, ‘‘Hybrid path planning for efficient data collection
+in UA V-aided WSNs for emergency applications,’’ Sensors, vol. 21, no. 8,
+p. 2839, Apr. 2021.
+[33] M. M. H. Rahman, M. Al-Naeem, A. Banerjee, and A. Sufian, ‘‘EETO-GA:
+Energy efficient trajectory optimization of UA V-IoT collaborative system
+using genetic algorithm,’’ Appl. Sci., vol. 13, no. 4, p. 2535, Feb. 2023.
+[34] S. Ahmed, A. Mohamed, K. Harras, M. Kholief, and S. Mesbah, ‘‘Energy
+efficient path planning techniques for UA V-based systems with space
+discretization,’’ IEEE Wireless Commun. Netw. Conf. (WCNC), Apr. 2016,
+pp. 1–6.
+[35] T. Huang, D. Huang, N. Qin, and Y. Li, ‘‘Path planning and control of
+a quadrotor UA V based on an improved APF using parallel search,’’ Int.
+J. Aerosp. Eng., vol. 2021, Jul. 2021, Art. no. 5524841.
+[36] Y. Xu, Y. Wei, K. Jiang, D. Wang, and H. Deng, ‘‘Multiple UA Vs
+path planning based on deep reinforcement learning in communication
+denial environment,’’ Mathematics, vol. 11, no. 2, p. 405, Jan. 2023, doi:
+10.3390/math11020405.
+[37] Y. V. Pehlivanoglu and P. Pehlivanoglu, ‘‘An enhanced genetic algorithm
+for path planning of autonomous UA V in target coverage problems,’’ Appl.
+Soft Comput., vol. 112, Nov. 2021, Art. no. 107796.
+[38] Y. Wang, R. Jiang, and W. Li, ‘‘A novel hybrid algorithm based on
+improved particle swarm optimization algorithm and genetic algorithm for
+multi-UA V path planning with time windows,’’ in Proc. IEEE 5th Adv.
+Inf. Manag., Communicates, Electron. Automat. Control Conf. (IMCEC),
+Chongqing, China, Dec. 2022, pp. 1005–1009.
+[39] Y. Zhang, G. Shi, and J. Liu, ‘‘Dynamic energy-efficient path planning of
+unmanned surface vehicle under time-varying current and wind,’’ J. Mar.
+Sci. Eng., vol. 10, no. 6, p. 759, May 2022.
+[40] K. Kuru, D. Ansell, W. Khan, and H. Yetgin, ‘‘Analysis and optimization
+of unmanned aerial vehicle swarms in logistics: An intelligent delivery
+platform,’’ IEEE Access, vol. 7, pp. 15804–15831, 2019.
+[41] S. Yin, Y. Zhao, and L. Li, ‘‘Resource allocation and basestation placement
+in cellular networks with wireless powered UA Vs,’’ IEEE Trans. Veh.
+Technol., vol. 68, no. 1, pp. 1050–1055, Jan. 2019.
+[42] H. Ghazzai, A. Feidi, H. Menouar, and M. L. Ammari, ‘‘An exploratory
+search strategy for data routing in flying ad hoc networks,’’ in Proc. IEEE
+28th Annu. Int. Symp. Pers., Indoor, Mobile Radio Commun. (PIMRC),
+Oct. 2017, pp. 1–7.
+[43] C. Luo, S. I. McClean, G. Parr, L. Teacy, and R. De Nardi, ‘‘UA V
+position estimation and collision avoidance using the extended Kalman
+filter,’’ IEEE Trans. Veh. Technol., vol. 62, no. 6, pp. 2749–2762,
+Jul. 2013.
+[44] D. Li, W. Yin, W. E. Wong, M. Jian, and M. Chau, ‘‘Quality-oriented
+hybrid path planning based on A* and Q-learning for unmanned
+aerial vehicle,’’ IEEE Access, vol. 10, pp. 7664–7674, 2022, doi:
+10.1109/ACCESS.2021.3139534.
+13416 VOLUME 12, 2024
+--- PAGE 18 ---
+
+R. A. Saeed et al.: Energy Efficient Path Planning Scheme for UAV
+[45] R. A. Saeed, M. Omri, E. S. Ali, and M. F. Alotaibi, ‘‘Optimal path planning
+for drones based on swarm intelligence algorithm,’’ Neural Comput. Appl.,
+vol. 34, no. 12, pp. 10133–10155, 2022, doi: 10.1007/s00521-022-06998-
+9.
+[46] Y. Pan, Y. Yang, and W. Li, ‘‘A deep learning trained by genetic
+algorithm to improve the efficiency of path planning for data collec-
+tion with multi-UA V,’’ IEEE Access, vol. 9, pp. 7994–8005, 2021, doi:
+10.1109/ACCESS.2021.3049892.
+[47] Y. Zeng, R. Zhang, and T. J. Lim, ‘‘Wireless communications with
+unmanned aerial vehicles: Opportunities and challenges,’’ IEEE Commun.
+Mag., vol. 54, no. 5, pp. 36–42, May 2016.
+[48] M.-A. Messous, S.-M. Senouci, and H. Sedjelmaci, ‘‘Network connectivity
+and area coverage for UA V fleet mobility model with energy constraint,’’
+inProc. IEEE Wireless Commun. Netw. Conf., Doha, Qatar, Apr. 2016,
+pp. 1–6.
+[49] F. Mohammed, A. Idries, N. Mohamed, J. Al-Jaroodi, and I. Jawhar,
+‘‘UA Vs for smart cities: Opportunities and challenges,’’ in Proc. Int. Conf.
+Unmanned Aircr. Syst. (ICUAS), May 2014, pp. 267–273.
+[50] R. S. Abdalla, S. A. Mahbub, R. A. Mokhtar, E. S. Ali, and R. A. Saeed,
+‘‘IoE design principles and architecture,’’ in Internet of Energy for Smart
+Cities: Machine Learning Models and Techniques. Boca Raton, FL, USA:
+CRC Press, 2020, doi: 10.1201/9781003047315-6.
+[51] R. Bailon-Ruiz, S. Lacroix, and A. Bit-Monnot, ‘‘Planning to monitor
+wildfires with a fleet of UA Vs,’’ in Proc. IEEE/RSJ Int. Conf. Intell. Robots
+Syst. (IROS), Oct. 2018, pp. 4729–4734.
+[52] V. V. Panicker and I. O. Mohammed, ‘‘Solving a heterogeneous fleet
+vehicle routing model—A practical approach,’’ in Proc. IEEE Int. Conf.
+Syst., Comput., Autom. Netw. (icscan), Jul. 2018, pp. 1–5.
+[53] G. Kim, Y.-S. Ong, C. K. Heng, P. S. Tan, and N. A. Zhang, ‘‘City vehicle
+routing problem (City VRP): A review,’’ IEEE Trans. Intell. Transp. Syst.,
+vol. 16, no. 4, pp. 1654–1666, Aug. 2015.
+[54] R. F. Mansour, N. M. Alfar, S. Abdel-Khalek, M. Abdelhaq, R. A. Saeed,
+and R. Alsaqour, ‘‘Optimal deep learning based fusion model for biomedi-
+cal image classification,’’ Expert Syst., vol. 39, no. 3, pp. 34–54, Mar. 2022,
+doi:10.1111/exsy.12764.
+[55] J. C. Cruz, P. Arias, D. Guimarans, D. Riera, and A. Juan, ‘‘Rich vehicle
+routing problem: Survey,’’ ACM Comput. Surveys, vol. 47, no. 2, pp. 1–28,
+Dec. 2015.
+[56] O. O. Khalifa, A. Roubleh, A. Esgiar, M. Abdelhaq, R. Alsaqour,
+A. Abdalla, E. S. Ali, and R. Saeed, ‘‘An IoT-platform-based deep learning
+system for human behavior recognition in smart city monitoring using the
+Berkeley MHAD datasets,’’ Systems, vol. 10, no. 5, p. 177, Oct. 2022, doi:
+10.3390/systems10050177.
+[57] O. Bouhamed, H. Ghazzai, H. Besbes, and Y. Massoud, ‘‘Q-learning based
+routing scheduling for a multi-task autonomous agent,’’ in Proc. IEEE 62nd
+Int. Midwest Symp. Circuits Syst. (MWSCAS), Aug. 2019, pp. 634–637.
+[58] A. Puente-Castro, D. Rivero, E. Pedrosa, A. Pereira, N. Lau, and
+E. Fernandez-Blanco, ‘‘Q-learning based system for path planning with
+unmanned aerial vehicles swarms in obstacle environments,’’ Expert Syst.
+Appl., vol. 235, Jan. 2024, Art. no. 121240.
+[59] R. Xie, Z. Meng, Y. Zhou, Y. Ma, and Z. Wu, ‘‘Heuristic Q-learning
+based on experience replay for three-dimensional path planning of
+the unmanned aerial vehicle,’’ Sci. Prog., vol. 103, no. 1, Jan. 2020,
+Art. no. 003685041987902.
+RASHID A. SAEED (Senior Member, IEEE)
+received the Ph.D. degree in communications
+and network engineering from Universiti Putra
+Malaysia (UPM). Currently, he is a Professor
+with the Computer Engineering Department, Taif
+University. He is also with the Electronics Depart-
+ment, Sudan University of Science and Technol-
+ogy (SUST). He was a Senior Researcher with
+Telekom Malaysia™Research and Development
+(TMRND) and MIMOS. He has published more
+than 150 research papers, books, and book chapters on wireless communica-
+tions and networking in peer-reviewed academic journals and conferences.
+His research interests include computer networks, cognitive computing,
+computer engineering, wireless broadband, and WiMAX Femtocell. He is
+successfully awarded three U.S patents in these areas. He has supervised
+more 50 M.Sc./Ph.D. students. He is a member of IEM (I.E.M), SigmaXi,
+and SEC.
+ELMUSTAFA SAYED ALI received the B.Sc.
+degree, in 2008, and the M.Sc. degree in elec-
+tronics and communication engineering from the
+Sudan University of Science and Technology,
+in 2012, where he is currently pursuing the Ph.D.
+degree. He was a Senior Engineer with Sudan Sea
+Port Corporation for five years as a Team Leader of
+new projects in wireless networks includes (Tetra
+system, Wi-Fi, WI-Max, and CCTV). He was also
+a Manager of the Marine System Department,
+Sudan Marine Industries. He is a Senior Lecturer with the Department of
+Electrical and Electronic Engineering, Red Sea University, Sudan. He has
+published more than 45 research papers, books, and book chapters on wire-
+less communications and networking in peer-reviewed academic journals
+and conferences. His research interests include underwater communications,
+intelligent communication, and networking, and AI. He is a member of IEEE
+ComSoc, IAENG, and SEC.
+MAHA ABDELHAQ (Member, IEEE) received
+the B.Sc. degree in computer science and the M.Sc.
+degree in securing wireless communications from
+the University of Jordan, Jordan, in 2006 and
+2009, respectively, and the Ph.D. degree from
+the Faculty of Information Science and Technol-
+ogy, National University of Malaysia, Malaysia,
+in 2014. She is currently an Associate Professor
+with the College of Computer and Information
+Sciences, Princess Nourah bint Abdulrahman Uni-
+versity, Saudi Arabia. She is a member of ACM and International Association
+of Engineers (IAENG). Her research interests include vehicular networks,
+MANET routing protocols, artificial immune systems, network security, and
+intelligent computational.
+RAED ALSAQOUR (Member, IEEE) received the
+B.Sc. degree in computer science from Mutah Uni-
+versity, Jordan, in 1997, the M.Sc. degree in dis-
+tributed systems from University Putra Malaysia,
+Malaysia, in 2003, and the Ph.D. degree in wireless
+communication systems from the National Univer-
+sity of Malaysia, Malaysia, in 2008. He is currently
+a Professor with the College of Computation and
+Informatics, Saudi Electronic University, Riyadh
+Branch, Saudi Arabia. He is a member of ACM
+and IAENG. His research interests include wireless ad hoc and vehicular
+networks, routing protocols, simulation, network security, and network per-
+formance evaluation.
+FATIMA RAYAN AWAD AHMED received the B.S. degree in computer
+science from the Sudan University of Science and Technology, in 2004, and
+the M.S. and Ph.D. degrees in computer science from El Neelain Univer-
+sity, Sudan, in 2007 and 2012, respectively. She joined Sattam University,
+Saudi Arabia, in 2013, as an Assistant Professor with the Information Sys-
+tems Department (2013–2016) and then the Computer Science Department,
+since 2017. In 2004, she joined to Sudanese Company for Telecommuni-
+cations, Sudan, as a Computer Programmer with the IT Department, where
+she analyzed, designed, programmed a set of systems. Her research interests
+include artificial intelligence, machine learning, systems and algorithms
+analysis and design, web applications, and e-learning.
+ASMA MOHAMMED ELBASHIR SAAD joined Sattam University,
+Saudi Arabia, in 2011, as an Assistant Professor with the Physics Depart-
+ment Science and Humanity Studies, and also an Assistant Professor with
+the Physics Department, Education College, Alzaiem Alazhri University,
+in 2011. Her research interests include artificial intelligence, physics, educa-
+tion, and computation physics.
+VOLUME 12, 2024 13417

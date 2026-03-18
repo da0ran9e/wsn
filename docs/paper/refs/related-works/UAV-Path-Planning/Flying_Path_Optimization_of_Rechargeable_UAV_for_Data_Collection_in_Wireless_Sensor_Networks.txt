@@ -1,0 +1,366 @@
+--- PAGE 1 ---
+
+VOL. 7, NO. 2, FEBRUARY 2023 7500104
+Sensor networks
+Flying Path Optimization of Rechargeable UAV for Data Collection in Wireless
+Sensor Networks
+Yuchao Zhu*and Shaowei Wang**
+School of Electronic Science and Engineering, Nanjing University, Nanjing 210023, China
+∗Graduate Student Member, IEEE
+∗∗Senior Member, IEEE
+Manuscript received 27 December 2022; accepted 13 January 2023. Date of publication 17 January 2023; date of current version 31 January 2023.
+Abstract—In this letter, we study a novel framework to realize efﬁcient data collection from wireless sensor networks, where
+an unmanned aerial vehicle (UAV) is dispatched to collect the aggregated data from cluster heads and an unmanned
+ground vehicle carrying backup batteries moves along with the UAV to compensate for the shortage of UAV energy.
+Our optimization task is to minimize the mission time of a complete round of data collection, which is formulated as a
+coordinated traveling salesman problem with battery constraints and is solved by a heuristic path planning algorithm.
+Numerical results show that our proposal outperforms compared methods under appropriate conﬁguration.
+Index Terms—Sensor networks, data collection, path planning, unmanned aerial vehicle (UAV), wireless sensor network.
+I. INTRODUCTION
+Composed of numerous tiny size, low-power, and inexpensive
+sensor nodes, wireless sensor networks (WSNs) have been widely
+used for constructing cyber-physical systems in inaccessible areas [1].
+Emerging applications, such as battleﬁeld surveillance, environmental
+monitoring, and precision agriculture require efﬁcient and reliable
+data collection to enable remote control of WSNs [2]. Traditional
+frameworks of data collection from WSNs include multihop routing
+networks and unmanned ground vehicle (UGV) assisted routing net-
+works [3],[4]. However, the former is unreliable since it is inﬂuenced
+by the wireless links between sensor nodes, and the latter is inefﬁcient
+since some areas are dangerous and unreachable for UGVs.
+Due to the high mobility, fast deployment, and strong line-of-sight
+links, unmanned aerial vehicles (UA Vs) can act as aerial mobile sinks
+to enable swift and reliable data collection in WSNs [5],[6],[7].S i n c e
+letting the UA V directly communicates with each sensor node will
+lead to the high energy consumption of both the UA V and sensor
+nodes, cluster heads (CHs) are deployed to aggregate the collected
+data and the UA V generally communicates with the CHs [8].I n[9],
+a hierarchical clustering-based data collection scheme is presented to
+mitigate the energy hole in WSNs. In [10], an adaptive modulation
+scheme is adopted to improve the energy efﬁciency of sensors while
+guaranteeing the fairness between different CHs. To avoid collision
+caused by simultaneous transmission and improve transmission efﬁ-
+ciency, authors in [11] propose a priority-based data access strategy
+with the consideration of UA V’s mobility. Considering the energy
+consumption of both the UA V and the WSN, the selection of CHs and
+the ﬂying path of the UA V are jointly optimized by deep reinforcement
+learning in [12]. The multi-UA V enabled data collection mission is
+considered in [13], where the number of UA Vs and their trajectories are
+optimized by solving a capacitated vehicle routing problem. In [14],a
+multiagent deep reinforcement learning with long short-term memory
+is developed to design the trajectories and patrol speeds of the UA Vs
+Corresponding author: Shaowei Wang (e-mail: wangsw@nju.edu.cn ).
+Associate Editor: F. Falcone.
+Digital Object Identiﬁer 10.1109/LSENS.2023.3237634
+Fig. 1. UAV and UGV assisted data collection for WSN.
+and their data aggregation schedules, by which the buffer overﬂows at
+the ground nodes and communication failures are minimized.
+Although UA Vs play a powerful role in gathering data from WSNs,
+the service range of UA Vs is limited that they are unable to travel
+long distances or operate for long periods of time due to the ﬁnite
+onboard energy. Recent works envisage that the UA V’s battery can be
+recharged or replaced whenever used up during its ﬂight [15],[16].T o
+this end, we investigate a promising UA V-UGV-assisted data collection
+scheme to minimize the complete-round mission time, where the UA V
+ﬂies to and hovers above the CHs for data collection, and the UGV
+carrying backup batteries moves together with the UA V to provide
+on-demand self-recharging. The key points are determining when and
+where the UA V and UGV should rendezvous with each other. Due to
+the NP-hardness of the task, we develop a heuristic four-step algorithm
+to jointly plan the paths of the UA V and the UGV .
+II. SYSTEM MODEL AND
+PROBLEM FORMULATION
+A. Network Description
+As depicted in Fig. 1, we consider a WSN located in region R∈R2
+with side length L, consisting of one data center d0, one UGV ,
+2475-1472 © 2023 IEEE. Personal use is permitted, but republication/redistribution requires IEEE permission.
+See https://www.ieee.org/publications/rights/index.html for more information.
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:24:14 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 2 ---
+
+7500104 VOL. 7, NO. 2, FEBRUARY 2023
+one rotary-wing UA V and MCHs. The set of CHs is denoted by
+C={1,2,... , M}, where the location of CH i∈Cisci=(cx
+i,cy
+i,0).
+In our system, the UA V hovers above the CHs to collect the aggregated
+data. According to the air-to-ground channel model [17], the altitude
+of the UA V could be adjusted to achieve different transmission rates.
+Without loss of generality, we set a ﬁxed ﬂying altitude hand the hover-
+ing positions of the UA V are denoted by H={Hi|Hi=(cx
+i,cy
+i,h),i∈
+C}. The UA V needs to ﬂy back to the moving UGV for battery
+replenishment when its energy is about to run out. The candidates
+of locations at which they rendezvous with each other are denoted by
+“battery swap station” (BSS) S={si|si=(sx
+i,sy
+i,0),i∈C}.T h es e t
+of permutations of Cis denoted by UM, and a particular permutation is
+denoted by τ∈UM, with the added convention that τ(M+1)=τ(1)
+for notation convenience (e.g., τ={1,5,7,2,3,6,4,1}in Fig. 1).
+B. Problem Formulation
+The velocity of the UGV and UA V are denoted by v0,v1>0 (with
+v0<v1), respectively. The energy consumption of ﬂying and hovering
+areefandeh, respectively, and the capacity of the battery is denoted
+byE. Note that ehdepends on the hovering time above each CH, we
+set the hovering time as 1 without loss of generality.
+Deﬁne Eτ(k)|k∈Cas the remaining energy at Hτ(k), which can be
+mathematically written as follows based on the fact whether the UA V
+has replaced its battery or not
+Eτ(k)
+=/braceleftBigg
+E−eh−ef/bardblHτ(k)−sτ(k)/bardbl
+v1, ifzτ(k)=1
+E−eh/parenleftBig/summationtextk
+j=lk/parenleftbig
+1−zτ(j)/parenrightbig
++1/parenrightBig
+−efdτ(k)
+v1,otherwise(1)
+where dτ(k)is the continuous ﬂying distance for the UA V to reach
+thekth hovering position, and the binary variable zτ(k)|k∈Cindicates
+whether the kth BSS is needed or not
+zτ(k)=/braceleftBigg
+1,ifk=1o rEτ(k−1)<ef/bardblHτ(k)−Hτ(k−1)/bardbl
+v1+eh
+0,otherwise(2)
+and the corresponding locations of BSSs can be expressed as
+sτ(k)=⎧
+⎪⎨
+⎪⎩d0, ifk=1
+sτ(k), ifzτ(k)=1
+sτ(k−1),otherwise .(3)
+Letsτ(lk)with lk=max a=1,2,...,ka|zτ(a)=1denote the closest BSS to the
+kth hovering position, thus, the continuous ﬂight distance dτ(k)can be
+expressed as
+dτ(k)=/bardblsτ(lk)−Hτ(lk)/bardbl+k/summationdisplay
+j=lk/parenleftbig
+1−zτ(j)/parenrightbig
+/bardblHτ(j−1)−Hτ(j)/bardbl.(4)
+We focus on the completion time of data collection since the mission
+is delay-tolerant. As shown in Fig. 1, the complete tour can be divided
+into m=/summationtextM
+k=1zτ(k)subtours, denoted by M={1,2,... , m}.T h e
+ﬂight that the UA V takes off from one BSS, gathers data from CHs,
+and lands on the next BSS is regarded as a subtour. Thus, the UA V’s
+ﬂying distance of the bth subtour can be written as
+db
+uav=/bardblsτ(/Omega1(b))−Hτ(/Omega1(b))/bardbl+/bardbl Hτ(/Omega1(b+1)−1)−sτ(/Omega1(b+1))/bardbl
++/Omega1(b+1)−2/summationdisplay
+j=/Omega1(b)/bardblHτ(j)−Hτ(j+1)/bardbl (5)
+where /Omega1={k|zτ(k)=1,1≤k≤M+1}is the set of indexes of
+needed BSSs (e.g., /Omega1={1,3,4,5,8}in Fig. 1). And the UGV’smoving distance on the corresponding subtour can be written as
+db
+ugv=/bardblsτ(/Omega1(b))−sτ(/Omega1(b+1))/bardbl. (6)
+The key point of our optimization task is to ﬁnd the optimal locations
+of BSSs, which can be formulated as follows:
+minimize
+τ∈UM,S,z(·)m/summationdisplay
+b=1max/braceleftBigg
+db
+uav
+v1,db
+ugv
+v0/bracerightBigg
+s.t.C1:db
+uavef
+v1+(/Omega1(b+1)−/Omega1(b))eh≤E∀b∈M
+C2:zn∈{0,1}∀n∈C. (7)
+The constraint C1guarantees that the UA V can return to the UGV
+in each subtour. Problem (7)can be regarded as an extension of the
+Euclidean traveling salesman problem (TSP) that requires considering
+the paths of both the UA V and UGV , which is NP-hard.
+III. PROPOSED PATH PLANNING AL GORITHM
+The key points of (7)lie in determining when and where the UA V
+and UGV rendezvous with each other. Note that, the task can be
+transformed into the following convex problem when given the visiting
+sequence τand the set of needed BSSs /Omega1:
+minimize
+S,t(·)tm+1
+s.t.C1:ti+1≥ti+/bardbls/Omega1(i)−s/Omega1(i+1)/bardbl
+v0∀i∈C
+C2:ti+1≥ti+di
+uav
+v1∀i∈C
+C3:di
+uav
+v1<E−eh(/Omega1(i+1)−/Omega1(i))
+ef∀i∈C
+C4:t1=0
+C5:s1=sM+1=d0 (8)
+where di
+uav=/summationtext/Omega1(i+1)−2
+j=/Omega1(i)/bardblHj−Hj+1/bardbl+/bardbl s/Omega1(i)−H/Omega1(i)/bardbl+/bardbl H/Omega1(i+1)−1−
+s/Omega1(i+1)/bardblaccording to (5),t(·)denotes the accumulative time at the end of
+each subtour. Thus, we propose a heuristic algorithm called LKH-SC
+to address (7), which is described in Algorithm 1.
+In Step 1, set the battery constraints aside, we use a classical
+algorithm called LKH [18] to solve the TSP tour of Hand get
+the visiting sequence τ. Then, the locations of BSSs and mission
+completion time are calculated under the initial setting that z(·)=1.
+Next, based on the initial locations of BSSs, the remaining energy at
+each hovering position and z(·)are updated successively. Finally, we
+update the corresponding locations of BSSs, and the coordinated paths
+can be found.
+IV . NUMERICAL RESULTS
+Consider a square area with side length Lkm, where CHs are
+uniformly deployed and the data center is located at d0=[0,0] m. The
+ﬂying altitude of the UA V is set as h=100 m. The battery parameters
+of the UA V are ef=5W , eh=10 Wh, and E=40 Wh, respectively.
+Unless otherwise speciﬁed, the velocity of UGV and UA V are set as
+v0=15 km/h and v1=60 km/h, respectively.
+We compare our selective-charging scheme with ﬁve other methods
+adopting different path planning and recharging strategies. LKH-FC
+is a fully charging strategy based on the TSP tour solved by LKH,
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:24:14 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 3 ---
+
+VOL. 7, NO. 2, FEBRUARY 2023 7500104
+Fig. 2. Path planning results by different methods under an instance of
+M=50,L=5km. (a) LKH-SC. (b) LKH-FC. (c) ACO-SC. (d) ACO-FC.
+(e) NN-SC. (f) NN-FC.
+Algorithm 1: LKH-SC.
+1:Input : Target region R, cluster heads C, hovering positions
+H, parameters of UGV and UA V: v0,v1,ef,eh,E.
+2: Initialization: z(·)=1,/Omega1={1,2,... , M+1}.
+3:Step 1 : Use LKH algorithm to solve the TSP tour of H;
+4: Return τ,s e tz∗
+(·)←z(·),/Omega1∗←/Omega1,;
+5:Step 2 : Use CVX to solve problem (8)under τand/Omega1∗;
+6: Return initial locations of BSSs: S∗←S, initial completion
+time: t∗
+m+1←tm+1;
+7:Step 3 : Calculate E(·)andz(·)by(1)and(2);
+8: Update /Omega1according to z(·):/Omega1temp←/Omega1;
+9:Step 4 : Use CVX to solve problem (8)under τand/Omega1temp;
+10: iftm+1<t∗
+m+1then
+11: S∗←S,z∗
+(·)←z(·),/Omega1∗←/Omega1,t∗
+m+1←tm+1;
+12: else
+13: S∗,z∗
+(·),/Omega1∗,t∗
+m+1do not change;
+14: end if
+15: Output :τ,S∗,t∗
+m+1.
+where the UA V ﬂies back to the UGV for battery replenishment after
+each hovering regardless of its remaining energy, which is a special
+case ( z(·)=1) of LKH-SC. ACO-FC and ACO-SC are fully charging
+and selective-charging strategies based on the TSP tour solved by
+ant colony optimization [19], respectively. NN-FC and NN-SC are
+fully charging and selective-charging strategies based on the nearest-
+neighbor tour, respectively. Unless otherwise speciﬁed, all results are
+averaged over 50 Monte Carlo simulations.
+Taking a randomly generated sample of M=50 and L=5k ma s
+an example, we ﬁrst present in Fig. 2the path planning results by
+different methods. We can observe that the UGV takes a shorter pathFig. 3. Completion time as a function of the number of CHs, L=5km.
+Fig. 4. Completion time as a function of the region size, M=50.
+by the selective-charging scheme as compared with the fully charing
+scheme, which indicates that the selective-charging scheme can exploit
+the agility of the UA V . In addition, there exist lots of twists and turns in
+the paths obtained by the ACO-based and NN-based methods, which
+are inefﬁcient as compared with the relatively smooth paths obtained
+by the LKH-based methods.
+We then investigate the system performance as a function of the
+number of CHs in Fig. 3. As expected, the completion time is roughly in
+a linear relationship with the number of CHs. The LKH-based schemes
+signiﬁcantly outperform the corresponding NN-based schemes since
+the paths found by LKH-based schemes are shorter than that of
+NN-based schemes. We can also observe that LKH-based schemes
+perform slightly better than ACO-based schemes, and the performance
+gap increases as the number of sensor nodes becomes larger. This is
+reasonable since ACO is a meta-heuristic algorithm whose perfor-
+mance is greatly inﬂuenced by the hyperparameters. Our proposed
+LKH-SC is more efﬁcient than the LKH-FC when the number of CHs
+is relatively small, while the performance approaches that of LKH-FC
+as the number of CHs increases (e.g., M>70). The reason is that the
+length of an optimal TSP tour of a set of points follows a law of large
+numbers, the selective-charging scheme can not achieve additional
+gain by saving traveling time when the number of CHs is large.
+Fig.4shows the mission completion time as a function of region size,
+which also follows a linear relationship. As the region becomes larger,
+the advantage of our proposed LKH-SC scheme becomes bigger.
+In Fig. 5, we present the completion time as a function ofv1
+v0.I ta l s o
+can be seen that LKH-based schemes perform better than ACO-based
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:24:14 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 4 ---
+
+7500104 VOL. 7, NO. 2, FEBRUARY 2023
+Fig. 5. Completion time as a function of v1/v0,v0=15km/h, M=50.
+and NN-based. We can observe that the performance gap between
+our proposal and LKH-FC is negligible when v1/v0<2.5, while the
+advantage of our proposal becomes larger as the ratio of v1andv0
+becomes larger. This is reasonable that the UGV in a selective-charging
+strategy inevitably consumes more time waiting for rendezvousing
+with the UA V when the speed of the UA V is close to the UGV . Fig. 5
+indicates that the appropriate conﬁguration of the UA V and UGV speed
+is important in practice.
+V . CONCLUSION
+In this letter, we investigated the UA V-assisted data collection in
+WSNs, where a UGV was introduced to realize the on-demand self-
+recharging of the UA V . Aiming at gathering data swiftly under the UA V
+battery constraint, a selective-charging strategy based on the TSP tour
+was proposed to optimize the time and location that the UA V and UGV
+rendezvous with each other. Numerical results show that our proposal
+can provide a guideline for data collection design in practice.
+ACKNOWLEDGMENT
+The authors would like to thank the editors and the anonymous reviewers, whose
+invaluable comments helped improve the presentation of this letter substantially. This
+work was supported by the National Natural Science Foundation of China under
+Grant 61931023 and Grant U1936202.REFERENCES
+[1] T. O. Olasupo, “Wireless communication modeling for the deployment of tiny IoT
+devices in rocky and mountainous environments,” IEEE Sensors Lett. , vol. 3, no. 7,
+pp. 3–6, Jul. 2019, Art. no. 6001204.
+[2] H. Xie, Z. Yan, Z. Yao, and M. Atiquzzaman, “Data collection for security measure-
+ment in wireless sensor networks: A survey,” IEEE Internet Things J. , vol. 6, no. 2,
+pp. 2205–2224, Nov. 2019.
+[3] J. Yick, B. Mukherjee, and D. Ghosal, “Wireless sensor network survey,” Comput.
+Netw. , vol. 52, no. 12, pp. 2292–2330, 2008.
+[4] L. He, J. Pan, and J. Xu, “A progressive approach to reducing data collection latency
+in wireless sensor networks with mobile elements,” IEEE Trans. Mob. Comput. ,
+vol. 12, no. 7, pp. 1308–1320, Jul. 2013.
+[5] Y . Lin, T. Wang, and S. Wang, “UA V-assisted emergency communications: An
+extended multi-armed bandit perspective,” IEEE Commun. Lett. , vol. 23, no. 5,
+pp. 938–941, Mar. 2019.
+[6] Y . Zhu and S. Wang, “Aerial data collection with coordinated UA V and truck route
+planning in wireless sensor network,” in Proc. IEEE GLOBECOM’21 , Madrid,
+Spain, 2021, pp. 1–6.
+[7] H. Kurunathan et al., “Machine learning-aided operations and communications of
+unmanned aerial vehicles: A contemporary survey,” 2022, arXiv:2211.04324 .
+[8] W. Dargie and J. Wen, “A simple clustering strategy for wireless sensor networks,”
+IEEE Sensors Lett. , vol. 4, no. 6, Jun. 2020, Art. no. 7500804.
+[9] P. K. Donta, B. S. P. Rao, T. Amgoth, C. S. R. Annavarapu, and S. Swain, “Data
+collection and path determination strategies for mobile sink in 3D WSNs,” IEEE
+Sensors J. , vol. 20, no. 4, pp. 2224–2233, Feb. 2020.
+[10] A. E. Abdulla et al., “An optimal data collection technique for improved utility in
+UAS-aided networks,” in Proc. IEEE INFOCOM’14 , Toronto, ON, Canada, 2014,
+pp. 736–744.
+[11] S. Say, H. Inata, J. Liu, and S. Shimamoto, “Priority-based data gathering frame-
+work in UA V-assisted wireless sensor networks,” IEEE Sensors J. , vol. 16, no. 14,
+pp. 5785–5794, Jul. 2016.
+[12] B. Zhu, E. Bedeer, H. H. Nguyen, R. Barton, and J. Henry, “UA V trajectory
+planning in wireless sensor networks for energy consumption minimization by deep
+reinforcement learning,” IEEE Trans. Veh. Technol. , vol. 70, no. 9, pp. 9540–9554,
+Sep. 2021.
+[13] O. Ghdiri et al., “Energy-efﬁcient multi-UA V data collection for IoT networks with
+time deadlines,” in Proc. IEEE Glob. Commun. Conf. , Taibei, China, 2020, pp. 1–6.
+[14] K. Li, W. Ni, Y . Emami, and F. Dressler, “Data-driven ﬂight control of internet-of-
+Drones for sensor data aggregation using multi-agent deep reinforcement learning,”
+IEEE Wireless Commun. , vol. 29, no. 4, pp. 18–23, Aug. 2022.
+[15] Y . Wang, Z. Su, N. Zhang, and R. Li, “Mobile wireless rechargeable UA V net-
+works: Challenges and solutions,” IEEE Commun. Mag. , vol. 60, no. 3, pp. 33–39,
+Mar. 2022.
+[16] Y . Zhu and S. Wang, “Efﬁcient aerial data collection with cooperative trajectory
+planning for large-scale wireless sensor networks,” IEEE Trans. Commun. , vol. 70,
+no. 1, pp. 433–444, Jan. 2022.
+[17] A. Al-Hourani, S. Kandeepan, and S. Lardner, “Optimal LAP altitude for maximum
+coverage,” IEEE Wireless Commun. Lett. , vol. 3, no. 6, pp. 569–572, Dec. 2014.
+[18] K. Helsgaun, “General k-opt submoves for the Lin-Kernighan TSP heuristic,” Math.
+Program. Comput. , vol. 1, no. 2/3, pp. 119–163, Jul. 2009.
+[19] A. Colorni, M. Dorigo, and V . Maniezzo, “Distributed optimization by ant colonies,”
+inProc. 1st Eur. Conf. Artif. Life , 1991, pp. 134–142.
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:24:14 UTC from IEEE Xplore.  Restrictions apply. 

@@ -1,0 +1,1466 @@
+--- PAGE 1 ---
+
+13660 IEEE INTERNET OF THINGS JOURNAL, VOL. 11, NO. 8, 15 APRIL 2024
+Collaborative Data Acquisition for UA V-Aided IoT
+Based on Time-Balancing Scheduling
+Mingyuan Ren ,X i u w e nF u ,Member, IEEE , Pasquale Pace ,Member, IEEE ,
+Gianluca Aloi ,Member, IEEE , and Giancarlo Fortino ,Fellow, IEEE
+Abstract —The emergence of the Internet of Things (IoT) has
+revolutionized various domains by enabling seamless connectivityand real-time data exchange between connected IoT devices.However, in sparse deployment scenarios where sensor nodes(SNs) are sparsely distributed, ensuring low data delivery latencybecomes a signiﬁcant challenge. Our research aims to addressthis issue by utilizing unmanned aerial vehicles (UA Vs) tosupport IoT networks. In the existing UA V-aided IoT systems,all UA Vs are required to return to the base station (BS) todeliver data, which results in signiﬁcant data delivery latency.To overcome this limitation, we propose a collaborative dataacquisition model that uses air-to-air data relay between UA Vs.
+By leveraging the mobility and agility of UA Vs, the proposed
+system facilitates efﬁcient data relay between SNs and theBS. To further optimize the performance of the system, wepresent a time-balancing scheduling data acquisition (TSDA)scheme. This scheme combines a centripetal-based relay pairingmethod for UA Vs to achieve seamless data relay and a jointscheduling scheme to minimize the hovering time during datadelivery. Through extensive simulations, we demonstrate thatthe proposed TSDA scheme can achieve lower data deliverylatency in sparse deployment scenarios compared to existing dataacquisition schemes. In addition, the joint scheduling schemecan signiﬁcantly reduce the hovering time of UA Vs so that thecollaborative relaying advantage can be better exploited.
+Index Terms —Data acquisition, delivery latency, joint schedul-
+ing, time-balancing, unmanned aerial vehicle (UA V)-aidedInternet of Things (IoT).
+Manuscript received 18 July 2023; revised 25 October 2023; accepted 24
+November 2023. Date of publication 5 December 2023; date of current version
+9 April 2024. This work was supported in part by the Science and TechnologyCommission of Shanghai Municipality under Grant 22692194600; in part bythe Shanghai Natural Science Foundation under Grant 23ZR1426400; and in
+part by the Italian MIUR, PRIN 2017 Project “Fluidware: A Novel Approach
+for Large-Scale IoT Systems” under Grant 2017KRC7KT and Grant CUPH24I17000070001. (Corresponding author: Giancarlo Fortino.)
+Mingyuan Ren is with the Institute of Logistics Science and Engineering,
+Shanghai Maritime University, Shanghai 201306, China (e-mail: renmy98@
+163.com).
+Xiuwen Fu is with the Logistics Engineering College, Shanghai Maritime
+University, Shanghai 201306, China (e-mail: xwfu@shmtu.edu.cn).
+Pasquale Pace is with the Department of Informatics, Modeling, Electronics
+and Systems, University of Calabria, 87036 Rende, Italy, and also withthe Consorzio Nazionale Interuniversitario per le Telecomunicazioni, 87036Rende, Italy (e-mail: p.pace@dimes.unical.it).
+Gianluca Aloi and Giancarlo Fortino are with the Department of
+Informatics, Modeling, Electronics and System Engineering, Universityof Calabria, 87036 Rende, Italy (e-mail: aloi@dimes.unical.it; fortino@
+dimes.unical.it).
+Digital Object Identiﬁer 10.1109/JIOT.2023.3339136I. I NTRODUCTION
+THE Internet of Things (IoT) is a technology that
+enables seamless interaction between the physical and
+digital realms of human existence [1],[2],[3]. It has broad
+applications in sectors, such as industry [4],[5],[6],[7],[8],
+healthcare [9],[10], and transportation [11]. In IoT systems,
+the primary function of sensor nodes (SNs) is to efﬁcientlydeliver data to the base station (BS), enabling the system to
+respond quickly to unforeseen events. However, achieving low
+data delivery latency becomes a signiﬁcant challenge whenSNs are distributed in remote or unattended regions, especially
+in remote regions with limited infrastructure. In such scenar-
+ios, the use of unmanned aerial vehicles (UA Vs) as mobile
+relay nodes has gained signiﬁcant attention where traditional
+network infrastructure is absent or inadequate [12],[13].W e
+refer to such IoT systems that use UA Vs to support SNs as
+UA V-aided IoT. This system is a promising solution to bridge
+the communication gap in remote regions, enabling data acqui-
+sition and delivery from SNs to the BS [14]. Moreover, this
+integration of UA Vs and IoT brings a number of opportunities,offering improved connectivity, reduced latency, and optimized
+data freshness.
+In the IoT era, the freshness of information is a core
+factor for accurate user decision making [15]. For example,
+in emergency response scenarios such as disaster manage-
+ment or sudden accidents, relying on outdated data can
+lead to misguided rescue efforts and potentially serious con-
+sequences. Consequently, the Age of Information (AoI), ametric that measures the freshness of IoT data, is crucial in
+assessing the data acquisition efﬁciency of UA V-aided IoT
+systems [16],[17]. The AoI takes into account factors such as
+delivery latency, data waiting time at SNs and data dwell time
+at the BS. A low AoI indicates that the information is freshand the system responds quickly. Existing research on UA V-
+aided IoT typically divides the task area into subareas equal to
+the number of UA Vs. Each UA V follows an optimized ﬂightpath to acquire data within its assigned subarea. This approach
+ensures that there is no task overlap. However, it also presents
+a challenge: the UA Vs responsible for gathering data from the
+marginal areas of the network must move to the BS to deliver
+data, which has a negative impact on the AoI.
+For this reason, our research paper presents a collaborative
+data acquisition model for UA V-aided IoT. On this basis, a
+time-balancing scheduling data acquisition (TSDA) scheme is
+developed to solve the collaboration problem of UA Vs in the
+c/circlecopyrt2023 The Authors. This work is licensed under a Creative Commons Attribution 4.0 License.
+For more information, see https://creativecommons.org/licenses/by/4.0/
+--- PAGE 2 ---
+
+REN et al.: COLLABORATIVE DATA ACQUISITION FOR UA V-AIDED IoT BASED ON TIME-BALANCING SCHEDULING 13661
+air-to-air delivery process. The main contributions in our work
+are summarized as follows.
+1) To enable the task collaboration between UA Vs, a
+collaborative data acquisition model for UA V-aided IoT
+is developed. This model involves three types of datadelivery processes: a) ground-to-air process; b) air-to-air
+process; and c) air-to-ground process.
+2) In order to facilitate task collaboration among UA Vs,
+a centripetal-based relay pairing method for UA Vs is
+proposed. In this pairing method, the relay pairing
+relationship between UA Vs is determined based on theangle and distance between UA Vs and the BS.
+3) To reduce the hovering time of UA Vs during data deliv-
+ery, a joint scheduling scheme is proposed. The scheme
+allocates the hovering time of each UA V according to
+the difference in the length of the closed-loop ﬂight pathand sets the take-off point and ﬂight direction of each
+UA V according to the hovering time.
+The remaining organization of this article is outlined as
+follows. Section IIbrieﬂy sums up the related works in
+literature. Section IIIdescribes the collaborative data acqui-
+sition model. Section IVpresents the TSDA scheme. In
+Section V, simulation results are presented. Finally, this article
+is concluded by summarizing the main improvements.
+II. R
+ELATED WORK
+Optimizing UA V ﬂight paths to enhance system AoI has gar-
+nered a lot of attention in the ﬁeld of UA V-aided IoT research.
+Tong et al. [18] proposed a collaborative SN distribution and
+path planning strategy for UA V-aided IoT. Liu et al. [19]
+used a uniﬁed approach combining dynamic programming
+and genetic algorithm (GA) to determine trajectories thatare optimal in terms of both maximum AoI and average
+AoI. Abd-Elmagid et al. [20] designed a deep reinforcement
+learning (DRL) algorithm to minimize the weighted sum ofAoI values for different processes of UA Vs. Ahani et al. [21]
+developed an algorithm based on graph labeling for reducing
+the AoI of SNs. Yi et al. [22] investigated the issue of the age-
+optimal data gathering in IoT networks supported by UA Vs,
+utilizing DRL as their method of study. Tong et al. [23]
+proposed a DRL algorithm to reduce the AoI and packet lossratio of SNs. Liu et al. [24] designed a novel optimization
+strategy for path planning of UA Vs that aimed to achieve age-
+optimal solutions by combining a clustering algorithm withGA. Jia et al. [25] proposed a solution framework based on
+dynamic programming to obtain the optimal path and data
+acquisition strategy. Ferdowsi et al. [26] developed a novel
+neural combinatorial-based DRL algorithm to reduce the AoI
+of SNs. Wang et al. [27] introduced a heuristic-based path-
+planning algorithm aimed at minimizing the system AoI. The
+main idea of the algorithm is to direct the UA V to the SN with
+the highest AoI. Li et al. [28] designed two learning algorithms
+based on the Sarsa and value-decomposition network to plan
+the path of UA Vs, minimizing the long-term return, which
+was characterized by the AoI of SNs, power consumption ofUA Vs, and penalty for inappropriate actions. Deng et al. [29]
+presented a path-planning algorithm using the spiral method.The primary objective of this algorithm was to minimize the
+time required to complete the mission by efﬁciently planningthe shortest ﬂight path for the UA V while ensuring coverage
+of all SNs. Xu et al. [30] developed an improved gray wolf
+optimizer algorithm for an optimized multi-UA V cooperativepath planning. Zhu et al. [31] designed a novel algorithm
+framework based on the weighted A* to minimize the total
+AoI of the acquired data by the UA V from the groundIoT network. In this algorithm, the selection of hovering
+points of the UA V and the visiting order to these hovering
+points were jointly optimized. Oubbati et al. [32] designed
+a multiagent DRL method that aimed to jointly optimize the
+trajectories of UA V teams and minimize the expected AoI.
+Liao and Friderikos [33] proposed a multiobjective mixed
+integer linear programming with a ﬂow-based constraint set
+to jointly optimize the average AoI and the aggregate energyconsumption. Liu et al. [34] designed a deep Qnetwork-
+based scheme for speedy preparation and path planning of
+UAVs. Wu et al. [35] proposed a comprehensive framework
+based on artiﬁcial intelligence for UA V path planning. The
+framework included a clustering module to determine optimal
+hovering positions for the UA V . A neural trajectory solveris used to generate the ﬂight path that minimizes the AoI.
+Huang and Fu [36] proposed an AoI-sensitive data acquisition
+scheme based on the Hamilton path to achieve better AoIperformance. This scheme used multiple UA Vs to form a
+Hamiltonian loop to complete the data acquisition. While this
+approach incorporated the concept of air-to-air data relay, itrestricted each UA V to establishing a relay pairing relationship
+with only one other UA V . This limitation somewhat reduced
+the ﬂexibility of UA V data relay. We summarize the compar-
+ison between our work and the existing literature in Table I.
+The literature review clearly indicates that the main trend in
+existing research is to treat UA Vs as independent individuals,
+without any data relaying or task collaboration between them.
+The main challenge with this approach is that the UA Vstasked with covering the marginal task area have to move
+considerable distances to deliver data to the BS. This has a
+serious impact on the average system AoI. The collaborativerelay mode, with its air-to-air data relay, provides an effective
+solution to this problem. In this mode, the UA V located at a
+signiﬁcant distance from the BS (i.e., far-end UA V) does notneed to return directly to the BS. Instead, the far-end UA V
+uses encounter opportunities to deliver data to a UA V nearer
+to the BS (i.e., near-end UA V), which then relays the data tothe BS. Although there have been few studies that adopt air-
+to-air data relay, these studies do not support ﬂexible pairing
+of UA Vs, which to some extent limits the advantages of air-to-
+air data relay. The following three research challenges related
+to this delivery process need to be addressed.
+1) In the UA V-aided IoT, we ﬁrst need to assign reasonable
+task areas to UA Vs. When dividing task areas, we need
+to consider two factors. On the one hand, to improvedata acquisition efﬁciency, the task area of each UA V
+should avoid overlapping. Overlapping task areas can
+cause unnecessary ﬂight paths for UA Vs, resulting in awaste of data acquisition time. On the other hand, to
+provide sufﬁcient opportunities for data relay of UA Vs,
+--- PAGE 3 ---
+
+13662 IEEE INTERNET OF THINGS JOURNAL, VOL. 11, NO. 8, 15 APRIL 2024
+TABLE I
+COMPARISON BETWEEN OURWORK AND THE EXISTING LITERATURE
+the data acquisition task for each UA V in the divided
+task areas should be as balanced as possible. If a UA Vundertakes too many data acquisition tasks, the overall
+system performance degrades due to the prolonged data
+acquisition time of that UA V . In this work, we select thedata acquisition nodes using a centroid-based algorithm
+and generate closed-loop ﬂight paths of UA Vs with
+balanced data acquisition tasks using GA.
+2) Once the task areas have been divided, the next chal-
+lenge is determining which UA Vs should act as data
+forwarders. Improperly assigning UA Vs to forward data
+can result in ineffective air-to-air data relay and may
+even result in data not reaching the BS. Therefore, weneed to rationalize the pairing relationships between
+UA Vs to ensure that data can be successfully delivered
+through feasible routes to the BS. In this work, weuse a centripetal-based relay pairing method to establish
+relay pairing relationships between UA Vs. The method
+establishes the relay relationship based on the distanceand angle between UA Vs and the BS, ensuring efﬁcient
+transmission of data from the far-end UA Vs to the BS
+through the relay of the near-end UA Vs.
+3) How to provide suitable opportunities for paired UA Vs
+to meet and forward data in a timely manner is the core
+issue. Therefore, in the ﬂight planning of UA Vs, we needto consider the hovering time, ﬂight direction, and path
+modiﬁcation of UA Vs. In this work, we use the diffusion
+direction selection method to determine take-off points
+and ﬂight directions of UA Vs in a certain order. In this
+method, we take the BS as the center and ﬁrst determinethe take-off point and ﬂight direction of the near-end
+UA V . We then gradually diffuse outward to determine
+Fig. 1. Data acquisition model.
+the take-off point and ﬂight direction of the far-end UA V
+based on the relay pairing relationship, achieving timelydata relay between paired UA Vs.
+III. S
+YSTEM MODEL
+A. Data Acquisition Model
+Our research considers the sparse network scenario where
+a predetermined number of SNs are randomly distributed over
+the given task area. The constrained wireless communication
+range of the low-cost SNs results in the division of the sensor
+network into several subnets. The SN cannot communicatewith SNs outside the subnet. Since the subnets are not
+connected to each other, SNs cannot deliver data to the BS
+through ground multihop data delivery, for which UA Vs areneeded to assist SNs to relay data to the BS. Fig. 1illustrates
+the data delivery from the SNs to the BS, which comprises
+--- PAGE 4 ---
+
+REN et al.: COLLABORATIVE DATA ACQUISITION FOR UA V-AIDED IoT BASED ON TIME-BALANCING SCHEDULING 13663
+Fig. 2. Schematic of the UA V communicating with the BS.
+three wireless delivery types: 1) ground-to-air; 2) air-to-air;
+and 3) air-to-ground.
+1) Ground-to-Air: To guarantee the data acquisition effec-
+tiveness of UA Vs, they can only establish communication witha limited number of SNs in the sensor network. Within each
+ground subnet, one SN is selected as the data acquisition
+node. Data from all SNs within the subnet is converged at thedata acquisition node. The UA V can obtain the data of the
+subnet by establishing communication with the corresponding
+data acquisition node. To obtain data from all SNs, the
+ﬂight paths of UA Vs need to traverse all data acquisition
+nodes.
+2) Air-to-Air: For the far-end UA Vs that are responsible
+for areas far from the BS, ﬂying directly back to the BScan cause serious delivery latency for the data they carry.
+Therefore, we introduce a collaborative data relay of UA Vs
+(i.e., air-to-air delivery process). The near-end UA V in chargeof the area closer to the BS receives the data acquired by
+the far-end UA V at the communication points. The function
+of the communication point is to ensure that when theUA V reaches this point, it can forward data through the
+wireless link to the designated UA V or the BS. When the two
+UA Vs that are required to meet as planned cannot reach the
+communication points at the same time, we adopt the “hover
+and wait” approach. As shown in Fig. 1, when UA V 1 is at
+communication point A and UA V 2 has not yet reached the
+designated communication point B, UA V 1 needs to hover.
+When UA V 2 arrives at communication point B, the two UA Vscan establish communication. At this point, UA V 1 relays the
+data to UA V 2, and the air-to-air delivery process between the
+two UA Vs is completed.
+3) Air-to-Ground: The near-end UA V is responsible for
+delivering data acquired by the far-end UA V to the BS. Whenthe minimum distance between the near-end UA V and the BS
+exceeds the wireless communication distance, the near-end
+UA V is unable to deliver data to the BS [37]. In this case,
+we need to add additional communication points to the ﬂight
+path of the near-end UA V to ensure reliable data delivery. As
+shown in Fig. 2, the near-end UA V is unable to deliver data
+to the BS along the original ﬂight path. For this reason, we
+add communication point A to the original ﬂight path so thatalong the new ﬂight path the UA V can send data to the BS at
+the communication point A.
+After the above delivery process, the data generated by all
+SNs can be delivered to the BS through the collaborative relay
+of UA Vs.Fig. 3. Evolution of the AoI.
+B. AoI Model
+We present the AoI as a key performance indicator used to
+assess the freshness of data acquired from SNs. Speciﬁcally,
+the AoI is determined by the time elapsed since the lastinformation generated by the SNs was received by the BS
+[38],[39]. For any given time slot t, we assume that o
+n(t)is
+the generation time when the BS receives the latest sampledata from the SN n. Therefore, the AoI of the SN ncan be
+determined as /Delta1
+n(t)=t−on(t). In this work, we assume that
+/Delta1n(t)=0 when t=0. As shown in Fig. 3, the AoI of the
+SNnat the BS either increases linearly or is determined by
+the latest data packet if it is successfully delivered to the BS.
+To illustrate with an example, as depicted in Fig. 3, the ﬁrst
+data packet is generated by the SN nat time tG
+n,1and starts
+tracking its lifetime, followed by subsequent data packets at
+times tG
+n,2,..., tG
+n,m. The lifetime of a data packet, which refers
+to the time it takes to be generated, delivered to the BS and
+ﬁnally replaced by the latest packet, shows a linear increase.As soon as one data packet has successfully delivered from
+the SN nto the BS by UA Vs (i.e., t=t
+R
+n,1,..., tR
+n,m),t h eA o I
+of the SN nat the BS is updated to the lifetime of this data
+packet. As mentioned in [38] and[40], the average AoI of
+the SN ncan be written as
+/Delta1n(t)=1
+TC/integraldisplayTC
+0/Delta1n(t)dt (1)
+where TCdenotes the time to complete the data acquisition
+task. Considering the analysis of the average AoI of the SN,
+the average system AoI is calculated as follows:
+/Delta1(t)=1
+NSNS/summationdisplay
+n=1/Delta1n(t)
+=1
+NSTCNS/summationdisplay
+n=1/integraldisplayTC
+0/Delta1n(t)dt (2)
+where NSrepresents the total number of SNs.
+C. Communication Channel Model
+We make the assumption that UA Vs use Line-of-Sight (LoS)
+links as communication links between them. Furthermore, werequire that the ﬂight altitude of UA Vs needs to exceed that
+of any obstacle to ensure unimpeded ﬂight for all UA Vs in
+--- PAGE 5 ---
+
+13664 IEEE INTERNET OF THINGS JOURNAL, VOL. 11, NO. 8, 15 APRIL 2024
+Fig. 4. Communication channel model.
+free space area [41]. The model for path loss between UA Vs
+is described as follows:
+PLAA=20 log/parenleftbigg4πfSdUU
+vL/parenrightbigg
++ηLoS (3)
+where fSdenotes the signal frequency; vLdenotes the light
+speed; dUUis distance between UA Vs; ηLoS is the LoS-
+attenuation factor.
+The ground-to-air wireless communication channel includes
+probabilistic LoS and Non-LoS (NLoS) parts. The path lossfor the probabilistic LoS and NLoS parts can be described
+as follows:
+L
+LoS=20 log/parenleftbigg4πfSdUS
+vL/parenrightbigg
++ηLoS (4)
+LNLoS=20 log/parenleftbigg4πfSdUS
+vL/parenrightbigg
++ηNLoS (5)
+where dUSrepresents the distance between the UA V and the
+SN and ηNLoS signiﬁes the attenuation factor resulting from the
+NLoS connection. Taking into account this particular scenario,
+the probabilities associated with the presence of the LoS
+and NLoS parts in the ground-to-air wireless communicationchannel can be expressed as follows:
+P
+LoS(θ)=1
+1+ψexp(−β(θ−ψ))(6)
+PNLoS(θ)=1−PLoS(θ) (7)
+where the constants ψandβare parameters that are deter-
+mined based on the speciﬁc characteristics of the environment
+in which the system operates [42];θdenotes the elevation
+angle of the communication between the SN and the UA V .According to Fig. 4, we notice that θ=arcsin(H
+C/dUS).HC
+is the ﬂight altitude of UA Vs. The ground-to-air path loss takes
+into account both probabilistic LoS and NLoS parts, which isdeﬁned as
+PL
+AG=LLoSPLoS(θ)+LNLoSPNLoS(θ)
+=ηLoS−ηNLoS
+1+ψexp/parenleftBig
+−β(arcsin(HC
+dUS)−ψ)/parenrightBig
++20 log/parenleftbigg4πfSdUS
+vL/parenrightbigg
++ηNLoS. (8)
+To guarantee the wireless communication quality, PLAA
+and PLAG are both less than or equal to threshold
+value PLAA
+THand PLAG
+TH, respectively (i.e., PLAA≤PLAA
+TH,PLAG≤PLAG
+TH)[43],[44],[45]. In this work, we deﬁne the
+maximum communication distance between UA Vs as DAA=
+dUU|PLAA=PLAA
+TH. Also, we deﬁne the maximum communica-
+tion distance between the UA V and the SN as DAG=
+dUS|PLAG=PLAG
+TH.
+D. Energy Model
+The energy consumption of the UA V is divided into two
+main components: 1) the energy used for communication and
+2) the energy used for propulsion. However, as the energyrequired for communication is comparatively small, we focus
+primarily on propulsion energy consumption [46],[47].W e
+useE
+Uto represent the initial energy capacity of the UA V .
+The propulsion power consumption can be expressed by the
+following formula:
+/tildewideP(vt)=PBLA/parenleftBigg
+1+3v2
+t
+U2
+TIP/parenrightBigg
++PIND/parenleftBigg/radicalBigg
+1+v4t
+4v4
+0−v2
+t
+2v2
+0/parenrightBigg1
+2
++1
+2d0ρs0Av3
+t (9)
+where PBLA and PIND denote the power consumed by the
+blade and induced power, respectively, when the UA V hovers;the UA V’s speed at any given time t, is represented as v
+t;
+UTIPdenotes the tip speed of the UA V; v0is the average rotor
+induced velocity during hovering. The fuselage drag ratio isdenoted by d
+0. The air density is represented by ρ,w h i l e s0
+refers to the solidity of the rotor. The area of the rotor disk
+is represented by A. We set the BS with a charging function.
+The UA V can be efﬁciently recharged by returning to the BS
+during data acquisition. At this point, each UA V should satisfy
+TRB/summationdisplay
+t=1/tildewideP(vt)τ≤EU (10)
+where TRBdenotes the time slot when the UA V returns to the
+BS;τdenotes the time length of each slot.
+IV . T IME-BALANCING SCHEDULING
+DATA ACQUISITION SCHEME
+A. TSDA Scheme Framework
+To realize collaborative data acquisition by multiple UA Vs,
+a TSDA scheme is proposed. As shown in Fig. 5,i nt h e
+TSDA scheme, the initial paths of UA Vs that traverse all data
+acquisition nodes are ﬁrst generated. Then, to achieve seamless
+data relay between UA Vs, a centripetal-based relay pairingmethod for UA Vs is proposed. On this basis, we modify the
+initial ﬂight paths depending on the relay pairing relationship.
+Finally, the hovering time, take-off points, and ﬂight directionsof UA Vs are jointly planned to ensure the timeliness of data
+delivery between UA Vs.
+B. Selection of Data Acquisition Nodes
+Considering the limited wireless communication range of
+SNs, we make the assumption that the sensor network iscomposed of N
+Csubnets. In order to efﬁciently acquire data
+from the subnets, we designate a speciﬁc SN as a data
+--- PAGE 6 ---
+
+REN et al.: COLLABORATIVE DATA ACQUISITION FOR UA V-AIDED IoT BASED ON TIME-BALANCING SCHEDULING 13665
+Fig. 5. TSDA scheme.
+Fig. 6. Selection of data acquisition nodes.
+acquisition node from each subnet. Its role is to acquire the
+data generated within its respective subnet, allowing data to
+be acquired whenever communication is established betweenthe UA V and the data acquisition node. To determine the data
+acquisition nodes for the subnets, we propose a centroid-based
+algorithm. This algorithm enables the selection of optimal data
+acquisition nodes for effective data acquisition within each
+subnet.
+As depicted in Fig. 6, we designate the SN in each subnet
+that is nearest to the centroid as the initial data acquisition
+node, denoted by the set {C
+1,C2,C3,C4,C5}. The centroid in
+each subnet can be calculated by
+xS
+i=/summationtextnS
+i
+j=1xi,j
+nS
+i(11)
+yS
+i=/summationtextnS
+i
+j=1yi,j
+nS
+i(12)
+where (xS
+i,yS
+i) denotes the coordinates of centroid in subnet i;
+(xi,j,yi,j) denotes the coordinates of the SN jin subnet i;nS
+i
+denotes the number of SNs in subnet i. Based on the initialAlgorithm 1 Data Acquisition Nodes Selection Algorithm
+Input: PD={PD
+1,PD
+2,..., PD
+NC}
+Output: PC
+1:foreach PD
+iinPDdo
+2: Calculate the centroid of subnet i
+3: Select the initial data acquisition node in subnet i
+4:end for
+5:Calculate centroids of closed loops
+6:foreach PD
+iinPDdo
+7: Update the data acquisition node in subnet i
+8:end for
+9:return PC
+data acquisition nodes, we can generate the initial ﬂight paths
+for the UA Vs, as detailed in Section IV-C . These ﬂight paths
+can form several closed loops. A closed loop is deﬁned as
+a complete circle that a UA V can traverse starting from a
+point and eventually return to the same point without retracing
+any part of the ﬂight path. By leveraging these closed loopsdelineated by the initial ﬂight paths of UA Vs, the centroid of
+each closed loop can be calculated by
+x
+C
+k=/summationtextNC
+i=1wS
+i,kxS
+i/summationtextNC
+i=1wS
+i,k(13)
+yC
+k=/summationtextNC
+i=1wS
+i,kyS
+i/summationtextNC
+i=1wS
+i,k(14)
+where (xC
+k,yC
+k) denotes the coordinates of closed-loop centroid
+k;wS
+i,k=1 denotes the centroid of subnet iis in the closed
+loop k;wS
+i,k=0 denotes the centroid of subnet iis not
+in the closed loop k; ﬁnally, we designate the SN that is
+nearest to the closed-loop centroid as the data acquisition node{C
+∗
+1,C∗
+2,C∗
+3,C∗
+4,C∗
+5}, which is shown in Fig. 6. By contracting
+all the closed loops through the above steps, we can obtain the
+new ﬂight path, and the data acquisition nodes that comprise
+these closed loops are our ﬁnalized data acquisition nodes.
+The detailed procedures of data acquisition node selection aresummarized in Algorithm 1.P
+D
+idenotes the set of SNs in
+subnet i, and PCdenotes the set of determined data acquisition
+nodes.
+C. Initial Flight Path Planning of UAVs
+In order to acquire data from all subnets, we generate
+initial ﬂight paths for UA Vs that can efﬁciently traverse all the
+designated data acquisition nodes. This path planning problem
+can be regarded as a typical multiple traveling salesman
+problem (MTSP). To solve the problem, we assume that
+NAUA Vs are deployed, the following decision variables can
+be deﬁned:
+wU
+i,j,k=/braceleftbigg1,UAV kﬂies from pC
+itopC
+j
+0,otherwise(15)
+wC
+j,k=/braceleftbigg1,UAV ktraverses pC
+j
+0,otherwise(16)
+--- PAGE 7 ---
+
+13666 IEEE INTERNET OF THINGS JOURNAL, VOL. 11, NO. 8, 15 APRIL 2024
+Fig. 7. Schematic of two-part chromosome encoding.
+where pC
+idenotes the data acquisition node selected for subnet
+i;dC
+i,jdenotes the Euclidean distance between data acquisition
+nodes pC
+iandpC
+j. On this basis, the objective function is set
+as follows:
+min⎧
+⎨
+⎩max
+1≤k≤NA⎧
+⎨
+⎩NC/summationdisplay
+i=1NC/summationdisplay
+j=1dC
+i,jwU
+i,j,k⎫
+⎬
+⎭⎫
+⎬
+⎭(17)
+s.t.NC/summationdisplay
+i=1wU
+i,j,k+NC/summationdisplay
+i=1wU
+j,i,k∈{0,2} (18)
+NA/summationdisplay
+k=1wC
+j,k=1 (19)
+ui,k−uj,k+NCwU
+i,j,k≤NC−1 (20)
+NC/summationdisplay
+j=1wC
+j,k≥NL (21)
+where ui,kis an auxiliary variable representing the order in
+which UA V ktraverses the data acquisition nodes pC
+iin its
+ﬂight path. The objective function (17) is used to require
+that the closed-loop ﬂight path of the UA V with the longest
+ﬂight path length among NAUA Vs should be as short as
+possible; (18) requires that the ﬂight path of each UA V is a
+closed-loop path; (19) requires that each data acquisition node
+can only be acquired by one UA V and only once; (20) is used
+to constrain each UA V not to generate subtours; (21) requires
+each UA V to acquire at least NLdata acquisition nodes. NL
+is set to 3 because the number of nodes to be traversed by
+the UA V to generate a closed-loop path is at least 3. Byadding this constraint, the solution space of the problem can
+be signiﬁcantly reduced.
+GA has superior global search capabilities compared
+to other heuristic algorithms. When used as a basic
+method or combined with other heuristic algorithms as
+a hybrid algorithm, GA can produce high diversity and
+high-quality samples, avoiding falling into local optima
+prematurely and having higher chances of ﬁnding theglobal optimum of multimodal functions [48],[49],[50].
+Therefore, GA is widely used to solve complex combinatorial
+optimization problems such as MTSP. Additionally, manystudies [51],[52],[53] have shown that compared to other
+heuristic algorithms, GA can ﬂexibly handle constraints indifferent scenarios when solving MTSP while maintaining
+high computational efﬁciency. Based on these two reasons, this
+study chooses the GA algorithm to solve the proposed path
+planning problem. The details of this algorithm are as follows.
+1) Encoding: We use the two-part chromosome coding
+method to denote the pairing relationship between UA Vs and
+data acquisition nodes [54],[55],[56]. This method expresses
+the path as a sequential arrangement of numbers where each
+data acquisition node is assigned to a different sequential
+number in advance. We organize these numbers in the order
+of the UA Vs visit. To illustrate the concept, we consider
+the scenario where three UA Vs are navigating through tendata acquisition nodes, as depicted in Fig. 7. Chromosome I
+represents the ﬂight path of the UA V through the ten data
+acquisition nodes. Chromosome II represents the sequentiallocation of the breakpoints of the path that divides chromo-
+some I into multiple segments. On the basis of the coding
+of chromosome I and chromosome II, the paths of UA Vsare presented in Fig. 7. UA V 1 starts from point 6, passes
+point 2 and point 5, and ﬁnally returns to node 6; UA V 2 starts
+from point 1, passes point 3, point 9, and point 4, and ﬁnallyreturns to point 1; UA V 3 starts from point 10, passes point 8
+and point 7, and ﬁnally returns to point 10. To satisfy the
+requirement that each UA V must traverse at least N
+Ldata
+acquisition nodes in the scenario with NCdata acquisition
+nodes, the coding of chromosome II must satisfy the following
+constraint.
+1) Arrange the numbers in chromosome II in ascending
+order.
+2) Ensure that the difference between any two adjacent
+numbers is not less than NL.
+3) The ﬁrst number should be larger than or equal to NL.
+4) The difference between NCand the last number should
+be greater than or equal to NL.
+2) Fitness Function: The evaluation of the population is
+determined by the ﬁtness function ( 17). In most cases, a higher
+ﬁtness value indicates a higher adaptability of an individual
+to the environment. In this context, the ﬁtness value refers tothe reciprocal of the maximum path distance of all UA V ﬂight
+paths where the maximum path distance is smaller, implying
+a better path solution.
+3) Selection: After evaluating the ﬁtness value of each
+individual in the current population, our reproduction process
+--- PAGE 8 ---
+
+REN et al.: COLLABORATIVE DATA ACQUISITION FOR UA V-AIDED IoT BASED ON TIME-BALANCING SCHEDULING 13667
+Fig. 8. Schematic of chromosome mutation operator.
+for the next generation involves selecting individuals using
+roulette selection and elite strategy. The elite strategy ﬁrst
+identiﬁes the best performing individual and preserves it forthe next generation. This ensures that the individual with the
+highest ﬁtness value is undoubtedly carried forward to the
+next iteration. The remaining individuals are then selectedusing the roulette wheel method. The roulette selection and
+elite strategy not only ensure that a higher proportion of
+dominant individuals are retained in each iteration but alsohelp to prevent the algorithm from converging prematurely on
+a particular solution.
+4) Mutation: Mutation operations play a vital role in gen-
+erating new individuals and enhancing the diversity within
+the population. To ensure effective global search capability, arange of mutation operators are employed.
+For chromosome I, we employ three speciﬁc types of
+mutation operations: ﬂip, swap, and slide, as illustrated in
+Fig. 8. Prior to performing the mutation, we ﬁrst randomly
+select a section, represented by the range from I to J. Thismeans that the segment from position I to J within the path
+undergoes mutation. Furthermore, we randomly generate an
+insertion position P, taking into consideration the values of Iand J. The path mutation operation is as follows.
+1)Flip: The sequence of numbers within the segment from
+position I to J is reversed. Subsequently, the entiresegment from I to J, in its reversed order, is inserted at
+the randomly generated insertion position P.
+2)Swap: The number at position I is swapped with the
+number at position J. After the swap, the entire segment
+from I to J is inserted at the insertion position P.
+3)Slide: The numbers within the segment from position
+I to J are cyclically shifted one position in the same
+direction. Following the shift, the entire segment from I
+to J is inserted at the insertion position P.
+For chromosome II, the gene is regenerated by random
+regeneration under satisfying coding constraints. Therefore,
+when an individual is mutated, seven new individuals are
+created by combining the mutations of chromosome I and
+chromosome II, as shown in Fig. 8. Among these eight
+individuals, the one with the highest ﬁtness value is selected
+as the result of the mutation and kept in the population.
+Fig. 9shows an example of the initial ﬂight path planning
+of UA Vs. In this example, the far-end UA V 1 is responsible
+for data acquisition in subnets 1–3 and the near-end UA V 2 is
+Fig. 9. Initial ﬂight path planning of UA Vs.
+responsible for data acquisition in subnets 4–7. Although all
+subnets in the network can be traversed at this point, there is
+no suitable encounter opportunity between the far-end UA V 1
+and the near-end UA V 2. For this reason, the initial ﬂight path
+needs to be modiﬁed to ensure that the data acquired by the far-
+end UA V can reach the BS via the relay of the near-end UA V .
+D. Relay Pairing Method for UAVs
+After completing the initial path planning of UA Vs, the
+next problem we need to solve is which the near-end UA Vshould be used to forward the data from the far-end UA V .
+Since all data in IoT is aggregated at the BS, the message
+routing direction is usually directed to the BS (i.e., centripetalfeature). Therefore, a centripetal-based relay pairing method
+for UA Vs is designed, the purpose of which is to avoid invalid
+data delivery between UA Vs by reasonably pairing the far-endand the near-end UA Vs.
+The basic idea of the relay pairing method is: 1) in the case
+that the distances between all candidate pairing UA Vs and thetarget UA V are similar, the target UA V prefers to establish
+a relay pairing relationship with the candidate pairing UA V
+with better centripetal performance and 2) in the case that all
+candidate pairing UA Vs have similar centripetal performance,
+the target UA V prefers to establish a relay pairing relationshipwith the candidate pairing UA V that is closer to it. Here, the
+mentioned centripetal performance is negatively related to the
+angle formed by taking the target UA V as the vertex andthe candidate pairing UA V and the BS as the endpoint. The
+smaller the angle is, the better the centripetal performance of
+--- PAGE 9 ---
+
+13668 IEEE INTERNET OF THINGS JOURNAL, VOL. 11, NO. 8, 15 APRIL 2024
+Algorithm 2 Centripetal-Based Relay Pairing Method
+Input: PR=/braceleftBig
+PR
+1,PR
+2...PR
+NA/bracerightBig
+,pB
+Output: Relay pairing relationship
+1:foreach PR
+iinPRdo
+2: Calculate closed-loop centroid pS
+ifrom PR
+i
+3:end for
+4:Obtain the closest point pS
+ito the BS and establish a
+pairing relationship between UA V iand the BS
+5:PS∗←PS\{pS
+i}
+6:foreach pS∗
+jinPS∗do
+7: foreach pS
+kinPSdo
+8: Calculate gj,k
+9: end for
+10: Obtain max 1≤k≤NA/braceleftbig
+gj,k/bracerightbig
+and optimal point pS
+k
+11: if/vextenddouble/vextenddouble/vextenddoublepS∗
+j,pB/vextenddouble/vextenddouble/vextenddouble>/vextenddouble/vextenddouble/vextenddoublepS∗
+j,pS
+k/vextenddouble/vextenddouble/vextenddoubleand/vextenddouble/vextenddouble/vextenddoublepS∗
+j,pB/vextenddouble/vextenddouble/vextenddouble>/vextenddouble/vextenddoublepS
+k,pB/vextenddouble/vextenddouble
+then
+12: Establish a pairing relationship between
+UAV jand UA V k
+13: else
+14: Establish a pairing relationship between
+UAV jand the BS
+15: end if
+16:end for
+17:return Relay pairing relationship
+the candidate pairing UA V . When the angle is zero, the target
+UA V , the candidate pairing UA V , and the BS form a straight
+line. In this case, the centripetal performance of the candidatepairing UA V is the best. Based on this idea, we propose a
+relay pairing relationship evaluation function
+g
+i,j=1
+αai,j
+max 1≤j≤NA{ai,j}+(1−α)dS
+i,j
+max 1≤j≤NA/braceleftBig
+dS
+i,j/bracerightBig(22)
+where αis the centripetal weight; ai,jis the angle formed by
+taking the centroid ias the vertex and the centroid jand the
+BS as the endpoint; dS
+i,jis the distance between the centroid
+iand the centroid j. The centroid idenotes the centroid of
+the closed-loop path of UA V i, which is the average value of
+coordinates of all data acquisition nodes in this closed-loop
+path. A larger gi,jindicates a higher pairing degree between
+UAV iand UA V j.F o rU A V i, we can calculate the pairing
+degree between UA V iand other UA Vs according to (22), and
+select the UA V with the maximum pairing degree to build a
+relay pairing relationship with UA V i.
+Algorithm 2presents the speciﬁc process of the relay pair-
+ing method for UA Vs. PR
+idenotes the set of data acquisition
+nodes for the closed-loop ﬂight path of UA V i,pBis the
+BS point, PS={pS
+1,pS
+2,..., pS
+NA}is the set of closed-loop
+centroids.
+Fig. 10depicts an example of establishing relay pairing
+relationships for UA Vs. As shown in Fig. 10(a), the closed-
+loop centroid E is the closest point to the BS among allclosed-loop centroids A, B, C, D, and E. Therefore, UA V
+5 corresponding to the centroid E is selected to establish a
+Fig. 10. Relay pairing relationships between UA Vs and the BS. (a) Partial
+pairing of UA Vs. (b) Final pairing of UA Vs.
+relay pairing relationship with the BS. Through this relay
+pairing relationship, UA V 5 acts as the near-end UA V and is
+in charge for relaying data from other UA Vs. For the closed-loop centroid B, the distance between centroids B and D is
+similar to the distance between centroids B and E, but the
+centripetal angle θ
+4is signiﬁcantly greater than θ3.I nt h i s
+case, according to (22), UA V 2 is directly paired with UA V
+5. For the closed-loop centroid C, the closed-loop centroids B
+and D corresponding to UA V 2 and UA V 4 have the similarcentripetal angle, but the distance between the centroids C
+and B is signiﬁcantly smaller than the distance between the
+centroids C and D. In this case, according to (22),U A V3i s
+directly paired with UA V 2. According to the proposed relay
+pairing method, the relay pairing relationship of all UA Vs
+can be obtained, as shown in Fig. 10(b). In this relay pairing
+relationship, the data from the far-end UA V 1 and UA V 3
+reaches the BS via the relay of UA V 2 and UA V 5; the data
+from the far-end UA V 4 reaches the BS via the relay of near-
+end UA V 5.
+E. Flight Path Modiﬁcation of UAVs
+After obtaining relay pairing relationships of UA Vs, there
+may be a situation where the paired UA Vs cannot establishcommunication. Therefore, we need to further modify the
+paths of UA Vs by adding additional communication points.
+The path modiﬁcation between the far-end UA V and the near-end UA V is a typical complex problem with huge solution
+space. The objective function of this problem is as follows:
+--- PAGE 10 ---
+
+REN et al.: COLLABORATIVE DATA ACQUISITION FOR UA V-AIDED IoT BASED ON TIME-BALANCING SCHEDULING 13669
+minNA/summationdisplay
+i=1NA/summationdisplay
+j=1wF
+i,j/vextendsingle/vextendsingle/vextendsingledF
+i−dF
+j/vextendsingle/vextendsingle/vextendsingle (23)
+s.t.pL
+i,j,pL
+j,i∈lC
+i,j (24)
+DS≤dC
+i,j−/parenleftBig
+dF
+i,j+dF
+j,i/parenrightBig
+≤DAA
+R (25)
+where dF
+iis the length of modiﬁed ﬂight path of UA V i;wF
+i,jis
+the relay pairing relationship between UA Vs iandjobtained
+by(22);wF
+i,j=1 denotes the data of UA V iis relayed by UA V
+j;wF
+i,j=0 denotes that there is no relay pairing relationship
+between UA V iand UA V j;pL
+i,jdenotes the communication
+point on the path of UA V ito establish communication with the
+paired relay UA V j;pL
+j,idenotes the communication point on
+the path of UA V jto establish communication with the paired
+relay UA V i;lC
+i,jdenotes the line generated by connecting
+the two points closest to each other on the ﬂight paths of
+UAV iand UA V j;dC
+i,jis the length of the line lC
+i,j;dF
+i,jis
+the distance between communication point pL
+i,jand the closest
+data acquisition node on the initial ﬂight path of UA V ifrom
+communication point pL
+i,j;DSis the minimum safe separation
+distance between UA Vs; the objective function (23) is used
+to require that the length of the modiﬁed path of each UA V
+differs as little as possible from each other and the total
+modiﬁed path length of all UA Vs are as short as possible.Meanwhile, according to (24) and(25), the path modiﬁcation
+should satisfy that there is no intersection and overlap between
+the modiﬁed ﬂight paths of UA Vs, and all UA Vs can conform
+to the predeﬁned relay pairing relationship. This problem is
+NP-hard. We use GA to solve it. The algorithm’s speciﬁcs areoutlined as follows.
+1) Initial Population: The algorithm starts by generating an
+initial population of potential solutions using binary coding.Each individual in the population represents a candidate solu-
+tion to the problem. Binary coding represents the individuals
+represented by different variable values as a distinct binarystring of zeros and ones. To ensure the accuracy of the
+solution, we set the solution to be accurate to 2 decimal
+places. According to ( 24), the corresponding variable interval
+[X
+min
+i,j,Xmax
+i,j]. To satisfy the accuracy of the solution, the
+encoded binary string adapts the string length according to the
+range of the interval. For this reason, we set the string length
+of the binary string to NB
+i,j, which should satisfy 2NB
+i,j−1<
+(Xmax
+i,j−Xmin
+i,j)102≤2NB
+i,j. The binary string of length NB
+discretizes the interval into 2NB−1 equal regions, generating
+a total of 2NB
+i,jdiscrete variables, including both ends of the
+interval. We randomly selected NPindividuals from these
+discrete variables as the initial population to ensure diversityin the solution space.
+2) Selection: Once the initial population is generated, the
+selection process identiﬁes individuals for reproduction based
+on their ﬁtness. We use an improved roulette selection method
+to select individuals (see Section IV-C for details).
+3) Crossover: Once the selection phase is completed, the
+algorithm moves on to the crossover operation. It involves
+combining genetic material from selected individuals to createoffspring. In the case of binary coding, crossover is performed
+by exchanging segments between two parent individuals. The
+Fig. 11. Path modiﬁcation between UA Vs.
+position of the crossover points is determined randomly. Thisexchange of genetic material introduces new combinations,
+potentially generating individuals with improved ﬁtness com-pared to their parents.
+4) Mutation: Following the crossover operation, the algo-
+rithm introduces variation through the mutation process.
+Mutation provides a mechanism to introduce small randomchanges in the genetic material of individuals. In the case of
+binary coding, mutation involves ﬂipping speciﬁc bits in the
+individual’s binary string with a predeﬁned mutation rate. Themutation rate determines the probability of a bit being ﬂipped.
+Flipping a binary string means changing the value of a bit from
+0 to 1, or vice versa. By introducing these random changes, thealgorithm can explore different regions of the search space and
+potentially escape local optima. This mutation process helps
+maintain diversity in the population and prevents premature
+convergence to suboptimal solutions.
+5) Fitness Function and Iteration: After crossover and
+variation, the ﬁtness of the offspring individuals is evaluated
+using the objective function ( 23). In this context, the ﬁtness
+value is deﬁned as the reciprocal of the sum of the distance
+differences among all UA V ﬂight paths. A smaller value of
+the distance differences indicates a better solution, leading
+to a higher ﬁtness value. We repeat the process of selection,
+crossover, mutation, and replacement until we have gonethrough a set number of iterative generations.
+An example of path modiﬁcation between UA Vs is given
+in Fig. 11. Before the path modiﬁcation, the initial ﬂight
+path of each UA V cannot effectively support air-to-air data
+relay. After the modiﬁcation of the ﬂight paths, the paired
+UA Vs can establish reliable communication, while furtherreducing the disparity in ﬂight path lengths. This improvement
+is more conducive to the following time-balancing scheduling
+operation.
+F . Joint Scheduling Scheme of UAVs
+To increase the efﬁciency of UA V data delivery by minimiz-
+ing hovering time, it is essential to develop a comprehensivescheduling scheme for each UA V . This scheme involves two
+essential steps. First, the optimal hovering time for each UA V
+must be determined. Second, the take-off point and ﬂightdirection for the closed-loop ﬂight path of each UA V are
+determined.
+--- PAGE 11 ---
+
+13670 IEEE INTERNET OF THINGS JOURNAL, VOL. 11, NO. 8, 15 APRIL 2024
+1) Hovering Time Scheduling: A hovering time scheduling
+method is proposed to improve the consistency of the timerequired for each UA V to complete a lap. The method achieves
+this by increasing the hovering time of the UA Vs at the
+communication point. This method is based on two settings:1) in the case of paired UA Vs, the UA V with the shorter path
+length is designated to hover in order to synchronize with the
+UA V that has a longer path length and 2) the larger the pathlength difference, the longer the UA V hovering time. Based
+on the above settings, for UA Vs iandjthat have established a
+relay pairing relationship, the time that UA V iwaits for UA V
+jat communication point P
+i,jis
+tH
+i,j=qi,jtD
+i (26)
+where qi,jis the time allocation ratio, and tD
+iis the sum of
+the hovering time at each communication point for one lap of
+UAV i. The time allocation ratio qi,jcan be calculated by
+qi,j=⎧
+⎨
+⎩wF
+i,jtF
+i,j/summationtextNA
+j=1wF
+i,jtF
+i,j,/summationtextNA
+j=1wF
+i,jtF
+i,j>0
+0, otherwise(27)
+tF
+i,j=/braceleftBigg
+dF
+j−dF
+i
+v,dF
+j−dF
+i>0
+0, otherwise(28)
+where tF
+i,jis the difference in path length between UA V iand
+UAV jfor one lap of ﬂight; vis the ﬂight speed of UA Vs. In
+the calculation of tF
+i,j, only the case where the path length of
+UAV jis greater than the path length of UA V iis regarded. For
+other cases, tF
+i,ji ss e tt o0s i n c eU A V idoes not need to wait
+for UA V j. The sum of hovering time tD
+ican be calculated by
+tD
+i=max 1≤i≤NA/braceleftbig
+dF
+i/bracerightbig
+−dF
+i
+v. (29)
+2) Take-Off Points and Flight Directions of UAVs: After the
+hovering time scheduling of UA Vs, the take-off point and ﬂight
+direction of each UA V also need to be conﬁgured. Accordingto the hovering time at the communication point, the take-
+off point and the ﬂight direction of the far-end UA V need to
+satisfy the following constraints: 1) when the UA V takes offfrom the take-off point, it chooses a ﬂight direction that allows
+it to acquire as many data packets from the SNs as possible
+before reaching the communication point and 2) at the end ofthe hovering time, the UA V has the ability to deliver data to
+another UA V that has an established relay pairing relationship.
+In order to generate take-off points and ﬂight directions
+that can satisfy all the above conditions, a diffusive direction
+selection method is proposed. The basic idea of this method
+is to take the BS as the center, and ﬁrst conﬁrm the take-off points and ﬂight directions of UA Vs near the BS, and
+gradually extend outward to determine the take-off points and
+ﬂight directions of the remaining UA Vs based on the relay
+pairing relationships. For ease of understanding, the details
+of this method are presented in Algorithm 3.t
+P
+idenotes the
+time consumed by UA V ito reach the communication point
+from the set take-off point in the set ﬂight direction; pT
+i
+denotes the take-off point of UA V i;pFD
+iandpRD
+idenote the
+candidate take-off points for UA V iin the forward and reverse
+ﬂight directions, respectively; nFD
+idenotes the number of dataAlgorithm 3 Diffusive Direction Selection Method
+Input: the set of data acquisition nodes PR,t h es e to fh o v e r i n g
+time for communication points TH={tH
+i,j,..., tH
+j,i},t h es e to f
+communication points PL={pL
+i,j,..., pL
+j,i}
+Output: The set of take-off points for UA Vs PT=
+{pT
+1,pT
+2···pT
+NA}, ﬂight directions of UA Vs
+1:foreach pL
+i,jinPLdo
+2: ifpL
+i,jcan communicate directly with the base
+station then
+3: pT
+i←pL
+i,j
+4: Select the direction that takes longer to reach
+pLmax
+ifrom pT
+ias the ﬂight direction in both
+forward and reverse directions.
+5: pTEM←pL
+i,j;pEND←pL
+i,j
+6: while return to pEND do
+7: Move from pTEM in the current closed-loop
+path where pTEM is located in the set ﬂight
+direction until you reach pL
+i,korpEND
+8: Update tP
+i
+9: ifthe closed-loop path where pL
+k,iis located
+is not set take-off point and ﬂight direction
+of UA V kthen
+10: From pL
+k,itakes time tP
+i+tH
+i,k−tH
+k,ito
+move in reverse and forward direction
+directions to get pFD
+kandpRD
+k
+11: ifnFD
+k≥nRD
+kthen
+12: pTk←pFD
+k;s e tU A V kto ﬂy in
+forward direction
+13: else
+14: pT
+k←pRD
+k;s e tU A V kto ﬂy in
+reverse direction
+15: end if
+16: pTEM←pL
+k,i
+17: else
+18: pTEM←pL
+k,i
+19: end if
+20: end while
+21: end if
+22:end for
+23:return PT, ﬂight directions of UA Vs
+packets from SNs that the UA V iacquires in forward ﬂight
+direction from pFD
+itopL
+k,i; and nRD
+idenotes the number of data
+packets from SNs that the UA V iacquires in reverse ﬂight
+direction from pRD
+itopL
+k,i.
+After setting the take-off point, ﬂight direction, and hovering
+time of each UA V , we can get the joint scheduling plan
+including the joint path planning and joint time scheduling.
+An example of the joint scheduling plan of UA Vs is shown
+in Fig. 12. The joint path planning of UA Vs is shown in
+Fig. 12(a), UA V 2 takes off from the take-off point P 1,a r r i v e s
+at the communication point P 2and then hovers to wait for
+UA V 1. UA V 1 takes off from the take-off point P 3, follows
+reverse ﬂight direction to the communication point P 4, and
+delivers data to UA V 2. UA V 2 continues to move after
+receiving data from UA V 1 and receives data from UA V 3
+--- PAGE 12 ---
+
+REN et al.: COLLABORATIVE DATA ACQUISITION FOR UA V-AIDED IoT BASED ON TIME-BALANCING SCHEDULING 13671
+Fig. 12. Joint scheduling plan of UA Vs. (a) Joint path planning of UA Vs. (b) Time scheduling of UA Vs. (c) Air-to-air data relay path for each subnet.
+when it reaches the communication point P 5. Then, UA V 2
+delivers data to UA V 5 at the communication point P 8. Finally,
+UA V 5 sends the data to the BS when it returns to the
+communication point P 9.F i g . 12(b) gives the time scheduling
+of UA Vs. By adjusting the hovering time of each UA V , all
+UA Vs take the same amount of time to ﬂy one lap and
+complete the data relay as scheduled. After completing thejoint path planning and joint time scheduling of UA Vs, the
+air-to-air data relay path for each subnet can be conﬁrmed,
+which is shown in Fig. 12(c).
+G. Complexity Analysis
+In the TSDA scheme, we ﬁrst select data acquisition nodes
+and generate the initial ﬂight path of UA Vs by using the
+GA. For a sensor network divided into N
+Csubnets, the
+computational complexity of applying the GA with popu-
+lation size NPforNIiterations to solve this problem is
+O(NPNINANC). After that, the generated initial ﬂight path is
+modiﬁed according to the relay pairing relationship between
+UA Vs. We also use the GA to solve this extreme-value
+problem. We still set the population size to NPand the
+number of iterations to NI. The computational complexity
+of the GA is O(NPNINA). Finally, the take-off point and
+ﬂight direction of each UA V are determined by the joint
+scheduling scheme of UA Vs. The computational complexity
+of the proposed algorithm is O(N2
+Alog(NA)). According to
+the above analysis, the total computational complexity of
+the TSDA scheme is O(NPNINANC+NPNINA+N2
+Alog(NA)),
+which is equivalent to O(NPNINANC). The proposed TSDA
+scheme has a reasonable level of computational complexity,
+ensuring that it does not place an excessive burden on softwareTABLE II
+PARAMETER SETTINGS OF GA
+and hardware resources. By leveraging ofﬂine calculations on
+the server at the BS, users have the capability to generate
+optimal ﬂight paths for the UA Vs and upload them in advancebefore commencing their data acquisition tasks. This facili-
+tates efﬁcient planning and execution of UA V tasks for data
+acquisition.
+V. E
+XPERIMENTAL RESULTS
+A. Experimental Setup
+We executed a series of simulations by using MATLAB
+2021b running on a platform with 128G RAM, one NvidiaQuadro RTX 5000 and one Intel Xeon Gold 6230R CPU
+@2.10 GHz with 26 cores. In the experiment, 300 SNs are
+randomly deployed within a 1000 m ×1000 m region. The
+location of the BS is set to (1000, 500) m. The communication
+channel parameters are set according to the reference worksin[57] and[58]. We use GA to generate the initial ﬂight
+paths and modiﬁed ﬂight paths of UA Vs. The recommended
+parameters to set the GA [51] are shown in Table II, while
+all simulation parameters are presented in Table IIIunless
+otherwise speciﬁed.
+--- PAGE 13 ---
+
+13672 IEEE INTERNET OF THINGS JOURNAL, VOL. 11, NO. 8, 15 APRIL 2024
+TABLE III
+SIMULATION PARAMETERS
+Fig. 13. Heatmap of the average system AoI varying number of UA Vs andcentripetal weight (N
+C=30).
+B. Parameter Analysis
+Fig. 13shows the heatmap of the average AoI varying the
+number of UA Vs and centripetal weight α. In the case where
+the number of deployed UA Vs is relatively small (NA=3),t h e
+centripetal weight value has little effect on the average system
+AoI. As the number of UA Vs rises, the effect of centripetal
+weight tends to be more evident. We can easily observe arecommended conﬁguration parameter space. In this parameter
+space, the average system AoI tends to be optimum. Based on
+the above observations, the centripetal weight is set to 0.6 inthe subsequent experiments.
+Fig. 14shows the generation process of UA V ﬂight paths
+under the TSDA scheme. Fig. 14(a) depicts the initial ﬂight
+paths. The initial paths can traverse all subnets and the
+closed-loop ﬂight path length of each UA V is approximated.Fig. 14(b) shows the modiﬁed ﬂight paths according to the
+centripetal-based relay pairing method. The modiﬁed path
+ensures that communication can be established between thepaired UA Vs and that the message delivery direction is directed
+to the BS. As shown in Fig. 14(c), after determining the
+Fig. 14. Generation process of UA V ﬂight paths under TSDA scheme (NA=
+5,NC=30). (a) Initial ﬂight path. (b) Modiﬁed path. (c) Final ﬂight path.
+take-off points and ﬂight directions of UA Vs, the collabora-
+tive data acquisition model is further improved by the joint
+scheduling scheme.
+From Fig. 15, we can clearly observe that for the relatively
+small network size (NC=20), the generated ﬂight path
+length of UA Vs is short, and a low average system AoIcan be obtained. With the rise of N
+C, although the path
+modiﬁcation of UA Vs can become more ﬂexible, the ﬂight
+path length required for UA Vs to traverse all subnets increases
+signiﬁcantly, resulting in a signiﬁcant increase in the average
+system AoI.
+Fig.16illustrates the variation in the average system AoI as
+the number of UA Vs changes. We can easily observe that to
+understand that along with the increasing number of UA Vs, thedata acquisition task assigned to each UA V is correspondingly
+reduced and is more conducive to data relay from far-end UA V .
+--- PAGE 14 ---
+
+REN et al.: COLLABORATIVE DATA ACQUISITION FOR UA V-AIDED IoT BASED ON TIME-BALANCING SCHEDULING 13673
+Fig. 15. Average system AoI varying number of subnets (NA=5).
+Fig. 16. Average system AoI varying number of UA Vs (NC=30).
+Fig. 17. Average system AoI with/without joint scheduling (NC=30).
+From Fig. 17, we can easily observe that along with the
+increasing number of UA Vs, the average system AoI decreases
+signiﬁcantly in the case with joint scheduling. In contrast,in the absence of joint scheduling, the average system AoI
+remains at a high level as the number of UA Vs increases.
+Fig.18presents the time states of each UA V in the two cases
+(i.e., with and without joint scheduling). We can ﬁnd that the
+hovering time consumed by the UA Vs during the air-to-air data
+relaying process is signiﬁcantly reduced after using the jointscheduling scheme compared to that without it, thus being
+able to complete one round of data acquisition in less time.
+This result also reasonably explains the reason why using the
+joint scheduling scheme can signiﬁcantly reduce the average
+system AoI.
+C. Performance Comparison
+To evaluate the effectiveness of the TSDA scheme, we
+selected the multiclosed-loop path data acquisition (MCDA)
+scheme [27], the multitrip path data acquisition (MTDA)
+Fig. 18. Time states of each UA V with/without joint scheduling (NA=5,
+NC=30). (a) With joint scheduling scheme. (b) Without joint scheduling
+scheme.
+scheme [30], and the AoI-aware data acquisition scheme
+(ADC) [36] as the comparison algorithms. MCDA and MTDA
+are the most classic UA V-aided IoT data acquisition schemes;
+in particular, the MCDA scheme uses a one-way ﬂight closed-
+loop path and the MTDA scheme uses a round-trip ﬂight foldpath. These two schemes focus on optimizing the ﬂight path
+of each UA V to improve data acquisition efﬁciency. The ADC
+scheme is the UA V-aided IoT collaborative data acquisitionscheme proposed in our previous research work [36].T h e
+ADC scheme achieves data relay among UA Vs by constructing
+Hamiltonian paths.
+Fig.19presents the AoI heatmap in the four data acquisition
+schemes. The color of the region in the ﬁgure represents the
+AoI value of the region. In the TSDA and ADC scheme,the far-end UA V does not required to ﬂy to the BS through
+the air-to-air data relay. However, in the ADC scheme, a UA V
+is only allowed to establish a relay pairing with one UA V(i.e., one-to-one data relay). In the TSDA scheme, one UA V is
+allowed to establish pairing relationships with multiple UA Vs,
+which makes the UA V more ﬂexible and efﬁcient in air-to-
+air data relaying. In both MCDA and MTDA schemes, UA Vs
+are required to move to marginal regions to ﬁnalize dataacquisition after accomplishing the task in the nearby region
+of the BS. Unlike the TSDA scheme, these two schemes
+involve UA V ﬂight paths covering a broader area, resulting inincreased data delivery latency and signiﬁcantly higher AoI
+values for SNs.
+--- PAGE 15 ---
+
+13674 IEEE INTERNET OF THINGS JOURNAL, VOL. 11, NO. 8, 15 APRIL 2024
+Fig. 19. AoI heatmap generated by four data acquisition schemes (NA=5,NC=30). (a) TSDA scheme. (b) ADC scheme. (c) MCDA scheme. (d) MTDA
+scheme.
+Fig. 20. AoI distribution of SNs generated by four data acquisition schemes (NA=5).( a ) NC=30. (b) NC=40. (c) NC=50.
+In order to further explore the data acquisition performance
+of the four data acquisition schemes in terms of AoI, weconducted statistics on the AoI distribution of the SNs in
+the sensor network. By observing Fig. 20, we can ﬁnd that
+the AoI distribution of SNs under the TSDA scheme exhibits
+signiﬁcant improvements compared to the other three schemes.
+Taking the scenario with N
+C=30 as an example, the AoI
+values of SNs under TSDA are mostly distributed in the range
+of [165, 230]. In contrast, the AoI values of SNs under ADC,
+MCDA, and MTDA are mainly distributed in the ranges of[159, 272], [170, 270], and [248, 325], respectively.
+A ss h o w ni nF i g . 21, compared with ADC, MCDA, and
+MTDA, the average system AoI obtained from the TSDAscheme is signiﬁcantly better than that of these three schemes.
+Speciﬁcally, it outperforms these three schemes by 14%, 23%,
+and 35%, respectively. The performance advantage of theTSDA scheme is more prominent with the expansion of the
+network size. In the case where the network size is relatively
+small (N
+C=30), the UA Vs do not need to perform air-to-air
+data relay to achieve efﬁcient data acquisition. In this case,
+the performance difference between the four schemes is notFig. 21. Comparison of four data acquisition schemes in terms of average
+system AoI (NA=5).
+evident. With the expansion of the network size, the ﬂight
+paths required for UA Vs to traverse each data acquisition node
+grow signiﬁcantly. In this scenario, the collaborative relayadvantages of both TSDA and ADC schemes can be fully
+utilized. Compared to the ADC scheme that only supports
+--- PAGE 16 ---
+
+REN et al.: COLLABORATIVE DATA ACQUISITION FOR UA V-AIDED IoT BASED ON TIME-BALANCING SCHEDULING 13675
+one-to-one data relay, the relay pairing strategy of the TSDA
+scheme enables UA Vs to participate in data forwarding tasksmore ﬂexibly, thereby further reducing the average system
+AoI.
+VI. C
+ONCLUSION
+In this work, we have developed a collaborative data
+acquisition model that utilizes collaborative data relay amongUA Vs to reduce data delivery latency. Building upon the
+proposed model, we introduce a TSDA scheme as a solution.
+Extensive experimental results have shown that the proposedTSDA scheme can signiﬁcantly reduce the average AoI of the
+system compared with existing data acquisition schemes. In
+addition, the advantages of collaborative relaying of the TSDAscheme can be better exploited as the network size increases;
+moreover, the hovering time of UA Vs can be signiﬁcantly
+reduced after applying such joint scheduling scheme. We
+mainly focus on the air-to-air relaying problem of UA Vs in
+UA V-aided IoT systems in obstacle-free scenarios. In the nextstep of our work, we focus on the multi-UA V data relaying
+problem in an obstacle environment. How to ensure safe
+obstacle avoidance of UA Vs while achieving efﬁcient datarelaying was the major challenge.
+R
+EFERENCES
+[1] C. Savaglio and G. Fortino, “A simulation-driven methodology for IoT
+data mining based on edge computing,” ACM Trans. Internet Technol. ,
+vol. 21, no. 2, pp. 1–22, 2021.
+[2] G. Fortino, C. Savaglio, G. Spezzano, and M. Zhou, “Internet of
+Things as system of systems: A review of methodologies, frameworks,platforms, and tools,” IEEE Trans. Syst., Man, Cybern., Syst. , vol. 51,
+no. 1, pp. 223–236, Jan. 2021.
+[3] G. Fortino, W. Russo, C. Savaglio, W. Shen, and M. Zhou, “Agent-
+oriented cooperative smart objects: From IoT system design to
+implementation,” IEEE Trans. Syst., Man, Cybern., Syst. , vol. 48, no. 11,
+pp. 1939–1956, Dec. 2017.
+[4] H. Ko and S. Pack, “Distributed device-to-device ofﬂoading system:
+Design and performance optimization,” IEEE Trans. Mobile Comput. ,
+vol. 20, no. 10, pp. 2949–2960, Oct. 2021.
+[5] H. Ko, S. Pack, and V . C. Leung, “Performance optimization of
+serverless computing for latency-guaranteed and energy-efﬁcient taskofﬂoading in energy harvesting Industrial IoT,” IEEE Internet Things J. ,
+vol. 10, no. 3, pp. 1897–1907, Feb. 2023.
+[6] G. K. Verma, B. Singh, N. Kumar, M. S. Obaidat, D. He, and H. Singh,
+“An efﬁcient and provable certiﬁcate-based proxy signature scheme forIIoT environment,” Inf. Sci. , vol. 518, pp. 142–156, May 2020.
+[7] G. Xiong et al., “From mind to products: Towards social manufacturing
+and service,” IEEE/CAA J. Automatica Sinica , vol. 5, no. 1, pp. 47–57,
+Jan. 2018.
+[8] A. Hazra, P. K. Donta, T. Amgoth, and S. Dustdar, “Cooperative
+transmission scheduling and computation ofﬂoading with collaborationof fog and cloud for Industrial IoT applications,” IEEE Internet Things
+J., vol. 10, no. 5, pp. 3944–3953, Mar. 2023.
+[9] G. Aloi, G. Fortino, R. Gravina, P. Pace, and C. Savaglio, “Simulation-
+driven platform for edge-based AAL systems,” IEEE J. Sel. Areas
+Commun. , vol. 39, no. 2, pp. 446–462, Sep. 2020.
+[10] G. Horn et al., “An architecture for using commodity devices and smart
+phones in health systems,” in Proc. IEEE Symp. Comput. Commun.
+(ISCC) , 2016, pp. 255–260.
+[11] J. Zhang, Y . Wang, S. Li, and S. Shi, “An architecture for IoT-enabled
+smart transportation security system: A geospatial approach,” IEEE
+Internet Things J. , vol. 8, no. 8, pp. 6205–6213, Apr. 2021.
+[12] S. Han, K. Zhu, M. Zhou, and X. Liu, “Joint deployment optimization
+and ﬂight trajectory planning for UA V assisted IoT data collection: Abilevel optimization approach,” IEEE Trans. Intell. Transp. Syst. , vol. 23,
+no. 11, pp. 21492–21504, Nov. 2022.[13] N. Agrawal, A. Bansal, K. Singh, C.-P. Li, and S. Mumtaz, “Finite block
+length analysis of RIS-assisted UA V-based multiuser IoT communicationsystem with non-linear EH,” IEEE Trans. Commun. , vol. 70, no. 5,
+pp. 3542–3557, May 2022.
+[14] Z. Wei et al., “UA V-assisted data collection for Internet of Things:
+As u r v e y , ” IEEE Internet Things J. , vol. 9, no. 17, pp. 15460–15483,
+Sep. 2022.
+[15] S. F. Abedin, M. S. Munir, N. H. Tran, Z. Han, and C. S. Hong,
+“Data freshness and energy-efﬁcient UA V navigation optimization: A
+deep reinforcement learning approach,” IEEE Trans. Intell. Transp. Syst. ,
+vol. 22, no. 9, pp. 5994–6006, Sep. 2021.
+[16] H. Hu, K. Xiong, G. Qu, Q. Ni, P. Fan, and K. B. Letaief, “AoI-minimal
+trajectory planning and data collection in UA V-assisted wireless poweredIoT networks,” IEEE Internet Things J. , vol. 8, no. 2, pp. 1211–1223,
+Jan. 2021.
+[17] M. A. Abd-Elmagid and H. S. Dhillon, “Average peak age-of-
+information minimization in UA V-assisted IoT networks,” IEEE Trans.
+Veh. Technol. , vol. 68, no. 2, pp. 2003–2008, Feb. 2018.
+[18] P. Tong, J. Liu, X. Wang, B. Bai, and H. Dai, “UA V-enabled age-optimal
+data collection in wireless sensor networks,” in Proc. IEEE Int. Conf.
+Commun. Workshops (ICC Workshops) , 2019, pp. 1–6.
+[19] J. Liu, X. Wang, B. Bai, and H. Dai, “Age-optimal trajectory planning for
+UA V-assisted data collection,” in Proc. IEEE INFOCOM Conf. Comput.
+Commun.Workshops (INFOCOM WKSHPS) , 2018, pp. 553–558.
+[20] M. A. Abd-Elmagid, A. Ferdowsi, H. S. Dhillon, and W. Saad,
+“Deep reinforcement learning for minimizing age-of-information in
+UA V-assisted networks,” in Proc. IEEE Global Commun. Conf.
+(GLOBECOM) , 2019, pp. 1–6.
+[21] G. Ahani, D. Yuan, and Y . Zhao, “Age-optimal UA V scheduling for data
+collection with battery recharging,” IEEE Commun. Lett. , vol. 25, no. 4,
+pp. 1254–1258, Apr. 2021.
+[22] M. Yi, X. Wang, J. Liu, Y . Zhang, and B. Bai, “Deep reinforcement
+learning for fresh data collection in UA V-assisted IoT networks,” inProc. IEEE INFOCOM Conf. Comput. Commun. Workshops (INFOCOM
+WKSHPS) , 2020, pp. 716–721.
+[23] P. Tong, J. Liu, X. Wang, B. Bai, and H. Dai, “Deep reinforcement
+learning for efﬁcient data collection in UA V-aided Internet of Things,”
+inProc. IEEE Int. Conf. Commun. Workshops (ICC Workshops) , 2020,
+pp. 1–6.
+[24] J. Liu, P. Tong, X. Wang, B. Bai, and H. Dai, “UA V-aided data collection
+for information freshness in wireless sensor networks,” IEEE Trans.
+Wireless Commun. , vol. 20, no. 4, pp. 2368–2382, Apr. 2021.
+[25] Z. Jia, X. Qin, Z. Wang, and B. Liu, “Age-based path planning and
+data acquisition in UA V-assisted IoT networks,” in Proc. IEEE Int. Conf.
+Commun. Workshops (ICC Workshops) , 2019, pp. 1–6.
+[26] A. Ferdowsi, M. A. Abd-Elmagid, W. Saad, and H. S. Dhillon,
+“Neural combinatorial deep reinforcement learning for age-optimal joint
+trajectory and scheduling design in UA V-assisted networks,” IEEE J. Sel.
+Areas Commun. , vol. 39, no. 5, pp. 1250–1265, May 2021.
+[27] Y . Wang, Z. Hu, X. Wen, Z. Lu, and J. Miao, “Minimizing data
+collection time with collaborative UA Vs in wireless sensor networks,”IEEE Access , vol. 8, pp. 98659–98669, 2020.
+[28] Z. Li, P. Tong, J. Liu, X. Wang, L. Xie, and H. Dai, “Learning-based
+data gathering for information freshness in UA V-assisted IoT networks,”IEEE Internet Things J. , vol. 10, no. 3, pp. 2557–2573, Feb. 2023.
+[29] L. Deng et al., “Completion time minimization for multi-antenna UA V-
+enabled data collection in uncorrelated Rician fading,” Veh. Commun. ,
+vol. 37, Oct. 2022, Art. no. 100501.
+[30] C. Xu, M. Xu, and C. Yin, “Optimized multi-UA V cooperative path plan-
+ning under the complex confrontation environment,” Comput. Commun. ,
+vol. 162, pp. 196–203, Oct. 2020.
+[31] B. Zhu, E. Bedeer, H. H. Nguyen, R. Barton, and Z. Gao, “UA V
+trajectory planning for AoI-minimal data collection in UA V-aided IoTnetworks by transformer,” IEEE Trans. Wireless Commun. , vol. 22, no. 2,
+pp. 1343–1358, Feb. 2023.
+[32] O. S. Oubbati, M. Atiquzzaman, H. Lim, A. Rachedi, and A. Lakas,
+“Synchronizing UA V teams for timely data collection and energy transfer
+by deep reinforcement learning,” IEEE Trans. Veh. Technol. , vol. 71,
+no. 6, pp. 6682–6697, Jun. 2022.
+[33] Y . Liao and V . Friderikos, “Energy and age Pareto optimal trajectories
+in UA V-assisted wireless data collection,” IEEE Trans. Veh. Technol. ,
+vol. 71, no. 8, pp. 9101–9106, Aug. 2022.
+[34] L. Liu, K. Xiong, J. Cao, Y . Lu, P. Fan, and K. B. Letaief, “Average AoI
+minimization in UA V-assisted data collection with RF wireless powertransfer: A deep reinforcement learning scheme,” IEEE Internet Things
+J., vol. 9, no. 7, pp. 5216–5228, Apr. 2022.
+--- PAGE 17 ---
+
+13676 IEEE INTERNET OF THINGS JOURNAL, VOL. 11, NO. 8, 15 APRIL 2024
+[35] T. Wu et al., “A novel AI-based framework for AoI-optimal trajec-
+tory planning in UA V-assisted wireless sensor networks,” IEEE Trans.
+Wireless Commun. , vol. 21, no. 4, pp. 2462–2475, Apr. 2022.
+[36] X. Huang and X. Fu, “Fresh data collection for UA V-assisted IoTs
+based on aerial collaborative relay,” IEEE Sensors J. , vol. 23, no. 8,
+pp. 8810–8825, Apr. 2023.
+[37] D. Yin, X. Yang, H. Yu, S. Chen, and C. Wang, “An air-to-ground relay
+communication planning method for UA Vs swarm applications,” IEEE
+Trans. Intell. Veh. , vol. 8, no. 4, pp. 2983–2997, Apr. 2023.
+[38] R. Han, J. Wang, L. Bai, J. Liu, and J. Choi, “Age of information and
+performance analysis for UA V-aided IoT systems,” IEEE Internet Things
+J., vol. 8, no. 19, pp. 14447–14457, Oct. 2021.
+[39] M. Sun, X. Xu, X. Qin, and P. Zhang, “AoI-energy-aware UA V-
+assisted data collection for IoT networks: A deep reinforcement learningmethod,” IEEE Internet Things J. , vol. 8, no. 24, pp. 17275–17289,
+Dec. 2021.
+[40] S. Kaul, R. Yates, and M. Gruteser, “Real-time status: How often should
+one update?” in Proc. IEEE INFOCOM , 2012, pp. 2731–2735.
+[41] L. A. B. Burhanuddin, X. Liu, Y . Deng, U. Challita, and A. Zahemszky,
+“QoE optimization for live video streaming in UA V-to-UA V commu-
+nications via deep reinforcement learning,” IEEE Trans. Veh. Technol. ,
+vol. 71, no. 5, pp. 5358–5370, May 2022.
+[42] A. Al-Hourani, S. Kandeepan, and S. Lardner, “Optimal LAP altitude
+for maximum coverage,” IEEE Wireless Commun. Lett. , vol. 3, no. 6,
+pp. 569–572, Dec. 2014.
+[43] H. Nawaz, H. M. Ali, and A. A. Laghari, “UA V communication networks
+issues: A review,” Archives Comput. Methods Eng. , vol. 28, no. 3,
+pp. 1349–1369, 2021.
+[44] S. Zhang, H. Zhang, B. Di, and L. Song, “Cellular UA V-to-X communi-
+cations: Design and optimization for multi-UA V networks,” IEEE Trans.
+Wireless Commun. , vol. 18, no. 2, pp. 1346–1359, Feb. 2019.
+[45] X. Liu et al., “Deployment of UA V-BSs for on-demand full communi-
+cation coverage,” Ad Hoc Netw. , vol. 140, Mar. 2023, Art. no. 103047.
+[46] D. Yang, Q. Wu, Y . Zeng, and R. Zhang, “Energy tradeoff in ground-to-
+UA V communication via trajectory design,” IEEE Trans. Veh. Technol. ,
+vol. 67, no. 7, pp. 6721–6726, Jul. 2018.
+[47] S. Ahmed, M. Z. Chowdhury, and Y . M. Jang, “Energy-efﬁcient UA V
+relaying communications to serve ground nodes,” IEEE Commun. Lett. ,
+vol. 24, no. 4, pp. 849–852, Apr. 2020.[48] J. Bi, H. Yuan, S. Duanmu, M. Zhou, and A. Abusorrah,
+“Energy-optimized partial computation ofﬂoading in mobile-edgecomputing with genetic simulated-annealing-based particle swarmoptimization,” IEEE Internet Things J. , vol. 8, no. 5, pp. 3774–3785,
+Mar. 2021.
+[49] J. Bi, H. Yuan, J. Zhai, M. Zhou, and H. V . Poor, “Self-adaptive BAT
+algorithm with genetic operations,” IEEE/CAA J. Automatica Sinica ,
+vol. 9, no. 7, pp. 1284–1294, Jul. 2022.
+[50] J. Bi, H. Yuan, K. Zhang, and M. Zhou, “Energy-minimized partial
+computation ofﬂoading for delay-sensitive applications in heterogeneousedge networks,” IEEE Trans. Emerg. Topics Comput. , vol. 10, no. 4,
+pp. 1941–1954, Oct.–Dec. 2022.
+[51] S. Gao, M. Zhou, Y . Wang, J. Cheng, H. Yachi, and J. Wang, “Dendritic
+neuron model with effective learning algorithms for classiﬁcation,approximation, and prediction,” IEEE Trans. Neural Netw. Learn. Syst. ,
+vol. 30, no. 2, pp. 601–614, Feb. 2019.
+[52] P. Zhang, S. Shu, and M. Zhou, “An online fault detection method based
+on SVM-grid for cloud computing systems,” IEEE/CAA J. Automatica
+Sinica , vol. 5, no. 2, pp. 445–456, May 2018.
+[53] X. Luo, Y . Zhou, Z. Liu, L. Hu, and M. Zhou, “Generalized Nesterov’s
+acceleration-incorporated, non-negative and adaptive latent factor anal-ysis,” IEEE Trans. Services Comput. , vol. 15, no. 5, pp. 2809–2823,
+Sep./Oct. 2022.
+[54] H. Zhou, M. Song, and W. Pedrycz, “A comparative study of improved
+GA and PSO in solving multiple traveling salesmen problem,” Appl.
+Soft Comput. , vol. 64, pp. 564–580, Mar. 2018.
+[55] Z. Wang, X. Fang, H. Li, and H. Jin, “An improved partheno-genetic
+algorithm with reproduction mechanism for the multiple travel-
+ing salesperson problem,” IEEE Access , vol. 8, pp. 102607–102615,
+2020.
+[56] Q. Pan and X. Fu, “Fresh data collection for UA V-assisted IoTs based on
+proximity-remote region collaboration,” Ad Hoc Netw. , vol. 146, no. 21,
+2023, Art. no. 103182.
+[57] A. Al-Hourani, S. Kandeepan, and A. Jamalipour, “Modeling air-to-
+ground path loss for low altitude platforms in urban environments,” in
+Proc. IEEE Global Commun. Conf. , 2014, pp. 2898–2904.
+[58] M. Mozaffari, W. Saad, M. Bennis, and M. Debbah, “Drone small cells
+in the clouds: Design, deployment and performance analysis,” in Proc.
+IEEE Global Commun. Conf. (GLOBECOM) , 2015, pp. 1–6.
+Open Access funding provided by ‘Università della Calabria’ within the CRUI CARE Agreement

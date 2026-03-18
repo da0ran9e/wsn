@@ -1,0 +1,460 @@
+--- PAGE 1 ---
+
+VOL. 8, NO. 12, DECEMBER 2024 7501204
+Sensor networks
+Joint Clustering and 3-D UAV Deployment for Delay-Aware UAV-Enabled MTC
+Data Collection Networks
+Lingfeng Shen1,2, Huanran Zhang2, Ning Wang2*,Y i n gC u i3, Xiang Cheng4,
+and Xiaomin Mu2
+1School of Software, Henan University, Kaifeng 475004, China
+2School of Electrical and Information Engineering, Zhengzhou University, Zhengzhou 450001, China
+3IoT Thrust, Hong Kong University of Science and Technology (Guangzhou), Guangzhou 511453, China
+4Department of Electronics, Peking University, Beijing 100080, China
+∗Member, IEEE
+Manuscript received 5 June 2024; revised 16 September 2024; accepted 16 October 2024. Date of publication 28 October 2024; date of current version 11
+November 2024.
+Abstract—
+ The design of timely data collection for a machine-type communication (MTC) net-
+work by unmanned-aerial-vehicle (UAV) platform is investigated. The ground-based MTC devices
+are clustered for efﬁcient service, and the UAV station’s deployment in the 3-D space is opti-
+mized. The corresponding mission time minimization problem is formulated as a coupled mixed-
+integer nonlinear program. For tractability, the original problem is decomposed into two sub-
+problems respectively dealing with clustering-hovering optimization and intercluster UAV traveling
+path minimization. An alternating clustering-hovering optimization (ACH) and ant colony optimiza-
+tion (ACO) solution approach is proposed accordingly. Simulations are conducted to validate the
+superiority of the proposed ACH–ACO scheme over the scheme based on k-means clustering.
+Index Terms—Sensor networks, clustering, mission time minimization, UAV 3-D deployment, UAV-assisted data collection.
+I. INTRODUCTION
+As a key foundation of Internet-of-Things (IoT) applications,
+machine-type communication (MTC) has been developing rapidly in
+recent years [1]. By deploying a large number of machine-type com-
+munication devices (MTCDs) to sense the environment and exchange
+control messages, MTC networks can effectively support timely intel-
+ligent management applications of information and physical systems,
+such as autonomous driving and factory automation [2]. Central to
+quality-of-service provisioning in such applications of MTC networks
+is efﬁcient data collection from a large number of MTCDs with latency
+considerations [3].
+In conventional data collection schemes, the MTCDs transmit data
+to a ground-based collector station directly or through relaying, which
+is easily blocked by obstacles and energy-inefﬁcient. To overcome the
+above issues, UA Vs have been introduced to establish airborne data
+sinks to support more efﬁcient and ﬂexible data collection [4],[5].
+Owing to its high mobility, a UA V can approach ground MTCDs and
+provide strong Line-of-Sight (LoS) links. As a result, UA V-assisted
+data collection can achieve much lower mission time than conventional
+schemes based on ﬁxed ground stations.
+There have been many works in the literature aiming at reducing
+latency of UA V-assisted data collection through trajectory optimiza-
+tion. For instance, in [6], trajectory optimization and data collection
+algorithms were proposed for simultaneous shortening ﬂight time and
+improving data collection rate. By jointly optimizing the UA V station’s
+trajectory, ﬂying height, and velocity, a UA V-aided data collection de-
+sign was proposed in [7]to minimize the total mission time. However, it
+is challenging to accurately model the inﬂuence of the highly dynamic
+UA V ﬂight attitude on wireless transmission, so the above works ignore
+the impact of UA V ﬂight attitude on communication. Noting that the
+Corresponding author: Ning Wang (e-mail: ienwang@zzu.edu.cn ).
+Associate Editor: Wei Pu.
+Digital Object Identiﬁer 10.1109/LSENS.2024.3487009attitude of the UA V is easy to control while hovering, [8]and [9]
+proposed to collect data at hovering locations on the trajectory, and
+the optimal trajectory was designed with such practical constraints
+taken into account.
+On the other hand, due to the limited coverage and capacity of
+UA V stations, it is reasonable to serve a large number of MTCDs in
+a clustered manner. However, joint design of MTCD clustering and
+UA V hovering is a complex coupled optimization problem, which has
+yet been adequately studied. In [10], the ground MTCDs were ﬁrst
+clustered, the UA V then hovers above each cluster during its ﬂight
+for data collection. Since the UA V hovering positions are obtained
+through weighted k-means principle, the scheme has no optimality
+guarantee. A dual-hop design that used a cluster head to gather data
+from close-by MTCDs and then forwarded it to the UA V station was
+investigated in [11]. This two-hop process had a signiﬁcant additional
+overhead, and hence is undesirable for IoT applications.
+In this letter, we consider minimization of the overall mission time
+in a UA V-assisted MTC data collection network by jointly optimizing
+MTCD clustering, UA V hovering, and UA V ﬂying strategies in a
+3-D space. The problem is formulated as a coupled mixed-integer
+nonlinear program (MINLP). To tackle the coupled issue, the prob-
+lem is separated into two subproblems, which respectively optimize
+the clustering-hovering strategy and the intercluster ﬂying strategy.
+The former determines the communication/hovering time, and the
+latter determines the traveling time. An alternating clustering-hovering
+optimization and ant colony optimization (ACH–ACO) solution ap-
+proach is proposed. Speciﬁcally, ACH is responsible for clustering-
+hovering optimization, and ACO designs intercluster ﬂying trajecto-
+ries. Through numerical examples, the proposed scheme is shown to
+effectively reduce the overall mission time.
+II. SYSTEM MODEL
+A ss h o w ni nF i g . 1, a UA V-enabled data collection system is
+deployed for a MTC network. One UA V collects data from M
+2475-1472 © 2024 IEEE. Personal use is permitted, but republication/redistribution requires IEEE permission.
+See https://www.ieee.org/publications/rights/index.html for more information.
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:22:07 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 2 ---
+
+7501204 VOL. 8, NO. 12, DECEMBER 2024
+Fig. 1. UAV-enabled data collection system model.
+static ground-based MTCDs while ﬂying over the target service
+area.
+The MTCD set is denoted as M/defines{1,2,..., M}. Assume that the
+UA V has acquired all the MTCDs’ position information in advance,
+which is a fair assumption considering only sub-meter accuracy is
+required. The UA V has limited coverage and service capacity. There-
+fore, the MTCDs should be divided into multiple clusters based on
+MTCD distribution density and the UA V’s capabilities [9]. Assuming
+the cluster number is K, the UA V travels across the clusters and collects
+data from each cluster while hovering above it. The cluster index set
+is denoted as K/defines{1,2,..., K}. The altitude of the ground is set to
+0. The horizontal position coordinates of the MTCDs in cluster kare
+expressed as sm=(sx
+m,sy
+m),m∈M. Similarity, the 3-D coordinates of
+the hovering position of the UA V for collecting data from the kth cluster
+is expressed as uk=(ux
+k,uy
+k,hk). To ensure stable reception of the UA V
+station, we make a practical assumption that no data communication
+is allowed while the UA V is ﬂying between hovering positions.
+The air-to-ground link can be modeled by considering the occur-
+rence probability of either LoS condition or nonline-of-sight (NLoS)
+condition. According to [12], the pathlosses of the LoS and NLoS links
+are expressed as
+PL L=20 lg d+20 lg f+20 lg(4 π/c)+/Delta1LoS, (1)
+PL NL=20 lg d+20 lg f+20 lg(4 π/c)+/Delta1NLoS (2)
+where dis the distance between the transmitter and the receiver, and
+/Delta1LoSand/Delta1NLoS are the corresponding additional pathlosses in dB on
+top of the free-space propagation pathloss, respectively.
+The LoS occurrence probability is
+PrL(θ)=1//parenleftbig
+1+aexp(−b[θ−a])/parenrightbig
+(3)
+where aandbare constants related to the propagation environment,
+andθ=arcsin(hk
+d) is the elevation angle.
+The average achievable rate between the UA V hovering above the
+kth cluster and MTCD m∈Mis given by
+Rm(uk)=PrL(θm(uk))log2/parenleftbig
+1+pm/(λL(uk)σ2d(uk)2)/parenrightbig
++(1−PrL(θm(uk))log2/parenleftbig
+1+pm/(λNL(uk)σ2d(uk)2)/parenrightbig
+(4)
+where pmis the transmit power of MTCD m,λL(uk)=10PLL
+10,
+λNL(uk)=10PLNL
+10,a n d d(uk)2=/bardbluk−sm/bardbl2
+2.
+III. PROBLEM FORMULATION
+Under the premise of completing all data collection tasks, the overall
+mission time is minimized by jointly optimizing the MTCD clustering
+and UA V’s trajectory. Denote by ηmt h ed a t as i z et h a tM T C D mneeds
+to upload. The hovering time for collecting data from MTCD mismeasured by
+tm(uk)=ηm/Rm(uk). (5)
+Letζk/defines(ζm,k)m∈Mrepresent the clustering strategy, where ζm,k∈
+{1,0}is an indicator variable denoting whether the MTCD mbelongs
+to the kth cluster. To ensure that all MTCDs ﬁnish uploading their data,
+the UA V hovering time above the kth cluster should be at least
+ϕh
+k(uk,ζk)=max
+m∈M{ζm,ktm(uk)},k∈K. (6)
+Indicator variables βi,j∈{1,0}are to denote whether the path from
+hovering position itojis selected. The ﬂying time of the UA V from
+theith hovering position to the jth hovering position is
+ϕf(ui,uj)=/vextenddouble/vextenddoubleui−uj/vextenddouble/vextenddouble
+2/v,i∈K,j∈K (7)
+where vis the maximum ﬂying speed of the UA V .
+For convenience, we deﬁne β/defines(βi,j)i,j∈K,ζ/defines(ζk)k∈Kand
+u/defines(uk)k∈K. The total mission time therefore becomes
+φ(u,ζ,β)=K/summationdisplay
+k=1ϕh
+k(uk,ζk)+K/summationdisplay
+i=1K/summationdisplay
+j=1βi,jϕf/parenleftbig
+ui,uj/parenrightbig
+. (8)
+The problem that jointly optimizes the MTCD clustering and 3-D UA V
+deployment is formulated as
+P1: minimize
+u,ζ,βφ(u,ζ,β)( 9 )
+s.t. cmin≤M/summationdisplay
+m=1ζm,k≤cmax,k∈K (9a)
+K/summationdisplay
+k=1ζm,k=1,m∈M (9b)
+K/summationdisplay
+i=1βi,j=1,j∈K (9c)
+K/summationdisplay
+j=1βi,j=1,i∈K (9d)
+K/summationdisplay
+i=1K/summationdisplay
+j=1βi,j≤K−1( 9 e )
+Hl≤hk≤Hu,k∈K. (9f)
+Note that the inequality constraints (9a) and (9b) are introduced to
+set a reasonable range for the cluster size, which depends on the
+available orthogonal resource blocks. Constraints (9c),(9d),a n d (9e)
+are imposed to ensure that the UA V passes every hovering position only
+once and that no subloop paths exist. Constraint (9f)sets the upper and
+lower limits to the UA V ﬂight altitude. Problem P1is a MINLP which
+is in general challenging to solve.
+IV . PROPOSED CLUSTERING AND 3-D UAV
+DEPLOYMENT OPTIMIZATION STRATEGY
+To tackle the MINLP problem P1, we decouple the clustering, hover-
+ing, and ﬂying variables, such that the original problem is decomposed
+into two tractable subproblems.
+A. Joint MTCD Clustering and UAV Hovering Optimiza-
+tion
+First, we focus on the joint optimization of MTCD clustering and
+UA V hovering strategies to minimize the total hovering time. The
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:22:07 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 3 ---
+
+VOL. 8, NO. 12, DECEMBER 2024 7501204
+corresponding subproblem is given by
+SP1 : minimize
+u,ζK/summationdisplay
+k=1ϕh
+k(uk,ζk)
+s.t. (9a),(9b). (10)
+Problem SP1 is still a challenging MINLP problem. We propose an
+iterative ACH algorithm that alternately optimizes the MTCD cluster-
+ing variables ζthat are integers and the UA V hovering variables uthat
+are real numbers.
+1) Optimizing the UAV Hovering Positions : For convenience, let
+Mk/defines{m∈M|ζm,k=1}be the set of MTCDs in the kth cluster, for
+allk∈K. Note that ∪k∈KMk=MandMi∩Mj=∅,∀i/negationslash=j,i∈
+K,j∈K. Minimizing the hovering time of the UA V within a cluster
+is equivalent to maximizing the minimum data rate Rmk,mk∈Mk.
+However, due to the complex nonconvex form of (4), it is challenging
+to obtain the optimal hovering position of the UA V .
+Proposition 1: By introducing a lower bound on Rmk, the 3-D
+UA V hovering position optimization is equivalently decomposed into
+horizontal position optimization and hovering height optimization.
+Proof: It can be shown that log2(1+pm/(λ(uk)σ2d(uk)2)) is a
+convex function of λ(uk). The lower bound of the expected throughput
+can be derived based on Jensen’s inequality
+Rmk(uk)≥log2⎛
+⎝1+pmk/parenleftBigPrL(θmk(uk))
+λL(uk)+PrNL(θmk(uk))
+λNL(uk)/parenrightBig
+σ2d(uk)2⎞
+⎠
+≥log2/parenleftbigg
+1+pmk
+λ(θmk(uk))σ2d(uk)2/parenrightbigg
+/defines¯Rmk(uk). (11)
+First, the ﬂying height is ﬁxed and the horizontal coordinates of
+the UA V hovering position are optimized. The elevation angle of the
+MTCD mkto the UA V is
+θmk(uk)=arcsin/parenleftbig
+hk//vextenddouble/vextenddoubleuk−smk/vextenddouble/vextenddouble
+2/parenrightbig
+. (12)
+Combining (11) and(12), it is observed that the transmission rate be-
+tween an MTCD and the UA V is a monotonically decreasing function
+of/bardbluk−smk/bardbl2. Therefore, the UA V hovering position optimization
+problem in the horizontal plane can be equivalently described as
+SP1−1: minimize
+{uk,χ}χ (13)
+s.t./vextenddouble/vextenddoubleuk−smk/vextenddouble/vextenddouble2
+2≤χ,mk∈Mk (13a)
+where χis an auxiliary variable for construction of a standard convex
+problem. The problem (13) can be easily solved by CVX.
+Then, we solve for the optimal hovering height of the UA V . Let
+χ∗be the optimal solution to SP1−1in(13). The problem for UA V
+hovering height optimization can be equivalently expressed as
+SP1−2: minimize
+hkλ/parenleftbig
+θmk(hk)/parenrightbig/parenleftbig
+(χ∗)2+(hk)2/parenrightbig
+. (14)
+s.t. Hl≤hk≤Hu,k∈K. (14a)
+Through the above discussion, the 3-D optimal hovering positions of
+the UA V can be obtained by solving SP1−1andSP1−2. /squaresolid
+Proposition 2: SP1−2is a quasi-convex optimization problem.
+Proof: Deﬁne g(hk)=lg(λ(θmk(hk))((χ∗)2+(hk)2)).
+dg(hk)/dhk=z1(hk)/z2(hk) (15)
+z1(hk)=(/Delta1LoS−/Delta1NLoS)exp/parenleftbig
+−b/bracketleftbig
+θmk(hk)−a/bracketrightbig/parenrightbig
+ab√χ∗
++2hk/parenleftbig
+1+aexp/parenleftbig
+−b/bracketleftbig
+θmk(hk)−a/bracketrightbig/parenrightbig/parenrightbig2/ln 10,(16)
+z2(hk)=10/parenleftbig
+1+aexp/parenleftbig
+−b/bracketleftbig
+θmk(hk)−a/bracketrightbig/parenrightbig/parenrightbig2/parenleftbig
+χ∗+h2
+k/parenrightbig
+.(17)TABLE 1. Values of the System Setting Parameters for Simulations
+Letz1(hk)=0
+dz1(hk)
+dhk≥2/parenleftbig
+1+aexp/parenleftbig
+ab−bθmk(hk)/parenrightbig/parenrightbig2
+ln 10/parenleftbigg
+1−b
+2/parenrightbigg
++2hk/parenleftbig
+1+aexp/parenleftbig
+ab−bθmk(hk)/parenrightbig/parenrightbig
+ln 10/parenleftbigg
+bdθmk(hk)
+dhk/parenrightbigg
+≥0
+(18)
+d2g(hk)
+dh2
+k=(dz1(hk)z2(hk)−z1(hk)dz2(hk))/z2(hk)2. (19)
+We know from (17) and(18) thatz2(hk)>0, anddz1(hk)
+dhk≥0w h e n
+z1(hk)=0. It means whendg(hk)
+dhk=0,d2g(hk)
+dh2
+k≥0. The function g(hk)
+is therefore quasi-convex. The optimum h∗
+kcan be obtain by using
+quasi-convex algorithms, such as the bisection method. /squaresolid
+2) Adjusting the MTCD Clusters : Upon optimizing the UA V hover-
+ing position for every cluster, the optimal positions are designated as
+new cluster centres to adjust the clustering strategy. Speciﬁcally, for
+every MTCD, if switching from its current cluster to another cluster
+would shorten its data transmission time without violating the cluster
+size constraint or increasing the hovering time (being the farthest
+away MTCD) of the new cluster, this MTCD’s cluster index should be
+changed.
+B. INTERCLUSTER UAV FLYING PATH
+OPTIMIZATION
+To achieve the overall optimization objective of problem P1,w en e x t
+optimize the UA V’s intercluster ﬂying trajectory. Let u∗be the optimal
+hovering positions to SP1 in(10). The corresponding subproblem is
+given as
+SP2 : minimize
+βK/summationdisplay
+i=1K/summationdisplay
+j=1βi,jϕf(u∗)
+s.t. (9c),(9d),(9e). (20)
+Upon determining the optimal MTCD clustering and UA V hovering
+strategy as in Section IV-A , subproblem SP2 is equivalent to a 3-D
+traveling distance minimization problem, i.e., the traveling salesman
+problem, which can be readily solved by the ACO algorithm.
+V . SIMULATION RESULTS
+In this section, we validate effectiveness and convergence of the
+proposed ACH–ACO algorithm in supporting delay-aware services.
+We ﬁrst compare hovering time (data collection time) achieved by
+the ACH algorithm with the strategy based on k-means clustering.
+Then, performance of the ACH–ACO algorithm in reducing the overall
+mission time (hovering time plus traveling time) is compared with that
+achieved by random trajectories. Values of system setting parameters
+used in the simulations are summarized in Table 1.
+A. Reducing UAV Hovering Time by ACH
+In the simulations, the MTCDs are uniformly distributed in a square
+area with side length a. We ﬁrst look at the convergence property
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:22:07 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 4 ---
+
+7501204 VOL. 8, NO. 12, DECEMBER 2024
+Fig. 2. Convergence of the ACH algorithm.
+Fig. 3. Overall data collection time achieved by the ACH algorithm for
+joint MTCD clustering and UAV hovering position optimization.
+of the ACH algorithm. The number of MTCDs and clusters are
+M=150 and K=7, respectively. The initial UA V ﬂying height is
+set to a constant 80 m. Horizontal coordinates of the initial UA V
+hovering positions are set to that of the cluster centres selected by
+thek-means algorithm. By solving SP1, the optimal in-cluster UA V
+hovering positions, given the clustering strategy, are obtained. The
+clustering strategy is then adjusted using the optimal hovering positions
+as new cluster centres according to the greedy principle. Iterating
+the above alternating optimization process monotonically reduces the
+UA V’s overall hovering time (data collection time) until convergence.
+Simulation results presented in Fig. 2exhibit fast convergence of the
+ACH algorithm.
+In less than ﬁve iterations, convergence of the ACH algorithm can
+be reached, and the corresponding MTCD clustering strategy and
+UA V hovering positions minimizing the overall hovering time can
+be obtained. The overall hovering time reduction increases with a,t h e
+side length of the MTCDs’ distribution area. When a=600 m, the
+ACH algorithm can reduce the UA V hovering time by about 27%.
+Next, we compare the overall hovering time of the proposed ACH
+algorithm with the classic k-means algorithm. As in Fig. 2,w eu s e
+M=150 MTCDs and a ﬁxed UA V ﬂying height of 80 m, but with
+changing Kandavalues. The ACH algorithm was conducted for ﬁve
+iterations to obtain the results. It is observed from Fig. 3that, for
+both strategies, the larger ais, the longer the overall UA V hovering
+time. Besides, the overall hovering time also increases with K,t h e
+number of clusters, as serving less MTCDs simultaneously result in
+lower spectral efﬁciency. Compared with the kmeans-based strategy,
+the ACH algorithm signiﬁcantly reduces the time spent on completing
+the data collection tasks, especially when the MTCDs are distributed
+over a large area.
+B. Overall Performance of the ACH–ACO Algorithm
+The ACO algorithm is employed after the ACH process to ﬁnd the
+shortest intercluster UA V ﬂying route. Table 2shows the performance
+of the ACH–ACO algorithm in terms of overall mission time. Com-
+pared with the strategy with kmeans-based clustering and ACO-based
+intercluster route planning, the ACH–ACO algorithm signiﬁcantly
+reduced the overall mission time in all the cases in the numerical
+studies. In particular, the improvement is more signiﬁcant when the
+task area and the number of MTCDs to be served are large.TABLE 2. Overall Mission Time
+VI. CONCLUSION
+Delay-aware design of UA V-enabled data collection for MTC net-
+works has been studied, with a focus on clustering of the MTCDs
+and deployment of the UA V in the 3-D space. The total mission
+time minimization problem has been formulated as a challenging
+MINLP program. Based on the assumption of communication-only-
+when-hovering operation, the original problem has been decomposed
+into two tractable subproblems, which, respectively, deal with MTCD
+clustering and UA V hovering position optimization and intercluster
+ﬂying path minimization. An ACH algorithm that alternately optimizes
+MTCD clustering and in-cluster UA V hovering positions has been
+proposed to solve the former subproblem, and the latter subproblem is
+readily solved by the ACO algorithm. Numerical results have shown
+quick convergence of the ACH process in obtaining the MTCD clus-
+tering and UA V hovering strategy that minimizes the hovering time.
+Total mission time of the proposed ACH–ACO approach has been
+examined and compared with the strategy based on k-means clustering
+in numerical examples. It has been observed that the ACH–ACO
+algorithm signiﬁcantly outperforms the kmeans-based strategy in
+terms of total mission time, and the improvement is greater when the
+number of MTCDs and the mission area are larger.
+ACKNOWLEDGMENT
+This work was supported by the Key Research Project Plan for Higher Education
+Institutions of Henan Province under Grant 25A510015.
+REFERENCES
+[1] S. Zhang, J. Liu, Z. Shi, J. Wang, and N. Kato, “Design and optimization of RSMA for
+coexisting HTC/MTC in 6G and future networks,” IEEE Trans. Wireless Commun. ,
+vol. 22, no. 12, pp. 9533–9548, Dec. 2023.
+[2] S. R. Pokhrel, J. Ding, J. Park, O. -S. Park, and J. Choi, “Towards enabling
+critical mMTC: A review of URLLC within mMTC,” IEEE Access , vol. 8,
+pp. 131796–131813, 2020.
+[3] Z. Zhu, X. Guan, B. Yu, T. Yu, and Y . Cai, “Minimizing age of information in the
+uplink multi-user networks via dynamic bandwidth allocation,” China Commun. ,
+vol. 20, no. 4, pp. 287–301, 2023.
+[4] Z. Wei et al., “UA V-assisted ddata collection for Internet of Things: A ssurvey,”
+IEEE IoT J. , vol. 9, no. 17, pp. 15460–15483, Sep. 2022.
+[5] M. Zhu, Z. Wei, C. Qiu, W. Jiang, H. Wu, and Z. Feng, “Joint data collection and
+sensor positioning in Mmulti-UA V-assisted wireless sensor network,” IEEE Sensors
+J., vol. 23, no. 19, pp. 23664–23675, Oct. 2023.
+[6] H. Zhang, Y . Tao, X. Lv, and Y . Liu, “Leader-follower UA V-assisted WSNs for
+improving data collection rate and shortening ﬂight ttime,” IEEE Sensors J. , vol. 23,
+no. 21, pp. 26597–26607, Nov. 2023.
+[7] J. Li et al., “Joint optimization on trajectory, altitude, velocity, and link scheduling
+for minimum mission time in UA V-aided data collection,” IEEE IoT J. , vol. 7, no. 2,
+pp. 1464–1475, Feb. 2020.
+[8] Y . Wang et al., “Trajectory design for UA V-based internet-of-things data collection:
+A deep reinforcement learning approach,” IEEE IoT J. , vol. 9, no. 5, pp. 3899–3912,
+Mar. 2022.
+[9] L. Shen, N. Wang, D. Zhang, J. Chen, X. Mu, and K. M. Wong, “Energy-aware
+dynamic trajectory planning for UA V-enabled data collection in mMTC networks,”
+IEEE Trans. Green Commun. Netw. , vol. 6, no. 4, pp. 1957–1971, Dec. 2022.
+[10] K. Zhu, X. Xu, and S. Han, “Energy-efﬁcient UA V trajectory planning for data col-
+lection and computation in mMTC networks,” in Proc. IEEE Globecom Workshops ,
+2018, pp. 1–6.
+[11] D. Ebrahimi, S. Sharafeddine, P. Ho, and C. Assi, “UA V-aided projection-based
+compressive data gathering in wireless sensor networks,” IEEE IoT J. , vol. 6, no. 2,
+pp. 1893–1905, Apr. 2019.
+[12] R. Jin, L. Yang, and H. Zhang, “Performance analysis of temporal correlation in
+ﬁnite-area UA V networks with LoS/NLoS,” in Proc. IEEE Wireless Commun. Netw.
+Conf. , 2020, pp. 1–6.
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:22:07 UTC from IEEE Xplore.  Restrictions apply. 

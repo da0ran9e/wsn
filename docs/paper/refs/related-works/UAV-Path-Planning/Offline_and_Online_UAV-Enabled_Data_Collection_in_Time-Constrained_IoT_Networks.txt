@@ -1,0 +1,1331 @@
+--- PAGE 1 ---
+
+1918 IEEE TRANSACTIONS ON GREEN COMMUNICATIONS AND NETWORKING, VOL. 5, NO. 4, DECEMBER 2021
+Ofﬂine and Online UA V-Enabled Data Collection in
+Time-Constrained IoT Networks
+Oussama Ghdiri , Wael Jaafar ,Senior Member, IEEE , Safwan Alfattani ,Student Member, IEEE ,
+Jihene Ben Abderrazak, and Halim Yanikomeroglu ,Fellow, IEEE
+Abstract —Recently, unmanned aerial vehicle (UA V) technol-
+ogy is endorsed to enable applications in domains such asInternet of Things (IoT), wireless sensor networks, and cellu-lar networks. Particularly, time-sensitive and energy-limited IoTnetworks located in hard-to-reach areas require efﬁcient/cost-effective data collection solution. To address this matter, weconsider a multi-UA V enabled IoT network, where several UA Vscollect data from time-constrained sensor nodes (SNs). In ourframework, SNs are managed by cluster heads (CHs), then UA Vscollect data from them. We formulate the problem of minimiz-ing system’s deployment costs and operating energy to collectdata within deadlines, subject to communication, UA Vs mission
+time, and battery capacity constraints. To solve it, we propose a
+two-step approach. In the ﬁrst step, an efﬁcient K-means basedmethod groups SNs and deploys CHs. Then, UA V-based ofﬂineand online data collection methods are proposed. In the ofﬂinesetting where the system’s status is known beforehand, UA V pathsare determined using near-optimal meta-heuristics. In simula-tions, the nearest-neighbor and Tabu search provided best ofﬂineperformances, conditioned on the system’s parameters. In theonline setting where no system information is available, deepreinforcement learning (DRL) based approaches are proposed.Results demonstrate the superiority of the actor-critic solution.
+Index Terms —Unmanned aerial vehicle, Internet of Things,
+clustering, reinforcement learning, data collection.
+I. I NTRODUCTION
+IN THE midst of ﬁghting the same enemy, the whole world
+has faced new challenges impacting countries, commu-
+nities, and individuals in countless ways. Dealing with the
+unforeseen obstacles, technology is playing a pivotal role inhelping humanity react, recover, and thrive in the COVID-19
+hit world. Moreover, the obligation to reduce human con-
+tact as a health precaution has boosted the use of unmanned
+Manuscript received January 20, 2021; revised May 20, 2021 and July
+16, 2021; accepted August 8, 2021. Date of publication August 13, 2021;date of current version November 22, 2021. This work was supported in
+part by Huawei Canada; in part by the National Sciences and Engineering
+Research Council of Canada (NSERC); and in part by a Scholarship from KingAbdulAziz University, Saudi Arabia. (Corresponding author: Wael Jaafar.)
+Oussama Ghdiri and Jihene Ben Abderrazak are with the Department of
+Information Technology, ESPRIT School of Engineering, Tunis 1000, Tunisia
+(e-mail: oussama.ghdiri@esprit.tn; jihene.benabderrazek@esprit.tn).
+Wael Jaafar and Halim Yanikomeroglu are with the Department of Systems
+and Computer Engineering, Carleton University, Ottawa, ON K1S 5B6,
+Canada (e-mail: waeljaafar@sce.carleton.ca; halim@sce.carleton.ca).
+Safwan Alfattani is with the School of Electrical Engineering and Computer
+Science, University of Ottawa, Ottawa, ON K1N 6N5, Canada (e-mail:
+salfa043@uottawa.ca).
+Digital Object Identiﬁer 10.1109/TGCN.2021.3104801aerial vehicles (UA Vs), commonly known as drones, in dif-
+ferent situations. For instance, UA Vs have been deployed to
+collect and deliver medical supplies and daily necessities, or
+monitor social distancing [1]. The noticed UA V-based positiveexperiences is accelerating their deployment beyond the imme-
+diate use in times of crisis. Yet, the enthusiasm for deploying
+UA Vs applications has increased, but their potential is not fullyreached.
+The pandemic has not only been the ultimate catalyst speed-
+ing up the trend of UA Vs, but also accelerating the adoption ofInternet of Things (IoT) systems. Indeed, IoT is projected to
+inﬁltrate almost every aspect of our lives, connecting millions
+of devices and people [2]. Typically, IoT sensor nodes (SNs)
+are constrained computing devices with embedded sensing
+and wireless communication capabilities to connect with othernodes and transmit sensed data to a remote location for storage
+or further processing [3]. They are low-cost, energy-limited,
+and with short transmission range. These constraints raise sev-eral challenges, especially for critical massive machine type
+communication systems. For instance, a major concern is on
+how to gather data from massive IoT systems without thelatter becoming outdated. Moreover, since IoT devices can
+be deployed in hard-to-reach areas and/or over moving tar-
+gets, e.g., monitored groups or herds of animals, timely datacollection becomes more difﬁcult.
+In this context, UA Vs can be considered as a key enabler
+for from-the-sky data collection [4]. This is realizable dueto the UA Vs’ high motion ﬂexibility and maneuverability,
+which permits to rapidly reach low-power IoT devices and
+establish strong line-of-sight (LoS) communications [5]–[7].
+Nevertheless, UA V-based data collection faces several obsta-
+cles. Indeed, current UA V technology struggles with thelimited on-board energy [8], thus often requiring the deploy-
+ment of multiple UA Vs to cover large-scale IoT ﬁelds and
+thus, increases the data collection costs. Moreover, depend-ing on the criticality level of the IoT application linked to the
+data freshness and sensitivity, both IoT network characteristics
+(e.g., IoT nodes’ mobility, SNs’ clustering, and deployment ofcluster heads (CHs)), and the UA V characteristics (e.g., ﬂy-
+ing speed and communication capability), have an important
+impact on satisfying the targeted QoS.
+Collecting data from massive and wide IoT ﬁelds using
+UA Vs needs a careful design. Indeed, cost-effective data col-
+lection can be achieved through: 1) IoT network deploymentoptimization and 2) efﬁcient UA V deployment and path
+optimization. For the IoT network deployment, it can be
+2473-2400 c/circlecopyrt2021 IEEE. Personal use is permitted, but republication/redistribution requires IEEE permission.
+See https://www.ieee.org/publications/rights/index.html for more information.
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:18:40 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 2 ---
+
+GHDIRI et al. : OFFLINE AND ONLINE UA V-ENABLED DATA COLLECTION IN TIME-CONSTRAINED IoT NETWORKS 1919
+Fig. 1. UA V-based data collection in clustered IoT networks with time deadlines.
+optimized through an efﬁcient SNs clustering and strate-
+gic CHs placement. For UA Vs deployment, energy-efﬁcient
+trajectory design is required, either for the ofﬂine scenariowhere the system’s status is available beforehand, or the
+online scenario where no or limited information is avail-
+able for the UA Vs’ mission. The ofﬂine scenario corre-sponds to applications for dedicated or private IoT networks,
+where the IoT system architecture is static and changes
+occasionally. In this case, trajectories can be preplanned.
+However, when IoT sensors are mobile or their location
+information is fully or partially unavailable, ofﬂine path plan-ning becomes unpractical. This corresponds to applications
+such as wildlife monitoring and intelligent transportation
+systems where IoT sensors may be mounted on animals andvehicles, respectively. Subsequently, it is crucial to adopt smart
+and energy-efﬁcient online path planning to cope with dynamic
+environments.
+To tackle the aforementioned issues, we propose here novel
+approaches for multi-UA V based data collection in time-
+constrained IoT networks. Speciﬁcally, we propose at ﬁrsta K-means based algorithm to cluster SNs and deploy the
+minimum number of CHs. Then, energy-efﬁcient ofﬂine and
+online multi-UA V path planning algorithms are presented forthe optimized UA V number. The objective is to collect data
+with minimum deployment cost and energy, under several
+requirements, including collection deadlines, communication
+conditions, UA Vs’ battery capacity and collision avoidance.
+To be noted that unlike most of state-of-the-art UA V-baseddata collection works, our framework is a generalized system
+that considers all of the multiple UA Vs/CHs deployment
+and operational costs and constraints, and data collectionrequirements.
+To the best of our knowledge, this is the ﬁrst work that
+investigates a complete UA V-based data collection frame-work for time-constrained IoT systems, where IoT network
+design and multi-UA V data collection strategies are optimized
+for ofﬂine and online scenarios. Speciﬁcally, the UA V pathplanning problem is formulated as a capacitated vehicle
+routing problem with time windows (CVRPTW) [9] and
+proven to be NP-hard. Hence, it is solved in the ofﬂine sce-nario using several near-optimal heuristic and meta-heuristic
+based algorithms, namely nearest-neighbor (NN), particle
+swarm optimization (PSO), Tabu search, simulated annealing(SA), and guided local search (GLS). Moreover, we pro-
+pose various reinforcement learning based algorithms for the
+online scenario, including deep-Q-network (DQN), double-
+DQN (DDQN), and actor-critic (AC). Since multiple UA Vs
+are involved, we oriented our online solution towards a cen-tralized training-distributed execution, i.e., motion actions
+are delegated to UA Vs by the learning agent, but are
+penalized when one or several mission conditions are vio-lated. The key contributions of this paper are summarized
+as follows.
+1) Unlike the state-of-the-art studies with simpliﬁed
+assumptions for UA V-enabled data collection, e.g.,
+using a single UA V , impractical communication models,
+unlimited energy, or uncharacterized data, this paper pro-poses a full framework for multi-UA V data collection in
+a time-constrained IoT network, where real environment
+constraints are taken into account, e.g., data deadlines,UA V characteristics, and realistic channel models, as
+shown in Fig. 1.
+2) We formulate the problem of minimizing the system’s
+deployment cost and energy, through optimizing
+SNs clustering, number/locations of CHs, and num-ber/trajectories of UA Vs.
+3) To solve the formulated NP-hard problem, we propose a
+two-step solution. First, clustering and minimum num-ber of CHs and their locations are determined through
+the proposal of a novel K-means based approach. Then,
+the number of collecting UA Vs and their trajectoriesare optimized for two network scenarios. In the ﬁrst
+scenario, we assume a prior and full knowledge of
+the system’s status, including data deadlines and CHs
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:18:40 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 3 ---
+
+1920 IEEE TRANSACTIONS ON GREEN COMMUNICATIONS AND NETWORKING, VOL. 5, NO. 4, DECEMBER 2021
+TABLE I
+COMPARISON OF RELATED WORKS FOR UAV-B ASED DATACOLLECTION IN IOTN ETWORKS .D C OLREFERS TO DATACOLLECTION ,VOL.TOVOLUME ,
+DC TODEPLOYMENT COSTS (E.G., N O.OFCHS AND /ORUAV S), G2G TOGROUND -TO-GROUND CHANNEL ,AND G2A TOGROUND -TO-AIRCHANNEL
+locations. Thus, UA V paths are optimized ofﬂine using
+near-optimal heuristic and meta-heuristic approaches. In
+the second scenario, we assume that no information
+about the system is available. Hence, we propose onlinepath planning based on DRL algorithms.
+4) Through simulations, we show the efﬁcacy of our
+approaches in reducing the deployment costs in terms
+of number of CHs and UA Vs, as well as minimizing the
+mission’s energy consumption to collect the maximalamount of data.
+This work is an extension of our previous work [10]. It
+provides a more comprehensive review of existing UA V-basedIoT data collection solutions. Also, we extend our framework
+to more realistic and dynamic scenarios, where the status of
+the system is unavailable a priori. Hence, we propose novelonline reinforcement learning based methods to deal with such
+conditions, and compare their performances with that of the
+best ofﬂine approach.
+The paper is organized as follows. Section II surveys the
+related work on IoT sensors clustering, and ofﬂine and online
+UA V path planning for data collection. Section III presents thesystem model. In Section IV , we formulate the optimization
+problem of IoT sensors clustering and UA V path planning.
+We then present our proposed IoT sensors clustering solutionin Section V and the multi-UA V path planning techniques inSection VI. We describe in Section VII the related simulation
+results. Finally, we conclude the paper in Section VIII.
+II. R
+ELATED WORK
+In this section, we present the related works that deal with
+IoT sensors clustering, and ofﬂine and online UA V path plan-ning for data collection. Moreover, we present an objective
+and feature-based comparison of most relevant related works
+in Table I.
+A. IoT Sensors Clustering
+In large-scale IoT systems, collecting data from each of the
+SNs has proven to be energy inefﬁcient due to the huge trafﬁc
+load, increased energy consumption, and extended transmis-sion delays. To circumvent this issue, IoT clustering is advo-
+cated as the most energy-efﬁcient system design approach. By
+grouping SNs into small sets and deploying/designating CHs
+to manage their data, the trafﬁc load towards the gateway (or
+collector) is drastically reduced and reﬁned. Typically, CHsare IoT devices with higher communication ranges and pro-
+cessing capability than standard sensors. They are tasked with
+data collection in a speciﬁc area, where they aggregate thereceived data, remove redundancy if any, and communicate
+the outcome to the gateway.
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:18:40 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 4 ---
+
+GHDIRI et al. : OFFLINE AND ONLINE UA V-ENABLED DATA COLLECTION IN TIME-CONSTRAINED IoT NETWORKS 1921
+Several works overviewed existing clustering techniques and
+discussed their potential [11]–[13]. Recently, adaptive cluster-ing was proposed in [14], which takes into account the data
+distribution of SNs. In [15], Shao et al. proposed a cooperative
+framework with dynamic IoT clustering and power allocationusing non-orthogonal multiple access. A deep learning based
+clustering method was presented in [16] where the objective
+is to balance resource allocation among SNs and increase thenetwork’s life. Moreover, Hassan et al. proposed in [17] an
+energy-efﬁcient clustering protocol based on the rotation of
+CHs’ functions. Finally, Alfattani et al. proposed in [4] an efﬁ-
+cient K-means based clustering that deploys minimum number
+of CHs.
+B. Ofﬂine UAV Path Planning for Data Collection
+When IoT nodes have no direct links to ﬁxed/permanent
+data collection gateways, UA Vs can be deployed to collect data
+from SNs/CHs. Assuming that the latter’s locations are ﬁxedand known a priori, the UA Vs’ trajectories can be pre-planned.
+In our previous work [4], we proposed a data collection
+framework for clustered wireless sensor networks and usingone or several UA Vs. In this setting, UA V trajectories were
+designed using genetic algorithm (GA) and nearest-neighbor
+based solutions. The problem of minimizing the data col-lection time from time-constrained sensors was investigated
+in [6], where the trajectory of a single UA V and radio resource
+allocation were optimized using a sub-optimal successive con-vex approximation (SCA) based approach. Authors of [7]
+optimized a single UA V trajectory aiming to minimize the
+average age of information (AoI) of collected data. Moreover,
+authors in [18] studied the joint optimization of SNs’ wakeup
+schedule and one UA V trajectory to minimize SNs’ con-sumed energy. This work has been extended in [19] to the
+multi-UA V scenario, where UA Vs paths and SNs wake-up
+time allocation optimization, as well as SNs’ transmit poweroptimization, were jointly optimized through SCA and alter-
+nating optimization (AO). You and Zhang used in [20] one
+UA V to collect data from SNs in an urban environment.They proposed a two-step data collection approach, where
+the UA V’s trajectory is optimized ofﬂine using block coor-
+dinate descent (BCD), then further adjusted through linearprogramming (LP). In [21], the authors proposed an energy-
+efﬁcient differential evolution (DE) based method that jointly
+optimizes the UA V’s trajectory and IoT devices transmissionschedule to ensure reliable data collection and 3D device
+positioning. Similarly, authors of [22] used DE to plan the
+trajectory of each UA V collecting data from CHs in a speciﬁcregion. Lin et al. presented in [23] an energy-efﬁcient hier-
+archical data collection scheme in a wireless sensor network
+for agricultural monitoring, while the authors of [24] formu-
+lated a mixed integer linear program to minimize the total
+traveled distance by UA Vs when collecting data from clus-tered SNs. The optimal UA V trajectories were obtained and
+demonstrated to outperform the nearest-neighbor benchmark.
+Finally, Yeh et al. iteratively optimized in [25] a single UA V
+trajectory, altitude, and sensor activation, in order to minimize
+the mean-squared error of reconstructed SNs’ observations.C. Online UAV Path Planning for Data Collection
+Most of the previous works are based on complex
+optimization solutions, metaheuristic or heuristic approachesthat require a priori knowledge of the IoT network’s sta-
+tus, such as SNs/CHs locations, data deadlines, etc. However,
+in situations where IoT system information is not available,such as in highly mobile systems, previous path planning
+approaches become inefﬁcient. In this context, reinforcement
+learning (RL), in particular deep RL (DRL) [26], comes outas a new approach that provides intelligence to UA Vs in order
+to make smart ﬂying decisions and accomplish missions. The
+authors proposed in [27] online trajectory optimization for
+sensors data collection using state-action-reward-state-action
+(SARSA) and Q-learning based methods. Yi et al. proposed
+in [28] a DQN based UA V trajectory that aims to minimize the
+weighted sum of the IoT data’s AoI, while a similar method
+is presented by Tong et al. in [29] to jointly reduce the SNs’
+average AoI and packet drop rate. Moreover, Bayerlein et al.
+demonstrated in [30] that their DDQN based trajectory plan-
+ning is efﬁciently generalized for different scenarios, balancingbetween data collection and ﬂight time efﬁciency goals. Then,
+they extended their results to multiple UA Vs in [31], where
+multi-agent RL was proposed to control a swarm of cooper-ative UA Vs. In [32], the authors proposed a green dueling
+DQN based data collection to minimize UA V energy con-
+sumption while satisfying delay constraints of different IoTdata types. Hsu and Gau proposed in [33] a communication
+platform where UA Vs deliver data in the forward path and
+collect data from IoT devices in the backward path. Hybridofﬂine-online path planning was proposed, where ofﬂine local
+search solution pre-plans the backward trajectory indepen-
+dently from other UA Vs, and the online Q-learning solution
+guarantees collision-free ﬂying. In [34], the authors proposed
+two solutions to collect data from clustered backscatter SNsin the shortest total ﬂight time of rechargeable UA Vs. The
+ﬁrst, single-agent deep option learning (SADOL), designs
+each UA V trajectory given deterministic UA V ﬂying regionsboundaries, while the second, called multi-agent deep option
+learning (MADOL), enables cooperation among UA Vs to learn
+from ambiguous ﬂying regions and coordinate their trajecto-ries. Finally, Bouhamed et al. proposed in [35] autonomous
+UA V-based data collection for delay-tolerant wireless sen-
+sor networks. The authors used deep deterministic gradientdecent (DDPG) to determine the best obstacle-free path and
+Q-learning for SNs’ visits ordering.
+III. S
+YSTEM MODEL
+In this section, we present the considered network and chan-
+nel models, the UA V-enabled data collection model, and theUA V energy model. All used symbols are summarized in
+Table II.
+A. Network and Channel Models
+We consider an IoT sensor network consisting of a set
+M={1,..., M}of SNs, randomly located in a large area
+and constantly collecting time-sensitive data. We assume that
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:18:40 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 5 ---
+
+1922 IEEE TRANSACTIONS ON GREEN COMMUNICATIONS AND NETWORKING, VOL. 5, NO. 4, DECEMBER 2021
+TABLE II
+NOTATIONS
+SNs are heterogeneous, i.e., sensed data by SNs are of differ-
+ent kind, and have different importance in time. Indeed, some
+data are more critical and need to be collected faster than otherless-critical ones. Due to the limited energy/communication
+capability of typical IoT sensors, we assume that a set of
+K={1,..., K}cluster heads (CHs) can be deployed to col-
+lect, aggregate, and transmit sensed data to the collector. As
+shown in Fig. 1, collection of data is operated by multipleUA Vs, which ﬂy and hover above or close to CHs for a
+sufﬁcient time to collect the aggregated data.
+Each sensor transmits its sensed data to its associated CH
+using power P
+SN, while a CH communicates with the collect-
+ing UA V using power PCH>PSN. Assuming that IoT sensors
+communicate with their associated CH using orthogonal chan-nels, the received signal-to-noise ratio (SNR) at CH cfor the
+signal transmitted by SN s, denoted γ
+sc, can be written as
+γsc=PSNd−αsc
+σ2,∀s∈M,∀c∈K, (1)
+where dsc=||qs−qc||is the distance between IoT sensor
+sand CH c,qi=[xi,yi,zi]is the 3D location of node i
+(i=sorc),αis the path loss exponent, and σ2is the noise
+power.1This communication link is considered successful if
+γsc≥γth, whereγthis a selected SNR threshold. Hence,
+maximum communication range for SN sassociated with CH
+cis deﬁned as [4], [36]
+dsc≤dth=/parenleftbiggPSN
+σ2γth/parenrightbigg1/α
+,∀s∈A c,c∈K, (2)
+1Although different SN-CH channel models can be adopted, we have cho-
+sen here the popular log-distance channel model for its simplicity in deﬁning
+the communication range between SNs and CHs [36], [37].whereAcis the set of SNs associated with CH c.G i v e n( 2 ) ,
+the CHs are deployed to collect data from SNs and send it to
+UAVs. Let U={1,..., U}be the set of available UA Vs. For
+the sake of simplicity, we assume that a UA V ﬂies at a ﬁxed
+altitude Hrespecting authority regulations and safety consid-
+erations. Also, UA Vs are equipped with sensors that allow
+obstacle avoidance at a certain safety distance, denoted dsafe,
+when they ﬂy at maximum speed vmax.
+When UA V uhovers to receive data from CH c, the air-to-
+ground channel between them can be expressed using the path
+loss model given by [38]
+lcu=/braceleftbigg
+20log(4πfc/V)+20log( dcu)+ηLoS,LoS,
+20log(4πfc/V)+20log( dcu)+ηNLoS,NLoS,
+(3)
+where dcuis the distance between UA V uand CH c,fc
+is the carrier frequency, Vis the speed of light, and ηm
+(m∈{LoS,NLoS}) is the excessive path-loss coefﬁcient.
+Using the Friis formula, the received power at UA V ufrom
+CHc, denoted Pcu, is expressed by
+Pcu=PCH−lcu,∀c∈K u,∀u∈U, (4)
+where PCHis the transmit power of a CH. To determine if
+a link is in LoS or NLoS, locations, heights, and number
+of buildings are required. Typically, locations and heights of
+buildings follow a Poisson point process (PPP) and a Rayleighdistribution, respectively. The density parameter of PPP is
+deﬁned as μ=μ
+1μ2, whereμ1is the ratio of geographic area
+covered by buildings to total area, μ2is the average number of
+buildings/km2, and the buildings’ heights follow the Rayleigh
+distribution with scale parameter ρ, such that the probability
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:18:40 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 6 ---
+
+GHDIRI et al. : OFFLINE AND ONLINE UA V-ENABLED DATA COLLECTION IN TIME-CONSTRAINED IoT NETWORKS 1923
+density function p(hb)=hb
+ρ2e−hb/2ρ2, where hbis the build-
+ing’s height (in m). A LoS link between UA V uand CH cis
+blocked if it exists a building bbetween them such that the
+following inequality holds [39]:
+hb
+d2D
+cb>H
+d2Dcu⇔tan(θ)>tan(θ/prime), (5)
+where d2Dcuandd2D
+cbare the projected 2D distances into the
+ground between UA V uand CH cand between building band
+CHc, respectively, whereas θandθ/primeare the elevation angles
+from the UA V and building top perspectives, characterized by
+tan(θ)=d2D
+cu
+Handtan(θ/prime)=d2D
+cb
+hb.
+B. UAV Data Collection Model
+We assume that the mission time, i.e., the maximum time for
+UA Vs to collect data from CHs and return to their dockstation,
+isTFand is divided into Ntime slots (TSs). Thus, TSs are
+equal and are of length δ=TF
+N. We deﬁne the 3D location
+of UA V uin time slot tasqtu=[xtu,ytu,H]. Since the UA V’s
+speed is limited by vmax, its traveled distance in one TS is
+constrained by
+/vextenddouble/vextenddouble/vextenddoubleqt+1
+u−qt
+u/vextenddouble/vextenddouble/vextenddouble=/radicalbigg
+/parenleftBig
+xt+1u−xtu/parenrightBig2
++/parenleftBig
+yt+1u−ytu/parenrightBig2
+≤vmaxδ.
+(6)
+In our system, each CH cuploads its data to its associated
+UAV uat rate Rcuin bits/second (bps), determined using the
+Shannon equation as follows:
+Rcu=Wlog2(1+γcu),∀c∈K u,∀u∈U, (7)
+where Wis the total bandwidth of the channel and γcu=Pcu
+σ2
+is the SNR. Accordingly, the required number of TSs to upload
+one packet to the UA V can be expressed by
+T1,cu=/ceilingleftbiggSp
+Rcuδ/ceilingrightbigg
+,∀c∈K u,∀u∈U, (8)
+where Spis the size of the packet in bits and ⌈·⌉is the ceiling
+function. Given Qcdata packets to be transmitted by CH c,
+then the required data collection time (in TSs) by UA V uis
+Tcu=QcT1,cu,∀c∈K u,∀u∈U. (9)
+Due to the different priorities of collected data at each CH, we
+deﬁne by Td,cthe time deadline of data stored in CH c, i.e.,
+if not totally collected within this deadline, the data present
+in the CH becomes outdated and is dropped.2Hence, data
+collection has to respect the following constraint, assuming
+that all packets in one CH are collected by a single UA V:
+φu(c)/summationdisplay
+m=1/bracketleftbig
+Tmu+Tf,u(m−1,m)/bracketrightbig
+≤Td,c,∀c∈K u,(10)
+whereφu(c)designates the rank (i.e., index) of CH cinKu,
+Tmuis the data collection time of the mthranked CH in
+Ku, and Tf,u(m−1,m)is the ﬂight time (in TSs) from the
+2Typically, this deadline is determined by the most critical sensed data. It
+sets our system to stringent conditions, where all data of a CH are considered
+critical.hovering location to collect data from the (m−1)thranked CH
+to that associated to the mthranked CH in Ku, with m=0
+being the dockstation. The ﬂight time of UA V ubetween two
+locations qu,iandqu,i/prime, where iandi/primeare two CHs ranks in
+the UA V path, can be calculated as follows:
+Tf,u(i,i/prime)=/vextenddouble/vextenddoublequ,i/prime−qu,i/vextenddouble/vextenddouble
+vuδ, (11)
+where vu≤vmax is the ﬂying speed of the UA V (in m/sec).
+C. UAV Energy Model
+The UA V is energy-constrained due to limited on-board
+battery. The battery lifetime depends on several factors, e.g.,
+UA V’s energy source, type, weight, speed, etc. Typically, the
+UA V’s consumption consists of the propulsion energy andthe communication energy. Without loss of generality, com-
+munication energy is several orders of magnitude smaller
+than propulsion energy, thus neglected here. For the sake ofsimplicity, we ignore also the energy consumption effect of
+UA V acceleration or deceleration. This assumption is rea-
+sonable when UA V manoeuvring time is small compared
+to the total operation time [40]. The extension to a more
+general power consumption model is not straight-forward,thus left as a future work. For the propulsion energy, we
+adopt the propulsion-power model for rotary-wing UA Vs as
+follows [40]:
+P
+prop,u(vu)=ζI/parenleftBigg/radicalBigg
+1+v4u
+4v4
+0−v2u
+2v2
+0/parenrightBigg1/2
++ζB/parenleftBigg
+1+3v2u
+U2
+tip/parenrightBigg
++1
+2d0ψrAv3
+u,(12)
+whereζBandζIare the blade proﬁle power and induced
+power, respectively. Utipis the tip speed of the rotor blade,
+v0is the mean rotor induced velocity, ψis the air density, d0
+is the fuselage drag ratio, ris the rotor solidity, and Adenotes
+the rotor disc area. Consumed power at hovering is obtained
+for speed vu=0, and written as
+Phov,u=Pprop,u(vu=0 )=ζB+ζI. (13)
+Using (12)–(13), the consumed energy of UA V uduring a time
+period Tcan be given by
+Eu(v,T)=/braceleftbiggPprop,u(v)×T,ifv>0
+Phov,u×T,ifv=0.(14)
+Hence, the related battery status at TS t, denoted Su(t), can
+be expressed by
+Su(t)=Su(t−1)−Eu(v,δ),∀t>1, (15)
+where Su(t−1)is the battery’s status at the end of TS ( t−1),
+andSu(0)is the initial battery capacity. The latter is expressed
+asSu(0) = Sini+Smin, where Siniis the battery capacity ded-
+icated for the mission, while Sminis a safety capacity, reserved
+for emergency pull back to the dockstation. Consequently, we
+have Su(t)∈[Smin,Su(0)].
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:18:40 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 7 ---
+
+1924 IEEE TRANSACTIONS ON GREEN COMMUNICATIONS AND NETWORKING, VOL. 5, NO. 4, DECEMBER 2021
+IV . P ROBLEM FORMULATION
+In this section, we formulate our optimization problem aim-
+ing to minimize an utility function of data collection, whichtakes into account CHs deployment costs and UA Vs’ energy
+consumption. Let K
+u=|Ku|be the cardinality of the set Ku,
+∀u∈U. Then, using (14), the consumed energy by UA V u
+during the mission is given by
+Eu(Ku)=Ku+1/summationdisplay
+m=1[Eu(0,Tmuδ)
++Eu/parenleftbig
+vu,Tf,u(m−1,m)δ/parenrightbig/bracketrightbig
+,(16)
+where Tf,u(Ku,Ku+1)=/bardblqu,Ku−q0/bardbl/vuδandq0is the
+initial location of all UA Vs, i.e., dockstation. Therefore, the
+optimization problem can be formulated as:
+min
+K,L,{Ac}c∈K
+U,{Ku,Lu}u∈U/parenleftBigg
+ξK+U/summationdisplay
+u=1Eu(Ku)/parenrightBigg
+(P1)
+s.t.dsc≤dth,∀s∈A c,∀c∈K, (P1.a)
+|Ac|≤F,∀c∈K, (P1.b)
+Su(t)≥Smin,∀u∈U,∀1≤t≤Tu,∀u∈U,
+(P1.c)
+φu(c)/summationdisplay
+m=0/parenleftbig
+Tmu+Tf,u(m−1,m)/parenrightbig
+≤Td,c, (P1.d)
+/vextenddouble/vextenddoubleqt
+u−qt
+u/prime/vextenddouble/vextenddouble≥dsafe,∀t≥1,∀(u,u/prime)∈U2,u/negationslash=u/prime,
+(P1.e)/vextenddouble/vextenddouble/vextenddoubleqt+1
+u−qt
+u/vextenddouble/vextenddouble/vextenddouble≤v
+maxδ,∀1≤t≤Tu,∀u∈U,(P1.f)
+whereξ>0is a unitary cost associated with the number of
+deployed CHs, |Ac|is the cardinality of the set Ac,Tu≤
+Nis the effective mission completion time for UA V u(in
+TSs),L={qc}c∈Kis the set of selected locations for CHs,
+andLu={qu,i}i∈K uis the set of ordered UA V hovering
+locations to collect data from the associated CHs.
+Constraint (P1.a) ensures that CH cis within the communi-
+cation range of its associated SNs, whereas (P1.b) guarantees
+fairness in associating SNs with CHs, where Fis the maxi-
+mum number of SNs associated with one CH. Equation (P1.c)
+makes sure that enough energy is available in the battery to
+complete the mission at any TS t, while (P1.d) satisﬁes the
+time deadline condition when a UA V collects data from CHs.
+Also, (P1.e) ensures that no collisions between UA Vs occur,
+and ﬁnally, (P1.f) limits the ﬂying distance for vmax.
+The formulated problem is NP-hard. Indeed, in the special
+case of already deployed CHs, (P1) is equivalent to determin-
+ing the best paths for UA Vs, while respecting the battery and
+time deadlines conditions. The latter can be seen as the capac-
+itated vehicle routing problem with time windows [9]. TheCVRPTW can be described as selecting the paths of a number
+of vehicles aiming to serve a group of customers within given
+time windows. Each vehicle has a limited capacity, which isused to depart from a depot point, serve a number of cus-
+tomers along its path, then return to the same depot point.The objective of the CVRPTW is to minimize the total trans-
+port costs. Logically, the vehicles, customers, and transportcosts, can be assimilated by the UA Vs, CHs, and energy con-
+sumption, respectively. Since the CVRPTW is known to be
+NP-hard [9], then by restriction, problem (P1) is also NP-hard.
+In (P1), we notice that the objective function can be
+rewritten as follows:
+min
+K,L,{Ac}c∈K/parenleftBigg
+ξK+m i n
+U,{Ku,Lu}u∈UU/summationdisplay
+u=1Eu(Ku)/parenrightBigg
+,(17)
+where two sub-objectives can be distinguished: The ﬁrst
+minimizes the deployment cost of CHs, while the sec-
+ond reduces data collection energy. Moreover, constraints
+(P1.a)-(P1.b) are only related to optimization variables K,L
+and{Ac}c∈K, while (P1.c)-(P1.f) relate also to Uand
+{Ku,Lu}u∈U. Accordingly, and following the divide-and-
+conquer method [41], [42], (P1) can be divided into twocascaded problems as follows.
+1) First, we formulate the IoT sensors clustering and CHs
+placement problem aiming to minimize the number ofdeployed CHs.
+2) Then, the UA Vs’ path planning problem can be for-
+mulated, where the objective is to minimize energy
+consumption for data collection.
+We expect the outcome of the cascaded problem to be equiv-alent to that of (P1) since minimizing at ﬁrst the CHs’
+deployment costs implies inevitably a signiﬁcant reduction
+in data collection energy. Subsequently, we solve these twosub-problems as follows.
+V. I
+OTS ENSORS CLUSTERING SOLUTION
+Typically, IoT sensors are deployed in large areas in order
+to sense, process, and communicate relevant data for some
+applications. Due to their limited battery capacities, IoT sen-
+sors need to carefully use their energy, while prolonging thelife of collected data as much as possible. To do so, IoT sen-
+sors can be grouped into disjoint and non-overlapping clusters
+to reduce the amount of used energy. SNs scan the surroundingenvironment and transmit sensed data to CHs, which aggregate
+and transmit obtained information to the UA Vs [43].
+Several state-of-the-art clustering techniques exist, e.g.,
+K-means [44], density-based spatial clustering, and hierarchical
+agglomerative clustering (HAC) [45]. Nevertheless, due to the
+low-complexity and high scalability of K-means, we focus hereon its customization, aiming to group SNs and deploy minimal
+number of CHs. Thus, the clustering problem can be written as
+min
+K,L,
+{Ac}c∈KK/summationdisplay
+c=1M/summationdisplay
+s=1ascd2
+sc (P2)
+s.t.dsc≤dth,∀s∈A c,∀c∈K, (P2.a)
+|Ac|≤F,∀c∈K, (P2.b)
+where asc∈{0,1}is a binary variable indicating whether SN sis
+associated with CH cor not,∀s∈A c. Conventionally, K-means
+clustering requires a predeﬁned number of CHs. Hence, in [4],the authors proposed it to solve (P2) without any constraint,
+then reexecuted it iteratively until (P2.a) is met. Such method
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:18:40 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 8 ---
+
+GHDIRI et al. : OFFLINE AND ONLINE UA V-ENABLED DATA COLLECTION IN TIME-CONSTRAINED IoT NETWORKS 1925
+Algorithm 1 IoT Sensors Clustering Algorithm
+1:Input:M,{qs}s∈M,a n d max it%max itis the max. number
+of CHs
+2:Output: OptimalK,L,a n d{Ac}c∈K
+3:Setk=(M÷F)%Fis the max. number of SNs in a cluster
+4:forktomax itdo
+5: SetLold={},s e tLrandomly, and set Ac=∅,∀c=
+1,..., k
+6: Seterror =dist(L,Lold)%Convergence parameter
+7: while error/negationslash=0 do
+8: fors∈M do
+9: Calculate dsc,∀c=1,..., k
+10: Find c0= arg(min( dsc))
+11: ifdsc0≤dth&|Ac0∪{s}| ≤ Fthen
+12: Ac0=Ac0∪{s}
+13: else
+14: Ak+1=Ak+1∪{s}
+15: end if
+16: end for
+17: SetLold=L
+18: Calculate Las the mean location of the associated SNs
+inAc
+19: Calculate error =dist(L,Lold)
+20: end while
+21: ifAk+1=∅then
+22: K={1,..., k}
+23: Break
+24: end if
+25:end for
+26:while max( dsc)<dth,∀s∈A cdo
+27: GetLcloser to the dockstation
+28:end while
+is time consuming and inaccurate, as clustering performance
+may vary with algorithm initialization. Therefore, we propose
+here to improve it by integrating constraints (P2.a)–(P2.b) into
+the clustering process. The proposed approach, presented inAlgorithm 1, is described as follows. First, locations of KCHs
+are randomly initialized. Then, each SN is assigned to the
+closest CH with respect to (P2.a)–(P2.b). Next, the locations of
+CHs are updated by calculating the resulting mean location of
+associated SNs for each CH. This procedure is repeated untilconvergence, i.e., the calculated locations remain unchanged.
+Since we aim to deploy the minimal number of CHs, we execute
+the aforementioned steps for an increasing number of CHs untila solution to (P2) is obtained, i.e., Kis determined. Although
+the calculated CHs locations are an adequate solution for (P2),
+this may not be the case for the main problem (P1). In thiscontext, we propose to improve the locations of CHs by making
+them closer to the dockstation. Indeed, CH chas a mobility
+margin if its furthest associated SN, denoted s
+0, respects (P2.a)
+loosely, i.e., ds0c<dth. Hence, making the CHs closer to
+the dockstation would increase the probability to respect data
+collection deadlines, shorten the mission time, and improve theenergy consumption of UA Vs. This procedure is implemented
+in lines 26-27 of Algorithm 1.
+VI. M
+ULTI -UA V P ATH PLANNING SOLUTIONS
+A. Ofﬂine Path Planning
+GivenK,L, andAc,∀c∈K , the trajectory planning
+problem can be formulated asmin
+U,
+{Lu,Ku}u∈UU/summationdisplay
+u=1Eu(Ku) (P3)
+s.t.Su(t)≥Smin,∀u∈U,∀1≤t≤Tu,∀u∈U,
+(P3.a)
+φu(c)/summationdisplay
+m=0/parenleftbig
+Tmu+Tf,u(m−1,m)/parenrightbig
+≤Td,c, (P3.b)
+/vextenddouble/vextenddoubleqt
+u−qt
+u/prime/vextenddouble/vextenddouble≥dsafe,∀t≥1,∀(u,u/prime)∈U2,u/negationslash=u/prime,
+(P3.c)/vextenddouble/vextenddouble/vextenddoubleqt+1
+u−qt
+u/vextenddouble/vextenddouble/vextenddouble≤v
+maxδ,∀1≤t≤Tu,∀u∈U.
+(P3.d)
+In order to solve it, we model our system as a graph,
+described as follows. Let G=(D,E)be a complete graph,
+whereD={0,1,..., K}is a set of vertices (nodes) repre-
+senting the dockstation (node 0) and KCHs, and Eis the
+set of directed edges connecting the nodes. A directed edge
+from node ito node j, denoted eij, represents the combination
+of the UA V’s ﬂying operation from itojand the hover-
+ing operation at j. A cost associated to the edge eij, called
+χu(eij)= Eu(vu,μ1(eij)) + Eu(0,μ2(eij)), is expressed
+as the sum of the UA V’s ﬂying and hovering energy, where
+μ1(eij)=Tf,u(i,j)δandμ2(eij)=Tjuδ,∀u∈U, respec-
+tively.3Moreover, the time deadlines at CHs are represented
+in the graph by a time window ωc=[oc,vc], where ocand
+vcare the minimum and maximum instants for data collec-
+tion, for each node c∈D. This time window deﬁnes when
+data collection at node ccan begin and end. Finally, trajec-
+tory of UA V uinGcan be deﬁned by Ku, where each element
+ofKuis an ordered node to visit. Accordingly, (P3) can be
+reformulated as problem (P4) detailed below:
+min
+U,{Ku,Lu}u∈U/summationdisplay
+u∈U/summationdisplay
+i∈D/summationdisplay
+j∈Dχu/parenleftbig
+eij/parenrightbig
+bu,ij (P4)
+s.t.U/summationdisplay
+u=1/summationdisplay
+i∈Dbu,ij≤1,∀j∈D (P4.a)
+/summationdisplay
+j∈Dbu,0j=/summationdisplay
+i∈Dbu,i0=1,∀u∈U (P4.b)
+oc≤j−1/summationdisplay
+i=1μ1/parenleftBig
+ei(i+1)/parenrightBig
++μ2/parenleftBig
+ei(i+1)/parenrightBig
+≤vc,j∈K u
+(P4.c)/summationdisplay
+i∈D/summationdisplay
+j∈Dχu/parenleftbig
+eij/parenrightbig
+bu,ij≤Su(0)−Smin,∀u∈U,
+(P4.d)
+bu,ij∈{0,1}, (P4.e)
+where bu,ijis the binary variable indicating the selection of the
+edge i−jwithin UA V u’s trajectory. Constraint (P4.a) ensures
+that each CH is visited at most once by exactly one UA V .
+Equation (P4.b) guarantees that each UA V departs and returns
+3This is valid assuming that all UA Vs are of the same type, i.e., having the
+same mechanical and communication characteristics.
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:18:40 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 9 ---
+
+1926 IEEE TRANSACTIONS ON GREEN COMMUNICATIONS AND NETWORKING, VOL. 5, NO. 4, DECEMBER 2021
+to the dockstation. Condition (P4.c) emphasizes that the data
+collection time has to be within the deﬁned time window.Finally, (P4.d) guarantees that the consumed energy by any
+UA V respects the battery capacity. Subsequently, problem (P4)
+can be solved using any of the available CVRPTW heuristicor meta-heuristic approaches, such as gradient descent, SA,
+Tabu search, GLS, etc. [46]–[48].
+4
+B. Online Path Planning: Reinforcement-Learning BasedApproaches
+In contrast to ofﬂine approaches, online algorithms are com-
+monly used when inputs or data are arriving in a sequentialorder and without being fully available. In our context, DRL-
+based algorithms can be used for path planning. To do so,
+we start by reformulating the optimization problem (19) as a
+Markov Decision Process (MDP).
+An MDP is a discrete-time stochastic control process used
+for a variety of optimization problems, where the outcome
+is partially random and under the control of a decision
+maker [50]. The state of the process in time slot tis denoted
+s
+tand the decision maker may choose any action atinA(st),
+which is the set of available actions in state st. Subsequently,
+the system transits to a new state s/primeand provides the reward
+Rat(st,s/prime). State s/primedepends on the current state stand the
+taken action. The transition probability to state s/primeis given
+by the function Pat(st,s/prime). Speciﬁcally, the MDP’s state
+transition in our system is a 5-tuple (S,A,P,R,γ)deﬁned as:
+•S={st}is a set of states st={qt
+1,..., qt
+U,Gt}.T h e
+latter is composed of the UA Vs’ locations qtuand the
+percentage of visited CHs within the area, deﬁned as
+Gt=Kt
+K, where Ktis the number of visited of CHs
+in time slot t.
+•A={at}is the set of actions, where at={at
+1...., at
+U}
+is the set of actions taken by the UA Vs, with atu∈
+{0...7}representing cardinal and inter-cardinal direc-
+tions, i.e., 0 (North), 1 (South), 2 (East), 3 (West),
+4 (Northeast), 5 (Northwest), 6 (Southeast), and 7(Southwest). For the sake of simplicity, we assume that
+when an action is selected, all UA Vs move at the same
+speed v
+u=vmax, such that (P1.f) is always satisﬁed.
+•P={Pat(st,s/prime)}is the set of transition probabilities.
+•Ris the immediate reward value, obtained when action
+atis taken at state st. Its expression is related to
+the objective function and constraints deﬁned in (19).
+Speciﬁcally, the reward function is designed to maximizecollected data within the deadlines, with minimum energy
+consumption, and while accounting for the impact of con-
+straints (P3.b)–(P3.d). Hence, the reward function of UA Vuin TS tof episode eis deﬁned as
+R
+e,u
+at/parenleftbig
+st,s/prime/parenrightbig
+=fu,e
+1,t(c)−fu,e
+2,t(c), (18)
+4For the sake of simplicity and low-complexity, we opted here for
+trajectory-based metaheursitic solutions, which are expected to yield near-
+optimal solutions. Different heuristics, such as NN, and population-basedmetaheuristics, such as PSO and ACO, can also be used [46], [49]. Finally,the investigation of iterative solutions, such as based on BCD, is left as a
+future work.where fe
+1,tandfe
+2,tare functions describing the reward
+and penalty in TS tof episode efor collecting data
+from CH cwithin the UA V’s communication range,
+respectively. given by
+fu,e
+1,t(c)=/braceleftbiggΦ1−Eu(0,Tcu),ift≤Td,c−Tcu,
+Φ2, ift>Td,c−Tcu,
+(19)
+and
+fu,e
+2,t(c)=⎧
+⎨
+⎩Eu(vmax,δ),ifqtu/∈S,
+Eu(vmax,δ)+Ψ 1,ifqtu∈S
+or∃u/prime∈U\ { u},/vextenddouble/vextenddoubleqtu−qt
+u/prime/vextenddouble/vextenddouble<dsafe.(20)
+fu,e
+1,t(c)offers a reward Φ1to the RL agent if UA V u
+collects data from CH cbefore expiration of the deadline
+Td,c, but is reduced by the energy consumption due to
+hovering for data collection. Otherwise, it gives a penaltyΦ
+2<0for late arrival at the CH. Also, fu,e
+2,t(c)imposes
+an energy penalty due to UA V motion, and an extra
+penaltyΨ1>0to discourage it from visiting already
+served CHs or to breach the safe ﬂying condition. Then,
+the ﬁnal reward Reis expressed by
+Re=U/summationdisplay
+u=1Nu/summationdisplay
+t=1Ru,e
+at, (21)
+where Nudenotes the total number of time slots in one
+episode for UA V u, calculated as the minimum to reach
+the lowest battery level Smin and the one to achieve
+Gt=1. To make sure that constraint (P3.a) is always
+satisﬁed, we update the residual battery capacity Su(t)
+at each time slot tof an episode e. Then, when Su(t)
+becomes equal to Sminand the UA V has not yet returned
+to the dockstation, it stops making new motion actions
+and ﬂies straight back to the dockstation using the leftbattery capacity S
+min.
+•γ∈[0,1]is the discount factor that favors the present
+reward over the future ones.
+Our objective is to train a policy π∗(s)that maximizes the
+discounted cumulative reward Rt0=/summationtext∞
+t=t0γt−t0Re. Hence,
+we propose novel DRL based approaches where a single multi-task agent that has no knowledge about the CHs’ locations
+and their data deadlines, attempts to determine the sequen-
+tial actions to collect the maximum amount of data using
+multiple UA Vs. Speciﬁcally, we adopt DQN, DDQN, and AC
+based algorithms. The motivation behind using these learningalgorithms lies in their suitability to use with discrete action
+spaces.
+1) DQN: Initially, Q-learning designs a value function Q
+∗
+that matches every state to the most adequate action. Hence, a
+policyπ∗(s)can be constructed to maximize the reward, i.e.,
+π∗(s) = argmax aQ∗(s,a). However, Q∗cannot be easily
+deﬁned. Since neural networks are universal function approxi-
+mators, they can be used to create and train a function Qπ
+DQN
+to resemble Q∗. The latter, when associated with policy π,
+obeys the Bellman equation [26]:
+Q=Re
+at/parenleftbig
+st,s/prime/parenrightbig
++γQπ
+DQN/parenleftbig
+s/prime,π(s/prime)/parenrightbig
+. (22)
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:18:40 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 10 ---
+
+GHDIRI et al. : OFFLINE AND ONLINE UA V-ENABLED DATA COLLECTION IN TIME-CONSTRAINED IoT NETWORKS 1927
+TABLE III
+SIMULATION PARAMETERS
+Algorithm 2 Actor-Critic Algorithm
+1:Input: The current state st
+2:Output: The best action at
+3:Initialize st,θ,w; sample at∼πθ(s,a)
+4:fore=1...Epdo %Epmaximal number of episodes
+5: fort=1...Ndo
+6: Sample reward rt∼Re
+at(st,s/prime)and next state s/prime∼
+Pat(st,s/prime)
+7: Sample the next action a/prime∼πθ(s/prime,a/prime)
+8: Update parameters θ←θ+αθQw(s,a)∇θln(πθ(s,a))
+9: Compute δt=rt+γQw(s/prime,a/prime)−Q w(s,a)
+10: Update w←w+αwδt∇wQw(s,a)
+11: Update a←a/primeands←s/prime
+12: end for
+13:end for
+2) DDQN: The DQN approach uses the maximization oper-
+ator for the selection and evaluation of actions. In contrast,
+DDQN adopts two networks, where the ﬁrst selects the action
+while the second evaluates it [51]. Consequently, two valuefunctions are learned such that for each update, one set of
+neural network weights is used to determine the greedy pol-
+icy, while the second set evaluates the value of the associatedpolicy. Thus, the best policy is determined as π
+DDQN(st)=
+argmax aQ∗(st+1,a), whereas the Q-function is updated by
+Qπ
+DDQN=Re
+at+1/parenleftBig
+st+1,s/prime/parenrightBig
++γQ/parenleftBig
+st+1,πDDQN(st)/parenrightBig
+.
+(23)
+For enhanced efﬁciency, we use the Q-network with experi-
+ence replay, which stores the episode steps in memory foroff-policy learning.
+3) AC: Unlike Q-learning based methods, actor-critic splits
+the model into two components to leverage the strengths ofboth value-based and policy-based techniques [52]. On one
+hand, the actor takes as input the state and outputs the best
+action. It essentially controls how the agent behaves by learn-
+ing the optimal policy (policy-based). On the other hand,
+the critic evaluates the action by computing the value func-tion (value-based). These two models participate in a game
+to improve their own roles through time. Speciﬁcally, the
+critic updates the value function parameters, denoted w, and,
+depending on the algorithm, it could be action-value Q
+w(s,a)
+or state-value Vw(s). In the meantime, the actor updates the
+Fig. 2. Avg. no. of clusters vs. dth.
+neural network parameters θfor the policy πθ(s,a)in the
+direction suggested by the critic. The actor-critic operation is
+detailed in Algorithm 2, where ∇θln(πθ(s,a))is the policy
+gradient, δtis the temporal difference (TD) error correction,
+and∇wQw(s,a)is the update of the Q-function parameters.
+VII. S IMULATION RESULTS
+In this section, we evaluate the performance of the proposed
+solutions for IoT sensors clustering and UA V path planning.Unless speciﬁed otherwise, we assume M=2000 SNs ran-
+domly and uniformly distributed within a geographical area of
+5×5k m
+2. The remaining simulation parameters are presented
+in Table III.
+A. IoT Sensors Clustering Results
+Fig. 2 presents the clustering performance of several algo-
+rithms, expressed by the average number of clusters as a
+function of communication range, dth(averaging over 100 sce-
+narios of SNs). We consider 3 algorithms, namely proposed
+Algorithm 1, K-means-based clustering in [4] (K-meansAlgorithm [4]), and HAC-based clustering (HAC [45]). As
+d
+thincreases, a smaller number of CHs is needed, since the
+latter can be reached by a higher number of SNs. Moreover,Algorithm 1 achieves the best clustering performance. Indeed,
+unlike other algorithms, Algorithm 1 is capable of adjusting
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:18:40 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 11 ---
+
+1928 IEEE TRANSACTIONS ON GREEN COMMUNICATIONS AND NETWORKING, VOL. 5, NO. 4, DECEMBER 2021
+Fig. 3. Clustering/UA V trajectories.
+Fig. 4. Energy vs. batt. cap.
+the clusters to constraints (P2.a)–(P2.b) on-the-ﬂy, i.e., while
+processing the SNs.
+In Fig. 3, we depict a scenario where Algorithm 1 is used
+to group 1800 SNs into 18 clusters, from which data is col-
+lected using 3 UA Vs. We distinguish two variations, namely
+Algorithm 1 as is, and “Algorithm 1 (Short)” where the algo-rithm lines 26–27 are omitted, i.e., CHs’ locations are not
+made closer to the dockstation. Each colored dashed bound-
+ary around a CH delimits the area of SNs associated withthe latter. Putting the CHs closer to the dockstation does not
+alter the association with SNs since (P1.a) is still satisﬁed.
+Obviously, shorter CH-dockstation distances would result inmore energy-efﬁcient UA V-based data collection since trajec-
+tories would become shorter. An example of UA V trajectories
+is illustrated in Fig. 3 using colored solid lines.
+B. Ofﬂine Path Planning Results
+We assume here 2000 SNs grouped using Algorithm 1 into
+49 clusters. Figs. 4–5 compare the consumed energy (in kilo-joule, kJ), number of visited CHs, and number of deployed
+UA Vs performances, as functions of the battery capacity, for
+different ofﬂine trajectory design approaches, namely NN,PSO, Tabu search, SA, and GLS. Performances are almost
+similar, with preference for NN when battery capacity is low
+Fig. 5. No. CHs/UA Vs vs. batt. cap.
+Fig. 6. Energy vs. deadline.
+(below 2250 mAh), and for Tabu search when battery capacityis higher. Indeed, since all data in CHs have the same time
+deadline, and given the limited battery capacity, NN is ableto reach more CHs since it follows a greedy distance-based
+mechanism and it deploys a higher number of UA Vs, whereas
+Tabu search is the most energy-efﬁcient approach (with SA ansGLS)
+5to collect data from all CHs, given sufﬁcient battery
+capacity. As the battery capacity increases (above 2250 mAh),
+the performance saturates, thus guaranteeing data collectionfrom all CHs. Finally, the optimal battery capacity of 2250
+mAh is provided by Tabu, where minimum energy ( =159 kJ)
+and number of UA Vs ( =12) are achieved.
+In Figs. 6–7, Tabu algorithm performances are depicted as
+functions of the time deadline, for combinations of IoT sen-
+sors clustering methods and UA V hovering techniques, namely,
+a combination of Algorithm 1 and UA Vs hovering directly
+above the CHs for data collection, denoted by “Algorithm 1 +
+HA”, a combination of “Algorithm 1 (Short)” and HA, called
+“Algorithm 1 (Short) +HA”, and ﬁnally a combination of
+Algorithm 1 and UA Vs hovering within a coverage range fromthe CHs, is designated as “Algorithm 1 +HR”. As the deadline
+increases, the consumed energy reaches a peak then decreases.
+5Tabu search is preferred over SA and GLS since it presented the shortest
+execution time.
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:18:40 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 12 ---
+
+GHDIRI et al. : OFFLINE AND ONLINE UA V-ENABLED DATA COLLECTION IN TIME-CONSTRAINED IoT NETWORKS 1929
+Fig. 7. No. CHs/UA Vs vs. deadline.
+Fig. 8. Impact of the environment type ( Su(0) = 3500 mAh, Td,c=
+140 sec).
+Below this peak, the deadline is very small such that it prevents
+collecting data from all CHs as the latter will be outdated,
+hence, a small number of UA Vs is deployed, which consumes
+low energy due to short trajectories. In contrast, beyond thepeak point, the deadline is long enough to deploy few UA Vs
+that visit all CHs. The peak point corresponds to the critical
+deadline for which the maximum number of UA Vs is deployedto collect data from the CHs. “Algorithm 1 +HR” has the
+best energy consumption for deadlines above 100 sec while
+visiting and deploying similar numbers of CHs and UA Vs as“Algorithm 1 +HA”. Indeed, “Algorithm 1 +HR” compen-
+sates for the prolonged data collection time and energy (due to
+longer distances to CHs) by shorter ﬂying time and less energyconsumption. For deadlines below 100 sec, “Algorithm 1 +
+HA” and “Algorithm 1 +HR” perform similarly in terms of
+energy and number of visited CHs, since hovering exactlyabove CHs improves the data transmission and thus respects
+the deadlines. Finally, “Algorithm 1 (Short) +HA” presents
+the worst performance as it spends more energy to reach CHs
+at distant locations, or in contrast, abandon them due to their
+data becoming outdated.
+Fig. 8 investigates the impact of the environ-
+ment type on the Tabu approach, given the same
+SNs’ design of Figs. 4–5. The environment param-eters for (3)–(4) are given as follows: 1) suburban
+(μ
+1,μ2,ρ,μ LoS,μNLoS)=( 0.1,750,8,0.1,21), 2) urban
+Fig. 9. Reward vs. no. of episodes.
+TABLE IV
+RL H YPERPARAMETERS
+(μ1,μ2,ρ,μ LoS,μNLoS)=( 0 .3,500,15,1,20), 3) dense
+urban(μ1,μ2,ρ,μ LoS,μNLoS)=( 0 .5,300,20,1.6,23),
+and 4) highrise urban (μ1,μ2,ρ,μ LoS,μNLoS)=
+(0.5,300,50,2.3,34) [39]. We see that as the environ-
+ment becomes denser, more energy is spent for data
+collection. Indeed, due to obstacles and interference, commu-nication links are more likely to be degraded, thus causing a
+shorter averaged UA V communication range. Consequently,
+UA Vs have to ﬂy closer to CHs in order to collect data. In
+contrast, in a less obstructed environment (e.g., suburban),
+communication links are dominated by LoS, thus UA Vs cancommunicate with CHs through short displacements.
+C. Online Path Planning Results
+For the online approaches, we train a multi-task agent for
+1024 episodes using replay memory and target network separa-tion to stabilize the training process. We assume that the DRL
+agent employs three hidden fully-connected layers, composed
+of 512 neurons for the ﬁrst two layers and 256 neurons for thelast one. The input layer size is the same as for the state space,
+while the output layer size is equal to the total number of
+actions. Moreover, we use rectiﬁed linear units (ReLU) as acti-
+vation functions and the Adam optimizer for neural network
+weights update. For maximum outcome, we tune and evaluatethe hyperparameters until the best performances are obtained.
+The latter are summarized in Table IV.
+Finally, exploration is performed in training using inde-
+pendent/epsilon1-greedy action selection by the DRL agent over
+its value-function Q. Throughout the training, /epsilon1is linearly
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:18:40 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 13 ---
+
+1930 IEEE TRANSACTIONS ON GREEN COMMUNICATIONS AND NETWORKING, VOL. 5, NO. 4, DECEMBER 2021
+Fig. 10. AC-based trajectories.
+Fig. 11. DDQN-based trajectories.
+annealed from 1.0 to 0.01 over 500 episodes, then kept
+constant for the remaining episodes.
+For the subsequent simulations, we assume M=1800 IoT
+sensors distributed within a square grid of size of 2000 ×2000
+cells (an area of 2 ×2k m2), and using the same simulation
+parameters of Table III. For each episode e, we assume that the
+locations of SNs (and subsequently of CHs) are varying and
+unknown for the UA Vs. The latter have to “blindly” explorethe cells and reach the CHs to collect the maximum amount
+of data within the time and energy limitations.
+In order to emphasize the efﬁciency of the proposed DRL
+algorithms, we depict in Fig. 9 their convergence behaviors in
+terms of reward (21), given three deployed UA Vs. As it can
+be seen, DQN and AC are the fastest to converge (in less than100 episodes), while DDQN convergences after 400 episodes.
+The slow convergence of DDQN is due to its architectural
+complexity, composed of two parallel neural networks. Anyhow,
+AC achieves the best performance due to its superiority through
+the joint optimization of the value function and policy.
+Based on the same IoT system design of Fig. 3, we depict
+in Figs. 10–12 the online UA V trajectories obtained using AC,
+DDQN, and DQN, respectively. As it can be seen, the DRLbased UA V trajectories cannot collect data from all CHs, and
+are less energy-efﬁcient than the ones obtained in ofﬂine. This
+Fig. 12. DQN-based trajectories.
+Fig. 13. Collected data vs. path planning approaches and no. of UA Vs.
+Fig. 14. Energy vs. no. of UA Vs.
+is mainly due to the absence of knowledge of the CHs’ loca-
+tions along the online paths. Nevertheless, AC-based solution
+outperforms those of DQN and DDQN in terms of total UA V
+consumed energy and number of visited CHs, which highlightsits higher intelligence in selecting better motion actions than
+the other approaches.
+For a fair comparison between the online DRL approaches,
+we deﬁne the “percentage of collected data” metric, deﬁned as
+the ratio of collected data from visited CHs to the total data to
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:18:40 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 14 ---
+
+GHDIRI et al. : OFFLINE AND ONLINE UA V-ENABLED DATA COLLECTION IN TIME-CONSTRAINED IoT NETWORKS 1931
+collect. In Fig. 13, we illustrate the results for different num-
+bers of UA Vs, and where the ofﬂine Tabu search performanceis added as the upper-bound benchmark, called “OFF”. The
+OFF method is able to collect most of the data (up to 100%
+for 2 and 3 UA Vs) with respect to the deadlines since it hasa full knowledge of the system status, i.e., CHs locations and
+deadlines. However, DQN, DDQN, and AC collect less data,
+e.g., using 3 UA Vs, they collect 65%, 67%, and 74.5% withinthe deadlines respectively, but 87%, 93.5% and 94.7% when
+including outdated collected data. The obtained DRL results
+are very interesting, especially for AC, given the total absenceof information about the system at the UA Vs.
+Fig. 14 shows the UA Vs’ normalized energy consump-
+tion for the path planning approaches, where the consumed
+energy is normalized over the percentage of visited CHs within
+deadlines. AC achieves the best online performance, whichenhances with the number of UA Vs. This is expected since
+AC is more efﬁcient in selecting on-the-ﬂy policies than DQN
+and DDQN.
+In the remaining results, we present only the performances
+of the OFF and AC methods, for which we evaluate the impact
+of the battery capacity and data collection deadline. For rapidexecution and convergence, we call for transfer learning [53],
+which uses a pre-trained AC model in different environment
+conditions.
+Fig. 15 studies the impact of the battery capacity on the
+performance of the system, for three deployed UA Vs. In terms
+of the percentage of collected data within deadlines, we see thatfor a battery capacity less or equal to 1000 mAh, AC cannot
+collect more than 5% of the data. However, for a battery capacity
+larger than 1000 mAh, a maximum collected data of 60% is
+obtained and cannot be outperformed, thus drawing the limit
+of AC in this scenario. In contrast, OFF succeeds in collecting100% of the data starting from a battery capacity equal to 1500
+mAh. In terms of energy consumption, AC consumes a high
+amount of energy when the battery capacity is higher than1000 mAh. Indeed, UA Vs attempt to explore more CHs with
+their additional energy, however, due to the system’s status lack
+of knowledge, they often reach CHs after deadline expiration.Consequently, the optimal battery capacity of the AC method
+is 1250 mAh, compared to 1500 mAh for the OFF method.
+In Fig. 16, we investigate the impact of the deadline on
+the performance of the system, given three deployed UA Vs.
+In terms of percentage of collected data, as the deadline
+increases, both OFF and AC improve until reaching a satu-ration value. Indeed, OFF saturates from deadline 150 sec, for
+which 100% of the data is collected, while AC reaches a max-
+imum of 90% starting from deadline 750 sec. This large gapis due to the advantageous knowledge of the system status
+in the OFF method. From the energy consumption perspec-
+tive, OFF reaches a consumption peak at deadline 150 sec,
+then decreases, mainly due to better UA V paths. However,
+AC consumes a lot of energy for short deadlines since theUA Vs waste energy exploring their environment without any
+income. Then, it improves until reaching a stable value starting
+from deadline 750 sec. Indeed, given a large deadline, the ACpolicy is capable of collecting more data that was previously
+inaccessible or reached after deadline expiration.
+Fig. 15. Data collect./energy vs. batt. cap.
+Fig. 16. Data collect./energy vs. deadline.
+VIII. C ONCLUSION
+In this paper, we investigated the multi-UA V data collection
+problem in clustered IoT networks, where sensed data have time
+deadlines. Aiming to optimize the data collection deploymentcosts, we proposed a two-step solution. In the ﬁrst step, the
+number and locations of CHs, which gather data from associ-
+ated IoT sensors, are optimized using a customized K-meansapproach. Simulation results demonstrated the efﬁciency of our
+proposed clustering method compared to baseline approaches.
+Also, moving CHs closer to the UA V dockstation provideda signiﬁcant energy gain. For the data collection step, two
+scenarios have been considered, namely ofﬂine and online.
+For the ofﬂine setting, we showed that NN outperforms othermethods when UA Vs battery capacity is low and insufﬁcient
+to collect data from all CHs. In contrast, with higher battery
+capacity, trajectory-based meta-heuristics, in particular Tabu
+search, achieved the best performances in terms of energy con-
+sumption, while collecting 100% of the data. Moreover, weproved that UA V battery capacity needs to be carefully opti-
+mized, and that the deadline constraint impacts signiﬁcantly
+the system’s performance. Then, we illustrated the importanceof the environment’s type, where the UA Vs operate. For the
+online setting, we found that AC outperforms DQN and DDQN
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:18:40 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 15 ---
+
+1932 IEEE TRANSACTIONS ON GREEN COMMUNICATIONS AND NETWORKING, VOL. 5, NO. 4, DECEMBER 2021
+in terms of amount of collected data and energy consumption.
+Indeed, AC is capable of collecting up to 90% of the data with-out any prior knowledge of the IoT network, given optimized
+battery capacity and sufﬁciently high deadlines.
+R
+EFERENCES
+[1] V . Chamola, V . Hassija, V . Gupta, and M. Guizani, “A comprehen-
+sive review of the COVID-19 pandemic and the role of IoT, drones,
+AI, blockchain, and 5G in managing its impact,” IEEE Access ,v o l .8 ,
+pp. 90225–90265, 2020.
+[2] L. Atzori, A. Iera, and G. Morabito, “The Internet of Things: A survey,”
+Comput. Netw. , vol. 54, no. 15, pp. 2787–2805, Oct. 2010.
+[3] A. Al-Fuqaha, M. Guizani, M. Mohammadi, M. Aledhari, and
+M. Ayyash, “Internet of Things: A survey on enabling technologies, pro-tocols, and applications,” IEEE Commun. Surveys Tuts. , vol. 17, no. 4,
+pp. 2347–2376, 4th Quart., 2015.
+[4] S. Alfattani, W. Jaafar, H. Yanikomeroglu, and A. Yongacoglu, “Multi-
+UA V data collection framework for wireless sensor networks,” in
+Proc. IEEE Global Comm. Conf. (GLOBECOM) , Waikoloa, HI, USA,
+Dec. 2019, pp. 1–6.
+[5] T. Kim and D. Qiao, “Energy-efﬁcient data collection for IoT networks
+via cooperative multi-hop UA V networks,” IEEE Trans. Veh. Technol. ,
+vol. 69, no. 11, pp. 13796–13811, Nov. 2020.
+[6] M. Samir, S. Sharafeddine, C. M. Assi, T. M. Nguyen, and A. Ghrayeb,
+“UA V trajectory planning for data collection from time-constrained IoT
+devices,” IEEE Trans. Wireless Commun. , vol. 19, no. 1, pp. 34–46,
+Jan. 2020.
+[7] H. Hu, K. Xiong, G. Qu, Q. Ni, P. Fan, and K. B. Letaief, “AoI-minimal
+trajectory planning and data collection in UA V-assisted wireless powered
+IoT networks,” IEEE Internet Things J. , vol. 8, no. 2, pp. 1211–1223,
+Jan. 2021.
+[8] W. Jaafar and H. Yanikomeroglu, “Dynamics of laser-charged UA Vs:
+A battery perspective,” IEEE Internet Things J. , vol. 8, no. 13,
+pp. 10573–10582, Jul. 2021.
+[9] J. K. Lenstra and A. H. G. R. Kan, “Complexity of vehicle routing and
+scheduling problems,” Networks , vol. 11, no. 2, pp. 221–227, 1981.
+[10] O. Ghdiri, W. Jaafar, S. Alfattani, J. B. Abderrazak, and
+H. Yanikomeroglu, “Energy-efﬁcient multi-UA V data collectionfor IoT networks with time deadlines,” in Proc. IEEE Global Commun.
+Conf. (GLOBECOM) , Taipei, Taiwan, Dec. 2020, pp. 1–6.
+[11] M. M. Afsar and M.-H. Tayarani-N, “Clustering in sensor networks: A
+literature survey,” Elsevier J. Netw. Comput. Appl. , vol. 46, pp. 198–226,
+Nov. 2014.
+[12] A. A. Abbasi and M. Younis, “A survey on clustering algorithms
+for wireless sensor networks,” Elsevier Comput. Commun. , vol. 30,
+nos. 14–15, pp. 2826–2841, Oct. 2007.
+[13] L. Xu, R. Collier, and G. M. P. O’Hare, “A survey of clustering tech-
+niques in WSNs and consideration of the challenges of applying such to
+5G IoT scenarios,” IEEE Internet Things J. , vol. 4, no. 5, pp. 1229–1249,
+Oct. 2017.
+[14] D. Puschmann, P. Barnaghi, and R. Tafazolli, “Adaptive clustering for
+dynamic IoT data streams,” IEEE Internet Things J. , vol. 4, no. 1,
+pp. 64–74, Feb. 2017.
+[15] X. Shao, C. Yang, D. Chen, N. Zhao, and F. R. Yu, “Dynamic IoT device
+clustering and energy management with hybrid NOMA systems,” IEEE
+Trans. Ind. Informat. , vol. 14, no. 10, pp. 4622–4630, Oct. 2018.
+[16] A. Mukherjee, D. K. Jain, and L. Yang, “On-demand efﬁ-
+cient clustering for next generation IoT applications: A hybrid
+NN approach,” IEEE Sensors J. , early access, Sep. 25, 2020,
+doi: 10.1109/JSEN.2020.3026647 .
+[17] A. A.-H. Hassan, W. M. Shah, A.-H. H. Habeb, M. F. I. Othman, and
+M. N. Al-Mhiqani, “An improved energy-efﬁcient clustering protocol
+to prolong the lifetime of the WSN-based IoT,” IEEE Access ,v o l .8 ,
+pp. 200500–200517, 2020.
+[18] C. Zhan, Y . Zeng, and R. Zhang, “Energy-efﬁcient data collection in
+UA V enabled wireless sensor network,” IEEE Wireless Commun. Lett. ,
+vol. 7, no. 3, pp. 328–331, Jun. 2018.
+[19] C. Zhan and Y . Zeng, “Aerial–ground cost tradeoff for multi-UA V-
+enabled data collection in wireless sensor networks,” IEEE Trans.
+Commun. , vol. 68, no. 3, pp. 1937–1950, Mar. 2020.
+[20] C. You and R. Zhang, “Hybrid ofﬂine–online design for UA V-enabled
+data harvesting in probabilistic LoS channels,” IEEE Trans. Wireless
+Commun. , vol. 19, no. 6, pp. 3753–3768, Jun. 2020.[21] Z. Wang, R. Liu, Q. Liu, J. S. Thompson, and M. Kadoch, “Energy-
+efﬁcient data collection and device positioning in UA V-assisted IoT,”IEEE Internet Things J. , vol. 7, no. 2, pp. 1122–1139, Feb. 2020.
+[22] V . K. Chawra and G. P. Gupta, “Multiple UA V path-planning for data
+collection in cluster-based wireless sensor network,” in Proc. Int. Conf
+Power Control Comput. Technol. (ICPC2T) , Raipur, India, Jan. 2020,
+pp. 194–198.
+[23] C. Lin, G. Han, X. Qi, J. Du, T. Xu, and M. Martinez-García, “Energy-
+optimal data collection for unmanned aerial vehicle-aided industrial
+wireless sensor network-based agricultural monitoring system: A cluster-
+ing compressed sampling approach,” IEEE Trans. Ind. Informat. , vol. 17,
+no. 6, pp. 4411–4420, Jun. 2021.
+[24] A. T. Albu-Salih and S. A. H. Seno, “Energy-efﬁcient data gathering
+framework-based clustering via multiple UA Vs in deadline-based WSN
+applications,” IEEE Access , vol. 6, pp. 72275–72286, 2018.
+[25] S.-H. Yeh, Y .-S. Wang, T. D. P. Perera, Y .-W. P. Hong, and
+D. N. K. Jayakody, “UA V trajectory optimization for data-gathering
+from backscattering sensor networks,” in Proc. IEEE Int. Conf. Commun.
+(ICC) , Dublin, Ireland, Jun. 2020, pp. 1–6.
+[26] V . Mnih et al. , “Human-level control through deep reinforcement
+learning,” Nature , vol. 518, pp. 529–533, Feb. 2015.
+[27] J. Cui, Z. Ding, Y . Deng, A. Nallanathan, and L. Hanzo, “Adaptive UA V-
+trajectory optimization under quality of service constraints: A model-free
+solution,” IEEE Access , vol. 8, pp. 112253–112265, 2020.
+[28] M. Yi, X. Wang, J. Liu, Y . Zhang, and B. Bai, “Deep reinforcement
+learning for fresh data collection in UA V-assisted IoT networks,” in Proc.
+IEEE Conf. Comput. Commun. Workshops. (INFOCOM WKSHPS) ,
+Toronto, ON, Canada, Aug. 2020, pp. 716–721.
+[29] P. Tong, J. Liu, X. Wang, B. Bai, and H. Dai, “Deep reinforcement
+learning for efﬁcient data collection in UA V-aided Internet of Things,”
+inProc. IEEE Int. Conf. Commun. Workshops. (ICC Wrkshps.) , Dublin,
+Ireland, Jun. 2020, pp. 1–6.
+[30] H. Bayerlein, M. Theile, M. Caccamo, and D. Gesbert, “UA V path
+planning for wireless data harvesting: A deep reinforcement learning
+approach,” in Proc. IEEE Global Commun. Conf. (GLOBECOM) , Taipei,
+Taiwan, Dec. 2020, pp. 1–6.
+[31] H. Bayerlein, M. Theile, M. Caccamo, and D. Gesbert, “Multi-UA V path
+planning for wireless data harvesting with deep reinforcement learning,”IEEE Open J. Commun. Soc. , vol. 2, pp. 1171–1187, 2021.
+[32] W. Liu, P. Si, E. Sun, M. Li, C. Fang, and Y . Zhang, “Green mobility
+management in UA V-assisted IoT based on dueling DQN,” in Proc. IEEE
+Int. Conf. Commun. (ICC) , Shanghai, China, May 2019, pp. 1–6.
+[33] Y .-H. Hsu and R.-H. Gau, “Reinforcement learning-based collision
+avoidance and optimal trajectory planning in UA V communication
+networks,” IEEE Trans. Mobile Comput. , early access, Jun. 19, 2020,
+doi: 10.1109/TMC.2020.3003639 .
+[34] Y . Zhang, Z. Mou, F. Gao, L. Xing, J. Jiang, and Z. Han, “Hierarchical
+deep reinforcement learning for backscattering data collection with
+multiple UA Vs,” IEEE Internet Things J. , vol. 8, no. 5, pp. 3786–3800,
+Mar. 2021.
+[35] O. Bouhamed, H. Ghazzai, H. Besbes, and Y . Massoud, “A UA V-assisted
+data collection for wireless sensor networks: Autonomous navigation and
+scheduling,” IEEE Access , vol. 8, pp. 110446–110460, 2020.
+[36] W. B. Heinzelman, A. P. Chandrakasan, and H. Balakrishnan, “An
+application-speciﬁc protocol architecture for wireless microsensornetworks,” IEEE Trans. Wireless Commun. , vol. 1, no. 4, pp. 660–670,
+Oct. 2002.
+[37] S. H. Kang and T. Nguyen, “Distance based thresholds for cluster head
+selection in wireless sensor networks,” IEEE Commun. Lett. , vol. 16,
+no. 9, pp. 1396–1399, Sep. 2012.
+[38] A. Al-Hourani, K. Sithamparanathan, and S. Lardner, “Optimal LAP
+altitude for maximum coverage,” IEEE Wireless Commun. Lett.
+,v o l .3 ,
+no. 6, pp. 569–572, Dec. 2014.
+[39] H. Kang, J. Joung, J. Ahn, and J. Kang, “Secrecy-aware altitude
+optimization for quasi-static UA V base station without eavesdropper
+location information,” IEEE Commun. Lett. , vol. 23, no. 5, pp. 851–854,
+May 2019.
+[40] Y . Zeng, J. Xu, and R. Zhang, “Energy minimization for wireless com-
+munication with rotary-wing UA V ,” IEEE Trans. Wireless Commun. ,
+vol. 18, no. 4, pp. 2329–2345, Apr. 2019.
+[41] F. Preparata and M. Shamos, Computational Geometry: An Introduction .
+New York, NY , USA: Springer-Verlag, 1993.
+[42] R. Hwang, R. Chang, and R. Lee, “The searching over separators
+strategy to solve some NP-hard problems in subexponential time,”
+Algorithmica , vol. 9, pp. 398–423, Apr. 1993.
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:18:40 UTC from IEEE Xplore.  Restrictions apply. 
+--- PAGE 16 ---
+
+GHDIRI et al. : OFFLINE AND ONLINE UA V-ENABLED DATA COLLECTION IN TIME-CONSTRAINED IoT NETWORKS 1933
+[43] W. R. Heinzelman, A. Chandrakasan, and H. Balakrishnan, “Energy-
+efﬁcient communication protocol for wireless microsensor networks,”inProc. Annu. Hawaii Int. Conf. Syst. Sci. , Jan. 2000, p. 10.
+[44] T. Kanungo, D. M. Mount, N. S. Netanyahu, C. D. Piatko, R. Silverman,
+and A. Y . Wu, “An efﬁcient k-means clustering algorithm: Analysis and
+implementation,” IEEE Trans. Pattern Anal. Mach. Intell. , vol. 24, no. 7,
+pp. 881–892, Jul. 2002.
+[45] F. Nielsen, Ch. 8: Hierarchical Clustering—Introduction to HPC With
+MPI for Data Science . Cham, Switzerland: Springer Int., 2016.
+[46] C. Blum and A. Roli, “Metaheuristics in combinatorial optimization:
+Overview and conceptual comparison,” ACM Comput. Surveys , vol. 35,
+no. 3, pp. 268–308, Sep. 2003.
+[47] D. Knuth. (2020). Capacitated Vehicle Routing Problem, OR-Tools .
+[Online]. Available: https://developers.google.com/optimization/routing/cvrp
+[48] O. Ghdiri. Codes for Paper Ofﬂine and Online UAV-Enabled Data
+Collection in Time-Constrained IoT Networks . Accessed: Jul. 15, 2021.
+[Online]. Available: https://github.com/GO-13/TGCN
+[49] Z. Beheshti and S. M. H. Shamsuddin, “A review of population-based
+meta-heuristic algorithm,” Int. J. Adv. Soft Comput. Appl. , vol. 5, no. 1,
+pp. 1–35, Mar. 2013.
+[50] D. C. Marinescu, “Chapter 12—Big data, data streaming, and the mobile
+cloud,” in Cloud Computing: Theory and Practice , 2nd ed. Cambridge,
+MA, USA: Morgan Kaufmann, 2018, pp. 439–487.
+[51] H. V . Hasselt, A. Guez, and D. Silver, “Deep reinforcement learning with
+double Q-learning,” in Proc. 30th Conf. Artif. Intell. (AAAI) , Feb. 2016,
+pp. 2094–2100.
+[52] S. Bhatnagar, R. S. Sutton, M. Ghavamzadeh, and M. Lee,
+“Natural actor–critic algorithms,” Elsevier Automatica , vol. 45, no. 11,
+pp. 2471–2482, Nov. 2009.
+[53] Z. Zhu, K. Lin, and J. Zhou, “Transfer learning in deep reinforcement
+learning: A survey,” Sep. 2020. [Online]. Available: arXiv:2009.07888.
+Oussama Ghdiri received the B.Eng. degree in soft-
+ware engineering from ESPRIT Engineering School,
+Tunis, Tunisia, in 2021. He was a Research Internwith the Department of Systems and Computer
+Engineering, Carleton University, Ottawa, ON,
+Canada, from March 2020 to April 2021. His currentresearch interests include the application of AI andML in next generation terrestrial and non-terrestrial
+networks.
+Wael Jaafar (Senior Member, IEEE) received
+the B.Eng. degree from the Higher School ofCommunication, Tunis, Tunisia, in 2007, and the
+M.A.Sc. and Ph.D. degrees in electrical engineer-
+ing from Polytechnique Montreal, Montreal, QC,Canada, in 2009 and 2014, respectively. He was
+a Visiting Research Intern with the Department of
+Computer Science, UQAM, Montreal, QC, Canada,from February 2007 to April 2007, and a VisitingResearcher with Keio University, Tokyo, Japan,
+from March 2013 to June 2013, and with Khalifa
+University, Abu Dhabi, UAE, from November to December 2019. From2014 to 2017, he has pursued a career with the telecommunications indus-try. In 2018, he held a Research Fellow and a Lecturer positions with the
+Computer Science Department, UQAM. In December 2018, he joined the
+Systems and Computer Engineering Department, Carleton University as anNSERC Postdoctoral Fellow. His current research interests include terres-trial and non-terrestrial communications, 6G and beyond technologies, and
+machine learning.
+Safwan Alfattani (Student Member, IEEE) received
+the B.S. degree from King Abdul Aziz University,Saudi Arabia, and the M.Sc. degree from theUniversity of Ottawa, where he is currently pursuing
+the Ph.D. degree. His research interests include non-
+terrestrial networks, reconﬁgurable smart surfaces,and IoT networks.
+Jihene Ben Abderrazak received the B.Eng.
+degree from the Higher School of Communication
+(SUPCOM), Tunis, Tunisia, in 2006, the M.A.Sc.
+degree in computer science from the University ofTsukuba, Japan, in 2010, and the Ph.D. degree ininformation and communication technology from
+SUPCOM in 2018. She is currently a Research
+Assistant with ESPRIT Engineering School, Tunis,and is leading the Wireless Communications
+Research Team. Her current research interests
+include future wireless networks, smart agriculture,
+autonomous vehicles, and machine learning.
+Halim Yanikomeroglu (Fellow, IEEE) is currently
+a Professor with the Department of Systems and
+Computer Engineering, Carleton University, Ottawa,
+ON, Canada. His current research interest includesmany aspects of 5G/6G wireless networks. His col-laborative research with industry has resulted in 37
+granted patents. He received several awards for his
+research, teaching, and service, including the IEEECommunications Society Wireless CommunicationsTechnical Committee Recognition Award, in 2018,
+and the IEEE Vehicular Technology Society Stuart
+Meyer Memorial Award, in 2020. He was the Technical Program Chair/Co-Chair of Wireless Communications and Networking Conference (WCNC)2004, Atlanta, WCNC 2008, Las Vegas, and WCNC 2014, Istanbul, and
+the General Chair of IEEE VTC 2010-Fall, Ottawa, and VTC 2017-Fall,
+Toronto. He has also served as the Chair for the IEEE’s Technical Committeeon Personal Communications. He is serving as the Chair for the IEEE
+WCNC Steering Committee. He is also a Distinguished Speaker of IEEE
+Communications Society and IEEE Vehicular Technology Society. He is aFellow of the Engineering Institute of Canada and the Canadian Academy ofEngineering.
+Authorized licensed use limited to: Hanoi University of Science & Technology. Downloaded on March 12,2026 at 08:18:40 UTC from IEEE Xplore.  Restrictions apply. 
