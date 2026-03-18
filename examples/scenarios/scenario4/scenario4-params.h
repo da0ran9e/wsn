@@ -49,6 +49,7 @@ constexpr double DEFAULT_UAV_SPEED = 20.0;  // m/s
 constexpr double STARTUP_PHASE_DURATION = 5.0;  // seconds
 constexpr double UAV_PLANNING_DELAY = 0.2;      // seconds after startup
 constexpr double FRAGMENT_BROADCAST_INTERVAL = 0.2;  // seconds (fallback/default)
+constexpr double SUSPICIOUS_CONFIDENCE_LOG_INTERVAL = 10.0; // seconds
 
 // ===== RADIO AND TRANSMISSION PARAMETERS =====
 // CC2420 (IEEE 802.15.4 ZigBee) radio specifications

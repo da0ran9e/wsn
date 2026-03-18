@@ -6,6 +6,7 @@ const hexColorLayer = document.getElementById('hexColorLayer');
 const suspiciousCellLayer = document.getElementById('suspiciousCellLayer');
 const nodeLayer = document.getElementById('nodeLayer');
 const nodeColorLayer = document.getElementById('nodeColorLayer');
+const nodeConfidenceLayer = document.getElementById('nodeConfidenceLayer');
 const suspiciousNodeLayer = document.getElementById('suspiciousNodeLayer');
 const uavPathLayer = document.getElementById('uavPathLayer');
 const uavEventLayer = document.getElementById('uavEventLayer');
@@ -18,6 +19,7 @@ const toggleHex = document.getElementById('toggleHex');
 const toggleHexColor = document.getElementById('toggleHexColor');
 const toggleNode = document.getElementById('toggleNode');
 const toggleNodeColor = document.getElementById('toggleNodeColor');
+const toggleConfidence = document.getElementById('toggleConfidence');
 const toggleSuspiciousNode = document.getElementById('toggleSuspiciousNode');
 const toggleUavPath = document.getElementById('toggleUavPath');
 const toggleCommunication = document.getElementById('toggleCommunication');
@@ -57,8 +59,10 @@ const playback = {
   events: [],
   waypointEvents: [],
   communicationLinks: [],
+  confidenceSnapshots: [],
   missionEvents: [],
   uavNodeIds: [],
+  nodeMap: new Map(),
   frameIndex: 0,
   isPlaying: false,
   timer: null,
@@ -530,6 +534,37 @@ function parseUavMissionEvents(text) {
   return events;
 }
 
+function parseSuspiciousConfidenceSnapshots(text) {
+  const lines = text.split(/\r?\n/);
+  const snapshots = [];
+  const eventRegex = /^\[EVENT\]\s*([\d.]+)\s*\|\s*event=SuspiciousConfidenceSnapshot\s*\|\s*(.*)$/;
+  const tokenRegex = /(\d+)\(([\d.]+)\)/g;
+
+  for (const line of lines) {
+    const eventMatch = line.match(eventRegex);
+    if (!eventMatch) {
+      continue;
+    }
+
+    const time = Number(eventMatch[1]);
+    const payload = eventMatch[2] || '';
+    const confidences = new Map();
+
+    let tokenMatch;
+    while ((tokenMatch = tokenRegex.exec(payload)) !== null) {
+      confidences.set(Number(tokenMatch[1]), Number(tokenMatch[2]));
+    }
+
+    snapshots.push({
+      time,
+      confidences,
+    });
+  }
+
+  snapshots.sort((a, b) => a.time - b.time);
+  return snapshots;
+}
+
 function buildUavEventTracks(waypointEvents) {
   const tracks = new Map();
   for (const ev of waypointEvents) {
@@ -592,7 +627,7 @@ function resolveCommunicationGeometry(communicationLinks, nodes, waypointEvents)
   return resolved;
 }
 
-function buildPlaybackFrames(waypointEvents, communicationLinks, missionEvents) {
+function buildPlaybackFrames(waypointEvents, communicationLinks, missionEvents, confidenceSnapshots) {
   const timeSet = new Set();
 
   for (const ev of waypointEvents) {
@@ -605,6 +640,10 @@ function buildPlaybackFrames(waypointEvents, communicationLinks, missionEvents) 
 
   for (const me of (missionEvents || [])) {
     timeSet.add(me.time);
+  }
+
+  for (const snap of (confidenceSnapshots || [])) {
+    timeSet.add(snap.time);
   }
 
   return Array.from(timeSet)
@@ -942,6 +981,114 @@ function renderCommunicationFrame() {
   }
 }
 
+function buildConfidenceSlicePath(cx, cy, radius, ratio) {
+  const clamped = Math.max(0, Math.min(1, ratio));
+  if (clamped <= 0) {
+    return '';
+  }
+
+  if (clamped >= 1) {
+    return '';
+  }
+
+  const startAngle = -Math.PI / 2;
+  const endAngle = startAngle + clamped * Math.PI * 2;
+  const x1 = cx + radius * Math.cos(startAngle);
+  const y1 = cy + radius * Math.sin(startAngle);
+  const x2 = cx + radius * Math.cos(endAngle);
+  const y2 = cy + radius * Math.sin(endAngle);
+  const largeArcFlag = clamped > 0.5 ? 1 : 0;
+
+  return `M ${cx} ${cy} L ${x1} ${y1} A ${radius} ${radius} 0 ${largeArcFlag} 1 ${x2} ${y2} Z`;
+}
+
+function getConfidenceBucketClass(confidence) {
+  const clamped = Math.max(0, Math.min(1, confidence));
+  if (clamped < 0.3) {
+    return 'confidence-low';
+  }
+  if (clamped < 0.7) {
+    return 'confidence-medium';
+  }
+  return 'confidence-high';
+}
+
+function renderConfidenceFrame() {
+  nodeConfidenceLayer.setAttribute('viewBox', `0 0 ${MAP_WIDTH} ${MAP_HEIGHT}`);
+  nodeConfidenceLayer.setAttribute('width', `${MAP_WIDTH}`);
+  nodeConfidenceLayer.setAttribute('height', `${MAP_HEIGHT}`);
+  nodeConfidenceLayer.innerHTML = '';
+
+  const world = playback.world;
+  const frames = playback.events;
+  const snapshots = playback.confidenceSnapshots;
+  if (!world || !snapshots || snapshots.length === 0) {
+    return;
+  }
+
+  let currentTime = Number.POSITIVE_INFINITY;
+  if (frames.length > 0) {
+    const clampedIndex = Math.max(0, Math.min(playback.frameIndex, frames.length - 1));
+    currentTime = frames[clampedIndex].time;
+  }
+
+  let latestSnapshot = null;
+  for (const snap of snapshots) {
+    if (snap.time <= currentTime) {
+      latestSnapshot = snap;
+    } else {
+      break;
+    }
+  }
+
+  if (!latestSnapshot) {
+    return;
+  }
+
+  const pieRadius = Math.max(2, NODE_RADIUS - 1.5);
+  for (const [nodeId, confidence] of latestSnapshot.confidences) {
+    const node = playback.nodeMap.get(nodeId);
+    if (!node) {
+      continue;
+    }
+
+    const p = world.toMapPoint(node.x, node.y);
+    const bucketClass = getConfidenceBucketClass(confidence);
+
+    const bg = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    bg.setAttribute('cx', p.x);
+    bg.setAttribute('cy', p.y);
+    bg.setAttribute('r', pieRadius);
+    bg.setAttribute('class', `confidence-pie-bg ${bucketClass}`);
+    nodeConfidenceLayer.appendChild(bg);
+
+    const clamped = Math.max(0, Math.min(1, confidence));
+    if (clamped >= 1) {
+      const full = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      full.setAttribute('cx', p.x);
+      full.setAttribute('cy', p.y);
+      full.setAttribute('r', pieRadius);
+      full.setAttribute('class', `confidence-pie-slice ${bucketClass}`);
+      nodeConfidenceLayer.appendChild(full);
+    } else if (clamped > 0) {
+      const path = buildConfidenceSlicePath(p.x, p.y, pieRadius, clamped);
+      if (path) {
+        const slice = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        slice.setAttribute('d', path);
+        slice.setAttribute('class', `confidence-pie-slice ${bucketClass}`);
+        nodeConfidenceLayer.appendChild(slice);
+      }
+    }
+
+    const ring = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    ring.setAttribute('cx', p.x);
+    ring.setAttribute('cy', p.y);
+    ring.setAttribute('r', pieRadius);
+    ring.setAttribute('class', `confidence-pie-ring ${bucketClass}`);
+    nodeConfidenceLayer.appendChild(ring);
+  }
+}
+
 function renderMissionTicks() {
   if (!missionTicksOverlay) {
     return;
@@ -1013,6 +1160,7 @@ function updatePlaybackUi() {
   eventSlider.value = total > 0 ? String(playback.frameIndex) : '0';
   playPauseBtn.textContent = playback.isPlaying ? 'Pause' : 'Play';
   applyUavPathPlaybackStyle();
+  renderConfidenceFrame();
   renderCommunicationFrame();
   renderUavEventFrame();
   updateMissionBanner();
@@ -1099,6 +1247,7 @@ function applyScenarioText(text) {
   const uavPaths = parseUavPaths(text);
   const waypointEvents = parseUavWaypointEvents(text);
   const communicationLinks = parseCommunicationLinks(text);
+  const confidenceSnapshots = parseSuspiciousConfidenceSnapshots(text);
   const missionEvents = parseUavMissionEvents(text);
   const cells = buildCellInfo(nodes, config.cellRadius);
   const world = buildWorldMapper(nodes);
@@ -1118,8 +1267,10 @@ function applyScenarioText(text) {
 
   stopPlayback();
   playback.world = world;
+  playback.nodeMap = new Map(nodes.map((n) => [n.nodeId, n]));
   playback.waypointEvents = waypointEvents;
   playback.communicationLinks = resolveCommunicationGeometry(communicationLinks, nodes, waypointEvents);
+  playback.confidenceSnapshots = confidenceSnapshots;
 
   // Resolve UAV node IDs and completion positions for mission events
   const uavNodeIds = uavPaths.map((p) => p.uavId);
@@ -1139,7 +1290,12 @@ function applyScenarioText(text) {
 
   playback.missionEvents = missionEvents;
   playback.uavNodeIds = uavNodeIds;
-  playback.events = buildPlaybackFrames(waypointEvents, playback.communicationLinks, missionEvents);
+  playback.events = buildPlaybackFrames(
+    waypointEvents,
+    playback.communicationLinks,
+    missionEvents,
+    playback.confidenceSnapshots,
+  );
   playback.frameIndex = 0;
   playback.uavColorMap = buildUavColorMap(uavPaths, waypointEvents);
   renderMissionTicks();
@@ -1173,8 +1329,10 @@ function bindLayerToggles() {
     suspiciousCellLayer.style.display = toggleSuspiciousNode.checked ? 'block' : 'none';
     nodeLayer.style.display = toggleNode.checked ? 'block' : 'none';
     nodeColorLayer.style.display = toggleNodeColor.checked ? 'block' : 'none';
+    nodeConfidenceLayer.style.display = toggleConfidence.checked ? 'block' : 'none';
     suspiciousNodeLayer.style.display = toggleSuspiciousNode.checked ? 'block' : 'none';
     uavPathLayer.style.display = toggleUavPath.checked ? 'block' : 'none';
+    uavEventLayer.style.display = toggleUavPath.checked ? 'block' : 'none';
     communicationLayer.style.display = toggleCommunication.checked ? 'block' : 'none';
   };
 
@@ -1198,6 +1356,10 @@ function bindLayerToggles() {
     if (toggleNodeColor.checked) {
       toggleSuspiciousNode.checked = false;
     }
+    applyLayerVisibility();
+  });
+
+  toggleConfidence.addEventListener('change', () => {
     applyLayerVisibility();
   });
 

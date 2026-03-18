@@ -28,6 +28,7 @@ struct Scenario4RunConfig
     double startupPhaseDuration = params::STARTUP_PHASE_DURATION;
     double uavPlanningDelay = params::UAV_PLANNING_DELAY;
     double fragmentBroadcastInterval = params::FRAGMENT_BROADCAST_INTERVAL;
+    double suspiciousConfidenceLogInterval = params::SUSPICIOUS_CONFIDENCE_LOG_INTERVAL;
     
     // Fragment generation
     uint32_t numFragments = params::DEFAULT_NUM_FRAGMENTS;

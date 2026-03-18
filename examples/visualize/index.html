@@ -19,11 +19,12 @@
               <svg id="suspiciousCellLayer" class="layer layer-suspicious-cell" xmlns="http://www.w3.org/2000/svg"></svg>
               <svg id="nodeLayer" class="layer layer-node" xmlns="http://www.w3.org/2000/svg"></svg>
               <svg id="nodeColorLayer" class="layer layer-node-color" xmlns="http://www.w3.org/2000/svg"></svg>
+              <svg id="nodeConfidenceLayer" class="layer layer-node-confidence" xmlns="http://www.w3.org/2000/svg"></svg>
               <svg id="suspiciousNodeLayer" class="layer layer-suspicious-node" xmlns="http://www.w3.org/2000/svg"></svg>
               <svg id="uavPathLayer" class="layer layer-uav-path" xmlns="http://www.w3.org/2000/svg"></svg>
               <svg id="uavEventLayer" class="layer layer-uav-event" xmlns="http://www.w3.org/2000/svg"></svg>
               <svg id="communicationLayer" class="layer layer-communication" xmlns="http://www.w3.org/2000/svg"></svg>
-              <div class="map-label">Layer 1: Hexagon • Layer 2: Cell Color • Layer 3: Suspicious Cells • Layer 4: Nodes • Layer 5: Node Color • Layer 6: Suspicious Nodes • Layer 7: UAV Paths • Layer 8: UAV Waypoint Events • Layer 9: Communications</div>
+              <div class="map-label">Layer 1: Hexagon • Layer 2: Cell Color • Layer 3: Suspicious Cells • Layer 4: Nodes • Layer 5: Node Color • Layer 6: Confidence Pie • Layer 7: Suspicious Nodes • Layer 8: UAV Paths • Layer 9: UAV Waypoint Events • Layer 10: Communications</div>
             </div>
           </div>
 
@@ -54,7 +55,7 @@
           </label>
 
           <label class="layer-toggle">
-            <input id="toggleGrid" type="checkbox" checked />
+            <input id="toggleGrid" type="checkbox" />
             <span>Grid Layer</span>
           </label>
           <label class="layer-toggle">
@@ -70,15 +71,19 @@
             <span>Node Layer</span>
           </label>
           <label class="layer-toggle">
-            <input id="toggleNodeColor" type="checkbox" checked />
+            <input id="toggleNodeColor" type="checkbox" />
             <span>Node Color Layer</span>
+          </label>
+          <label class="layer-toggle">
+            <input id="toggleConfidence" type="checkbox" checked />
+            <span>Node Confidence Layer</span>
           </label>
           <label class="layer-toggle">
             <input id="toggleSuspiciousNode" type="checkbox" />
             <span>Suspicious Node Layer</span>
           </label>
           <label class="layer-toggle">
-            <input id="toggleUavPath" type="checkbox" checked />
+            <input id="toggleUavPath" type="checkbox" />
             <span>UAV Flight Paths</span>
           </label>
           <label class="layer-toggle">
