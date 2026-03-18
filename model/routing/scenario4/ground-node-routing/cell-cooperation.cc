@@ -2,8 +2,10 @@
 #include "ground-node-routing.h"
 #include "../helper/calc-utils.h"
 #include "ns3/log.h"
+#include "ns3/random-variable-stream.h"
 #include "ns3/simulator.h"
 #include "../../../../examples/scenarios/scenario4/scenario4-params.h"
+#include <set>
 
 namespace ns3 {
 
@@ -13,7 +15,99 @@ namespace wsn {
 namespace scenario4 {
 namespace routing {
 
+namespace
+{
+uint32_t
+ComputeNodeTreeLevelInCell(uint32_t nodeId, int32_t cellId)
+{
+    uint32_t level = 0;
+    uint32_t current = nodeId;
+    std::set<uint32_t> visited;
+
+    while (true)
+    {
+        if (visited.count(current) > 0)
+        {
+            break;
+        }
+        visited.insert(current);
+
+        auto routeIt = ::ns3::wsn::scenario4::params::g_intraCellRoutingTree.find(current);
+        if (routeIt == ::ns3::wsn::scenario4::params::g_intraCellRoutingTree.end())
+        {
+            break;
+        }
+
+        auto parentIt = routeIt->second.find(cellId);
+        if (parentIt == routeIt->second.end())
+        {
+            break;
+        }
+
+        const uint32_t parent = parentIt->second;
+        if (parent == current)
+        {
+            break;
+        }
+
+        current = parent;
+        ++level;
+    }
+
+    return level;
+}
+} // namespace
+
 void InitializeCellCooperation() {}
+
+double
+ComputeCellCooperationStaggerDelay(uint32_t nodeId, int32_t cellId)
+{
+    const uint32_t level = ComputeNodeTreeLevelInCell(nodeId, cellId);
+    const double levelDelay =
+        static_cast<double>(level) * ::ns3::wsn::scenario4::params::COOPERATION_LEVEL_DELAY_STEP;
+
+    double randomJitter = 0.0;
+    if (::ns3::wsn::scenario4::params::COOPERATION_RANDOM_JITTER_MAX > 0.0)
+    {
+        Ptr<UniformRandomVariable> uv = CreateObject<UniformRandomVariable>();
+        randomJitter = uv->GetValue(0.0,
+                                    ::ns3::wsn::scenario4::params::COOPERATION_RANDOM_JITTER_MAX);
+    }
+
+    return levelDelay + randomJitter;
+}
+
+void
+ScheduleFragmentSharingRequest(uint32_t nodeId, int32_t cellId)
+{
+    if (!g_groundNetworkPerNode.count(nodeId))
+    {
+        return;
+    }
+
+    const double delay = ComputeCellCooperationStaggerDelay(nodeId, cellId);
+
+    Simulator::Schedule(Seconds(delay), [nodeId, cellId]() {
+        auto it = g_groundNetworkPerNode.find(nodeId);
+        if (it == g_groundNetworkPerNode.end())
+        {
+            return;
+        }
+
+        auto& state = it->second;
+        const bool hasAllFragments =
+            (state.expectedFragmentCount > 0) &&
+            (state.fragments.fragments.size() >= state.expectedFragmentCount);
+
+        if (!state.cooperationEnabled || state.cellId != cellId || hasAllFragments)
+        {
+            return;
+        }
+
+        RequestFragmentSharing(nodeId, cellId);
+    });
+}
 
 void
 ShareFragments(uint32_t fromNode, uint32_t toNode)

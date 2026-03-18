@@ -1278,25 +1278,25 @@ Step 10: Generate Fragments
   Total fragments: 10
   Total confidence: 0.900
 
-[UAV2-SELECT] step=1 pos=(60.0,100.0) gain=21 covered=21/148 travelDistance=256.1 score=1.2
-[UAV2-SELECT] step=2 pos=(60.0,160.0) gain=15 covered=36/148 travelDistance=60.0 score=3.7
-[UAV2-SELECT] step=3 pos=(60.0,220.0) gain=15 covered=51/148 travelDistance=60.0 score=3.7
-[UAV2-SELECT] step=4 pos=(60.0,240.0) gain=5 covered=56/148 travelDistance=20.0 score=3.7
-[UAV2-SELECT] step=5 pos=(120.0,240.0) gain=14 covered=70/148 travelDistance=60.0 score=3.5
-[UAV2-SELECT] step=6 pos=(160.0,240.0) gain=10 covered=80/148 travelDistance=40.0 score=3.7
-[UAV2-SELECT] step=7 pos=(160.0,180.0) gain=14 covered=94/148 travelDistance=60.0 score=3.5
-[UAV2-SELECT] step=8 pos=(160.0,120.0) gain=15 covered=109/148 travelDistance=60.0 score=3.7
-[UAV2-SELECT] step=9 pos=(200.0,100.0) gain=11 covered=120/148 travelDistance=44.7 score=3.7
-[UAV2-SELECT] step=10 pos=(220.0,100.0) gain=5 covered=125/148 travelDistance=20.0 score=3.7
-[UAV2-SELECT] step=11 pos=(220.0,140.0) gain=6 covered=131/148 travelDistance=40.0 score=2.2
-[UAV2-SELECT] step=12 pos=(20.0,260.0) gain=7 covered=138/148 travelDistance=233.2 score=0.5
-[UAV2-SELECT] step=13 pos=(20.0,220.0) gain=2 covered=140/148 travelDistance=40.0 score=0.7
-[UAV2-SELECT] step=14 pos=(155.8,266.3) gain=4 covered=144/148 travelDistance=143.5 score=0.4
+[UAV2-SELECT] step=1 pos=(60.0,100.0) gain=21 covered=21/148 travelDistance=256.1 score=1.6
+[UAV2-SELECT] step=2 pos=(60.0,160.0) gain=15 covered=36/148 travelDistance=60.0 score=5.0
+[UAV2-SELECT] step=3 pos=(60.0,220.0) gain=15 covered=51/148 travelDistance=60.0 score=5.0
+[UAV2-SELECT] step=4 pos=(60.0,240.0) gain=5 covered=56/148 travelDistance=20.0 score=5.0
+[UAV2-SELECT] step=5 pos=(120.0,240.0) gain=14 covered=70/148 travelDistance=60.0 score=4.7
+[UAV2-SELECT] step=6 pos=(160.0,240.0) gain=10 covered=80/148 travelDistance=40.0 score=5.0
+[UAV2-SELECT] step=7 pos=(160.0,180.0) gain=14 covered=94/148 travelDistance=60.0 score=4.7
+[UAV2-SELECT] step=8 pos=(160.0,120.0) gain=15 covered=109/148 travelDistance=60.0 score=5.0
+[UAV2-SELECT] step=9 pos=(200.0,100.0) gain=11 covered=120/148 travelDistance=44.7 score=4.9
+[UAV2-SELECT] step=10 pos=(220.0,100.0) gain=5 covered=125/148 travelDistance=20.0 score=5.0
+[UAV2-SELECT] step=11 pos=(220.0,140.0) gain=6 covered=131/148 travelDistance=40.0 score=3.0
+[UAV2-SELECT] step=12 pos=(20.0,260.0) gain=7 covered=138/148 travelDistance=233.2 score=0.6
+[UAV2-SELECT] step=13 pos=(20.0,220.0) gain=2 covered=140/148 travelDistance=40.0 score=1.0
+[UAV2-SELECT] step=14 pos=(155.8,266.3) gain=4 covered=144/148 travelDistance=143.5 score=0.6
 [UAV2-SELECT] step=15 pos=(120.0,100.0) gain=2 covered=146/148 travelDistance=170.1 score=0.2
 [UAV2-SELECT] step=16 pos=(40.0,100.0) gain=1 covered=147/148 travelDistance=80.0 score=0.2
 [UAV2-SELECT] step=17 pos=(20.0,280.0) gain=1 covered=148/148 travelDistance=181.1 score=0.1
 [UAV-PATH] uav2NodeId strategy totalDistance totalTime flightSpeed hoverTime avgSpeed broadcastRadius coverage waypoints: (x1, y1) (x2, y2) ...
-[UAV-PATH] 402 strategy=GreedyMaxCoverageCost totalDistance=1568.8m totalTime=104.6s flightSpeed=15.0m/s hoverTime=0.0s avgSpeed=15.0m/s broadcastRadius=50.0m coverage=148/148 waypoints: (60.0,100.0) (60.0,160.0) (60.0,220.0) (60.0,240.0) (120.0,240.0) (160.0,240.0) (160.0,180.0) (160.0,120.0) (200.0,100.0) (220.0,100.0) (220.0,140.0) (20.0,260.0) (20.0,220.0) (155.8,266.3) (120.0,100.0) (40.0,100.0) (20.0,280.0)
+[UAV-PATH] 402 strategy=GreedyMaxCoverageCost totalDistance=1568.8m totalTime=78.4s flightSpeed=20.0m/s hoverTime=0.0s avgSpeed=20.0m/s broadcastRadius=50.0m coverage=148/148 waypoints: (60.0,100.0) (60.0,160.0) (60.0,220.0) (60.0,240.0) (120.0,240.0) (160.0,240.0) (160.0,180.0) (160.0,120.0) (200.0,100.0) (220.0,100.0) (220.0,140.0) (20.0,260.0) (20.0,220.0) (155.8,266.3) (120.0,100.0) (40.0,100.0) (20.0,280.0)
 [UAV-PATH] 401 strategy=GreedyNearestNeighbor totalDistance=3330.5m totalTime=2625.3s flightSpeed=20.0m/s hoverTime=16.6s avgSpeed=20.0m/s waypoints: (40.0,60.0) (60.0,60.0) (80.0,60.0) (100.0,60.0) (100.0,80.0) (80.0,80.0) (60.0,80.0) (40.0,80.0) (20.0,80.0) (20.0,100.0) (0.0,100.0) (20.0,120.0) (40.0,120.0) (40.0,100.0) (60.0,100.0) (80.0,100.0) (100.0,100.0) (120.0,100.0) (120.0,80.0) (140.0,80.0) (160.0,80.0) (180.0,80.0) (180.0,60.0) (200.0,60.0) (220.0,60.0) (240.0,60.0) (240.0,80.0) (220.0,80.0) (200.0,80.0) (200.0,100.0) (180.0,100.0) (160.0,100.0) (140.0,100.0) (140.0,120.0) (120.0,120.0) (100.0,120.0) (80.0,120.0) (60.0,120.0) (60.0,140.0) (40.0,140.0) (20.0,140.0) (20.0,160.0) (40.0,160.0) (60.0,160.0) (80.0,160.0) (80.0,140.0) (100.0,140.0) (120.0,140.0) (140.0,140.0) (160.0,140.0) (160.0,120.0) (180.0,120.0) (200.0,120.0) (220.0,120.0) (220.0,100.0) (240.0,100.0) (260.0,100.0) (260.0,80.0) (260.0,120.0) (240.0,120.0) (240.0,140.0) (220.0,140.0) (200.0,140.0) (180.0,140.0) (180.0,160.0) (160.0,160.0) (140.0,160.0) (120.0,160.0) (100.0,160.0) (100.0,180.0) (80.0,180.0) (60.0,180.0) (40.0,180.0) (20.0,180.0) (0.0,180.0) (0.0,200.0) (20.0,200.0) (40.0,200.0) (60.0,200.0) (80.0,200.0) (100.0,200.0) (120.0,200.0) (120.0,180.0) (140.0,180.0) (160.0,180.0) (180.0,180.0) (200.0,180.0) (200.0,160.0) (220.0,160.0) (240.0,160.0) (260.0,160.0) (260.0,140.0) (240.0,180.0) (220.0,180.0) (200.0,200.0) (180.0,200.0) (160.0,200.0) (140.0,200.0) (140.0,220.0) (120.0,220.0) (100.0,220.0) (80.0,220.0) (60.0,220.0) (40.0,220.0) (20.0,220.0) (0.0,220.0) (0.0,240.0) (20.0,240.0) (40.0,240.0) (60.0,240.0) (80.0,240.0) (100.0,240.0) (120.0,240.0) (140.0,240.0) (160.0,240.0) (160.0,220.0) (180.0,220.0) (200.0,220.0) (200.0,240.0) (180.0,240.0) (180.0,260.0) (160.0,260.0) (140.0,260.0) (120.0,260.0) (100.0,260.0) (80.0,260.0) (60.0,260.0) (40.0,260.0) (20.0,260.0) (0.0,260.0) (0.0,280.0) (20.0,280.0) (40.0,280.0) (60.0,280.0) (80.0,280.0) (100.0,280.0) (120.0,280.0) (140.0,280.0) (160.0,280.0) (180.0,280.0) (200.0,280.0) (200.0,260.0) (160.0,300.0) (140.0,300.0) (120.0,300.0) (20.0,300.0) (0.0,300.0) (0.0,320.0)
 Step 11: Plan UAV Flight Paths
   Total UAVs: 2
@@ -1306,490 +1306,1190 @@ Step 11: Plan UAV Flight Paths
     Total distance: 3330.5m
   UAV 402:
     Waypoints: 17
-    Total time: 104.6s
+    Total time: 78.4s
     Total distance: 1568.8m
 
 
 [EVENT] 15.7 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(40.0,60.0,20.0)
 
-[EVENT] 22.2 | event=UAVWaypointArrival | nodeId=402 | cycle=1 | pos=(60.0,100.0,20.0)
+[EVENT] 17.9 | event=UAVWaypointArrival | nodeId=402 | cycle=1 | pos=(60.0,100.0,20.0)
 
-[EVENT] 22.3 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=0 | cycle=1 | confidence=0.206 | pixels=17306
+[EVENT] 18.0 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=0 | cycle=1 | confidence=0.206 | pixels=17306
 
-[EVENT] 22.275 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=0 | packetSize=51935 | srcAddr=01:93|dropCount=12|dsts=42,43,44,61,62,63,64,65,80,86,100,106
-402-D-42(0) 402-D-43(0) 402-D-44(0) 402-D-61(0) 402-D-62(0) 402-D-63(0) 402-D-64(0) 402-D-65(0) 402-D-80(0) 402-D-86(0) 402-D-100(0) 402-D-106(0) 
-402-R-82(0) 402-R-83(0) 402-R-84(0) 402-R-85(0) 402-R-101(0) 402-R-102(0) 402-R-103(0) 402-R-104(0) 402-R-105(0) 402-R-121(0) 402-R-122(0) 402-R-123(0) 402-R-124(0) 402-R-125(0) 402-R-126(0) 402-R-142(0) 402-R-143(0) 402-R-144(0) 402-R-145(0) 402-R-162(0) 
-[EVENT] 22.675 | event=RequestFragmentSharing | nodeId=82 | cellId=10000 | confidence=0.206 | fragments=0 
+[EVENT] 18.006 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=0 | packetSize=51935 | srcAddr=01:93|dropCount=13|dsts=43,61,62,63,64,65,80,81,85,86,100,106,401
+402-D-43(0) 402-D-61(0) 402-D-62(0) 402-D-63(0) 402-D-64(0) 402-D-65(0) 402-D-80(0) 402-D-81(0) 402-D-85(0) 402-D-86(0) 402-D-100(0) 402-D-106(0) 402-D-401(0) 
+402-R-82(0) 402-R-83(0) 402-R-84(0) 402-R-101(0) 402-R-102(0) 402-R-103(0) 402-R-104(0) 402-R-105(0) 402-R-121(0) 402-R-122(0) 402-R-123(0) 402-R-124(0) 402-R-125(0) 402-R-126(0) 402-R-142(0) 402-R-143(0) 402-R-144(0) 402-R-145(0) 402-R-162(0) 
+[EVENT] 18.409 | event=RequestFragmentSharing | nodeId=123 | cellId=10000 | confidence=0.206 | fragments=0 
 
-[EVENT] 22.675 | event=RequestFragmentSharing | nodeId=83 | cellId=10000 | confidence=0.206 | fragments=0 
+[EVENT] 18.428 | event=RequestFragmentSharing | nodeId=121 | cellId=10000 | confidence=0.206 | fragments=0 
 
-[EVENT] 22.675 | event=RequestFragmentSharing | nodeId=84 | cellId=10000 | confidence=0.206 | fragments=0 
+[EVENT] 18.429 | event=RequestFragmentSharing | nodeId=144 | cellId=10000 | confidence=0.206 | fragments=0 
 
-[EVENT] 22.675 | event=RequestFragmentSharing | nodeId=85 | cellId=10000 | confidence=0.206 | fragments=0 
+[EVENT] 18.432 | event=RequestFragmentSharing | nodeId=122 | cellId=10000 | confidence=0.206 | fragments=0 
 
-[EVENT] 22.675 | event=RequestFragmentSharing | nodeId=101 | cellId=10000 | confidence=0.206 | fragments=0 
+[EVENT] 18.432 | event=RequestFragmentSharing | nodeId=142 | cellId=10000 | confidence=0.206 | fragments=0 
 
-[EVENT] 22.675 | event=RequestFragmentSharing | nodeId=102 | cellId=10000 | confidence=0.206 | fragments=0 
+[EVENT] 18.433 | event=RequestFragmentSharing | nodeId=125 | cellId=10000 | confidence=0.206 | fragments=0 
 
-[EVENT] 22.675 | event=RequestFragmentSharing | nodeId=103 | cellId=10000 | confidence=0.206 | fragments=0 
+[EVENT] 18.434 | event=RequestFragmentSharing | nodeId=103 | cellId=10000 | confidence=0.206 | fragments=0 
 
-[EVENT] 22.675 | event=RequestFragmentSharing | nodeId=104 | cellId=10000 | confidence=0.206 | fragments=0 
+[EVENT] 18.434 | event=RequestFragmentSharing | nodeId=145 | cellId=10000 | confidence=0.206 | fragments=0 
 
-[EVENT] 22.675 | event=RequestFragmentSharing | nodeId=105 | cellId=10000 | confidence=0.206 | fragments=0 
+[EVENT] 18.435 | event=RequestFragmentSharing | nodeId=126 | cellId=10000 | confidence=0.206 | fragments=0 
 
-[EVENT] 22.675 | event=RequestFragmentSharing | nodeId=121 | cellId=10000 | confidence=0.206 | fragments=0 
+[EVENT] 18.435 | event=RequestFragmentSharing | nodeId=101 | cellId=10000 | confidence=0.206 | fragments=0 
 
-[EVENT] 22.675 | event=RequestFragmentSharing | nodeId=122 | cellId=10000 | confidence=0.206 | fragments=0 
+[EVENT] 18.436 | event=RequestFragmentSharing | nodeId=162 | cellId=10000 | confidence=0.206 | fragments=0 
 
-[EVENT] 22.675 | event=RequestFragmentSharing | nodeId=123 | cellId=10000 | confidence=0.206 | fragments=0 
+[EVENT] 18.437 | event=RequestFragmentSharing | nodeId=124 | cellId=10000 | confidence=0.206 | fragments=0 
 
-[EVENT] 22.675 | event=RequestFragmentSharing | nodeId=124 | cellId=10000 | confidence=0.206 | fragments=0 
+[EVENT] 18.437 | event=RequestFragmentSharing | nodeId=102 | cellId=10000 | confidence=0.206 | fragments=0 
 
-[EVENT] 22.675 | event=RequestFragmentSharing | nodeId=125 | cellId=10000 | confidence=0.206 | fragments=0 
+[EVENT] 18.439 | event=RequestFragmentSharing | nodeId=84 | cellId=10000 | confidence=0.206 | fragments=0 
 
-[EVENT] 22.675 | event=RequestFragmentSharing | nodeId=126 | cellId=10000 | confidence=0.206 | fragments=0 
+[EVENT] 18.439 | event=RequestFragmentSharing | nodeId=104 | cellId=10000 | confidence=0.206 | fragments=0 
 
-[EVENT] 22.675 | event=RequestFragmentSharing | nodeId=142 | cellId=10000 | confidence=0.206 | fragments=0 
+[EVENT] 18.440 | event=RequestFragmentSharing | nodeId=82 | cellId=10000 | confidence=0.206 | fragments=0 
 
-[EVENT] 22.675 | event=RequestFragmentSharing | nodeId=143 | cellId=10000 | confidence=0.206 | fragments=0 
+[EVENT] 18.440 | event=RequestFragmentSharing | nodeId=105 | cellId=10000 | confidence=0.206 | fragments=0 
 
-[EVENT] 22.675 | event=RequestFragmentSharing | nodeId=144 | cellId=10000 | confidence=0.206 | fragments=0 
+[EVENT] 18.441 | event=RequestFragmentSharing | nodeId=143 | cellId=10000 | confidence=0.206 | fragments=0 
 
-[EVENT] 22.675 | event=RequestFragmentSharing | nodeId=145 | cellId=10000 | confidence=0.206 | fragments=0 
+[EVENT] 18.441 | event=RequestFragmentSharing | nodeId=83 | cellId=10000 | confidence=0.206 | fragments=0 
 
-[EVENT] 22.675 | event=RequestFragmentSharing | nodeId=162 | cellId=10000 | confidence=0.206 | fragments=0 
+[EVENT] 19.668 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=1 | cycle=1 | confidence=0.206 | pixels=17306
 
-[EVENT] 23.936 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=1 | cycle=1 | confidence=0.206 | pixels=17306
-
-[EVENT] 23.936 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=1 | packetSize=51935 | srcAddr=01:93|dropCount=10|dsts=81,82,83,84,85,101,105,120,126,401
-402-D-81(1) 402-D-82(1) 402-D-83(1) 402-D-84(1) 402-D-85(1) 402-D-101(1) 402-D-105(1) 402-D-120(1) 402-D-126(1) 402-D-401(1) 
-402-R-102(1) 402-R-103(1) 402-R-104(1) 402-R-121(1) 402-R-122(1) 402-R-123(1) 402-R-124(1) 402-R-125(1) 402-R-141(1) 402-R-142(1) 402-R-143(1) 402-R-144(1) 402-R-145(1) 402-R-146(1) 402-R-161(1) 402-R-162(1) 402-R-163(1) 402-R-164(1) 402-R-165(1) 402-R-182(1) 402-R-183(1) 82-S-141(0) 
-[EVENT] 24.336 | event=RequestFragmentSharing | nodeId=141 | cellId=10000 | confidence=0.369 | fragments=0 1 
-82-S-146(0) 
-[EVENT] 24.336 | event=RequestFragmentSharing | nodeId=146 | cellId=10000 | confidence=0.369 | fragments=0 1 
+[EVENT] 19.668 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=1 | packetSize=51935 | srcAddr=01:93|dropCount=12|dsts=82,83,84,101,102,103,104,105,120,126,140,146
+402-D-82(1) 402-D-83(1) 402-D-84(1) 402-D-101(1) 402-D-102(1) 402-D-103(1) 402-D-104(1) 402-D-105(1) 402-D-120(1) 402-D-126(1) 402-D-140(1) 402-D-146(1) 
+402-R-121(1) 402-R-122(1) 402-R-123(1) 402-R-124(1) 402-R-125(1) 402-R-141(1) 402-R-142(1) 402-R-143(1) 402-R-144(1) 402-R-145(1) 402-R-161(1) 402-R-162(1) 402-R-163(1) 402-R-164(1) 402-R-165(1) 402-R-182(1) 402-R-183(1) 402-R-184(1) 402-R-203(1) 82-S-184(0) 
+[EVENT] 20.091 | event=RequestFragmentSharing | nodeId=184 | cellId=10000 | confidence=0.369 | fragments=0 1 
 82-S-161(0) 
-[EVENT] 24.336 | event=RequestFragmentSharing | nodeId=161 | cellId=10000 | confidence=0.369 | fragments=0 1 
-82-S-163(0) 
-[EVENT] 24.336 | event=RequestFragmentSharing | nodeId=163 | cellId=10000 | confidence=0.369 | fragments=0 1 
+[EVENT] 20.092 | event=RequestFragmentSharing | nodeId=161 | cellId=10000 | confidence=0.369 | fragments=0 1 
 82-S-164(0) 
-[EVENT] 24.336 | event=RequestFragmentSharing | nodeId=164 | cellId=10000 | confidence=0.369 | fragments=0 1 
-82-S-165(0) 
-[EVENT] 24.336 | event=RequestFragmentSharing | nodeId=165 | cellId=10000 | confidence=0.369 | fragments=0 1 
+[EVENT] 20.095 | event=RequestFragmentSharing | nodeId=164 | cellId=10000 | confidence=0.369 | fragments=0 1 
 82-S-182(0) 
-[EVENT] 24.336 | event=RequestFragmentSharing | nodeId=182 | cellId=10000 | confidence=0.369 | fragments=0 1 
+[EVENT] 20.095 | event=RequestFragmentSharing | nodeId=182 | cellId=10000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 20.095 | event=RequestFragmentSharing | nodeId=203 | cellId=19999 | confidence=0.206 | fragments=1 
+82-S-165(0) 
+[EVENT] 20.098 | event=RequestFragmentSharing | nodeId=165 | cellId=10000 | confidence=0.369 | fragments=0 1 
+82-S-163(0) 
+[EVENT] 20.099 | event=RequestFragmentSharing | nodeId=163 | cellId=10000 | confidence=0.369 | fragments=0 1 
+82-S-141(0) 
+[EVENT] 20.101 | event=RequestFragmentSharing | nodeId=141 | cellId=10000 | confidence=0.369 | fragments=0 1 
 82-S-183(0) 
-[EVENT] 24.336 | event=RequestFragmentSharing | nodeId=183 | cellId=10000 | confidence=0.369 | fragments=0 1 
+[EVENT] 20.103 | event=RequestFragmentSharing | nodeId=183 | cellId=10000 | confidence=0.369 | fragments=0 1 
 
-[EVENT] 25.598 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=2 | cycle=1 | confidence=0.206 | pixels=17306
+[EVENT] 20.906 | event=UAVWaypointArrival | nodeId=402 | cycle=1 | pos=(60.000,160.000,20.000)
 
-[EVENT] 25.598 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=2 | packetSize=51935 | srcAddr=01:93|dropCount=7|dsts=102,103,104,121,125,140,146
-402-D-102(2) 402-D-103(2) 402-D-104(2) 402-D-121(2) 402-D-125(2) 402-D-140(2) 402-D-146(2) 
-402-R-122(2) 402-R-123(2) 402-R-124(2) 402-R-141(2) 402-R-142(2) 402-R-143(2) 402-R-144(2) 402-R-145(2) 402-R-160(2) 402-R-161(2) 402-R-162(2) 402-R-163(2) 402-R-164(2) 402-R-165(2) 402-R-166(2) 402-R-181(2) 402-R-182(2) 402-R-183(2) 402-R-184(2) 402-R-185(2) 402-R-202(2) 402-R-203(2) 402-R-204(2) 
-[EVENT] 25.998 | event=RequestFragmentSharing | nodeId=160 | cellId=9999 | confidence=0.206 | fragments=2 
-82-S-166(0) 102-S-166(1) 
-[EVENT] 25.998 | event=RequestFragmentSharing | nodeId=166 | cellId=10000 | confidence=0.499 | fragments=0 1 2 
+[EVENT] 21.329 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=2 | cycle=1 | confidence=0.206 | pixels=17306
 
-[EVENT] 25.998 | event=RequestFragmentSharing | nodeId=181 | cellId=19999 | confidence=0.206 | fragments=2 
-82-S-184(0) 102-S-184(1) 
-[EVENT] 25.998 | event=RequestFragmentSharing | nodeId=184 | cellId=10000 | confidence=0.499 | fragments=0 1 2 
-82-S-185(0) 102-S-185(1) 
-[EVENT] 25.998 | event=RequestFragmentSharing | nodeId=185 | cellId=10000 | confidence=0.499 | fragments=0 1 2 
+[EVENT] 21.329 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=2 | packetSize=51935 | srcAddr=01:93|dropCount=11|dsts=121,122,123,124,125,141,142,144,145,160,166
+402-D-121(2) 402-D-122(2) 402-D-123(2) 402-D-124(2) 402-D-125(2) 402-D-141(2) 402-D-142(2) 402-D-144(2) 402-D-145(2) 402-D-160(2) 402-D-166(2) 
+402-R-143(2) 402-R-161(2) 402-R-162(2) 402-R-163(2) 402-R-164(2) 402-R-165(2) 402-R-180(2) 402-R-181(2) 402-R-182(2) 402-R-183(2) 402-R-184(2) 402-R-185(2) 402-R-201(2) 402-R-202(2) 402-R-203(2) 402-R-204(2) 402-R-205(2) 402-R-222(2) 402-R-223(2) 402-R-224(2) 203-S-180(1) 
+[EVENT] 21.749 | event=RequestFragmentSharing | nodeId=180 | cellId=19999 | confidence=0.369 | fragments=1 2 
+180-S-222(1) 
+[EVENT] 21.754 | event=RequestFragmentSharing | nodeId=222 | cellId=19999 | confidence=0.369 | fragments=1 2 
 
-[EVENT] 25.998 | event=RequestFragmentSharing | nodeId=202 | cellId=19999 | confidence=0.206 | fragments=2 
+[EVENT] 21.754 | event=RequestFragmentSharing | nodeId=204 | cellId=20000 | confidence=0.206 | fragments=2 
+180-S-201(1) 
+[EVENT] 21.756 | event=RequestFragmentSharing | nodeId=201 | cellId=19999 | confidence=0.369 | fragments=1 2 
+180-S-223(1) 
+[EVENT] 21.756 | event=RequestFragmentSharing | nodeId=223 | cellId=19999 | confidence=0.369 | fragments=1 2 
+180-S-202(1) 
+[EVENT] 21.756 | event=RequestFragmentSharing | nodeId=202 | cellId=19999 | confidence=0.369 | fragments=1 2 
+82-S-185(0) 121-S-185(1) 
+[EVENT] 21.759 | event=RequestFragmentSharing | nodeId=185 | cellId=10000 | confidence=0.499 | fragments=0 1 2 
 
-[EVENT] 25.998 | event=RequestFragmentSharing | nodeId=203 | cellId=19999 | confidence=0.206 | fragments=2 
+[EVENT] 21.761 | event=RequestFragmentSharing | nodeId=224 | cellId=20000 | confidence=0.206 | fragments=2 
+180-S-181(1) 
+[EVENT] 21.762 | event=RequestFragmentSharing | nodeId=181 | cellId=19999 | confidence=0.369 | fragments=1 2 
 
-[EVENT] 25.998 | event=RequestFragmentSharing | nodeId=204 | cellId=20000 | confidence=0.206 | fragments=2 
+[EVENT] 21.763 | event=RequestFragmentSharing | nodeId=205 | cellId=20000 | confidence=0.206 | fragments=2 
 
-[EVENT] 26.175 | event=UAVWaypointArrival | nodeId=402 | cycle=1 | pos=(60.000,160.000,20.000)
+[EVENT] 22.990 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=3 | cycle=1 | confidence=0.206 | pixels=17306
 
-[EVENT] 27.259 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=3 | cycle=1 | confidence=0.206 | pixels=17306
-
-[EVENT] 27.259 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=3 | packetSize=51935 | srcAddr=01:93|dropCount=7|dsts=122,123,124,141,145,160,166
-402-D-122(3) 402-D-123(3) 402-D-124(3) 402-D-141(3) 402-D-145(3) 402-D-160(3) 402-D-166(3) 
-402-R-142(3) 402-R-143(3) 402-R-144(3) 402-R-161(3) 402-R-162(3) 402-R-163(3) 402-R-164(3) 402-R-165(3) 402-R-180(3) 402-R-181(3) 402-R-182(3) 402-R-183(3) 402-R-184(3) 402-R-185(3) 402-R-200(3) 402-R-201(3) 402-R-202(3) 402-R-203(3) 402-R-204(3) 402-R-206(3) 402-R-222(3) 402-R-223(3) 402-R-224(3) 402-R-225(3) 402-R-243(3) 181-S-180(2) 
-[EVENT] 27.659 | event=RequestFragmentSharing | nodeId=180 | cellId=19999 | confidence=0.369 | fragments=2 3 
-180-S-200(2) 
-[EVENT] 27.659 | event=RequestFragmentSharing | nodeId=200 | cellId=19999 | confidence=0.369 | fragments=2 3 
-180-S-201(2) 
-[EVENT] 27.659 | event=RequestFragmentSharing | nodeId=201 | cellId=19999 | confidence=0.369 | fragments=2 3 
-204-S-206(2) 
-[EVENT] 27.659 | event=RequestFragmentSharing | nodeId=206 | cellId=20000 | confidence=0.369 | fragments=2 3 
-180-S-222(2) 
-[EVENT] 27.659 | event=RequestFragmentSharing | nodeId=222 | cellId=19999 | confidence=0.369 | fragments=2 3 
-180-S-223(2) 
-[EVENT] 27.659 | event=RequestFragmentSharing | nodeId=223 | cellId=19999 | confidence=0.369 | fragments=2 3 
-204-S-224(2) 
-[EVENT] 27.659 | event=RequestFragmentSharing | nodeId=224 | cellId=20000 | confidence=0.369 | fragments=2 3 
+[EVENT] 22.990 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=3 | packetSize=51935 | srcAddr=01:93|dropCount=14|dsts=142,143,144,161,162,163,164,165,180,181,185,186,200,206
+402-D-142(3) 402-D-143(3) 402-D-144(3) 402-D-161(3) 402-D-162(3) 402-D-163(3) 402-D-164(3) 402-D-165(3) 402-D-180(3) 402-D-181(3) 402-D-185(3) 402-D-186(3) 402-D-200(3) 402-D-206(3) 
+402-R-182(3) 402-R-183(3) 402-R-184(3) 402-R-201(3) 402-R-202(3) 402-R-203(3) 402-R-204(3) 402-R-205(3) 402-R-221(3) 402-R-222(3) 402-R-223(3) 402-R-224(3) 402-R-225(3) 402-R-241(3) 402-R-242(3) 402-R-243(3) 402-R-244(3) 402-R-262(3) 402-R-263(3) 180-S-241(1) 180-S-241(2) 
+[EVENT] 23.414 | event=RequestFragmentSharing | nodeId=241 | cellId=19999 | confidence=0.499 | fragments=1 2 3 
+180-S-263(1) 180-S-263(2) 
+[EVENT] 23.415 | event=RequestFragmentSharing | nodeId=263 | cellId=19999 | confidence=0.499 | fragments=1 2 3 
+180-S-221(1) 180-S-221(2) 
+[EVENT] 23.415 | event=RequestFragmentSharing | nodeId=221 | cellId=19999 | confidence=0.499 | fragments=1 2 3 
+204-S-244(2) 
+[EVENT] 23.416 | event=RequestFragmentSharing | nodeId=244 | cellId=20000 | confidence=0.369 | fragments=2 3 
 204-S-225(2) 
-[EVENT] 27.659 | event=RequestFragmentSharing | nodeId=225 | cellId=20000 | confidence=0.369 | fragments=2 3 
-180-S-243(2) 
-[EVENT] 27.659 | event=RequestFragmentSharing | nodeId=243 | cellId=19999 | confidence=0.369 | fragments=2 3 
+[EVENT] 23.417 | event=RequestFragmentSharing | nodeId=225 | cellId=20000 | confidence=0.369 | fragments=2 3 
+180-S-242(1) 180-S-242(2) 
+[EVENT] 23.421 | event=RequestFragmentSharing | nodeId=242 | cellId=19999 | confidence=0.499 | fragments=1 2 3 
+180-S-243(1) 180-S-243(2) 
+[EVENT] 23.423 | event=RequestFragmentSharing | nodeId=243 | cellId=19999 | confidence=0.499 | fragments=1 2 3 
+180-S-262(1) 180-S-262(2) 
+[EVENT] 23.424 | event=RequestFragmentSharing | nodeId=262 | cellId=19999 | confidence=0.499 | fragments=1 2 3 
 
-[EVENT] 28.921 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=4 | cycle=1 | confidence=0.206 | pixels=17306
+[EVENT] 23.906 | event=UAVWaypointArrival | nodeId=402 | cycle=1 | pos=(60.000,220.000,20.000)
 
-[EVENT] 28.921 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=4 | packetSize=51935 | srcAddr=01:93|dropCount=12|dsts=142,143,144,161,162,163,164,165,180,186,200,206
-402-D-142(4) 402-D-143(4) 402-D-144(4) 402-D-161(4) 402-D-162(4) 402-D-163(4) 402-D-164(4) 402-D-165(4) 402-D-180(4) 402-D-186(4) 402-D-200(4) 402-D-206(4) 
-402-R-181(4) 402-R-182(4) 402-R-183(4) 402-R-184(4) 402-R-185(4) 402-R-201(4) 402-R-202(4) 402-R-203(4) 402-R-204(4) 402-R-205(4) 402-R-220(4) 402-R-221(4) 402-R-222(4) 402-R-223(4) 402-R-224(4) 402-R-225(4) 402-R-241(4) 402-R-242(4) 402-R-243(4) 402-R-244(4) 402-R-245(4) 402-R-262(4) 204-S-205(2) 204-S-205(3) 
-[EVENT] 29.321 | event=RequestFragmentSharing | nodeId=205 | cellId=20000 | confidence=0.499 | fragments=2 3 4 
-180-S-220(2) 180-S-220(3) 
-[EVENT] 29.321 | event=RequestFragmentSharing | nodeId=220 | cellId=19999 | confidence=0.499 | fragments=2 3 4 
-180-S-221(2) 180-S-221(3) 
-[EVENT] 29.321 | event=RequestFragmentSharing | nodeId=221 | cellId=19999 | confidence=0.499 | fragments=2 3 4 
-180-S-241(2) 180-S-241(3) 
-[EVENT] 29.321 | event=RequestFragmentSharing | nodeId=241 | cellId=19999 | confidence=0.499 | fragments=2 3 4 
-180-S-242(2) 180-S-242(3) 
-[EVENT] 29.321 | event=RequestFragmentSharing | nodeId=242 | cellId=19999 | confidence=0.499 | fragments=2 3 4 
-204-S-244(2) 204-S-244(3) 
-[EVENT] 29.321 | event=RequestFragmentSharing | nodeId=244 | cellId=20000 | confidence=0.499 | fragments=2 3 4 
+[EVENT] 24.652 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=4 | cycle=1 | confidence=0.206 | pixels=17306
+
+[EVENT] 24.652 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=4 | packetSize=51935 | srcAddr=01:93|dropCount=12|dsts=182,183,184,201,202,203,204,205,220,226,240,246
+402-D-182(4) 402-D-183(4) 402-D-184(4) 402-D-201(4) 402-D-202(4) 402-D-203(4) 402-D-204(4) 402-D-205(4) 402-D-220(4) 402-D-226(4) 402-D-240(4) 402-D-246(4) 
+402-R-221(4) 402-R-222(4) 402-R-223(4) 402-R-224(4) 402-R-225(4) 402-R-241(4) 402-R-242(4) 402-R-243(4) 402-R-244(4) 402-R-245(4) 402-R-261(4) 402-R-262(4) 402-R-263(4) 402-R-264(4) 402-R-265(4) 402-R-281(4) 402-R-282(4) 402-R-283(4) 402-R-284(4) 402-R-285(4) 
+[EVENT] 24.906 | event=UAVWaypointArrival | nodeId=402 | cycle=1 | pos=(60.000,240.000,20.000)
+180-S-282(1) 180-S-282(2) 201-S-282(3) 
+[EVENT] 25.073 | event=RequestFragmentSharing | nodeId=282 | cellId=19999 | confidence=0.602 | fragments=1 2 3 4 
+180-S-281(1) 180-S-281(2) 201-S-281(3) 
+[EVENT] 25.074 | event=RequestFragmentSharing | nodeId=281 | cellId=19999 | confidence=0.602 | fragments=1 2 3 4 
+204-S-284(2) 204-S-284(3) 
+[EVENT] 25.076 | event=RequestFragmentSharing | nodeId=284 | cellId=20000 | confidence=0.499 | fragments=2 3 4 
+204-S-265(2) 204-S-265(3) 
+[EVENT] 25.078 | event=RequestFragmentSharing | nodeId=265 | cellId=20000 | confidence=0.499 | fragments=2 3 4 
+204-S-264(2) 204-S-264(3) 
+[EVENT] 25.078 | event=RequestFragmentSharing | nodeId=264 | cellId=20000 | confidence=0.499 | fragments=2 3 4 
 204-S-245(2) 204-S-245(3) 
-[EVENT] 29.321 | event=RequestFragmentSharing | nodeId=245 | cellId=20000 | confidence=0.499 | fragments=2 3 4 
-180-S-262(2) 180-S-262(3) 
-[EVENT] 29.321 | event=RequestFragmentSharing | nodeId=262 | cellId=19999 | confidence=0.499 | fragments=2 3 4 
+[EVENT] 25.079 | event=RequestFragmentSharing | nodeId=245 | cellId=20000 | confidence=0.499 | fragments=2 3 4 
+204-S-285(2) 204-S-285(3) 
+[EVENT] 25.080 | event=RequestFragmentSharing | nodeId=285 | cellId=20000 | confidence=0.499 | fragments=2 3 4 
+180-S-283(1) 180-S-283(2) 201-S-283(3) 
+[EVENT] 25.081 | event=RequestFragmentSharing | nodeId=283 | cellId=19999 | confidence=0.602 | fragments=1 2 3 4 
+180-S-261(1) 180-S-261(2) 201-S-261(3) 
+[EVENT] 25.082 | event=RequestFragmentSharing | nodeId=261 | cellId=19999 | confidence=0.602 | fragments=1 2 3 4 
 
-[EVENT] 30.175 | event=UAVWaypointArrival | nodeId=402 | cycle=1 | pos=(60.000,220.000,20.000)
+[EVENT] 26.313 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=5 | cycle=1 | confidence=0.206 | pixels=17306
 
-[EVENT] 30.582 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=5 | cycle=1 | confidence=0.206 | pixels=17306
+[EVENT] 26.313 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=5 | packetSize=51935 | srcAddr=01:93|dropCount=9|dsts=184,202,203,222,242,262,282,283,304
+402-D-184(5) 402-D-202(5) 402-D-203(5) 402-D-222(5) 402-D-242(5) 402-D-262(5) 402-D-282(5) 402-D-283(5) 402-D-304(5) 
+402-R-185(5) 402-R-204(5) 402-R-205(5) 402-R-206(5) 402-R-223(5) 402-R-224(5) 402-R-225(5) 402-R-226(5) 402-R-243(5) 402-R-244(5) 402-R-245(5) 402-R-246(5) 402-R-247(5) 402-R-263(5) 402-R-264(5) 402-R-265(5) 402-R-266(5) 402-R-267(5) 402-R-284(5) 402-R-285(5) 402-R-286(5) 402-R-305(5) 204-S-247(2) 204-S-247(3) 224-S-247(4) 
+[EVENT] 26.717 | event=RequestFragmentSharing | nodeId=247 | cellId=20000 | confidence=0.602 | fragments=2 3 4 5 
 
-[EVENT] 30.582 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=5 | packetSize=51935 | srcAddr=01:93|dropCount=7|dsts=181,182,183,184,185,220,226
-402-D-181(5) 402-D-182(5) 402-D-183(5) 402-D-184(5) 402-D-185(5) 402-D-220(5) 402-D-226(5) 
-402-R-201(5) 402-R-202(5) 402-R-203(5) 402-R-204(5) 402-R-205(5) 402-R-221(5) 402-R-222(5) 402-R-223(5) 402-R-224(5) 402-R-225(5) 402-R-240(5) 402-R-241(5) 402-R-243(5) 402-R-244(5) 402-R-245(5) 402-R-261(5) 402-R-262(5) 402-R-263(5) 402-R-264(5) 402-R-265(5) 402-R-282(5) 402-R-283(5) 180-S-240(2) 180-S-240(3) 181-S-240(4) 
-[EVENT] 30.982 | event=RequestFragmentSharing | nodeId=240 | cellId=19999 | confidence=0.602 | fragments=2 3 4 5 
-180-S-261(2) 180-S-261(3) 181-S-261(4) 
-[EVENT] 30.982 | event=RequestFragmentSharing | nodeId=261 | cellId=19999 | confidence=0.602 | fragments=2 3 4 5 
-180-S-263(2) 180-S-263(3) 181-S-263(4) 
-[EVENT] 30.982 | event=RequestFragmentSharing | nodeId=263 | cellId=19999 | confidence=0.602 | fragments=2 3 4 5 
-204-S-264(2) 204-S-264(3) 204-S-264(4) 
-[EVENT] 30.982 | event=RequestFragmentSharing | nodeId=264 | cellId=20000 | confidence=0.602 | fragments=2 3 4 5 
-204-S-265(2) 204-S-265(3) 204-S-265(4) 
-[EVENT] 30.982 | event=RequestFragmentSharing | nodeId=265 | cellId=20000 | confidence=0.602 | fragments=2 3 4 5 
-180-S-282(2) 180-S-282(3) 181-S-282(4) 
-[EVENT] 30.982 | event=RequestFragmentSharing | nodeId=282 | cellId=19999 | confidence=0.602 | fragments=2 3 4 5 
-180-S-283(2) 180-S-283(3) 181-S-283(4) 
-[EVENT] 30.982 | event=RequestFragmentSharing | nodeId=283 | cellId=19999 | confidence=0.602 | fragments=2 3 4 5 
+[EVENT] 26.737 | event=RequestFragmentSharing | nodeId=305 | cellId=29999 | confidence=0.206 | fragments=5 
+204-S-267(2) 204-S-267(3) 224-S-267(4) 
+[EVENT] 26.739 | event=RequestFragmentSharing | nodeId=267 | cellId=20000 | confidence=0.602 | fragments=2 3 4 5 
+204-S-246(2) 204-S-246(3) 224-S-246(4) 
+[EVENT] 26.740 | event=RequestFragmentSharing | nodeId=246 | cellId=20000 | confidence=0.602 | fragments=2 3 4 5 
+204-S-206(2) 204-S-206(3) 224-S-206(4) 
+[EVENT] 26.742 | event=RequestFragmentSharing | nodeId=206 | cellId=20000 | confidence=0.602 | fragments=2 3 4 5 
+204-S-286(2) 204-S-286(3) 206-S-286(4) 
+[EVENT] 26.742 | event=RequestFragmentSharing | nodeId=286 | cellId=20000 | confidence=0.602 | fragments=2 3 4 5 
+204-S-266(2) 204-S-266(3) 206-S-266(4) 
+[EVENT] 26.744 | event=RequestFragmentSharing | nodeId=266 | cellId=20000 | confidence=0.602 | fragments=2 3 4 5 
+204-S-226(2) 204-S-226(3) 206-S-226(4) 
+[EVENT] 26.746 | event=RequestFragmentSharing | nodeId=226 | cellId=20000 | confidence=0.602 | fragments=2 3 4 5 
 
-[EVENT] 31.508 | event=UAVWaypointArrival | nodeId=402 | cycle=1 | pos=(60.000,240.000,20.000)
+[EVENT] 27.906 | event=UAVWaypointArrival | nodeId=402 | cycle=1 | pos=(120.000,240.000,20.000)
 
-[EVENT] 32.243 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=6 | cycle=1 | confidence=0.206 | pixels=17305
+[EVENT] 27.975 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=6 | cycle=1 | confidence=0.206 | pixels=17305
 
-[EVENT] 32.243 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=6 | packetSize=51932 | srcAddr=01:93|dropCount=9|dsts=183,201,202,221,241,261,281,282,303
-402-D-183(6) 402-D-201(6) 402-D-202(6) 402-D-221(6) 402-D-241(6) 402-D-261(6) 402-D-281(6) 402-D-282(6) 402-D-303(6) 
-402-R-203(6) 402-R-204(6) 402-R-205(6) 402-R-222(6) 402-R-223(6) 402-R-224(6) 402-R-225(6) 402-R-242(6) 402-R-243(6) 402-R-244(6) 402-R-245(6) 402-R-246(6) 402-R-262(6) 402-R-263(6) 402-R-264(6) 402-R-265(6) 402-R-266(6) 402-R-283(6) 402-R-284(6) 402-R-285(6) 402-R-286(6) 204-S-246(2) 204-S-246(3) 204-S-246(4) 204-S-246(5) 
-[EVENT] 32.643 | event=RequestFragmentSharing | nodeId=246 | cellId=20000 | confidence=0.684 | fragments=2 3 4 5 6 
-204-S-266(2) 204-S-266(3) 204-S-266(4) 204-S-266(5) 
-[EVENT] 32.643 | event=RequestFragmentSharing | nodeId=266 | cellId=20000 | confidence=0.684 | fragments=2 3 4 5 6 
-204-S-284(2) 204-S-284(3) 204-S-284(4) 204-S-284(5) 
-[EVENT] 32.643 | event=RequestFragmentSharing | nodeId=284 | cellId=20000 | confidence=0.684 | fragments=2 3 4 5 6 
-204-S-285(2) 204-S-285(3) 204-S-285(4) 204-S-285(5) 
-[EVENT] 32.643 | event=RequestFragmentSharing | nodeId=285 | cellId=20000 | confidence=0.684 | fragments=2 3 4 5 6 
-204-S-286(2) 204-S-286(3) 204-S-286(4) 204-S-286(5) 
-[EVENT] 32.643 | event=RequestFragmentSharing | nodeId=286 | cellId=20000 | confidence=0.684 | fragments=2 3 4 5 6 
+[EVENT] 27.975 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=6 | packetSize=51932 | srcAddr=01:93|dropCount=14|dsts=185,186,204,205,223,224,243,244,263,264,284,285,305,306
+402-D-185(6) 402-D-186(6) 402-D-204(6) 402-D-205(6) 402-D-223(6) 402-D-224(6) 402-D-243(6) 402-D-244(6) 402-D-263(6) 402-D-264(6) 402-D-284(6) 402-D-285(6) 402-D-305(6) 402-D-306(6) 
+402-R-187(6) 402-R-206(6) 402-R-207(6) 402-R-225(6) 402-R-226(6) 402-R-227(6) 402-R-228(6) 402-R-229(6) 402-R-245(6) 402-R-246(6) 402-R-247(6) 402-R-248(6) 402-R-249(6) 402-R-266(6) 402-R-267(6) 402-R-268(6) 402-R-286(6) 402-R-287(6) 402-R-288(6) 204-S-268(2) 204-S-268(3) 204-S-268(5) 206-S-268(4) 
+[EVENT] 28.397 | event=RequestFragmentSharing | nodeId=268 | cellId=20000 | confidence=0.684 | fragments=2 3 4 5 6 
+204-S-249(2) 204-S-249(3) 204-S-249(5) 206-S-249(4) 
+[EVENT] 28.398 | event=RequestFragmentSharing | nodeId=249 | cellId=20000 | confidence=0.684 | fragments=2 3 4 5 6 
+204-S-187(2) 204-S-187(3) 204-S-187(5) 206-S-187(4) 
+[EVENT] 28.399 | event=RequestFragmentSharing | nodeId=187 | cellId=20000 | confidence=0.684 | fragments=2 3 4 5 6 
+187-S-227(2) 187-S-227(3) 187-S-227(4) 187-S-227(5) 
+[EVENT] 28.399 | event=RequestFragmentSharing | nodeId=227 | cellId=20000 | confidence=0.684 | fragments=2 3 4 5 6 
+187-S-248(2) 187-S-248(3) 187-S-248(4) 187-S-248(5) 
+[EVENT] 28.402 | event=RequestFragmentSharing | nodeId=248 | cellId=20000 | confidence=0.684 | fragments=2 3 4 5 6 
+187-S-229(2) 187-S-229(3) 187-S-229(4) 187-S-229(5) 
+[EVENT] 28.405 | event=RequestFragmentSharing | nodeId=229 | cellId=20000 | confidence=0.684 | fragments=2 3 4 5 6 
+187-S-207(2) 187-S-207(3) 187-S-207(4) 187-S-207(5) 
+[EVENT] 28.405 | event=RequestFragmentSharing | nodeId=207 | cellId=20000 | confidence=0.684 | fragments=2 3 4 5 6 
+187-S-287(2) 187-S-287(3) 187-S-287(4) 187-S-287(5) 
+[EVENT] 28.405 | event=RequestFragmentSharing | nodeId=287 | cellId=20000 | confidence=0.684 | fragments=2 3 4 5 6 
+187-S-228(2) 187-S-228(3) 187-S-228(4) 187-S-228(5) 
+[EVENT] 28.408 | event=RequestFragmentSharing | nodeId=228 | cellId=20000 | confidence=0.684 | fragments=2 3 4 5 6 
+187-S-288(2) 187-S-288(3) 187-S-288(4) 187-S-288(5) 
+[EVENT] 28.409 | event=RequestFragmentSharing | nodeId=288 | cellId=20000 | confidence=0.684 | fragments=2 3 4 5 6 
 
+[EVENT] 29.636 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=7 | cycle=1 | confidence=0.206 | pixels=17305
+
+[EVENT] 29.636 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=7 | packetSize=51932 | srcAddr=01:93|dropCount=12|dsts=187,188,206,225,226,245,246,265,266,286,307,308
+402-D-187(7) 402-D-188(7) 402-D-206(7) 402-D-225(7) 402-D-226(7) 402-D-245(7) 402-D-246(7) 402-D-265(7) 402-D-266(7) 402-D-286(7) 402-D-307(7) 402-D-308(7) 
+402-R-207(7) 402-R-208(7) 402-R-209(7) 402-R-227(7) 402-R-228(7) 402-R-229(7) 402-R-230(7) 402-R-247(7) 402-R-248(7) 402-R-249(7) 402-R-250(7) 402-R-267(7) 402-R-268(7) 402-R-270(7) 402-R-287(7) 402-R-288(7) 402-R-289(7) 
+[EVENT] 29.906 | event=UAVWaypointArrival | nodeId=402 | cycle=1 | pos=(160.000,240.000,20.000)
+187-S-250(2) 187-S-250(3) 187-S-250(4) 187-S-250(5) 187-S-250(6) 
+[EVENT] 30.057 | event=RequestFragmentSharing | nodeId=250 | cellId=20000 | confidence=0.749 | fragments=2 3 4 5 6 7 
+187-S-209(2) 187-S-209(3) 187-S-209(4) 187-S-209(5) 187-S-209(6) 
+[EVENT] 30.063 | event=RequestFragmentSharing | nodeId=209 | cellId=20000 | confidence=0.749 | fragments=2 3 4 5 6 7 
+187-S-270(2) 187-S-270(3) 187-S-270(4) 187-S-270(5) 187-S-270(6) 
+[EVENT] 30.066 | event=RequestFragmentSharing | nodeId=270 | cellId=20000 | confidence=0.749 | fragments=2 3 4 5 6 7 
+187-S-289(2) 187-S-289(3) 187-S-289(4) 187-S-289(5) 187-S-289(6) 
+[EVENT] 30.067 | event=RequestFragmentSharing | nodeId=289 | cellId=20000 | confidence=0.749 | fragments=2 3 4 5 6 7 
+187-S-208(2) 187-S-208(3) 187-S-208(4) 187-S-208(5) 187-S-208(6) 
+[EVENT] 30.067 | event=RequestFragmentSharing | nodeId=208 | cellId=20000 | confidence=0.749 | fragments=2 3 4 5 6 7 
+187-S-230(2) 187-S-230(3) 187-S-230(4) 187-S-230(5) 187-S-230(6) 
+[EVENT] 30.067 | event=RequestFragmentSharing | nodeId=230 | cellId=20000 | confidence=0.749 | fragments=2 3 4 5 6 7 
+
+[EVENT] 31.297 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=8 | cycle=1 | confidence=0.206 | pixels=17305
+
+[EVENT] 31.297 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=8 | packetSize=51932 | srcAddr=01:93|dropCount=9|dsts=225,231,246,250,266,267,268,269,270
+402-D-225(8) 402-D-231(8) 402-D-246(8) 402-D-250(8) 402-D-266(8) 402-D-267(8) 402-D-268(8) 402-D-269(8) 402-D-270(8) 
+402-R-167(8) 402-R-168(8) 402-R-186(8) 402-R-187(8) 402-R-188(8) 402-R-189(8) 402-R-190(8) 402-R-205(8) 402-R-206(8) 402-R-207(8) 402-R-208(8) 402-R-209(8) 402-R-210(8) 402-R-226(8) 402-R-227(8) 402-R-228(8) 402-R-229(8) 402-R-230(8) 402-R-247(8) 402-R-248(8) 402-R-249(8) 
+[EVENT] 31.718 | event=RequestFragmentSharing | nodeId=167 | cellId=10001 | confidence=0.206 | fragments=8 
+
+[EVENT] 31.718 | event=RequestFragmentSharing | nodeId=189 | cellId=10001 | confidence=0.206 | fragments=8 
+187-S-188(2) 187-S-188(3) 187-S-188(4) 187-S-188(5) 187-S-188(6) 207-S-188(7) 
+[EVENT] 31.721 | event=RequestFragmentSharing | nodeId=188 | cellId=20000 | confidence=0.800 | fragments=2 3 4 5 6 7 8 
+187-S-210(2) 187-S-210(3) 187-S-210(4) 187-S-210(5) 187-S-210(6) 188-S-210(7) 
+[EVENT] 31.721 | event=RequestFragmentSharing | nodeId=210 | cellId=20000 | confidence=0.800 | fragments=2 3 4 5 6 7 8 
+187-S-186(2) 187-S-186(3) 187-S-186(4) 187-S-186(5) 187-S-186(6) 188-S-186(7) 
+[EVENT] 31.726 | event=RequestFragmentSharing | nodeId=186 | cellId=20000 | confidence=0.800 | fragments=2 3 4 5 6 7 8 
+
+[EVENT] 31.727 | event=RequestFragmentSharing | nodeId=168 | cellId=10001 | confidence=0.206 | fragments=8 
+
+[EVENT] 31.732 | event=RequestFragmentSharing | nodeId=190 | cellId=10001 | confidence=0.206 | fragments=8 
+
+[EVENT] 32.906 | event=UAVWaypointArrival | nodeId=402 | cycle=1 | pos=(160.000,180.000,20.000)
+
+[EVENT] 32.958 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=9 | cycle=1 | confidence=0.206 | pixels=17305
+
+[EVENT] 32.958 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=9 | packetSize=51932 | srcAddr=01:93|dropCount=14|dsts=185,191,205,206,210,211,226,227,228,229,230,247,248,249
+402-D-185(9) 402-D-191(9) 402-D-205(9) 402-D-206(9) 402-D-210(9) 402-D-211(9) 402-D-226(9) 402-D-227(9) 402-D-228(9) 402-D-229(9) 402-D-230(9) 402-D-247(9) 402-D-248(9) 402-D-249(9) 
+402-R-127(9) 402-R-128(9) 402-R-129(9) 402-R-146(9) 402-R-147(9) 402-R-148(9) 402-R-149(9) 402-R-165(9) 402-R-166(9) 402-R-167(9) 402-R-168(9) 402-R-169(9) 402-R-170(9) 402-R-186(9) 402-R-187(9) 402-R-188(9) 402-R-189(9) 402-R-190(9) 402-R-207(9) 402-R-208(9) 402-R-209(9) 
 [EVENT] 33.344 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(60.000,60.000,20.000)
+167-S-149(8) 
+[EVENT] 33.380 | event=RequestFragmentSharing | nodeId=149 | cellId=10001 | confidence=0.369 | fragments=8 9 
+149-S-169(8) 
+[EVENT] 33.382 | event=RequestFragmentSharing | nodeId=169 | cellId=10001 | confidence=0.369 | fragments=8 9 
+149-S-128(8) 
+[EVENT] 33.386 | event=RequestFragmentSharing | nodeId=128 | cellId=10001 | confidence=0.369 | fragments=8 9 
+82-S-146(0) 121-S-146(1) 143-S-146(2) 182-S-146(3) 185-S-146(5) 
+[EVENT] 33.388 | event=RequestFragmentSharing | nodeId=146 | cellId=10000 | confidence=0.749 | fragments=0 1 2 3 5 9 
+128-S-129(8) 
+[EVENT] 33.389 | event=RequestFragmentSharing | nodeId=129 | cellId=10001 | confidence=0.369 | fragments=8 9 
+82-S-166(0) 121-S-166(1) 143-S-166(2) 146-S-166(3) 146-S-166(5) 
+[EVENT] 33.389 | event=RequestFragmentSharing | nodeId=166 | cellId=10000 | confidence=0.749 | fragments=0 1 2 3 5 9 
+128-S-147(8) 
+[EVENT] 33.389 | event=RequestFragmentSharing | nodeId=147 | cellId=10001 | confidence=0.369 | fragments=8 9 
+128-S-127(8) 
+[EVENT] 33.389 | event=RequestFragmentSharing | nodeId=127 | cellId=10001 | confidence=0.369 | fragments=8 9 
+127-S-148(8) 
+[EVENT] 33.390 | event=RequestFragmentSharing | nodeId=148 | cellId=10001 | confidence=0.369 | fragments=8 9 
+127-S-170(8) 
+[EVENT] 33.392 | event=RequestFragmentSharing | nodeId=170 | cellId=10001 | confidence=0.369 | fragments=8 9 
 
-[EVENT] 33.905 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=7 | cycle=1 | confidence=0.206 | pixels=17305
+[EVENT] 34.620 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=0 | cycle=2 | confidence=0.206 | pixels=17306
 
-[EVENT] 33.905 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=7 | packetSize=51932 | srcAddr=01:93|dropCount=7|dsts=184,203,222,242,262,283,304
-402-D-184(7) 402-D-203(7) 402-D-222(7) 402-D-242(7) 402-D-262(7) 402-D-283(7) 402-D-304(7) 
-402-R-185(7) 402-R-204(7) 402-R-205(7) 402-R-206(7) 402-R-207(7) 402-R-223(7) 402-R-224(7) 402-R-225(7) 402-R-226(7) 402-R-227(7) 402-R-243(7) 402-R-244(7) 402-R-245(7) 402-R-246(7) 402-R-247(7) 402-R-248(7) 402-R-263(7) 402-R-264(7) 402-R-265(7) 402-R-266(7) 402-R-267(7) 402-R-284(7) 402-R-285(7) 402-R-286(7) 402-R-287(7) 402-R-305(7) 204-S-207(2) 204-S-207(3) 204-S-207(4) 204-S-207(5) 204-S-207(6) 
-[EVENT] 34.305 | event=RequestFragmentSharing | nodeId=207 | cellId=20000 | confidence=0.749 | fragments=2 3 4 5 6 7 
-204-S-226(2) 204-S-226(3) 204-S-226(4) 204-S-226(5) 204-S-226(6) 
-[EVENT] 34.305 | event=RequestFragmentSharing | nodeId=226 | cellId=20000 | confidence=0.749 | fragments=2 3 4 5 6 7 
-204-S-227(2) 204-S-227(3) 204-S-227(4) 204-S-227(5) 204-S-227(6) 
-[EVENT] 34.305 | event=RequestFragmentSharing | nodeId=227 | cellId=20000 | confidence=0.749 | fragments=2 3 4 5 6 7 
-204-S-247(2) 204-S-247(3) 204-S-247(4) 204-S-247(5) 204-S-247(6) 
-[EVENT] 34.305 | event=RequestFragmentSharing | nodeId=247 | cellId=20000 | confidence=0.749 | fragments=2 3 4 5 6 7 
-204-S-248(2) 204-S-248(3) 204-S-248(4) 204-S-248(5) 204-S-248(6) 
-[EVENT] 34.305 | event=RequestFragmentSharing | nodeId=248 | cellId=20000 | confidence=0.749 | fragments=2 3 4 5 6 7 
-204-S-267(2) 204-S-267(3) 204-S-267(4) 204-S-267(5) 204-S-267(6) 
-[EVENT] 34.305 | event=RequestFragmentSharing | nodeId=267 | cellId=20000 | confidence=0.749 | fragments=2 3 4 5 6 7 
-204-S-287(2) 204-S-287(3) 204-S-287(4) 204-S-287(5) 204-S-287(6) 
-[EVENT] 34.305 | event=RequestFragmentSharing | nodeId=287 | cellId=20000 | confidence=0.749 | fragments=2 3 4 5 6 7 
+[EVENT] 34.620 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=0 | packetSize=51935 | srcAddr=01:93|dropCount=12|dsts=145,151,165,171,186,187,188,189,190,207,208,209
+402-D-145(0) 402-D-151(0) 402-D-165(0) 402-D-171(0) 402-D-186(0) 402-D-187(0) 402-D-188(0) 402-D-189(0) 402-D-190(0) 402-D-207(0) 402-D-208(0) 402-D-209(0) 
+402-R-106(0) 402-R-107(0) 402-R-108(0) 402-R-109(0) 402-R-126(0) 402-R-127(0) 402-R-128(0) 402-R-129(0) 402-R-130(0) 402-R-146(0) 402-R-147(0) 402-R-148(0) 402-R-149(0) 402-R-150(0) 402-R-166(0) 402-R-167(0) 402-R-168(0) 402-R-169(0) 402-R-170(0) 127-S-130(8) 127-S-130(9) 
+[EVENT] 35.033 | event=RequestFragmentSharing | nodeId=130 | cellId=10001 | confidence=0.499 | fragments=0 8 9 
+127-S-109(8) 127-S-109(9) 
+[EVENT] 35.045 | event=RequestFragmentSharing | nodeId=109 | cellId=10001 | confidence=0.499 | fragments=0 8 9 
+109-S-107(8) 109-S-107(9) 
+[EVENT] 35.045 | event=RequestFragmentSharing | nodeId=107 | cellId=10001 | confidence=0.499 | fragments=0 8 9 
+107-S-108(8) 107-S-108(9) 
+[EVENT] 35.048 | event=RequestFragmentSharing | nodeId=108 | cellId=10001 | confidence=0.499 | fragments=0 8 9 
+107-S-150(8) 107-S-150(9) 
+[EVENT] 35.051 | event=RequestFragmentSharing | nodeId=150 | cellId=10001 | confidence=0.499 | fragments=0 8 9 
+121-S-106(1) 143-S-106(2) 146-S-106(3) 146-S-106(5) 146-S-106(9) 
+[EVENT] 35.053 | event=RequestFragmentSharing | nodeId=106 | cellId=10000 | confidence=0.749 | fragments=0 1 2 3 5 9 
 
-[EVENT] 34.305 | event=RequestFragmentSharing | nodeId=305 | cellId=29999 | confidence=0.206 | fragments=7 
+[EVENT] 35.906 | event=UAVWaypointArrival | nodeId=402 | cycle=1 | pos=(160.000,120.000,20.000)
 
-[EVENT] 35.508 | event=UAVWaypointArrival | nodeId=402 | cycle=1 | pos=(120.000,240.000,20.000)
+[EVENT] 36.281 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=1 | cycle=2 | confidence=0.206 | pixels=17306
 
-[EVENT] 35.566 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=8 | cycle=1 | confidence=0.206 | pixels=17305
+[EVENT] 36.281 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=1 | packetSize=51935 | srcAddr=01:93|dropCount=11|dsts=67,86,106,126,146,147,166,167,168,188,189
+402-D-67(1) 402-D-86(1) 402-D-106(1) 402-D-126(1) 402-D-146(1) 402-D-147(1) 402-D-166(1) 402-D-167(1) 402-D-168(1) 402-D-188(1) 402-D-189(1) 
+402-R-68(1) 402-R-87(1) 402-R-88(1) 402-R-89(1) 402-R-90(1) 402-R-91(1) 402-R-107(1) 402-R-108(1) 402-R-109(1) 402-R-110(1) 402-R-111(1) 402-R-127(1) 402-R-128(1) 402-R-129(1) 402-R-130(1) 402-R-131(1) 402-R-148(1) 402-R-149(1) 402-R-150(1) 402-R-151(1) 402-R-169(1) 402-R-170(1) 107-S-87(0) 107-S-87(8) 107-S-87(9) 
+[EVENT] 36.702 | event=RequestFragmentSharing | nodeId=87 | cellId=10001 | confidence=0.602 | fragments=0 1 8 9 
+87-S-151(0) 87-S-151(8) 87-S-151(9) 
+[EVENT] 36.704 | event=RequestFragmentSharing | nodeId=151 | cellId=10001 | confidence=0.602 | fragments=0 1 8 9 
 
-[EVENT] 35.566 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=8 | packetSize=51932 | srcAddr=01:93|dropCount=12|dsts=185,186,204,223,224,243,244,263,264,284,305,306
-402-D-185(8) 402-D-186(8) 402-D-204(8) 402-D-223(8) 402-D-224(8) 402-D-243(8) 402-D-244(8) 402-D-263(8) 402-D-264(8) 402-D-284(8) 402-D-305(8) 402-D-306(8) 
-402-R-187(8) 402-R-205(8) 402-R-206(8) 402-R-207(8) 402-R-225(8) 402-R-226(8) 402-R-227(8) 402-R-228(8) 402-R-229(8) 402-R-245(8) 402-R-246(8) 402-R-247(8) 402-R-248(8) 402-R-265(8) 402-R-266(8) 402-R-267(8) 402-R-268(8) 402-R-269(8) 402-R-285(8) 402-R-286(8) 
-[EVENT] 35.566 | event=UAV2MissionComplete | triggerNodeId=287 | confidence=0.800
-402-R-287(8) 402-R-307(8) 204-S-187(2) 204-S-187(3) 204-S-187(4) 204-S-187(5) 204-S-187(6) 204-S-187(7) 
-[EVENT] 35.966 | event=RequestFragmentSharing | nodeId=187 | cellId=20000 | confidence=0.800 | fragments=2 3 4 5 6 7 8 
-187-S-228(2) 187-S-228(3) 187-S-228(4) 187-S-228(5) 187-S-228(6) 187-S-228(7) 
-[EVENT] 35.966 | event=RequestFragmentSharing | nodeId=228 | cellId=20000 | confidence=0.800 | fragments=2 3 4 5 6 7 8 
-187-S-229(2) 187-S-229(3) 187-S-229(4) 187-S-229(5) 187-S-229(6) 187-S-229(7) 
-[EVENT] 35.966 | event=RequestFragmentSharing | nodeId=229 | cellId=20000 | confidence=0.800 | fragments=2 3 4 5 6 7 8 
-187-S-268(2) 187-S-268(3) 187-S-268(4) 187-S-268(5) 187-S-268(6) 187-S-268(7) 
-[EVENT] 35.966 | event=RequestFragmentSharing | nodeId=268 | cellId=20000 | confidence=0.800 | fragments=2 3 4 5 6 7 8 
-187-S-269(2) 187-S-269(3) 187-S-269(4) 187-S-269(5) 187-S-269(6) 187-S-269(7) 
-[EVENT] 35.966 | event=RequestFragmentSharing | nodeId=269 | cellId=20000 | confidence=0.800 | fragments=2 3 4 5 6 7 8 
-187-S-307(2) 187-S-307(3) 187-S-307(4) 187-S-307(5) 187-S-307(6) 187-S-307(7) 
-[EVENT] 35.966 | event=RequestFragmentSharing | nodeId=307 | cellId=20000 | confidence=0.800 | fragments=2 3 4 5 6 7 8 
+[EVENT] 36.708 | event=RequestFragmentSharing | nodeId=68 | cellId=1 | confidence=0.206 | fragments=1 
+87-S-90(0) 87-S-90(8) 87-S-90(9) 
+[EVENT] 36.709 | event=RequestFragmentSharing | nodeId=90 | cellId=10001 | confidence=0.602 | fragments=0 1 8 9 
+87-S-110(0) 87-S-110(8) 87-S-110(9) 
+[EVENT] 36.710 | event=RequestFragmentSharing | nodeId=110 | cellId=10001 | confidence=0.602 | fragments=0 1 8 9 
+87-S-88(0) 87-S-88(8) 87-S-88(9) 
+[EVENT] 36.712 | event=RequestFragmentSharing | nodeId=88 | cellId=10001 | confidence=0.602 | fragments=0 1 8 9 
+87-S-111(0) 87-S-111(8) 87-S-111(9) 
+[EVENT] 36.712 | event=RequestFragmentSharing | nodeId=111 | cellId=10001 | confidence=0.602 | fragments=0 1 8 9 
+87-S-89(0) 87-S-89(8) 87-S-89(9) 
+[EVENT] 36.713 | event=RequestFragmentSharing | nodeId=89 | cellId=10001 | confidence=0.602 | fragments=0 1 8 9 
+87-S-131(0) 87-S-131(8) 87-S-131(9) 
+[EVENT] 36.714 | event=RequestFragmentSharing | nodeId=131 | cellId=10001 | confidence=0.602 | fragments=0 1 8 9 
+87-S-91(0) 87-S-91(8) 87-S-91(9) 
+[EVENT] 36.716 | event=RequestFragmentSharing | nodeId=91 | cellId=10001 | confidence=0.602 | fragments=0 1 8 9 
 
-[EVENT] 38.175 | event=UAVWaypointArrival | nodeId=402 | cycle=1 | pos=(160.000,240.000,20.000)
+[EVENT] 37.942 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=2 | cycle=2 | confidence=0.206 | pixels=17306
 
-[EVENT] 42.175 | event=UAVWaypointArrival | nodeId=402 | cycle=1 | pos=(160.000,180.000,20.000)
+[EVENT] 37.942 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=2 | packetSize=51935 | srcAddr=01:93|dropCount=13|dsts=49,68,87,88,107,108,127,128,148,149,169,170,171
+402-D-49(2) 402-D-68(2) 402-D-87(2) 402-D-88(2) 402-D-107(2) 402-D-108(2) 402-D-127(2) 402-D-128(2) 402-D-148(2) 402-D-149(2) 402-D-169(2) 402-D-170(2) 402-D-171(2) 
+402-R-50(2) 402-R-69(2) 402-R-70(2) 402-R-71(2) 402-R-89(2) 402-R-90(2) 402-R-91(2) 402-R-92(2) 402-R-109(2) 402-R-110(2) 402-R-111(2) 402-R-112(2) 402-R-113(2) 402-R-129(2) 402-R-130(2) 402-R-131(2) 402-R-132(2) 402-R-151(2) 
+[EVENT] 38.142 | event=UAVWaypointArrival | nodeId=402 | cycle=1 | pos=(200.000,100.000,20.000)
+87-S-92(0) 87-S-92(1) 87-S-92(8) 87-S-92(9) 
+[EVENT] 38.363 | event=RequestFragmentSharing | nodeId=92 | cellId=10001 | confidence=0.684 | fragments=0 1 2 8 9 
+87-S-71(0) 87-S-71(1) 87-S-71(8) 87-S-71(9) 
+[EVENT] 38.367 | event=RequestFragmentSharing | nodeId=71 | cellId=10001 | confidence=0.684 | fragments=0 1 2 8 9 
+71-S-69(0) 71-S-69(1) 71-S-69(8) 71-S-69(9) 
+[EVENT] 38.367 | event=RequestFragmentSharing | nodeId=69 | cellId=10001 | confidence=0.684 | fragments=0 1 2 8 9 
+68-S-50(1) 
+[EVENT] 38.369 | event=RequestFragmentSharing | nodeId=50 | cellId=1 | confidence=0.369 | fragments=1 2 
+69-S-132(0) 69-S-132(1) 69-S-132(8) 69-S-132(9) 
+[EVENT] 38.371 | event=RequestFragmentSharing | nodeId=132 | cellId=10001 | confidence=0.684 | fragments=0 1 2 8 9 
+69-S-112(0) 69-S-112(1) 69-S-112(8) 69-S-112(9) 
+[EVENT] 38.373 | event=RequestFragmentSharing | nodeId=112 | cellId=10001 | confidence=0.684 | fragments=0 1 2 8 9 
+69-S-113(0) 69-S-113(1) 69-S-113(8) 69-S-113(9) 
+[EVENT] 38.375 | event=RequestFragmentSharing | nodeId=113 | cellId=10001 | confidence=0.684 | fragments=0 1 2 8 9 
+69-S-70(0) 69-S-70(1) 69-S-70(8) 69-S-70(9) 
+[EVENT] 38.376 | event=RequestFragmentSharing | nodeId=70 | cellId=10001 | confidence=0.684 | fragments=0 1 2 8 9 
 
-[EVENT] 46.175 | event=UAVWaypointArrival | nodeId=402 | cycle=1 | pos=(160.000,120.000,20.000)
+[EVENT] 39.142 | event=UAVWaypointArrival | nodeId=402 | cycle=1 | pos=(220.000,100.000,20.000)
 
-[EVENT] 49.156 | event=UAVWaypointArrival | nodeId=402 | cycle=1 | pos=(200.000,100.000,20.000)
+[EVENT] 39.604 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=3 | cycle=2 | confidence=0.206 | pixels=17306
 
-[EVENT] 50.490 | event=UAVWaypointArrival | nodeId=402 | cycle=1 | pos=(220.000,100.000,20.000)
+[EVENT] 39.604 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=3 | packetSize=51935 | srcAddr=01:93|dropCount=11|dsts=69,70,71,72,73,89,90,92,93,108,114
+402-D-69(3) 402-D-70(3) 402-D-71(3) 402-D-72(3) 402-D-73(3) 402-D-89(3) 402-D-90(3) 402-D-92(3) 402-D-93(3) 402-D-108(3) 402-D-114(3) 
+402-R-91(3) 402-R-109(3) 402-R-110(3) 402-R-111(3) 402-R-112(3) 402-R-113(3) 402-R-129(3) 402-R-130(3) 402-R-131(3) 402-R-132(3) 402-R-133(3) 402-R-149(3) 402-R-150(3) 402-R-151(3) 402-R-152(3) 402-R-153(3) 402-R-170(3) 402-R-171(3) 69-S-133(0) 69-S-133(1) 69-S-133(2) 69-S-133(8) 69-S-133(9) 
+[EVENT] 40.024 | event=RequestFragmentSharing | nodeId=133 | cellId=10001 | confidence=0.749 | fragments=0 1 2 3 8 9 
+69-S-152(0) 69-S-152(1) 69-S-152(2) 69-S-152(8) 69-S-152(9) 
+[EVENT] 40.031 | event=RequestFragmentSharing | nodeId=152 | cellId=10001 | confidence=0.749 | fragments=0 1 2 3 8 9 
+69-S-171(0) 69-S-171(1) 69-S-171(2) 69-S-171(8) 69-S-171(9) 
+[EVENT] 40.032 | event=RequestFragmentSharing | nodeId=171 | cellId=10001 | confidence=0.749 | fragments=0 1 2 3 8 9 
+69-S-153(0) 69-S-153(1) 69-S-153(2) 69-S-153(8) 69-S-153(9) 
+[EVENT] 40.033 | event=RequestFragmentSharing | nodeId=153 | cellId=10001 | confidence=0.749 | fragments=0 1 2 3 8 9 
 
+[EVENT] 41.142 | event=UAVWaypointArrival | nodeId=402 | cycle=1 | pos=(220.000,140.000,20.000)
+
+[EVENT] 41.265 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=4 | cycle=2 | confidence=0.206 | pixels=17306
+
+[EVENT] 41.265 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=4 | packetSize=51935 | srcAddr=01:93|dropCount=11|dsts=90,91,111,112,113,133,153,154,173,193,212
+402-D-90(4) 402-D-91(4) 402-D-111(4) 402-D-112(4) 402-D-113(4) 402-D-133(4) 402-D-153(4) 402-D-154(4) 402-D-173(4) 402-D-193(4) 402-D-212(4) 
+402-R-109(4) 402-R-110(4) 402-R-129(4) 402-R-130(4) 402-R-131(4) 402-R-132(4) 402-R-149(4) 402-R-150(4) 402-R-151(4) 402-R-152(4) 402-R-168(4) 402-R-169(4) 402-R-170(4) 402-R-171(4) 402-R-172(4) 402-R-190(4) 402-R-191(4) 402-R-192(4) 402-R-211(4) 69-S-172(0) 69-S-172(1) 69-S-172(2) 69-S-172(8) 69-S-172(9) 91-S-172(3) 
+[EVENT] 41.690 | event=RequestFragmentSharing | nodeId=172 | cellId=10001 | confidence=0.800 | fragments=0 1 2 3 4 8 9 
+69-S-192(0) 69-S-192(1) 69-S-192(2) 69-S-192(8) 69-S-192(9) 91-S-192(3) 
+[EVENT] 41.691 | event=RequestFragmentSharing | nodeId=192 | cellId=10001 | confidence=0.800 | fragments=0 1 2 3 4 8 9 
+69-S-191(0) 69-S-191(1) 69-S-191(2) 69-S-191(8) 69-S-191(9) 91-S-191(3) 
+[EVENT] 41.693 | event=RequestFragmentSharing | nodeId=191 | cellId=10001 | confidence=0.800 | fragments=0 1 2 3 4 8 9 
+
+[EVENT] 41.698 | event=RequestFragmentSharing | nodeId=211 | cellId=20001 | confidence=0.206 | fragments=4 
+
+[EVENT] 42.927 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=5 | cycle=2 | confidence=0.206 | pixels=17306
+
+[EVENT] 42.927 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=5 | packetSize=51935 | srcAddr=01:93|dropCount=9|dsts=109,110,130,131,132,151,152,172,192
+402-D-109(5) 402-D-110(5) 402-D-130(5) 402-D-131(5) 402-D-132(5) 402-D-151(5) 402-D-152(5) 402-D-172(5) 402-D-192(5) 
+402-R-128(5) 402-R-129(5) 402-R-147(5) 402-R-148(5) 402-R-149(5) 402-R-150(5) 402-R-167(5) 402-R-168(5) 402-R-169(5) 402-R-170(5) 402-R-171(5) 402-R-187(5) 402-R-188(5) 402-R-189(5) 402-R-190(5) 402-R-208(5) 402-R-209(5) 402-R-210(5) 402-R-211(5) 402-R-230(5) 
+[EVENT] 44.588 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=6 | cycle=2 | confidence=0.206 | pixels=17305
+
+[EVENT] 44.588 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=6 | packetSize=51932 | srcAddr=01:93|dropCount=12|dsts=127,128,129,149,150,170,171,190,191,210,211,230
+402-D-127(6) 402-D-128(6) 402-D-129(6) 402-D-149(6) 402-D-150(6) 402-D-170(6) 402-D-171(6) 402-D-190(6) 402-D-191(6) 402-D-210(6) 402-D-211(6) 402-D-230(6) 
+402-R-146(6) 402-R-147(6) 402-R-148(6) 402-R-165(6) 402-R-166(6) 402-R-167(6) 402-R-168(6) 402-R-169(6) 402-R-185(6) 402-R-186(6) 402-R-187(6) 402-R-188(6) 402-R-189(6) 402-R-206(6) 402-R-208(6) 402-R-209(6) 402-R-226(6) 402-R-227(6) 402-R-228(6) 402-R-229(6) 
+[EVENT] 46.249 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=7 | cycle=2 | confidence=0.206 | pixels=17305
+
+[EVENT] 46.249 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=7 | packetSize=51932 | srcAddr=01:93|dropCount=9|dsts=145,146,147,148,168,169,189,209,229
+402-D-145(7) 402-D-146(7) 402-D-147(7) 402-D-148(7) 402-D-168(7) 402-D-169(7) 402-D-189(7) 402-D-209(7) 402-D-229(7) 
+402-R-164(7) 402-R-165(7) 402-R-166(7) 402-R-167(7) 402-R-184(7) 402-R-185(7) 402-R-186(7) 402-R-187(7) 402-R-188(7) 402-R-204(7) 402-R-205(7) 402-R-206(7) 402-R-207(7) 402-R-208(7) 402-R-225(7) 402-R-226(7) 402-R-227(7) 402-R-228(7) 402-R-245(7) 402-R-246(7) 402-R-247(7) 402-R-248(7) 
+[EVENT] 47.910 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=8 | cycle=2 | confidence=0.206 | pixels=17305
+
+[EVENT] 47.910 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=8 | packetSize=51932 | srcAddr=01:93|dropCount=13|dsts=164,165,166,167,187,188,207,208,227,228,247,248,267
+402-D-164(8) 402-D-165(8) 402-D-166(8) 402-D-167(8) 402-D-187(8) 402-D-188(8) 402-D-207(8) 402-D-208(8) 402-D-227(8) 402-D-228(8) 402-D-247(8) 402-D-248(8) 402-D-267(8) 
+402-R-183(8) 402-R-184(8) 402-R-185(8) 402-R-186(8) 402-R-203(8) 402-R-204(8) 402-R-205(8) 402-R-206(8) 402-R-223(8) 402-R-224(8) 402-R-225(8) 402-R-226(8) 402-R-243(8) 402-R-244(8) 402-R-245(8) 402-R-246(8) 402-R-265(8) 402-R-266(8) 
+[EVENT] 49.572 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=9 | cycle=2 | confidence=0.206 | pixels=17305
+
+[EVENT] 49.572 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=9 | packetSize=51932 | srcAddr=01:93|dropCount=9|dsts=183,184,185,186,205,206,226,246,266
+402-D-183(9) 402-D-184(9) 402-D-185(9) 402-D-186(9) 402-D-205(9) 402-D-206(9) 402-D-226(9) 402-D-246(9) 402-D-266(9) 
+402-R-201(9) 402-R-202(9) 402-R-203(9) 402-R-204(9) 402-R-222(9) 402-R-223(9) 402-R-224(9) 402-R-225(9) 402-R-242(9) 402-R-243(9) 402-R-244(9) 402-R-245(9) 402-R-262(9) 402-R-263(9) 402-R-264(9) 402-R-265(9) 402-R-282(9) 402-R-284(9) 402-R-285(9) 
 [EVENT] 50.957 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(80.000,60.000,20.000)
 
-[EVENT] 53.156 | event=UAVWaypointArrival | nodeId=402 | cycle=1 | pos=(220.000,140.000,20.000)
+[EVENT] 51.233 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=0 | cycle=3 | confidence=0.206 | pixels=17306
 
+[EVENT] 51.233 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=0 | packetSize=51935 | srcAddr=01:93|dropCount=9|dsts=182,203,204,224,225,244,245,265,285
+402-D-182(0) 402-D-203(0) 402-D-204(0) 402-D-224(0) 402-D-225(0) 402-D-244(0) 402-D-245(0) 402-D-265(0) 402-D-285(0) 
+402-R-200(0) 402-R-201(0) 402-R-202(0) 402-R-220(0) 402-R-221(0) 402-R-222(0) 402-R-223(0) 402-R-240(0) 402-R-241(0) 402-R-242(0) 402-R-243(0) 402-R-260(0) 402-R-261(0) 402-R-262(0) 402-R-263(0) 402-R-264(0) 402-R-281(0) 402-R-282(0) 402-R-283(0) 402-R-284(0) 402-R-301(0) 402-R-302(0) 402-R-303(0) 180-S-240(1) 180-S-240(2) 201-S-240(3) 201-S-240(9) 203-S-240(8) 221-S-240(4) 223-S-240(5) 
+[EVENT] 51.641 | event=RequestFragmentSharing | nodeId=240 | cellId=19999 | confidence=0.842 | fragments=0 1 2 3 4 5 8 9 
+305-S-302(5) 
+[EVENT] 51.655 | event=RequestFragmentSharing | nodeId=302 | cellId=29999 | confidence=0.369 | fragments=0 5 
+302-S-303(5) 
+[EVENT] 51.655 | event=RequestFragmentSharing | nodeId=303 | cellId=29999 | confidence=0.369 | fragments=0 5 
+180-S-260(1) 180-S-260(2) 201-S-260(3) 201-S-260(9) 203-S-260(8) 221-S-260(4) 223-S-260(5) 
+[EVENT] 51.656 | event=RequestFragmentSharing | nodeId=260 | cellId=19999 | confidence=0.842 | fragments=0 1 2 3 4 5 8 9 
+180-S-200(1) 180-S-200(2) 201-S-200(3) 201-S-200(9) 203-S-200(8) 221-S-200(4) 223-S-200(5) 
+[EVENT] 51.657 | event=RequestFragmentSharing | nodeId=200 | cellId=19999 | confidence=0.842 | fragments=0 1 2 3 4 5 8 9 
+180-S-220(1) 180-S-220(2) 200-S-220(3) 200-S-220(4) 200-S-220(5) 200-S-220(8) 200-S-220(9) 
+[EVENT] 51.664 | event=RequestFragmentSharing | nodeId=220 | cellId=19999 | confidence=0.842 | fragments=0 1 2 3 4 5 8 9 
+180-S-301(1) 180-S-301(2) 200-S-301(3) 200-S-301(4) 200-S-301(5) 200-S-301(8) 200-S-301(9) 
+[EVENT] 51.668 | event=RequestFragmentSharing | nodeId=301 | cellId=19999 | confidence=0.842 | fragments=0 1 2 3 4 5 8 9 
+
+[EVENT] 52.804 | event=UAVWaypointArrival | nodeId=402 | cycle=1 | pos=(20.000,260.000,20.000)
+
+[EVENT] 52.894 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=1 | cycle=3 | confidence=0.206 | pixels=17306
+
+[EVENT] 52.894 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=1 | packetSize=51935 | srcAddr=01:93|dropCount=8|dsts=264,283,284,300,301,302,303,321
+402-D-264(1) 402-D-283(1) 402-D-284(1) 402-D-300(1) 402-D-301(1) 402-D-302(1) 402-D-303(1) 402-D-321(1) 
+402-R-202(1) 402-R-220(1) 402-R-221(1) 402-R-222(1) 402-R-223(1) 402-R-240(1) 402-R-241(1) 402-R-242(1) 402-R-243(1) 402-R-244(1) 402-R-260(1) 402-R-261(1) 402-R-262(1) 402-R-263(1) 402-R-280(1) 402-R-281(1) 402-R-282(1) 180-S-280(2) 200-S-280(0) 200-S-280(3) 200-S-280(4) 200-S-280(5) 200-S-280(8) 200-S-280(9) 
+[EVENT] 53.325 | event=RequestFragmentSharing | nodeId=280 | cellId=19999 | confidence=0.842 | fragments=0 1 2 3 4 5 8 9 
+
+[EVENT] 54.556 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=2 | cycle=3 | confidence=0.206 | pixels=17306
+
+[EVENT] 54.556 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=2 | packetSize=51935 | srcAddr=01:93|dropCount=9|dsts=224,244,260,261,262,263,280,281,282
+402-D-224(2) 402-D-244(2) 402-D-260(2) 402-D-261(2) 402-D-262(2) 402-D-263(2) 402-D-280(2) 402-D-281(2) 402-D-282(2) 
+402-R-180(2) 402-R-181(2) 402-R-182(2) 402-R-200(2) 402-R-201(2) 402-R-202(2) 402-R-203(2) 402-R-220(2) 402-R-221(2) 402-R-222(2) 402-R-223(2) 402-R-240(2) 402-R-241(2) 402-R-242(2) 402-R-243(2) 
+[EVENT] 54.804 | event=UAVWaypointArrival | nodeId=402 | cycle=1 | pos=(20.000,220.000,20.000)
+
+[EVENT] 56.217 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=3 | cycle=3 | confidence=0.206 | pixels=17306
+
+[EVENT] 56.217 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=3 | packetSize=51935 | srcAddr=01:93|dropCount=8|dsts=181,182,200,201,220,240,260,281
+402-D-181(3) 402-D-182(3) 402-D-200(3) 402-D-201(3) 402-D-220(3) 402-D-240(3) 402-D-260(3) 402-D-281(3) 
+402-R-183(3) 402-R-202(3) 402-R-203(3) 402-R-204(3) 402-R-221(3) 402-R-222(3) 402-R-223(3) 402-R-224(3) 402-R-225(3) 402-R-241(3) 402-R-242(3) 402-R-243(3) 402-R-244(3) 402-R-245(3) 402-R-261(3) 402-R-262(3) 402-R-263(3) 402-R-264(3) 402-R-282(3) 402-R-283(3) 402-R-284(3) 
+[EVENT] 57.879 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=4 | cycle=3 | confidence=0.206 | pixels=17306
+
+[EVENT] 57.879 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=4 | packetSize=51935 | srcAddr=01:93|dropCount=13|dsts=183,184,185,202,203,221,222,241,242,261,262,282,303
+402-D-183(4) 402-D-184(4) 402-D-185(4) 402-D-202(4) 402-D-203(4) 402-D-221(4) 402-D-222(4) 402-D-241(4) 402-D-242(4) 402-D-261(4) 402-D-262(4) 402-D-282(4) 402-D-303(4) 
+402-R-204(4) 402-R-205(4) 402-R-206(4) 402-R-223(4) 402-R-224(4) 402-R-225(4) 402-R-226(4) 402-R-243(4) 402-R-244(4) 402-R-245(4) 402-R-246(4) 402-R-247(4) 402-R-263(4) 402-R-264(4) 402-R-265(4) 402-R-266(4) 402-R-283(4) 402-R-284(4) 402-R-285(4) 402-R-305(4) 
+[EVENT] 59.540 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=5 | cycle=3 | confidence=0.206 | pixels=17306
+
+[EVENT] 59.540 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=5 | packetSize=51935 | srcAddr=01:93|dropCount=8|dsts=204,205,223,224,243,263,283,304
+402-D-204(5) 402-D-205(5) 402-D-223(5) 402-D-224(5) 402-D-243(5) 402-D-263(5) 402-D-283(5) 402-D-304(5) 
+402-R-206(5) 402-R-207(5) 402-R-225(5) 402-R-226(5) 402-R-227(5) 402-R-228(5) 402-R-244(5) 402-R-245(5) 402-R-246(5) 402-R-247(5) 402-R-248(5) 402-R-264(5) 402-R-265(5) 402-R-266(5) 402-R-267(5) 402-R-268(5) 402-R-284(5) 402-R-285(5) 402-R-286(5) 402-R-287(5) 402-R-305(5) 402-R-306(5) 186-S-306(2) 186-S-306(3) 186-S-306(4) 186-S-306(6) 186-S-306(7) 186-S-306(8) 186-S-306(9) 244-S-306(1) 264-S-306(0) 
+[EVENT] 59.971 | event=RequestFragmentSharing | nodeId=306 | cellId=20000 | confidence=0.900 | fragments=0 1 2 3 4 5 6 7 8 9 
+
+[EVENT] 61.201 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=6 | cycle=3 | confidence=0.206 | pixels=17305
+
+[EVENT] 61.201 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=6 | packetSize=51932 | srcAddr=01:93|dropCount=13|dsts=206,207,208,225,226,244,245,264,265,284,285,305,326
+402-D-206(6) 402-D-207(6) 402-D-208(6) 402-D-225(6) 402-D-226(6) 402-D-244(6) 402-D-245(6) 402-D-264(6) 402-D-265(6) 402-D-284(6) 402-D-285(6) 402-D-305(6) 402-D-326(6) 
+402-R-227(6) 402-R-228(6) 402-R-246(6) 402-R-247(6) 402-R-248(6) 402-R-249(6) 402-R-250(6) 402-R-266(6) 402-R-267(6) 402-R-268(6) 402-R-269(6) 402-R-286(6) 402-R-287(6) 402-R-288(6) 402-R-289(6) 402-R-306(6) 402-R-307(6) 402-R-308(6) 402-R-309(6) 402-R-327(6) 402-R-328(6) 
+[EVENT] 61.621 | event=RequestFragmentSharing | nodeId=328 | cellId=30000 | confidence=0.206 | fragments=6 
+186-S-307(2) 186-S-307(3) 186-S-307(4) 186-S-307(5) 186-S-307(7) 186-S-307(8) 186-S-307(9) 244-S-307(1) 264-S-307(0) 
+[EVENT] 61.628 | event=RequestFragmentSharing | nodeId=307 | cellId=20000 | confidence=0.900 | fragments=0 1 2 3 4 5 6 7 8 9 
+
+[EVENT] 61.629 | event=RequestFragmentSharing | nodeId=327 | cellId=30000 | confidence=0.206 | fragments=6 
+186-S-269(2) 186-S-269(3) 186-S-269(4) 186-S-269(5) 186-S-269(7) 186-S-269(8) 186-S-269(9) 244-S-269(1) 264-S-269(0) 
+[EVENT] 61.632 | event=RequestFragmentSharing | nodeId=269 | cellId=20000 | confidence=0.900 | fragments=0 1 2 3 4 5 6 7 8 9 
+
+[EVENT] 61.633 | event=RequestFragmentSharing | nodeId=309 | cellId=30000 | confidence=0.206 | fragments=6 
+186-S-308(2) 186-S-308(3) 186-S-308(4) 186-S-308(5) 186-S-308(7) 186-S-308(8) 186-S-308(9) 244-S-308(1) 264-S-308(0) 
+[EVENT] 61.636 | event=RequestFragmentSharing | nodeId=308 | cellId=20000 | confidence=0.900 | fragments=0 1 2 3 4 5 6 7 8 9 
+
+[EVENT] 61.978 | event=UAVWaypointArrival | nodeId=402 | cycle=1 | pos=(155.789,266.316,20.000)
+
+[EVENT] 62.863 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=7 | cycle=3 | confidence=0.206 | pixels=17305
+
+[EVENT] 62.863 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=7 | packetSize=51932 | srcAddr=01:93|dropCount=10|dsts=270,285,286,288,289,290,306,307,308,309
+402-D-270(7) 402-D-285(7) 402-D-286(7) 402-D-288(7) 402-D-289(7) 402-D-290(7) 402-D-306(7) 402-D-307(7) 402-D-308(7) 402-D-309(7) 
+402-R-207(7) 402-R-208(7) 402-R-209(7) 402-R-226(7) 402-R-227(7) 402-R-228(7) 402-R-229(7) 402-R-230(7) 402-R-245(7) 402-R-246(7) 402-R-247(7) 402-R-248(7) 402-R-249(7) 402-R-250(7) 402-R-265(7) 402-R-266(7) 402-R-267(7) 402-R-268(7) 402-R-269(7) 402-R-287(7) 
+[EVENT] 64.524 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=8 | cycle=3 | confidence=0.206 | pixels=17305
+
+[EVENT] 64.524 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=8 | packetSize=51932 | srcAddr=01:93|dropCount=10|dsts=230,245,249,250,265,266,267,268,269,287
+402-D-230(8) 402-D-245(8) 402-D-249(8) 402-D-250(8) 402-D-265(8) 402-D-266(8) 402-D-267(8) 402-D-268(8) 402-D-269(8) 402-D-287(8) 
+402-R-166(8) 402-R-167(8) 402-R-186(8) 402-R-187(8) 402-R-188(8) 402-R-189(8) 402-R-205(8) 402-R-206(8) 402-R-207(8) 402-R-208(8) 402-R-209(8) 402-R-225(8) 402-R-226(8) 402-R-227(8) 402-R-228(8) 402-R-229(8) 402-R-246(8) 402-R-247(8) 402-R-248(8) 
+[EVENT] 66.185 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=9 | cycle=3 | confidence=0.206 | pixels=17305
+
+[EVENT] 66.185 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=9 | packetSize=51932 | srcAddr=01:93|dropCount=12|dsts=190,204,209,210,225,226,227,228,229,246,247,248
+402-D-190(9) 402-D-204(9) 402-D-209(9) 402-D-210(9) 402-D-225(9) 402-D-226(9) 402-D-227(9) 402-D-228(9) 402-D-229(9) 402-D-246(9) 402-D-247(9) 402-D-248(9) 
+402-R-145(9) 402-R-146(9) 402-R-147(9) 402-R-148(9) 402-R-149(9) 402-R-164(9) 402-R-165(9) 402-R-166(9) 402-R-167(9) 402-R-168(9) 402-R-169(9) 402-R-185(9) 402-R-186(9) 402-R-187(9) 402-R-188(9) 402-R-205(9) 402-R-206(9) 402-R-207(9) 402-R-208(9) 
+[EVENT] 67.846 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=0 | cycle=4 | confidence=0.206 | pixels=17306
+
+[EVENT] 67.846 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=0 | packetSize=51935 | srcAddr=01:93|dropCount=9|dsts=169,184,185,188,189,205,206,207,208
+402-D-169(0) 402-D-184(0) 402-D-185(0) 402-D-188(0) 402-D-189(0) 402-D-205(0) 402-D-206(0) 402-D-207(0) 402-D-208(0) 
+402-R-106(0) 402-R-107(0) 402-R-108(0) 402-R-124(0) 402-R-125(0) 402-R-126(0) 402-R-127(0) 402-R-128(0) 402-R-144(0) 402-R-145(0) 402-R-146(0) 402-R-147(0) 402-R-148(0) 402-R-149(0) 402-R-164(0) 402-R-165(0) 402-R-166(0) 402-R-167(0) 402-R-168(0) 402-R-186(0) 402-R-187(0) 
 [EVENT] 68.570 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(100.000,60.000,20.000)
 
-[EVENT] 68.706 | event=UAVWaypointArrival | nodeId=402 | cycle=1 | pos=(20.000,260.000,20.000)
+[EVENT] 69.508 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=1 | cycle=4 | confidence=0.206 | pixels=17306
 
-[EVENT] 71.372 | event=UAVWaypointArrival | nodeId=402 | cycle=1 | pos=(20.000,220.000,20.000)
+[EVENT] 69.508 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=1 | packetSize=51935 | srcAddr=01:93|dropCount=12|dsts=123,129,144,148,149,164,165,166,167,168,186,187
+402-D-123(1) 402-D-129(1) 402-D-144(1) 402-D-148(1) 402-D-149(1) 402-D-164(1) 402-D-165(1) 402-D-166(1) 402-D-167(1) 402-D-168(1) 402-D-186(1) 402-D-187(1) 
+402-R-84(1) 402-R-85(1) 402-R-86(1) 402-R-87(1) 402-R-88(1) 402-R-104(1) 402-R-105(1) 402-R-106(1) 402-R-107(1) 402-R-109(1) 402-R-124(1) 402-R-125(1) 402-R-126(1) 402-R-127(1) 402-R-128(1) 402-R-145(1) 402-R-146(1) 402-R-147(1) 82-S-86(0) 106-S-86(2) 106-S-86(3) 106-S-86(5) 106-S-86(9) 146-S-86(6) 164-S-86(7) 166-S-86(8) 
+[EVENT] 69.928 | event=RequestFragmentSharing | nodeId=86 | cellId=10000 | confidence=0.874 | fragments=0 1 2 3 5 6 7 8 9 
+82-S-85(0) 86-S-85(2) 86-S-85(3) 86-S-85(5) 86-S-85(6) 86-S-85(7) 86-S-85(8) 86-S-85(9) 
+[EVENT] 69.932 | event=RequestFragmentSharing | nodeId=85 | cellId=10000 | confidence=0.874 | fragments=0 1 2 3 5 6 7 8 9 
 
-[EVENT] 80.937 | event=UAVWaypointArrival | nodeId=402 | cycle=1 | pos=(155.789,266.316,20.000)
+[EVENT] 70.484 | event=UAVWaypointArrival | nodeId=402 | cycle=1 | pos=(120.000,100.000,20.000)
 
+[EVENT] 71.169 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=2 | cycle=4 | confidence=0.206 | pixels=17306
+
+[EVENT] 71.169 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=2 | packetSize=51935 | srcAddr=01:93|dropCount=12|dsts=45,46,67,87,88,107,108,127,128,147,165,166
+402-D-45(2) 402-D-46(2) 402-D-67(2) 402-D-87(2) 402-D-88(2) 402-D-107(2) 402-D-108(2) 402-D-127(2) 402-D-128(2) 402-D-147(2) 402-D-165(2) 402-D-166(2) 
+402-R-64(2) 402-R-65(2) 402-R-66(2) 402-R-83(2) 402-R-84(2) 402-R-85(2) 402-R-86(2) 402-R-103(2) 402-R-104(2) 402-R-105(2) 402-R-106(2) 402-R-123(2) 402-R-124(2) 402-R-125(2) 402-R-126(2) 402-R-144(2) 402-R-145(2) 402-R-146(2) 50-S-66(1) 
+[EVENT] 71.590 | event=RequestFragmentSharing | nodeId=66 | cellId=1 | confidence=0.369 | fragments=1 2 
+82-S-64(0) 84-S-64(1) 85-S-64(3) 85-S-64(5) 85-S-64(6) 85-S-64(7) 85-S-64(8) 85-S-64(9) 
+[EVENT] 71.599 | event=RequestFragmentSharing | nodeId=64 | cellId=10000 | confidence=0.874 | fragments=0 1 2 3 5 6 7 8 9 
+64-S-65(0) 64-S-65(1) 64-S-65(3) 64-S-65(5) 64-S-65(6) 64-S-65(7) 64-S-65(8) 64-S-65(9) 
+[EVENT] 71.603 | event=RequestFragmentSharing | nodeId=65 | cellId=10000 | confidence=0.874 | fragments=0 1 2 3 5 6 7 8 9 
+
+[EVENT] 72.831 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=3 | cycle=4 | confidence=0.206 | pixels=17306
+
+[EVENT] 72.831 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=3 | packetSize=51935 | srcAddr=01:93|dropCount=10|dsts=44,65,66,86,106,126,145,146,164,401
+402-D-44(3) 402-D-65(3) 402-D-66(3) 402-D-86(3) 402-D-106(3) 402-D-126(3) 402-D-145(3) 402-D-146(3) 402-D-164(3) 402-D-401(3) 
+402-R-62(3) 402-R-63(3) 402-R-64(3) 402-R-82(3) 402-R-83(3) 402-R-84(3) 402-R-85(3) 402-R-101(3) 402-R-102(3) 402-R-103(3) 402-R-104(3) 402-R-105(3) 402-R-122(3) 402-R-123(3) 402-R-124(3) 402-R-125(3) 402-R-142(3) 402-R-143(3) 402-R-144(3) 64-S-63(0) 64-S-63(1) 64-S-63(2) 64-S-63(5) 64-S-63(6) 64-S-63(7) 64-S-63(8) 64-S-63(9) 
+[EVENT] 73.251 | event=RequestFragmentSharing | nodeId=63 | cellId=10000 | confidence=0.874 | fragments=0 1 2 3 5 6 7 8 9 
+63-S-62(0) 63-S-62(1) 63-S-62(2) 63-S-62(5) 63-S-62(6) 63-S-62(7) 63-S-62(8) 63-S-62(9) 
+[EVENT] 73.255 | event=RequestFragmentSharing | nodeId=62 | cellId=10000 | confidence=0.874 | fragments=0 1 2 3 5 6 7 8 9 
+
+[EVENT] 74.484 | event=UAVWaypointArrival | nodeId=402 | cycle=1 | pos=(40.000,100.000,20.000)
+
+[EVENT] 74.492 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=4 | cycle=4 | confidence=0.206 | pixels=17306
+
+[EVENT] 74.492 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=4 | packetSize=51935 | srcAddr=01:93|dropCount=12|dsts=41,42,43,60,61,62,63,64,84,85,105,125
+402-D-41(4) 402-D-42(4) 402-D-43(4) 402-D-60(4) 402-D-61(4) 402-D-62(4) 402-D-63(4) 402-D-64(4) 402-D-84(4) 402-D-85(4) 402-D-105(4) 402-D-125(4) 
+402-R-80(4) 402-R-81(4) 402-R-82(4) 402-R-83(4) 402-R-100(4) 402-R-101(4) 402-R-102(4) 402-R-103(4) 402-R-104(4) 402-R-121(4) 402-R-122(4) 402-R-123(4) 402-R-124(4) 402-R-140(4) 402-R-141(4) 402-R-142(4) 402-R-143(4) 402-R-144(4) 402-R-162(4) 62-S-100(0) 62-S-100(1) 62-S-100(2) 62-S-100(3) 62-S-100(5) 62-S-100(6) 62-S-100(7) 62-S-100(8) 62-S-100(9) 
+[EVENT] 74.918 | event=RequestFragmentSharing | nodeId=100 | cellId=10000 | confidence=0.900 | fragments=0 1 2 3 4 5 6 7 8 9 
+
+[EVENT] 74.921 | event=RequestFragmentSharing | nodeId=80 | cellId=0 | confidence=0.206 | fragments=4 
+62-S-81(0) 62-S-81(1) 62-S-81(2) 62-S-81(3) 62-S-81(5) 62-S-81(6) 62-S-81(7) 62-S-81(8) 62-S-81(9) 
+[EVENT] 74.925 | event=RequestFragmentSharing | nodeId=81 | cellId=10000 | confidence=0.900 | fragments=0 1 2 3 4 5 6 7 8 9 
+
+[EVENT] 74.925 | event=RequestFragmentSharing | nodeId=140 | cellId=9999 | confidence=0.206 | fragments=4 
+
+[EVENT] 76.153 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=5 | cycle=4 | confidence=0.206 | pixels=17306
+
+[EVENT] 76.153 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=5 | packetSize=51935 | srcAddr=01:93|dropCount=11|dsts=80,81,82,83,100,101,102,103,104,124,145
+402-D-80(5) 402-D-81(5) 402-D-82(5) 402-D-83(5) 402-D-100(5) 402-D-101(5) 402-D-102(5) 402-D-103(5) 402-D-104(5) 402-D-124(5) 402-D-145(5) 
+402-R-120(5) 402-R-121(5) 402-R-122(5) 402-R-123(5) 402-R-140(5) 402-R-141(5) 402-R-142(5) 402-R-143(5) 402-R-144(5) 402-R-160(5) 402-R-161(5) 402-R-162(5) 402-R-163(5) 402-R-164(5) 402-R-181(5) 402-R-182(5) 402-R-183(5) 402-R-184(5) 140-S-120(4) 
+[EVENT] 76.567 | event=RequestFragmentSharing | nodeId=120 | cellId=9999 | confidence=0.369 | fragments=4 5 
+120-S-160(4) 
+[EVENT] 76.585 | event=RequestFragmentSharing | nodeId=160 | cellId=9999 | confidence=0.369 | fragments=4 5 
+
+[EVENT] 77.815 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=6 | cycle=4 | confidence=0.206 | pixels=17305
+
+[EVENT] 77.815 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=6 | packetSize=51932 | srcAddr=01:93|dropCount=7|dsts=120,121,122,123,140,143,144
+402-D-120(6) 402-D-121(6) 402-D-122(6) 402-D-123(6) 402-D-140(6) 402-D-143(6) 402-D-144(6) 
+402-R-141(6) 402-R-142(6) 402-R-160(6) 402-R-161(6) 402-R-162(6) 402-R-163(6) 402-R-164(6) 402-R-180(6) 402-R-181(6) 402-R-182(6) 402-R-183(6) 402-R-184(6) 402-R-200(6) 402-R-201(6) 402-R-202(6) 402-R-203(6) 402-R-220(6) 402-R-221(6) 402-R-222(6) 402-R-223(6) 
+[EVENT] 79.476 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=7 | cycle=4 | confidence=0.206 | pixels=17305
+
+[EVENT] 79.476 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=7 | packetSize=51932 | srcAddr=01:93|dropCount=8|dsts=141,142,160,161,162,163,164,184
+402-D-141(7) 402-D-142(7) 402-D-160(7) 402-D-161(7) 402-D-162(7) 402-D-163(7) 402-D-164(7) 402-D-184(7) 
+402-R-180(7) 402-R-181(7) 402-R-182(7) 402-R-183(7) 402-R-200(7) 402-R-201(7) 402-R-202(7) 402-R-203(7) 402-R-204(7) 402-R-220(7) 402-R-221(7) 402-R-222(7) 402-R-223(7) 402-R-240(7) 402-R-241(7) 402-R-242(7) 402-R-243(7) 402-R-262(7) 
+[EVENT] 81.137 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=8 | cycle=4 | confidence=0.206 | pixels=17305
+
+[EVENT] 81.137 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=8 | packetSize=51932 | srcAddr=01:93|dropCount=10|dsts=180,181,182,183,200,201,202,203,204,224
+402-D-180(8) 402-D-181(8) 402-D-182(8) 402-D-183(8) 402-D-200(8) 402-D-201(8) 402-D-202(8) 402-D-203(8) 402-D-204(8) 402-D-224(8) 
+402-R-220(8) 402-R-221(8) 402-R-222(8) 402-R-223(8) 402-R-240(8) 402-R-241(8) 402-R-242(8) 402-R-243(8) 402-R-260(8) 402-R-261(8) 402-R-262(8) 402-R-263(8) 402-R-264(8) 402-R-280(8) 402-R-281(8) 402-R-282(8) 402-R-283(8) 
+[EVENT] 82.798 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=9 | cycle=4 | confidence=0.206 | pixels=17305
+
+[EVENT] 82.798 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=9 | packetSize=51932 | srcAddr=01:93|dropCount=7|dsts=220,221,222,223,243,244,264
+402-D-220(9) 402-D-221(9) 402-D-222(9) 402-D-223(9) 402-D-243(9) 402-D-244(9) 402-D-264(9) 
+402-R-240(9) 402-R-241(9) 402-R-242(9) 402-R-260(9) 402-R-261(9) 402-R-262(9) 402-R-263(9) 402-R-280(9) 402-R-281(9) 402-R-282(9) 402-R-283(9) 402-R-284(9) 402-R-300(9) 402-R-301(9) 402-R-302(9) 402-R-303(9) 402-R-320(9) 402-R-321(9) 402-R-322(9) 302-S-322(0) 302-S-322(5) 305-S-322(4) 
+[EVENT] 83.221 | event=RequestFragmentSharing | nodeId=322 | cellId=29999 | confidence=0.602 | fragments=0 4 5 9 
+302-S-321(0) 302-S-321(5) 305-S-321(4) 
+[EVENT] 83.224 | event=RequestFragmentSharing | nodeId=321 | cellId=29999 | confidence=0.602 | fragments=0 4 5 9 
+180-S-300(1) 180-S-300(2) 180-S-300(6) 180-S-300(7) 181-S-300(5) 200-S-300(0) 200-S-300(3) 200-S-300(4) 200-S-300(8) 
+[EVENT] 83.225 | event=RequestFragmentSharing | nodeId=300 | cellId=19999 | confidence=0.900 | fragments=0 1 2 3 4 5 6 7 8 9 
+180-S-320(1) 180-S-320(2) 180-S-320(6) 180-S-320(7) 181-S-320(5) 200-S-320(0) 200-S-320(3) 200-S-320(4) 200-S-320(8) 
+[EVENT] 83.231 | event=RequestFragmentSharing | nodeId=320 | cellId=19999 | confidence=0.900 | fragments=0 1 2 3 4 5 6 7 8 9 
+
+[EVENT] 83.539 | event=UAVWaypointArrival | nodeId=402 | cycle=1 | pos=(20.000,280.000,20.000)
+
+[EVENT] 84.460 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=0 | cycle=5 | confidence=0.206 | pixels=17306
+
+[EVENT] 84.460 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=0 | packetSize=51935 | srcAddr=01:93|dropCount=4|dsts=320,321,322,323
+402-D-320(0) 402-D-321(0) 402-D-322(0) 402-D-323(0) 
+402-R-220(0) 402-R-221(0) 402-R-222(0) 402-R-240(0) 402-R-241(0) 402-R-242(0) 402-R-243(0) 402-R-244(0) 402-R-260(0) 402-R-261(0) 402-R-262(0) 402-R-263(0) 402-R-264(0) 402-R-280(0) 402-R-281(0) 402-R-282(0) 402-R-283(0) 402-R-300(0) 402-R-301(0) 402-R-302(0) 402-R-303(0) 
+[EVENT] 86.121 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=1 | cycle=5 | confidence=0.206 | pixels=17306
+
+[EVENT] 86.121 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=1 | packetSize=51935 | srcAddr=01:93|dropCount=7|dsts=280,283,284,300,301,302,303
+402-D-280(1) 402-D-283(1) 402-D-284(1) 402-D-300(1) 402-D-301(1) 402-D-302(1) 402-D-303(1) 
+402-R-200(1) 402-R-201(1) 402-R-202(1) 402-R-203(1) 402-R-220(1) 402-R-221(1) 402-R-222(1) 402-R-223(1) 402-R-240(1) 402-R-241(1) 402-R-242(1) 402-R-243(1) 402-R-244(1) 402-R-260(1) 402-R-261(1) 402-R-262(1) 402-R-263(1) 402-R-264(1) 402-R-281(1) 402-R-282(1) 
 [EVENT] 86.184 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(100.000,80.000,20.000)
 
-[EVENT] 92.279 | event=UAVWaypointArrival | nodeId=402 | cycle=1 | pos=(120.000,100.000,20.000)
+[EVENT] 87.783 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=2 | cycle=5 | confidence=0.206 | pixels=17306
 
-[EVENT] 97.612 | event=UAVWaypointArrival | nodeId=402 | cycle=1 | pos=(40.000,100.000,20.000)
+[EVENT] 87.783 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=2 | packetSize=51935 | srcAddr=01:93|dropCount=6|dsts=260,261,263,264,281,282
+402-D-260(2) 402-D-261(2) 402-D-263(2) 402-D-264(2) 402-D-281(2) 402-D-282(2) 
+402-R-161(2) 402-R-180(2) 402-R-181(2) 402-R-182(2) 402-R-183(2) 402-R-184(2) 402-R-200(2) 402-R-201(2) 402-R-202(2) 402-R-203(2) 402-R-204(2) 402-R-220(2) 402-R-221(2) 402-R-222(2) 402-R-223(2) 402-R-224(2) 402-R-240(2) 402-R-241(2) 402-R-242(2) 402-R-243(2) 402-R-244(2) 402-R-262(2) 
+[EVENT] 89.444 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=3 | cycle=5 | confidence=0.206 | pixels=17306
+
+[EVENT] 89.444 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=3 | packetSize=51935 | srcAddr=01:93|dropCount=6|dsts=240,241,242,243,244,262
+402-D-240(3) 402-D-241(3) 402-D-242(3) 402-D-243(3) 402-D-244(3) 402-D-262(3) 
+402-R-160(3) 402-R-161(3) 402-R-162(3) 402-R-163(3) 402-R-180(3) 402-R-181(3) 402-R-182(3) 402-R-183(3) 402-R-184(3) 402-R-185(3) 402-R-200(3) 402-R-201(3) 402-R-202(3) 402-R-203(3) 402-R-204(3) 402-R-220(3) 402-R-221(3) 402-R-222(3) 402-R-223(3) 402-R-224(3) 
+[EVENT] 91.105 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=4 | cycle=5 | confidence=0.206 | pixels=17306
+
+[EVENT] 91.105 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=4 | packetSize=51935 | srcAddr=01:93|dropCount=7|dsts=200,205,220,221,222,223,224
+402-D-200(4) 402-D-205(4) 402-D-220(4) 402-D-221(4) 402-D-222(4) 402-D-223(4) 402-D-224(4) 
+402-R-122(4) 402-R-123(4) 402-R-124(4) 402-R-141(4) 402-R-142(4) 402-R-143(4) 402-R-144(4) 402-R-160(4) 402-R-161(4) 402-R-162(4) 402-R-163(4) 402-R-164(4) 402-R-165(4) 402-R-180(4) 402-R-181(4) 402-R-182(4) 402-R-183(4) 402-R-184(4) 402-R-185(4) 402-R-201(4) 402-R-202(4) 402-R-203(4) 402-R-204(4) 
+[EVENT] 92.767 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=5 | cycle=5 | confidence=0.206 | pixels=17306
+
+[EVENT] 92.767 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=5 | packetSize=51935 | srcAddr=01:93|dropCount=6|dsts=180,185,201,202,203,204
+402-D-180(5) 402-D-185(5) 402-D-201(5) 402-D-202(5) 402-D-203(5) 402-D-204(5) 
+402-R-102(5) 402-R-103(5) 402-R-120(5) 402-R-121(5) 402-R-122(5) 402-R-123(5) 402-R-124(5) 402-R-140(5) 402-R-141(5) 402-R-142(5) 402-R-143(5) 402-R-144(5) 402-R-145(5) 402-R-160(5) 402-R-161(5) 402-R-162(5) 402-R-163(5) 402-R-164(5) 402-R-165(5) 402-R-181(5) 402-R-182(5) 402-R-183(5) 402-R-184(5) 
+[EVENT] 94.428 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=6 | cycle=5 | confidence=0.206 | pixels=17305
+
+[EVENT] 94.428 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=6 | packetSize=51932 | srcAddr=01:93|dropCount=8|dsts=140,160,161,165,181,182,183,184
+402-D-140(6) 402-D-160(6) 402-D-161(6) 402-D-165(6) 402-D-181(6) 402-D-182(6) 402-D-183(6) 402-D-184(6) 
+402-R-82(6) 402-R-83(6) 402-R-84(6) 402-R-100(6) 402-R-101(6) 402-R-102(6) 402-R-103(6) 402-R-104(6) 402-R-105(6) 402-R-120(6) 402-R-121(6) 402-R-122(6) 402-R-123(6) 402-R-124(6) 402-R-125(6) 402-R-141(6) 402-R-142(6) 402-R-143(6) 402-R-144(6) 402-R-145(6) 402-R-162(6) 402-R-163(6) 402-R-164(6) 
+[EVENT] 96.089 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=7 | cycle=5 | confidence=0.206 | pixels=17305
+
+[EVENT] 96.089 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=7 | packetSize=51932 | srcAddr=01:93|dropCount=8|dsts=100,120,126,141,145,162,163,164
+402-D-100(7) 402-D-120(7) 402-D-126(7) 402-D-141(7) 402-D-145(7) 402-D-162(7) 402-D-163(7) 402-D-164(7) 
+402-R-43(7) 402-R-62(7) 402-R-63(7) 402-R-64(7) 402-R-81(7) 402-R-82(7) 402-R-83(7) 402-R-84(7) 402-R-85(7) 402-R-101(7) 402-R-102(7) 402-R-103(7) 402-R-104(7) 402-R-105(7) 402-R-121(7) 402-R-122(7) 402-R-123(7) 402-R-124(7) 402-R-125(7) 402-R-142(7) 402-R-143(7) 402-R-144(7) 
+[EVENT] 96.346 | event=UAVWaypointArrival | nodeId=402 | cycle=2 | pos=(60.000,100.000,20.000)
+80-S-43(4) 
+[EVENT] 96.518 | event=RequestFragmentSharing | nodeId=43 | cellId=0 | confidence=0.369 | fragments=4 7 
+
+[EVENT] 97.751 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=8 | cycle=5 | confidence=0.206 | pixels=17305
+
+[EVENT] 97.751 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=8 | packetSize=51932 | srcAddr=01:93|dropCount=10|dsts=81,82,83,84,85,101,105,120,126,401
+402-D-81(8) 402-D-82(8) 402-D-83(8) 402-D-84(8) 402-D-85(8) 402-D-101(8) 402-D-105(8) 402-D-120(8) 402-D-126(8) 402-D-401(8) 
+402-R-102(8) 402-R-103(8) 402-R-104(8) 402-R-121(8) 402-R-122(8) 402-R-123(8) 402-R-124(8) 402-R-125(8) 402-R-141(8) 402-R-142(8) 402-R-143(8) 402-R-144(8) 402-R-145(8) 402-R-146(8) 402-R-161(8) 402-R-162(8) 402-R-163(8) 402-R-164(8) 402-R-165(8) 402-R-182(8) 402-R-183(8) 402-R-184(8) 
+[EVENT] 99.346 | event=UAVWaypointArrival | nodeId=402 | cycle=2 | pos=(60.000,160.000,20.000)
+
+[EVENT] 99.412 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=9 | cycle=5 | confidence=0.206 | pixels=17305
+
+[EVENT] 99.412 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=9 | packetSize=51932 | srcAddr=01:93|dropCount=14|dsts=102,103,104,121,122,123,124,125,140,141,145,146,160,166
+402-D-102(9) 402-D-103(9) 402-D-104(9) 402-D-121(9) 402-D-122(9) 402-D-123(9) 402-D-124(9) 402-D-125(9) 402-D-140(9) 402-D-141(9) 402-D-145(9) 402-D-146(9) 402-D-160(9) 402-D-166(9) 
+402-R-142(9) 402-R-143(9) 402-R-144(9) 402-R-161(9) 402-R-162(9) 402-R-163(9) 402-R-164(9) 402-R-165(9) 402-R-180(9) 402-R-181(9) 402-R-182(9) 402-R-183(9) 402-R-184(9) 402-R-185(9) 402-R-186(9) 402-R-201(9) 402-R-202(9) 402-R-203(9) 402-R-204(9) 402-R-205(9) 402-R-222(9) 402-R-223(9) 
+[EVENT] 101.073 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=0 | cycle=6 | confidence=0.206 | pixels=17306
+
+[EVENT] 101.073 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=0 | packetSize=51935 | srcAddr=01:93|dropCount=12|dsts=142,143,144,161,162,163,164,165,180,186,200,206
+402-D-142(0) 402-D-143(0) 402-D-144(0) 402-D-161(0) 402-D-162(0) 402-D-163(0) 402-D-164(0) 402-D-165(0) 402-D-180(0) 402-D-186(0) 402-D-200(0) 402-D-206(0) 
+402-R-181(0) 402-R-182(0) 402-R-183(0) 402-R-184(0) 402-R-185(0) 402-R-201(0) 402-R-202(0) 402-R-203(0) 402-R-204(0) 402-R-205(0) 402-R-221(0) 402-R-222(0) 402-R-223(0) 402-R-224(0) 402-R-225(0) 402-R-242(0) 402-R-243(0) 402-R-244(0) 402-R-245(0) 
+[EVENT] 102.346 | event=UAVWaypointArrival | nodeId=402 | cycle=2 | pos=(60.000,220.000,20.000)
+
+[EVENT] 102.735 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=1 | cycle=6 | confidence=0.206 | pixels=17306
+
+[EVENT] 102.735 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=1 | packetSize=51935 | srcAddr=01:93|dropCount=9|dsts=181,182,183,184,185,201,205,220,226
+402-D-181(1) 402-D-182(1) 402-D-183(1) 402-D-184(1) 402-D-185(1) 402-D-201(1) 402-D-205(1) 402-D-220(1) 402-D-226(1) 
+402-R-202(1) 402-R-203(1) 402-R-204(1) 402-R-221(1) 402-R-222(1) 402-R-223(1) 402-R-224(1) 402-R-225(1) 402-R-242(1) 402-R-243(1) 402-R-244(1) 402-R-245(1) 402-R-246(1) 402-R-261(1) 402-R-262(1) 402-R-263(1) 402-R-264(1) 402-R-265(1) 402-R-282(1) 402-R-283(1) 
+[EVENT] 103.346 | event=UAVWaypointArrival | nodeId=402 | cycle=2 | pos=(60.000,240.000,20.000)
 
 [EVENT] 103.797 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(80.000,80.000,20.000)
 
-[EVENT] 109.686 | event=UAVWaypointArrival | nodeId=402 | cycle=1 | pos=(20.000,280.000,20.000)
+[EVENT] 104.396 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=2 | cycle=6 | confidence=0.206 | pixels=17306
 
+[EVENT] 104.396 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=2 | packetSize=51935 | srcAddr=01:93|dropCount=14|dsts=183,184,202,203,221,222,241,242,261,262,282,283,303,304
+402-D-183(2) 402-D-184(2) 402-D-202(2) 402-D-203(2) 402-D-221(2) 402-D-222(2) 402-D-241(2) 402-D-242(2) 402-D-261(2) 402-D-262(2) 402-D-282(2) 402-D-283(2) 402-D-303(2) 402-D-304(2) 
+402-R-204(2) 402-R-205(2) 402-R-206(2) 402-R-223(2) 402-R-224(2) 402-R-225(2) 402-R-226(2) 402-R-243(2) 402-R-244(2) 402-R-245(2) 402-R-246(2) 402-R-247(2) 402-R-263(2) 402-R-264(2) 402-R-265(2) 402-R-266(2) 402-R-284(2) 402-R-285(2) 402-R-286(2) 
+[EVENT] 106.057 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=3 | cycle=6 | confidence=0.206 | pixels=17306
+
+[EVENT] 106.057 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=3 | packetSize=51935 | srcAddr=01:93|dropCount=12|dsts=185,186,204,223,224,243,244,263,264,284,305,306
+402-D-185(3) 402-D-186(3) 402-D-204(3) 402-D-223(3) 402-D-224(3) 402-D-243(3) 402-D-244(3) 402-D-263(3) 402-D-264(3) 402-D-284(3) 402-D-305(3) 402-D-306(3) 
+402-R-205(3) 402-R-206(3) 402-R-207(3) 402-R-225(3) 402-R-226(3) 402-R-227(3) 402-R-228(3) 402-R-245(3) 402-R-246(3) 402-R-247(3) 402-R-248(3) 402-R-265(3) 402-R-266(3) 402-R-267(3) 402-R-268(3) 402-R-285(3) 402-R-286(3) 402-R-287(3) 402-R-288(3) 
+[EVENT] 106.346 | event=UAVWaypointArrival | nodeId=402 | cycle=2 | pos=(120.000,240.000,20.000)
+
+[EVENT] 107.719 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=4 | cycle=6 | confidence=0.206 | pixels=17306
+
+[EVENT] 107.719 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=4 | packetSize=51935 | srcAddr=01:93|dropCount=9|dsts=187,205,206,225,245,265,285,286,307
+402-D-187(4) 402-D-205(4) 402-D-206(4) 402-D-225(4) 402-D-245(4) 402-D-265(4) 402-D-285(4) 402-D-286(4) 402-D-307(4) 
+402-R-207(4) 402-R-208(4) 402-R-209(4) 402-R-226(4) 402-R-227(4) 402-R-228(4) 402-R-229(4) 402-R-230(4) 402-R-246(4) 402-R-247(4) 402-R-248(4) 402-R-249(4) 402-R-250(4) 402-R-266(4) 402-R-267(4) 402-R-268(4) 402-R-269(4) 402-R-287(4) 402-R-288(4) 402-R-289(4) 
+[EVENT] 108.346 | event=UAVWaypointArrival | nodeId=402 | cycle=2 | pos=(160.000,240.000,20.000)
+
+[EVENT] 109.380 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=5 | cycle=6 | confidence=0.206 | pixels=17306
+
+[EVENT] 109.380 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=5 | packetSize=51935 | srcAddr=01:93|dropCount=14|dsts=225,231,245,246,250,251,266,267,268,269,270,287,288,289
+402-D-225(5) 402-D-231(5) 402-D-245(5) 402-D-246(5) 402-D-250(5) 402-D-251(5) 402-D-266(5) 402-D-267(5) 402-D-268(5) 402-D-269(5) 402-D-270(5) 402-D-287(5) 402-D-288(5) 402-D-289(5) 
+402-R-186(5) 402-R-187(5) 402-R-188(5) 402-R-189(5) 402-R-205(5) 402-R-206(5) 402-R-207(5) 402-R-208(5) 402-R-209(5) 402-R-210(5) 402-R-226(5) 402-R-227(5) 402-R-228(5) 402-R-229(5) 402-R-230(5) 402-R-247(5) 402-R-248(5) 402-R-249(5) 
+[EVENT] 111.041 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=6 | cycle=6 | confidence=0.206 | pixels=17305
+
+[EVENT] 111.041 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=6 | packetSize=51932 | srcAddr=01:93|dropCount=12|dsts=185,191,205,211,226,227,228,229,230,247,248,249
+402-D-185(6) 402-D-191(6) 402-D-205(6) 402-D-211(6) 402-D-226(6) 402-D-227(6) 402-D-228(6) 402-D-229(6) 402-D-230(6) 402-D-247(6) 402-D-248(6) 402-D-249(6) 
+402-R-146(6) 402-R-147(6) 402-R-148(6) 402-R-149(6) 402-R-166(6) 402-R-167(6) 402-R-168(6) 402-R-169(6) 402-R-170(6) 402-R-186(6) 402-R-187(6) 402-R-188(6) 402-R-189(6) 402-R-190(6) 402-R-206(6) 402-R-207(6) 402-R-208(6) 402-R-209(6) 402-R-210(6) 
+[EVENT] 111.346 | event=UAVWaypointArrival | nodeId=402 | cycle=2 | pos=(160.000,180.000,20.000)
+
+[EVENT] 112.703 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=7 | cycle=6 | confidence=0.206 | pixels=17305
+
+[EVENT] 112.703 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=7 | packetSize=51932 | srcAddr=01:93|dropCount=9|dsts=165,171,186,190,206,207,208,209,210
+402-D-165(7) 402-D-171(7) 402-D-186(7) 402-D-190(7) 402-D-206(7) 402-D-207(7) 402-D-208(7) 402-D-209(7) 402-D-210(7) 
+402-R-107(7) 402-R-108(7) 402-R-126(7) 402-R-127(7) 402-R-128(7) 402-R-129(7) 402-R-130(7) 402-R-146(7) 402-R-147(7) 402-R-148(7) 402-R-149(7) 402-R-150(7) 402-R-151(7) 402-R-166(7) 402-R-167(7) 402-R-168(7) 402-R-169(7) 402-R-170(7) 402-R-187(7) 402-R-188(7) 402-R-189(7) 
+[EVENT] 114.346 | event=UAVWaypointArrival | nodeId=402 | cycle=2 | pos=(160.000,120.000,20.000)
+
+[EVENT] 114.364 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=8 | cycle=6 | confidence=0.206 | pixels=17305
+
+[EVENT] 114.364 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=8 | packetSize=51932 | srcAddr=01:93|dropCount=13|dsts=67,86,105,106,125,126,145,146,166,167,187,188,189
+402-D-67(8) 402-D-86(8) 402-D-105(8) 402-D-106(8) 402-D-125(8) 402-D-126(8) 402-D-145(8) 402-D-146(8) 402-D-166(8) 402-D-167(8) 402-D-187(8) 402-D-188(8) 402-D-189(8) 
+402-R-68(8) 402-R-87(8) 402-R-88(8) 402-R-89(8) 402-R-90(8) 402-R-107(8) 402-R-108(8) 402-R-109(8) 402-R-110(8) 402-R-127(8) 402-R-128(8) 402-R-129(8) 402-R-130(8) 402-R-147(8) 402-R-148(8) 402-R-149(8) 402-R-151(8) 402-R-168(8) 402-R-169(8) 
+[EVENT] 116.025 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=9 | cycle=6 | confidence=0.206 | pixels=17305
+
+[EVENT] 116.025 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=9 | packetSize=51932 | srcAddr=01:93|dropCount=11|dsts=68,87,107,127,128,147,148,168,169,170,171
+402-D-68(9) 402-D-87(9) 402-D-107(9) 402-D-127(9) 402-D-128(9) 402-D-147(9) 402-D-148(9) 402-D-168(9) 402-D-169(9) 402-D-170(9) 402-D-171(9) 
+402-R-70(9) 402-R-71(9) 402-R-88(9) 402-R-89(9) 402-R-90(9) 402-R-91(9) 402-R-92(9) 402-R-108(9) 402-R-109(9) 402-R-110(9) 402-R-111(9) 402-R-112(9) 402-R-129(9) 402-R-130(9) 402-R-131(9) 402-R-132(9) 402-R-149(9) 402-R-150(9) 402-R-151(9) 402-R-152(9) 
+[EVENT] 116.582 | event=UAVWaypointArrival | nodeId=402 | cycle=2 | pos=(200.000,100.000,20.000)
+
+[EVENT] 117.582 | event=UAVWaypointArrival | nodeId=402 | cycle=2 | pos=(220.000,100.000,20.000)
+
+[EVENT] 117.687 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=0 | cycle=7 | confidence=0.206 | pixels=17306
+
+[EVENT] 117.687 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=0 | packetSize=51935 | srcAddr=01:93|dropCount=12|dsts=51,69,70,71,72,73,88,89,93,94,108,114
+402-D-51(0) 402-D-69(0) 402-D-70(0) 402-D-71(0) 402-D-72(0) 402-D-73(0) 402-D-88(0) 402-D-89(0) 402-D-93(0) 402-D-94(0) 402-D-108(0) 402-D-114(0) 
+402-R-90(0) 402-R-91(0) 402-R-92(0) 402-R-109(0) 402-R-110(0) 402-R-111(0) 402-R-112(0) 402-R-113(0) 402-R-129(0) 402-R-130(0) 402-R-131(0) 402-R-132(0) 402-R-133(0) 402-R-134(0) 402-R-150(0) 402-R-151(0) 402-R-152(0) 402-R-172(0) 
+[EVENT] 118.117 | event=RequestFragmentSharing | nodeId=134 | cellId=10002 | confidence=0.206 | fragments=0 
+
+[EVENT] 119.348 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=1 | cycle=7 | confidence=0.206 | pixels=17306
+
+[EVENT] 119.348 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=1 | packetSize=51935 | srcAddr=01:93|dropCount=12|dsts=90,91,92,109,110,111,112,113,128,134,148,154
+402-D-90(1) 402-D-91(1) 402-D-92(1) 402-D-109(1) 402-D-110(1) 402-D-111(1) 402-D-112(1) 402-D-113(1) 402-D-128(1) 402-D-134(1) 402-D-148(1) 402-D-154(1) 
+402-R-129(1) 402-R-130(1) 402-R-131(1) 402-R-132(1) 402-R-133(1) 402-R-149(1) 402-R-150(1) 402-R-151(1) 402-R-152(1) 402-R-153(1) 402-R-169(1) 402-R-170(1) 402-R-171(1) 402-R-172(1) 402-R-173(1) 402-R-189(1) 402-R-190(1) 402-R-191(1) 402-R-192(1) 402-R-211(1) 
+[EVENT] 119.582 | event=UAVWaypointArrival | nodeId=402 | cycle=2 | pos=(220.000,140.000,20.000)
+69-S-173(0) 69-S-173(2) 69-S-173(8) 69-S-173(9) 91-S-173(3) 107-S-173(7) 109-S-173(4) 128-S-173(5) 147-S-173(6) 
+[EVENT] 119.768 | event=RequestFragmentSharing | nodeId=173 | cellId=10001 | confidence=0.900 | fragments=0 1 2 3 4 5 6 7 8 9 
+
+[EVENT] 121.009 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=2 | cycle=7 | confidence=0.206 | pixels=17306
+
+[EVENT] 121.009 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=2 | packetSize=51935 | srcAddr=01:93|dropCount=10|dsts=109,110,111,131,132,152,172,173,192,212
+402-D-109(2) 402-D-110(2) 402-D-111(2) 402-D-131(2) 402-D-132(2) 402-D-152(2) 402-D-172(2) 402-D-173(2) 402-D-192(2) 402-D-212(2) 
+402-R-128(2) 402-R-129(2) 402-R-130(2) 402-R-147(2) 402-R-149(2) 402-R-150(2) 402-R-151(2) 402-R-167(2) 402-R-168(2) 402-R-169(2) 402-R-170(2) 402-R-171(2) 402-R-187(2) 402-R-188(2) 402-R-189(2) 402-R-190(2) 402-R-191(2) 402-R-209(2) 402-R-210(2) 402-R-211(2) 
 [EVENT] 121.410 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(60.000,80.000,20.000)
 
-[EVENT] 126.761 | event=UAVWaypointArrival | nodeId=402 | cycle=2 | pos=(60.000,100.000,20.000)
+[EVENT] 122.671 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=3 | cycle=7 | confidence=0.206 | pixels=17306
 
-[EVENT] 130.761 | event=UAVWaypointArrival | nodeId=402 | cycle=2 | pos=(60.000,160.000,20.000)
+[EVENT] 122.671 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=3 | packetSize=51935 | srcAddr=01:93|dropCount=11|dsts=127,128,129,130,150,151,170,171,191,211,230
+402-D-127(3) 402-D-128(3) 402-D-129(3) 402-D-130(3) 402-D-150(3) 402-D-151(3) 402-D-170(3) 402-D-171(3) 402-D-191(3) 402-D-211(3) 402-D-230(3) 
+402-R-146(3) 402-R-147(3) 402-R-148(3) 402-R-149(3) 402-R-166(3) 402-R-167(3) 402-R-168(3) 402-R-169(3) 402-R-186(3) 402-R-187(3) 402-R-188(3) 402-R-189(3) 402-R-190(3) 402-R-206(3) 402-R-207(3) 402-R-208(3) 402-R-209(3) 402-R-210(3) 402-R-227(3) 402-R-228(3) 402-R-229(3) 
+[EVENT] 124.332 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=4 | cycle=7 | confidence=0.206 | pixels=17306
 
-[EVENT] 134.761 | event=UAVWaypointArrival | nodeId=402 | cycle=2 | pos=(60.000,220.000,20.000)
+[EVENT] 124.332 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=4 | packetSize=51935 | srcAddr=01:93|dropCount=12|dsts=145,146,147,148,149,168,169,189,190,209,210,229
+402-D-145(4) 402-D-146(4) 402-D-147(4) 402-D-148(4) 402-D-149(4) 402-D-168(4) 402-D-169(4) 402-D-189(4) 402-D-190(4) 402-D-209(4) 402-D-210(4) 402-D-229(4) 
+402-R-165(4) 402-R-166(4) 402-R-167(4) 402-R-184(4) 402-R-185(4) 402-R-186(4) 402-R-187(4) 402-R-188(4) 402-R-205(4) 402-R-206(4) 402-R-207(4) 402-R-208(4) 402-R-225(4) 402-R-226(4) 402-R-227(4) 402-R-228(4) 402-R-245(4) 402-R-246(4) 402-R-247(4) 
+[EVENT] 125.993 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=5 | cycle=7 | confidence=0.206 | pixels=17306
 
-[EVENT] 136.094 | event=UAVWaypointArrival | nodeId=402 | cycle=2 | pos=(60.000,240.000,20.000)
+[EVENT] 125.993 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=5 | packetSize=51935 | srcAddr=01:93|dropCount=9|dsts=165,166,167,187,188,208,228,248,267
+402-D-165(5) 402-D-166(5) 402-D-167(5) 402-D-187(5) 402-D-188(5) 402-D-208(5) 402-D-228(5) 402-D-248(5) 402-D-267(5) 
+402-R-164(5) 402-R-183(5) 402-R-184(5) 402-R-185(5) 402-R-186(5) 402-R-203(5) 402-R-204(5) 402-R-205(5) 402-R-206(5) 402-R-207(5) 402-R-223(5) 402-R-224(5) 402-R-225(5) 402-R-226(5) 402-R-227(5) 402-R-243(5) 402-R-244(5) 402-R-245(5) 402-R-246(5) 402-R-247(5) 402-R-265(5) 402-R-266(5) 
+[EVENT] 127.655 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=6 | cycle=7 | confidence=0.206 | pixels=17305
 
+[EVENT] 127.655 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=6 | packetSize=51932 | srcAddr=01:93|dropCount=11|dsts=164,184,185,186,206,207,226,227,246,247,266
+402-D-164(6) 402-D-184(6) 402-D-185(6) 402-D-186(6) 402-D-206(6) 402-D-207(6) 402-D-226(6) 402-D-227(6) 402-D-246(6) 402-D-247(6) 402-D-266(6) 
+402-R-182(6) 402-R-183(6) 402-R-202(6) 402-R-203(6) 402-R-204(6) 402-R-205(6) 402-R-222(6) 402-R-223(6) 402-R-224(6) 402-R-225(6) 402-R-241(6) 402-R-242(6) 402-R-243(6) 402-R-244(6) 402-R-245(6) 402-R-263(6) 402-R-264(6) 402-R-265(6) 
+[EVENT] 129.316 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=7 | cycle=7 | confidence=0.206 | pixels=17305
+
+[EVENT] 129.316 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=7 | packetSize=51932 | srcAddr=01:93|dropCount=10|dsts=182,183,203,204,205,224,225,245,265,285
+402-D-182(7) 402-D-183(7) 402-D-203(7) 402-D-204(7) 402-D-205(7) 402-D-224(7) 402-D-225(7) 402-D-245(7) 402-D-265(7) 402-D-285(7) 
+402-R-201(7) 402-R-202(7) 402-R-221(7) 402-R-222(7) 402-R-223(7) 402-R-240(7) 402-R-241(7) 402-R-242(7) 402-R-243(7) 402-R-244(7) 402-R-260(7) 402-R-261(7) 402-R-262(7) 402-R-263(7) 402-R-264(7) 402-R-281(7) 402-R-282(7) 402-R-283(7) 402-R-284(7) 402-R-303(7) 
+[EVENT] 130.977 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=8 | cycle=7 | confidence=0.206 | pixels=17305
+
+[EVENT] 130.977 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=8 | packetSize=51932 | srcAddr=01:93|dropCount=11|dsts=200,201,202,222,223,243,244,263,264,284,303
+402-D-200(8) 402-D-201(8) 402-D-202(8) 402-D-222(8) 402-D-223(8) 402-D-243(8) 402-D-244(8) 402-D-263(8) 402-D-264(8) 402-D-284(8) 402-D-303(8) 
+402-R-220(8) 402-R-221(8) 402-R-240(8) 402-R-241(8) 402-R-242(8) 402-R-260(8) 402-R-261(8) 402-R-262(8) 402-R-280(8) 402-R-281(8) 402-R-282(8) 402-R-283(8) 402-R-300(8) 402-R-301(8) 402-R-302(8) 402-R-322(8) 
+[EVENT] 131.244 | event=UAVWaypointArrival | nodeId=402 | cycle=2 | pos=(20.000,260.000,20.000)
+
+[EVENT] 132.639 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=9 | cycle=7 | confidence=0.206 | pixels=17305
+
+[EVENT] 132.639 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=9 | packetSize=51932 | srcAddr=01:93|dropCount=6|dsts=244,263,280,281,282,283
+402-D-244(9) 402-D-263(9) 402-D-280(9) 402-D-281(9) 402-D-282(9) 402-D-283(9) 
+402-R-180(9) 402-R-181(9) 402-R-200(9) 402-R-201(9) 402-R-202(9) 402-R-203(9) 402-R-220(9) 402-R-221(9) 402-R-222(9) 402-R-223(9) 402-R-240(9) 402-R-241(9) 402-R-242(9) 402-R-243(9) 402-R-260(9) 402-R-261(9) 402-R-262(9) 
+[EVENT] 133.244 | event=UAVWaypointArrival | nodeId=402 | cycle=2 | pos=(20.000,220.000,20.000)
+
+[EVENT] 134.300 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=0 | cycle=8 | confidence=0.206 | pixels=17306
+
+[EVENT] 134.300 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=0 | packetSize=51935 | srcAddr=01:93|dropCount=8|dsts=180,181,182,200,220,240,260,281
+402-D-180(0) 402-D-181(0) 402-D-182(0) 402-D-200(0) 402-D-220(0) 402-D-240(0) 402-D-260(0) 402-D-281(0) 
+402-R-183(0) 402-R-201(0) 402-R-202(0) 402-R-203(0) 402-R-221(0) 402-R-222(0) 402-R-223(0) 402-R-224(0) 402-R-225(0) 402-R-241(0) 402-R-242(0) 402-R-243(0) 402-R-244(0) 402-R-261(0) 402-R-262(0) 402-R-263(0) 402-R-264(0) 402-R-282(0) 402-R-283(0) 
+[EVENT] 135.961 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=1 | cycle=8 | confidence=0.206 | pixels=17306
+
+[EVENT] 135.961 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=1 | packetSize=51935 | srcAddr=01:93|dropCount=11|dsts=183,184,185,201,202,221,222,241,261,282,303
+402-D-183(1) 402-D-184(1) 402-D-185(1) 402-D-201(1) 402-D-202(1) 402-D-221(1) 402-D-222(1) 402-D-241(1) 402-D-261(1) 402-D-282(1) 402-D-303(1) 
+402-R-203(1) 402-R-204(1) 402-R-205(1) 402-R-206(1) 402-R-223(1) 402-R-224(1) 402-R-225(1) 402-R-226(1) 402-R-242(1) 402-R-243(1) 402-R-244(1) 402-R-245(1) 402-R-246(1) 402-R-262(1) 402-R-263(1) 402-R-264(1) 402-R-265(1) 402-R-266(1) 402-R-283(1) 402-R-284(1) 402-R-285(1) 
+[EVENT] 137.623 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=2 | cycle=8 | confidence=0.206 | pixels=17306
+
+[EVENT] 137.623 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=2 | packetSize=51935 | srcAddr=01:93|dropCount=11|dsts=203,204,205,223,224,242,243,262,263,283,304
+402-D-203(2) 402-D-204(2) 402-D-205(2) 402-D-223(2) 402-D-224(2) 402-D-242(2) 402-D-243(2) 402-D-262(2) 402-D-263(2) 402-D-283(2) 402-D-304(2) 
+402-R-206(2) 402-R-225(2) 402-R-226(2) 402-R-227(2) 402-R-244(2) 402-R-245(2) 402-R-246(2) 402-R-247(2) 402-R-264(2) 402-R-265(2) 402-R-266(2) 402-R-267(2) 402-R-268(2) 402-R-284(2) 402-R-285(2) 402-R-286(2) 402-R-287(2) 402-R-306(2) 
 [EVENT] 139.024 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(40.000,80.000,20.000)
 
-[EVENT] 140.094 | event=UAVWaypointArrival | nodeId=402 | cycle=2 | pos=(120.000,240.000,20.000)
+[EVENT] 139.284 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=3 | cycle=8 | confidence=0.206 | pixels=17306
 
-[EVENT] 142.761 | event=UAVWaypointArrival | nodeId=402 | cycle=2 | pos=(160.000,240.000,20.000)
+[EVENT] 139.284 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=3 | packetSize=51935 | srcAddr=01:93|dropCount=13|dsts=206,207,208,225,226,244,245,264,265,284,285,305,326
+402-D-206(3) 402-D-207(3) 402-D-208(3) 402-D-225(3) 402-D-226(3) 402-D-244(3) 402-D-245(3) 402-D-264(3) 402-D-265(3) 402-D-284(3) 402-D-285(3) 402-D-305(3) 402-D-326(3) 
+402-R-227(3) 402-R-228(3) 402-R-246(3) 402-R-247(3) 402-R-248(3) 402-R-249(3) 402-R-266(3) 402-R-267(3) 402-R-268(3) 402-R-269(3) 402-R-286(3) 402-R-287(3) 402-R-288(3) 402-R-289(3) 402-R-306(3) 402-R-307(3) 402-R-308(3) 402-R-309(3) 
+[EVENT] 140.417 | event=UAVWaypointArrival | nodeId=402 | cycle=2 | pos=(155.789,266.316,20.000)
 
-[EVENT] 146.761 | event=UAVWaypointArrival | nodeId=402 | cycle=2 | pos=(160.000,180.000,20.000)
+[EVENT] 140.945 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=4 | cycle=8 | confidence=0.206 | pixels=17306
 
-[EVENT] 150.761 | event=UAVWaypointArrival | nodeId=402 | cycle=2 | pos=(160.000,120.000,20.000)
+[EVENT] 140.945 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=4 | packetSize=51935 | srcAddr=01:93|dropCount=9|dsts=285,289,290,306,307,308,309,310,328
+402-D-285(4) 402-D-289(4) 402-D-290(4) 402-D-306(4) 402-D-307(4) 402-D-308(4) 402-D-309(4) 402-D-310(4) 402-D-328(4) 
+402-R-207(4) 402-R-225(4) 402-R-226(4) 402-R-227(4) 402-R-228(4) 402-R-229(4) 402-R-230(4) 402-R-245(4) 402-R-246(4) 402-R-247(4) 402-R-248(4) 402-R-249(4) 402-R-265(4) 402-R-266(4) 402-R-267(4) 402-R-268(4) 402-R-269(4) 402-R-270(4) 402-R-286(4) 402-R-287(4) 402-R-288(4) 
+[EVENT] 142.607 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=5 | cycle=8 | confidence=0.206 | pixels=17306
 
-[EVENT] 153.742 | event=UAVWaypointArrival | nodeId=402 | cycle=2 | pos=(200.000,100.000,20.000)
+[EVENT] 142.607 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=5 | packetSize=51935 | srcAddr=01:93|dropCount=11|dsts=230,250,265,266,267,268,269,270,286,287,288
+402-D-230(5) 402-D-250(5) 402-D-265(5) 402-D-266(5) 402-D-267(5) 402-D-268(5) 402-D-269(5) 402-D-270(5) 402-D-286(5) 402-D-287(5) 402-D-288(5) 
+402-R-186(5) 402-R-187(5) 402-R-188(5) 402-R-189(5) 402-R-205(5) 402-R-206(5) 402-R-207(5) 402-R-208(5) 402-R-209(5) 402-R-210(5) 402-R-225(5) 402-R-226(5) 402-R-227(5) 402-R-228(5) 402-R-229(5) 402-R-245(5) 402-R-246(5) 402-R-247(5) 402-R-248(5) 
+[EVENT] 144.268 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=6 | cycle=8 | confidence=0.206 | pixels=17305
 
-[EVENT] 155.075 | event=UAVWaypointArrival | nodeId=402 | cycle=2 | pos=(220.000,100.000,20.000)
+[EVENT] 144.268 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=6 | packetSize=51932 | srcAddr=01:93|dropCount=11|dsts=190,204,210,225,228,229,245,246,247,248,249
+402-D-190(6) 402-D-204(6) 402-D-210(6) 402-D-225(6) 402-D-228(6) 402-D-229(6) 402-D-245(6) 402-D-246(6) 402-D-247(6) 402-D-248(6) 402-D-249(6) 
+402-R-145(6) 402-R-146(6) 402-R-147(6) 402-R-148(6) 402-R-165(6) 402-R-166(6) 402-R-167(6) 402-R-168(6) 402-R-169(6) 402-R-184(6) 402-R-185(6) 402-R-186(6) 402-R-187(6) 402-R-188(6) 402-R-189(6) 402-R-205(6) 402-R-206(6) 402-R-207(6) 402-R-208(6) 402-R-209(6) 402-R-226(6) 402-R-227(6) 
+[EVENT] 145.929 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=7 | cycle=8 | confidence=0.206 | pixels=17305
 
+[EVENT] 145.929 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=7 | packetSize=51932 | srcAddr=01:93|dropCount=9|dsts=184,189,205,206,207,208,209,226,227
+402-D-184(7) 402-D-189(7) 402-D-205(7) 402-D-206(7) 402-D-207(7) 402-D-208(7) 402-D-209(7) 402-D-226(7) 402-D-227(7) 
+402-R-125(7) 402-R-126(7) 402-R-127(7) 402-R-128(7) 402-R-129(7) 402-R-145(7) 402-R-146(7) 402-R-147(7) 402-R-148(7) 402-R-149(7) 402-R-164(7) 402-R-165(7) 402-R-166(7) 402-R-167(7) 402-R-168(7) 402-R-169(7) 402-R-185(7) 402-R-186(7) 402-R-187(7) 402-R-188(7) 
+[EVENT] 147.591 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=8 | cycle=8 | confidence=0.206 | pixels=17305
+
+[EVENT] 147.591 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=8 | packetSize=51932 | srcAddr=01:93|dropCount=12|dsts=129,149,164,165,166,167,168,169,185,186,187,188
+402-D-129(8) 402-D-149(8) 402-D-164(8) 402-D-165(8) 402-D-166(8) 402-D-167(8) 402-D-168(8) 402-D-169(8) 402-D-185(8) 402-D-186(8) 402-D-187(8) 402-D-188(8) 
+402-R-85(8) 402-R-86(8) 402-R-87(8) 402-R-88(8) 402-R-104(8) 402-R-105(8) 402-R-106(8) 402-R-107(8) 402-R-108(8) 402-R-109(8) 402-R-124(8) 402-R-125(8) 402-R-126(8) 402-R-127(8) 402-R-128(8) 402-R-144(8) 402-R-145(8) 402-R-146(8) 402-R-147(8) 402-R-148(8) 
+[EVENT] 148.923 | event=UAVWaypointArrival | nodeId=402 | cycle=2 | pos=(120.000,100.000,20.000)
+
+[EVENT] 149.252 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=9 | cycle=8 | confidence=0.206 | pixels=17305
+
+[EVENT] 149.252 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=9 | packetSize=51932 | srcAddr=01:93|dropCount=9|dsts=46,67,68,88,108,128,147,148,166
+402-D-46(9) 402-D-67(9) 402-D-68(9) 402-D-88(9) 402-D-108(9) 402-D-128(9) 402-D-147(9) 402-D-148(9) 402-D-166(9) 
+402-R-45(9) 402-R-64(9) 402-R-65(9) 402-R-66(9) 402-R-84(9) 402-R-85(9) 402-R-86(9) 402-R-87(9) 402-R-103(9) 402-R-104(9) 402-R-105(9) 402-R-106(9) 402-R-107(9) 402-R-124(9) 402-R-125(9) 402-R-126(9) 402-R-127(9) 402-R-144(9) 402-R-145(9) 402-R-146(9) 50-S-45(1) 50-S-45(2) 68-S-45(8) 
+[EVENT] 149.682 | event=RequestFragmentSharing | nodeId=45 | cellId=1 | confidence=0.602 | fragments=1 2 8 9 
+
+[EVENT] 150.913 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=0 | cycle=9 | confidence=0.206 | pixels=17306
+
+[EVENT] 150.913 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=0 | packetSize=51935 | srcAddr=01:93|dropCount=14|dsts=44,45,65,66,86,87,106,107,126,127,145,146,164,165
+402-D-44(0) 402-D-45(0) 402-D-65(0) 402-D-66(0) 402-D-86(0) 402-D-87(0) 402-D-106(0) 402-D-107(0) 402-D-126(0) 402-D-127(0) 402-D-145(0) 402-D-146(0) 402-D-164(0) 402-D-165(0) 
+402-R-62(0) 402-R-63(0) 402-R-64(0) 402-R-82(0) 402-R-83(0) 402-R-84(0) 402-R-85(0) 402-R-102(0) 402-R-103(0) 402-R-104(0) 402-R-105(0) 402-R-121(0) 402-R-122(0) 402-R-123(0) 402-R-124(0) 402-R-125(0) 402-R-142(0) 402-R-143(0) 402-R-144(0) 
+[EVENT] 152.575 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=1 | cycle=9 | confidence=0.206 | pixels=17306
+
+[EVENT] 152.575 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=1 | packetSize=51935 | srcAddr=01:93|dropCount=12|dsts=42,43,64,84,85,104,105,124,125,144,162,163
+402-D-42(1) 402-D-43(1) 402-D-64(1) 402-D-84(1) 402-D-85(1) 402-D-104(1) 402-D-105(1) 402-D-124(1) 402-D-125(1) 402-D-144(1) 402-D-162(1) 402-D-163(1) 
+402-R-61(1) 402-R-62(1) 402-R-63(1) 402-R-80(1) 402-R-81(1) 402-R-82(1) 402-R-83(1) 402-R-100(1) 402-R-101(1) 402-R-102(1) 402-R-103(1) 402-R-120(1) 402-R-121(1) 402-R-122(1) 402-R-123(1) 402-R-141(1) 402-R-142(1) 402-R-143(1) 
+[EVENT] 152.923 | event=UAVWaypointArrival | nodeId=402 | cycle=2 | pos=(40.000,100.000,20.000)
+43-S-61(4) 43-S-61(7) 
+[EVENT] 152.999 | event=RequestFragmentSharing | nodeId=61 | cellId=0 | confidence=0.499 | fragments=1 4 7 
+
+[EVENT] 154.236 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=2 | cycle=9 | confidence=0.206 | pixels=17306
+
+[EVENT] 154.236 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=2 | packetSize=51935 | srcAddr=01:93|dropCount=10|dsts=80,81,82,83,84,100,104,125,145,401
+402-D-80(2) 402-D-81(2) 402-D-82(2) 402-D-83(2) 402-D-84(2) 402-D-100(2) 402-D-104(2) 402-D-125(2) 402-D-145(2) 402-D-401(2) 
+402-R-101(2) 402-R-102(2) 402-R-103(2) 402-R-120(2) 402-R-121(2) 402-R-122(2) 402-R-123(2) 402-R-124(2) 402-R-140(2) 402-R-141(2) 402-R-142(2) 402-R-143(2) 402-R-144(2) 402-R-160(2) 402-R-161(2) 402-R-162(2) 402-R-163(2) 402-R-164(2) 402-R-182(2) 402-R-183(2) 
+[EVENT] 155.897 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=3 | cycle=9 | confidence=0.206 | pixels=17306
+
+[EVENT] 155.897 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=3 | packetSize=51935 | srcAddr=01:93|dropCount=9|dsts=101,102,103,120,121,122,123,124,144
+402-D-101(3) 402-D-102(3) 402-D-103(3) 402-D-120(3) 402-D-121(3) 402-D-122(3) 402-D-123(3) 402-D-124(3) 402-D-144(3) 
+402-R-140(3) 402-R-141(3) 402-R-142(3) 402-R-143(3) 402-R-160(3) 402-R-161(3) 402-R-162(3) 402-R-163(3) 402-R-164(3) 402-R-180(3) 402-R-181(3) 402-R-182(3) 402-R-183(3) 402-R-184(3) 402-R-200(3) 402-R-201(3) 402-R-202(3) 402-R-221(3) 402-R-222(3) 
 [EVENT] 156.637 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(20.000,80.000,20.000)
 
-[EVENT] 157.742 | event=UAVWaypointArrival | nodeId=402 | cycle=2 | pos=(220.000,140.000,20.000)
+[EVENT] 157.559 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=4 | cycle=9 | confidence=0.206 | pixels=17306
 
-[EVENT] 173.291 | event=UAVWaypointArrival | nodeId=402 | cycle=2 | pos=(20.000,260.000,20.000)
+[EVENT] 157.559 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=4 | packetSize=51935 | srcAddr=01:93|dropCount=10|dsts=140,141,142,143,160,161,162,163,164,184
+402-D-140(4) 402-D-141(4) 402-D-142(4) 402-D-143(4) 402-D-160(4) 402-D-161(4) 402-D-162(4) 402-D-163(4) 402-D-164(4) 402-D-184(4) 
+402-R-180(4) 402-R-181(4) 402-R-182(4) 402-R-183(4) 402-R-200(4) 402-R-201(4) 402-R-202(4) 402-R-203(4) 402-R-204(4) 402-R-220(4) 402-R-221(4) 402-R-222(4) 402-R-223(4) 402-R-224(4) 402-R-241(4) 402-R-242(4) 402-R-243(4) 
+[EVENT] 159.220 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=5 | cycle=9 | confidence=0.206 | pixels=17306
 
+[EVENT] 159.220 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=5 | packetSize=51935 | srcAddr=01:93|dropCount=7|dsts=180,181,182,183,203,204,224
+402-D-180(5) 402-D-181(5) 402-D-182(5) 402-D-183(5) 402-D-203(5) 402-D-204(5) 402-D-224(5) 
+402-R-200(5) 402-R-201(5) 402-R-202(5) 402-R-220(5) 402-R-221(5) 402-R-222(5) 402-R-223(5) 402-R-240(5) 402-R-241(5) 402-R-242(5) 402-R-243(5) 402-R-260(5) 402-R-261(5) 402-R-262(5) 402-R-263(5) 402-R-281(5) 402-R-283(5) 
+[EVENT] 160.882 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=6 | cycle=9 | confidence=0.206 | pixels=17305
+
+[EVENT] 160.882 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=6 | packetSize=51932 | srcAddr=01:93|dropCount=10|dsts=200,201,202,220,221,222,223,243,244,264
+402-D-200(6) 402-D-201(6) 402-D-202(6) 402-D-220(6) 402-D-221(6) 402-D-222(6) 402-D-223(6) 402-D-243(6) 402-D-244(6) 402-D-264(6) 
+402-R-240(6) 402-R-241(6) 402-R-242(6) 402-R-260(6) 402-R-261(6) 402-R-262(6) 402-R-263(6) 402-R-280(6) 402-R-281(6) 402-R-282(6) 402-R-283(6) 402-R-284(6) 402-R-300(6) 402-R-301(6) 402-R-302(6) 402-R-303(6) 402-R-321(6) 
+[EVENT] 161.979 | event=UAVWaypointArrival | nodeId=402 | cycle=2 | pos=(20.000,280.000,20.000)
+
+[EVENT] 162.543 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=7 | cycle=9 | confidence=0.206 | pixels=17305
+
+[EVENT] 162.543 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=7 | packetSize=51932 | srcAddr=01:93|dropCount=5|dsts=304,320,321,322,323
+402-D-304(7) 402-D-320(7) 402-D-321(7) 402-D-322(7) 402-D-323(7) 
+402-R-221(7) 402-R-222(7) 402-R-240(7) 402-R-241(7) 402-R-242(7) 402-R-243(7) 402-R-260(7) 402-R-261(7) 402-R-262(7) 402-R-263(7) 402-R-264(7) 402-R-280(7) 402-R-281(7) 402-R-282(7) 402-R-283(7) 402-R-300(7) 402-R-301(7) 402-R-302(7) 402-R-303(7) 
+[EVENT] 164.204 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=8 | cycle=9 | confidence=0.206 | pixels=17305
+
+[EVENT] 164.204 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=8 | packetSize=51932 | srcAddr=01:93|dropCount=5|dsts=284,300,301,302,303
+402-D-284(8) 402-D-300(8) 402-D-301(8) 402-D-302(8) 402-D-303(8) 
+402-R-200(8) 402-R-201(8) 402-R-202(8) 402-R-203(8) 402-R-220(8) 402-R-221(8) 402-R-222(8) 402-R-223(8) 402-R-240(8) 402-R-241(8) 402-R-242(8) 402-R-243(8) 402-R-244(8) 402-R-260(8) 402-R-261(8) 402-R-262(8) 402-R-264(8) 402-R-280(8) 402-R-281(8) 402-R-282(8) 402-R-283(8) 
+[EVENT] 165.865 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=9 | cycle=9 | confidence=0.206 | pixels=17305
+
+[EVENT] 165.865 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=9 | packetSize=51932 | srcAddr=01:93|dropCount=6|dsts=260,264,280,281,282,283
+402-D-260(9) 402-D-264(9) 402-D-280(9) 402-D-281(9) 402-D-282(9) 402-D-283(9) 
+402-R-181(9) 402-R-182(9) 402-R-183(9) 402-R-200(9) 402-R-201(9) 402-R-202(9) 402-R-203(9) 402-R-204(9) 402-R-220(9) 402-R-221(9) 402-R-222(9) 402-R-223(9) 402-R-224(9) 402-R-240(9) 402-R-241(9) 402-R-242(9) 402-R-243(9) 402-R-244(9) 402-R-261(9) 402-R-262(9) 402-R-263(9) 
+[EVENT] 167.527 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=0 | cycle=10 | confidence=0.206 | pixels=17306
+
+[EVENT] 167.527 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=0 | packetSize=51935 | srcAddr=01:93|dropCount=6|dsts=240,241,244,261,262,263
+402-D-240(0) 402-D-241(0) 402-D-244(0) 402-D-261(0) 402-D-262(0) 402-D-263(0) 
+402-R-142(0) 402-R-160(0) 402-R-161(0) 402-R-162(0) 402-R-163(0) 402-R-180(0) 402-R-181(0) 402-R-182(0) 402-R-183(0) 402-R-184(0) 402-R-200(0) 402-R-201(0) 402-R-202(0) 402-R-203(0) 402-R-204(0) 402-R-205(0) 402-R-221(0) 402-R-222(0) 402-R-223(0) 402-R-224(0) 402-R-242(0) 402-R-243(0) 
+[EVENT] 169.188 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=1 | cycle=10 | confidence=0.206 | pixels=17306
+
+[EVENT] 169.188 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=1 | packetSize=51935 | srcAddr=01:93|dropCount=9|dsts=200,205,220,221,222,223,224,242,243
+402-D-200(1) 402-D-205(1) 402-D-220(1) 402-D-221(1) 402-D-222(1) 402-D-223(1) 402-D-224(1) 402-D-242(1) 402-D-243(1) 
+402-R-121(1) 402-R-141(1) 402-R-142(1) 402-R-143(1) 402-R-144(1) 402-R-160(1) 402-R-161(1) 402-R-162(1) 402-R-163(1) 402-R-164(1) 402-R-165(1) 402-R-180(1) 402-R-181(1) 402-R-182(1) 402-R-183(1) 402-R-184(1) 402-R-185(1) 402-R-201(1) 402-R-202(1) 402-R-203(1) 402-R-204(1) 
+[EVENT] 170.849 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=2 | cycle=10 | confidence=0.206 | pixels=17306
+
+[EVENT] 170.849 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=2 | packetSize=51935 | srcAddr=01:93|dropCount=6|dsts=180,185,201,202,203,204
+402-D-180(2) 402-D-185(2) 402-D-201(2) 402-D-202(2) 402-D-203(2) 402-D-204(2) 
+402-R-101(2) 402-R-102(2) 402-R-103(2) 402-R-104(2) 402-R-120(2) 402-R-121(2) 402-R-122(2) 402-R-123(2) 402-R-124(2) 402-R-125(2) 402-R-140(2) 402-R-141(2) 402-R-142(2) 402-R-143(2) 402-R-144(2) 402-R-145(2) 402-R-160(2) 402-R-161(2) 402-R-162(2) 402-R-163(2) 402-R-164(2) 402-R-165(2) 402-R-181(2) 402-R-182(2) 402-R-183(2) 402-R-184(2) 
+[EVENT] 172.511 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=3 | cycle=10 | confidence=0.206 | pixels=17306
+
+[EVENT] 172.511 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=3 | packetSize=51935 | srcAddr=01:93|dropCount=7|dsts=140,160,165,181,182,183,184
+402-D-140(3) 402-D-160(3) 402-D-165(3) 402-D-181(3) 402-D-182(3) 402-D-183(3) 402-D-184(3) 
+402-R-81(3) 402-R-82(3) 402-R-83(3) 402-R-84(3) 402-R-101(3) 402-R-102(3) 402-R-103(3) 402-R-104(3) 402-R-120(3) 402-R-121(3) 402-R-122(3) 402-R-123(3) 402-R-124(3) 402-R-125(3) 402-R-141(3) 402-R-142(3) 402-R-143(3) 402-R-144(3) 402-R-145(3) 402-R-161(3) 402-R-162(3) 402-R-163(3) 402-R-164(3) 
+[EVENT] 174.172 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=4 | cycle=10 | confidence=0.206 | pixels=17306
+
+[EVENT] 174.172 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=4 | packetSize=51935 | srcAddr=01:93|dropCount=9|dsts=100,120,126,141,145,161,162,163,164
+402-D-100(4) 402-D-120(4) 402-D-126(4) 402-D-141(4) 402-D-145(4) 402-D-161(4) 402-D-162(4) 402-D-163(4) 402-D-164(4) 
+402-R-61(4) 402-R-62(4) 402-R-63(4) 402-R-80(4) 402-R-81(4) 402-R-82(4) 402-R-83(4) 402-R-84(4) 402-R-85(4) 402-R-101(4) 402-R-102(4) 402-R-103(4) 402-R-104(4) 402-R-105(4) 402-R-121(4) 402-R-122(4) 402-R-123(4) 402-R-124(4) 402-R-125(4) 402-R-142(4) 402-R-143(4) 402-R-144(4) 
 [EVENT] 174.251 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(20.000,100.000,20.000)
 
-[EVENT] 175.958 | event=UAVWaypointArrival | nodeId=402 | cycle=2 | pos=(20.000,220.000,20.000)
+[EVENT] 174.785 | event=UAVWaypointArrival | nodeId=402 | cycle=3 | pos=(60.000,100.000,20.000)
 
-[EVENT] 185.523 | event=UAVWaypointArrival | nodeId=402 | cycle=2 | pos=(155.789,266.316,20.000)
+[EVENT] 175.834 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=5 | cycle=10 | confidence=0.206 | pixels=17306
+
+[EVENT] 175.834 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=5 | packetSize=51935 | srcAddr=01:93|dropCount=15|dsts=62,63,64,81,82,83,84,85,100,101,105,106,120,126,401
+402-D-62(5) 402-D-63(5) 402-D-64(5) 402-D-81(5) 402-D-82(5) 402-D-83(5) 402-D-84(5) 402-D-85(5) 402-D-100(5) 402-D-101(5) 402-D-105(5) 402-D-106(5) 402-D-120(5) 402-D-126(5) 402-D-401(5) 
+402-R-102(5) 402-R-103(5) 402-R-104(5) 402-R-121(5) 402-R-122(5) 402-R-123(5) 402-R-124(5) 402-R-125(5) 402-R-141(5) 402-R-142(5) 402-R-143(5) 402-R-144(5) 402-R-145(5) 402-R-146(5) 402-R-161(5) 402-R-162(5) 402-R-163(5) 402-R-164(5) 402-R-165(5) 402-R-182(5) 402-R-183(5) 402-R-184(5) 
+[EVENT] 177.495 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=6 | cycle=10 | confidence=0.206 | pixels=17305
+
+[EVENT] 177.495 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=6 | packetSize=51932 | srcAddr=01:93|dropCount=12|dsts=102,103,104,121,122,123,124,125,140,146,160,166
+402-D-102(6) 402-D-103(6) 402-D-104(6) 402-D-121(6) 402-D-122(6) 402-D-123(6) 402-D-124(6) 402-D-125(6) 402-D-140(6) 402-D-146(6) 402-D-160(6) 402-D-166(6) 
+402-R-141(6) 402-R-142(6) 402-R-143(6) 402-R-144(6) 402-R-145(6) 402-R-161(6) 402-R-162(6) 402-R-163(6) 402-R-164(6) 402-R-165(6) 402-R-181(6) 402-R-182(6) 402-R-183(6) 402-R-184(6) 402-R-185(6) 402-R-202(6) 402-R-203(6) 402-R-204(6) 402-R-205(6) 
+[EVENT] 177.785 | event=UAVWaypointArrival | nodeId=402 | cycle=3 | pos=(60.000,160.000,20.000)
+
+[EVENT] 179.156 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=7 | cycle=10 | confidence=0.206 | pixels=17305
+
+[EVENT] 179.156 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=7 | packetSize=51932 | srcAddr=01:93|dropCount=9|dsts=141,142,143,144,145,161,165,180,186
+402-D-141(7) 402-D-142(7) 402-D-143(7) 402-D-144(7) 402-D-145(7) 402-D-161(7) 402-D-165(7) 402-D-180(7) 402-D-186(7) 
+402-R-162(7) 402-R-163(7) 402-R-164(7) 402-R-181(7) 402-R-182(7) 402-R-183(7) 402-R-184(7) 402-R-185(7) 402-R-200(7) 402-R-201(7) 402-R-202(7) 402-R-203(7) 402-R-204(7) 402-R-205(7) 402-R-206(7) 402-R-221(7) 402-R-222(7) 402-R-223(7) 402-R-224(7) 402-R-225(7) 402-R-242(7) 402-R-243(7) 402-R-244(7) 
+[EVENT] 180.785 | event=UAVWaypointArrival | nodeId=402 | cycle=3 | pos=(60.000,220.000,20.000)
+
+[EVENT] 180.817 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=8 | cycle=10 | confidence=0.206 | pixels=17305
+
+[EVENT] 180.817 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=8 | packetSize=51932 | srcAddr=01:93|dropCount=14|dsts=162,163,164,181,182,183,184,185,200,201,205,206,220,226
+402-D-162(8) 402-D-163(8) 402-D-164(8) 402-D-181(8) 402-D-182(8) 402-D-183(8) 402-D-184(8) 402-D-185(8) 402-D-200(8) 402-D-201(8) 402-D-205(8) 402-D-206(8) 402-D-220(8) 402-D-226(8) 
+402-R-202(8) 402-R-203(8) 402-R-204(8) 402-R-221(8) 402-R-222(8) 402-R-223(8) 402-R-224(8) 402-R-225(8) 402-R-240(8) 402-R-242(8) 402-R-243(8) 402-R-244(8) 402-R-245(8) 402-R-262(8) 402-R-263(8) 402-R-264(8) 402-R-282(8) 402-R-283(8) 
+[EVENT] 181.785 | event=UAVWaypointArrival | nodeId=402 | cycle=3 | pos=(60.000,240.000,20.000)
+
+[EVENT] 182.479 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=9 | cycle=10 | confidence=0.206 | pixels=17305
+
+[EVENT] 182.479 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=9 | packetSize=51932 | srcAddr=01:93|dropCount=12|dsts=183,184,202,221,222,241,242,261,262,282,303,304
+402-D-183(9) 402-D-184(9) 402-D-202(9) 402-D-221(9) 402-D-222(9) 402-D-241(9) 402-D-242(9) 402-D-261(9) 402-D-262(9) 402-D-282(9) 402-D-303(9) 402-D-304(9) 
+402-R-203(9) 402-R-204(9) 402-R-205(9) 402-R-206(9) 402-R-223(9) 402-R-224(9) 402-R-225(9) 402-R-226(9) 402-R-243(9) 402-R-244(9) 402-R-245(9) 402-R-246(9) 402-R-263(9) 402-R-264(9) 402-R-265(9) 402-R-266(9) 402-R-283(9) 402-R-284(9) 402-R-285(9) 
+[EVENT] 184.140 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=0 | cycle=11 | confidence=0.206 | pixels=17306
+
+[EVENT] 184.140 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=0 | packetSize=51935 | srcAddr=01:93|dropCount=9|dsts=185,203,204,223,243,263,283,284,305
+402-D-185(0) 402-D-203(0) 402-D-204(0) 402-D-223(0) 402-D-243(0) 402-D-263(0) 402-D-283(0) 402-D-284(0) 402-D-305(0) 
+402-R-205(0) 402-R-206(0) 402-R-207(0) 402-R-224(0) 402-R-225(0) 402-R-226(0) 402-R-227(0) 402-R-228(0) 402-R-244(0) 402-R-245(0) 402-R-246(0) 402-R-247(0) 402-R-248(0) 402-R-264(0) 402-R-265(0) 402-R-266(0) 402-R-267(0) 402-R-285(0) 402-R-286(0) 
+[EVENT] 184.140 | event=UAV2MissionComplete | triggerNodeId=287 | confidence=0.800
+402-R-287(0) 402-R-306(0) 
+[EVENT] 184.785 | event=UAVWaypointArrival | nodeId=402 | cycle=3 | pos=(120.000,240.000,20.000)
+
+[EVENT] 186.785 | event=UAVWaypointArrival | nodeId=402 | cycle=3 | pos=(160.000,240.000,20.000)
+
+[EVENT] 189.785 | event=UAVWaypointArrival | nodeId=402 | cycle=3 | pos=(160.000,180.000,20.000)
 
 [EVENT] 191.864 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(0.000,100.000,20.000)
 
-[EVENT] 196.864 | event=UAVWaypointArrival | nodeId=402 | cycle=2 | pos=(120.000,100.000,20.000)
+[EVENT] 192.785 | event=UAVWaypointArrival | nodeId=402 | cycle=3 | pos=(160.000,120.000,20.000)
 
-[EVENT] 202.198 | event=UAVWaypointArrival | nodeId=402 | cycle=2 | pos=(40.000,100.000,20.000)
+[EVENT] 195.021 | event=UAVWaypointArrival | nodeId=402 | cycle=3 | pos=(200.000,100.000,20.000)
+
+[EVENT] 196.021 | event=UAVWaypointArrival | nodeId=402 | cycle=3 | pos=(220.000,100.000,20.000)
+
+[EVENT] 198.021 | event=UAVWaypointArrival | nodeId=402 | cycle=3 | pos=(220.000,140.000,20.000)
+
+[EVENT] 209.683 | event=UAVWaypointArrival | nodeId=402 | cycle=3 | pos=(20.000,260.000,20.000)
 
 [EVENT] 209.891 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(20.000,120.000,20.000)
 
-[EVENT] 214.271 | event=UAVWaypointArrival | nodeId=402 | cycle=2 | pos=(20.000,280.000,20.000)
+[EVENT] 211.683 | event=UAVWaypointArrival | nodeId=402 | cycle=3 | pos=(20.000,220.000,20.000)
+
+[EVENT] 218.856 | event=UAVWaypointArrival | nodeId=402 | cycle=3 | pos=(155.789,266.316,20.000)
+
+[EVENT] 227.363 | event=UAVWaypointArrival | nodeId=402 | cycle=3 | pos=(120.000,100.000,20.000)
 
 [EVENT] 227.505 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(40.000,120.000,20.000)
 
-[EVENT] 231.346 | event=UAVWaypointArrival | nodeId=402 | cycle=3 | pos=(60.000,100.000,20.000)
+[EVENT] 231.363 | event=UAVWaypointArrival | nodeId=402 | cycle=3 | pos=(40.000,100.000,20.000)
 
-[EVENT] 235.346 | event=UAVWaypointArrival | nodeId=402 | cycle=3 | pos=(60.000,160.000,20.000)
-
-[EVENT] 239.346 | event=UAVWaypointArrival | nodeId=402 | cycle=3 | pos=(60.000,220.000,20.000)
-
-[EVENT] 240.680 | event=UAVWaypointArrival | nodeId=402 | cycle=3 | pos=(60.000,240.000,20.000)
-
-[EVENT] 244.680 | event=UAVWaypointArrival | nodeId=402 | cycle=3 | pos=(120.000,240.000,20.000)
+[EVENT] 240.418 | event=UAVWaypointArrival | nodeId=402 | cycle=3 | pos=(20.000,280.000,20.000)
 
 [EVENT] 245.118 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(40.000,100.000,20.000)
 
-[EVENT] 247.346 | event=UAVWaypointArrival | nodeId=402 | cycle=3 | pos=(160.000,240.000,20.000)
+[EVENT] 253.224 | event=UAVWaypointArrival | nodeId=402 | cycle=4 | pos=(60.000,100.000,20.000)
 
-[EVENT] 251.346 | event=UAVWaypointArrival | nodeId=402 | cycle=3 | pos=(160.000,180.000,20.000)
+[EVENT] 256.224 | event=UAVWaypointArrival | nodeId=402 | cycle=4 | pos=(60.000,160.000,20.000)
 
-[EVENT] 255.346 | event=UAVWaypointArrival | nodeId=402 | cycle=3 | pos=(160.000,120.000,20.000)
+[EVENT] 259.224 | event=UAVWaypointArrival | nodeId=402 | cycle=4 | pos=(60.000,220.000,20.000)
 
-[EVENT] 258.328 | event=UAVWaypointArrival | nodeId=402 | cycle=3 | pos=(200.000,100.000,20.000)
-
-[EVENT] 259.661 | event=UAVWaypointArrival | nodeId=402 | cycle=3 | pos=(220.000,100.000,20.000)
-
-[EVENT] 262.328 | event=UAVWaypointArrival | nodeId=402 | cycle=3 | pos=(220.000,140.000,20.000)
+[EVENT] 260.224 | event=UAVWaypointArrival | nodeId=402 | cycle=4 | pos=(60.000,240.000,20.000)
 
 [EVENT] 262.732 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(60.000,100.000,20.000)
 
-[EVENT] 277.877 | event=UAVWaypointArrival | nodeId=402 | cycle=3 | pos=(20.000,260.000,20.000)
+[EVENT] 263.224 | event=UAVWaypointArrival | nodeId=402 | cycle=4 | pos=(120.000,240.000,20.000)
+
+[EVENT] 265.224 | event=UAVWaypointArrival | nodeId=402 | cycle=4 | pos=(160.000,240.000,20.000)
+
+[EVENT] 268.224 | event=UAVWaypointArrival | nodeId=402 | cycle=4 | pos=(160.000,180.000,20.000)
+
+[EVENT] 271.224 | event=UAVWaypointArrival | nodeId=402 | cycle=4 | pos=(160.000,120.000,20.000)
+
+[EVENT] 273.460 | event=UAVWaypointArrival | nodeId=402 | cycle=4 | pos=(200.000,100.000,20.000)
+
+[EVENT] 274.460 | event=UAVWaypointArrival | nodeId=402 | cycle=4 | pos=(220.000,100.000,20.000)
+
+[EVENT] 276.460 | event=UAVWaypointArrival | nodeId=402 | cycle=4 | pos=(220.000,140.000,20.000)
 
 [EVENT] 280.345 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(80.000,100.000,20.000)
 
-[EVENT] 280.544 | event=UAVWaypointArrival | nodeId=402 | cycle=3 | pos=(20.000,220.000,20.000)
+[EVENT] 288.122 | event=UAVWaypointArrival | nodeId=402 | cycle=4 | pos=(20.000,260.000,20.000)
 
-[EVENT] 290.109 | event=UAVWaypointArrival | nodeId=402 | cycle=3 | pos=(155.789,266.316,20.000)
+[EVENT] 290.122 | event=UAVWaypointArrival | nodeId=402 | cycle=4 | pos=(20.000,220.000,20.000)
+
+[EVENT] 297.296 | event=UAVWaypointArrival | nodeId=402 | cycle=4 | pos=(155.789,266.316,20.000)
 
 [EVENT] 297.958 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(100.000,100.000,20.000)
 
-[EVENT] 301.450 | event=UAVWaypointArrival | nodeId=402 | cycle=3 | pos=(120.000,100.000,20.000)
+[EVENT] 305.802 | event=UAVWaypointArrival | nodeId=402 | cycle=4 | pos=(120.000,100.000,20.000)
 
-[EVENT] 306.783 | event=UAVWaypointArrival | nodeId=402 | cycle=3 | pos=(40.000,100.000,20.000)
+[EVENT] 309.802 | event=UAVWaypointArrival | nodeId=402 | cycle=4 | pos=(40.000,100.000,20.000)
 
 [EVENT] 315.572 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(120.000,100.000,20.000)
 
-[EVENT] 318.857 | event=UAVWaypointArrival | nodeId=402 | cycle=3 | pos=(20.000,280.000,20.000)
+[EVENT] 318.857 | event=UAVWaypointArrival | nodeId=402 | cycle=4 | pos=(20.000,280.000,20.000)
+
+[EVENT] 331.663 | event=UAVWaypointArrival | nodeId=402 | cycle=5 | pos=(60.000,100.000,20.000)
 
 [EVENT] 333.185 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(120.000,80.000,20.000)
 
-[EVENT] 335.932 | event=UAVWaypointArrival | nodeId=402 | cycle=4 | pos=(60.000,100.000,20.000)
+[EVENT] 334.663 | event=UAVWaypointArrival | nodeId=402 | cycle=5 | pos=(60.000,160.000,20.000)
 
-[EVENT] 339.932 | event=UAVWaypointArrival | nodeId=402 | cycle=4 | pos=(60.000,160.000,20.000)
+[EVENT] 337.663 | event=UAVWaypointArrival | nodeId=402 | cycle=5 | pos=(60.000,220.000,20.000)
 
-[EVENT] 343.932 | event=UAVWaypointArrival | nodeId=402 | cycle=4 | pos=(60.000,220.000,20.000)
+[EVENT] 338.663 | event=UAVWaypointArrival | nodeId=402 | cycle=5 | pos=(60.000,240.000,20.000)
 
-[EVENT] 345.266 | event=UAVWaypointArrival | nodeId=402 | cycle=4 | pos=(60.000,240.000,20.000)
+[EVENT] 341.663 | event=UAVWaypointArrival | nodeId=402 | cycle=5 | pos=(120.000,240.000,20.000)
 
-[EVENT] 349.266 | event=UAVWaypointArrival | nodeId=402 | cycle=4 | pos=(120.000,240.000,20.000)
+[EVENT] 343.663 | event=UAVWaypointArrival | nodeId=402 | cycle=5 | pos=(160.000,240.000,20.000)
+
+[EVENT] 346.663 | event=UAVWaypointArrival | nodeId=402 | cycle=5 | pos=(160.000,180.000,20.000)
+
+[EVENT] 349.663 | event=UAVWaypointArrival | nodeId=402 | cycle=5 | pos=(160.000,120.000,20.000)
 
 [EVENT] 350.799 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(140.000,80.000,20.000)
 
-[EVENT] 351.932 | event=UAVWaypointArrival | nodeId=402 | cycle=4 | pos=(160.000,240.000,20.000)
+[EVENT] 351.900 | event=UAVWaypointArrival | nodeId=402 | cycle=5 | pos=(200.000,100.000,20.000)
 
-[EVENT] 355.932 | event=UAVWaypointArrival | nodeId=402 | cycle=4 | pos=(160.000,180.000,20.000)
+[EVENT] 352.900 | event=UAVWaypointArrival | nodeId=402 | cycle=5 | pos=(220.000,100.000,20.000)
 
-[EVENT] 359.932 | event=UAVWaypointArrival | nodeId=402 | cycle=4 | pos=(160.000,120.000,20.000)
+[EVENT] 354.900 | event=UAVWaypointArrival | nodeId=402 | cycle=5 | pos=(220.000,140.000,20.000)
 
-[EVENT] 362.914 | event=UAVWaypointArrival | nodeId=402 | cycle=4 | pos=(200.000,100.000,20.000)
-
-[EVENT] 364.247 | event=UAVWaypointArrival | nodeId=402 | cycle=4 | pos=(220.000,100.000,20.000)
-
-[EVENT] 366.914 | event=UAVWaypointArrival | nodeId=402 | cycle=4 | pos=(220.000,140.000,20.000)
+[EVENT] 366.561 | event=UAVWaypointArrival | nodeId=402 | cycle=5 | pos=(20.000,260.000,20.000)
 
 [EVENT] 368.412 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(160.000,80.000,20.000)
 
-[EVENT] 382.463 | event=UAVWaypointArrival | nodeId=402 | cycle=4 | pos=(20.000,260.000,20.000)
+[EVENT] 368.561 | event=UAVWaypointArrival | nodeId=402 | cycle=5 | pos=(20.000,220.000,20.000)
 
-[EVENT] 385.130 | event=UAVWaypointArrival | nodeId=402 | cycle=4 | pos=(20.000,220.000,20.000)
+[EVENT] 375.735 | event=UAVWaypointArrival | nodeId=402 | cycle=5 | pos=(155.789,266.316,20.000)
+
+[EVENT] 384.241 | event=UAVWaypointArrival | nodeId=402 | cycle=5 | pos=(120.000,100.000,20.000)
 
 [EVENT] 386.025 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(180.000,80.000,20.000)
 
-[EVENT] 394.694 | event=UAVWaypointArrival | nodeId=402 | cycle=4 | pos=(155.789,266.316,20.000)
+[EVENT] 388.241 | event=UAVWaypointArrival | nodeId=402 | cycle=5 | pos=(40.000,100.000,20.000)
+
+[EVENT] 397.297 | event=UAVWaypointArrival | nodeId=402 | cycle=5 | pos=(20.000,280.000,20.000)
 
 [EVENT] 403.639 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(180.000,60.000,20.000)
 
-[EVENT] 406.036 | event=UAVWaypointArrival | nodeId=402 | cycle=4 | pos=(120.000,100.000,20.000)
+[EVENT] 410.103 | event=UAVWaypointArrival | nodeId=402 | cycle=6 | pos=(60.000,100.000,20.000)
 
-[EVENT] 411.369 | event=UAVWaypointArrival | nodeId=402 | cycle=4 | pos=(40.000,100.000,20.000)
+[EVENT] 413.103 | event=UAVWaypointArrival | nodeId=402 | cycle=6 | pos=(60.000,160.000,20.000)
+
+[EVENT] 416.103 | event=UAVWaypointArrival | nodeId=402 | cycle=6 | pos=(60.000,220.000,20.000)
+
+[EVENT] 417.103 | event=UAVWaypointArrival | nodeId=402 | cycle=6 | pos=(60.000,240.000,20.000)
+
+[EVENT] 420.103 | event=UAVWaypointArrival | nodeId=402 | cycle=6 | pos=(120.000,240.000,20.000)
 
 [EVENT] 421.252 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(200.000,60.000,20.000)
 
-[EVENT] 423.443 | event=UAVWaypointArrival | nodeId=402 | cycle=4 | pos=(20.000,280.000,20.000)
+[EVENT] 422.103 | event=UAVWaypointArrival | nodeId=402 | cycle=6 | pos=(160.000,240.000,20.000)
+
+[EVENT] 425.103 | event=UAVWaypointArrival | nodeId=402 | cycle=6 | pos=(160.000,180.000,20.000)
+
+[EVENT] 428.103 | event=UAVWaypointArrival | nodeId=402 | cycle=6 | pos=(160.000,120.000,20.000)
+
+[EVENT] 430.339 | event=UAVWaypointArrival | nodeId=402 | cycle=6 | pos=(200.000,100.000,20.000)
+
+[EVENT] 431.339 | event=UAVWaypointArrival | nodeId=402 | cycle=6 | pos=(220.000,100.000,20.000)
+
+[EVENT] 433.339 | event=UAVWaypointArrival | nodeId=402 | cycle=6 | pos=(220.000,140.000,20.000)
 
 [EVENT] 438.865 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(220.000,60.000,20.000)
 
-[EVENT] 440.518 | event=UAVWaypointArrival | nodeId=402 | cycle=5 | pos=(60.000,100.000,20.000)
+[EVENT] 445.001 | event=UAVWaypointArrival | nodeId=402 | cycle=6 | pos=(20.000,260.000,20.000)
 
-[EVENT] 444.518 | event=UAVWaypointArrival | nodeId=402 | cycle=5 | pos=(60.000,160.000,20.000)
+[EVENT] 447.001 | event=UAVWaypointArrival | nodeId=402 | cycle=6 | pos=(20.000,220.000,20.000)
 
-[EVENT] 448.518 | event=UAVWaypointArrival | nodeId=402 | cycle=5 | pos=(60.000,220.000,20.000)
-
-[EVENT] 449.851 | event=UAVWaypointArrival | nodeId=402 | cycle=5 | pos=(60.000,240.000,20.000)
-
-[EVENT] 453.851 | event=UAVWaypointArrival | nodeId=402 | cycle=5 | pos=(120.000,240.000,20.000)
+[EVENT] 454.174 | event=UAVWaypointArrival | nodeId=402 | cycle=6 | pos=(155.789,266.316,20.000)
 
 [EVENT] 456.479 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(240.000,60.000,20.000)
 
-[EVENT] 456.518 | event=UAVWaypointArrival | nodeId=402 | cycle=5 | pos=(160.000,240.000,20.000)
+[EVENT] 462.680 | event=UAVWaypointArrival | nodeId=402 | cycle=6 | pos=(120.000,100.000,20.000)
 
-[EVENT] 460.518 | event=UAVWaypointArrival | nodeId=402 | cycle=5 | pos=(160.000,180.000,20.000)
-
-[EVENT] 464.518 | event=UAVWaypointArrival | nodeId=402 | cycle=5 | pos=(160.000,120.000,20.000)
-
-[EVENT] 467.499 | event=UAVWaypointArrival | nodeId=402 | cycle=5 | pos=(200.000,100.000,20.000)
-
-[EVENT] 468.833 | event=UAVWaypointArrival | nodeId=402 | cycle=5 | pos=(220.000,100.000,20.000)
-
-[EVENT] 471.499 | event=UAVWaypointArrival | nodeId=402 | cycle=5 | pos=(220.000,140.000,20.000)
+[EVENT] 466.680 | event=UAVWaypointArrival | nodeId=402 | cycle=6 | pos=(40.000,100.000,20.000)
 
 [EVENT] 474.092 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(240.000,80.000,20.000)
 
-[EVENT] 487.049 | event=UAVWaypointArrival | nodeId=402 | cycle=5 | pos=(20.000,260.000,20.000)
+[EVENT] 475.736 | event=UAVWaypointArrival | nodeId=402 | cycle=6 | pos=(20.000,280.000,20.000)
 
-[EVENT] 489.715 | event=UAVWaypointArrival | nodeId=402 | cycle=5 | pos=(20.000,220.000,20.000)
+[EVENT] 488.542 | event=UAVWaypointArrival | nodeId=402 | cycle=7 | pos=(60.000,100.000,20.000)
+
+[EVENT] 491.542 | event=UAVWaypointArrival | nodeId=402 | cycle=7 | pos=(60.000,160.000,20.000)
 
 [EVENT] 491.706 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(220.000,80.000,20.000)
 
-[EVENT] 499.280 | event=UAVWaypointArrival | nodeId=402 | cycle=5 | pos=(155.789,266.316,20.000)
+[EVENT] 494.542 | event=UAVWaypointArrival | nodeId=402 | cycle=7 | pos=(60.000,220.000,20.000)
+
+[EVENT] 495.542 | event=UAVWaypointArrival | nodeId=402 | cycle=7 | pos=(60.000,240.000,20.000)
+
+[EVENT] 498.542 | event=UAVWaypointArrival | nodeId=402 | cycle=7 | pos=(120.000,240.000,20.000)
+
+[EVENT] 500.542 | event=UAVWaypointArrival | nodeId=402 | cycle=7 | pos=(160.000,240.000,20.000)
+
+[EVENT] 503.542 | event=UAVWaypointArrival | nodeId=402 | cycle=7 | pos=(160.000,180.000,20.000)
+
+[EVENT] 506.542 | event=UAVWaypointArrival | nodeId=402 | cycle=7 | pos=(160.000,120.000,20.000)
+
+[EVENT] 508.778 | event=UAVWaypointArrival | nodeId=402 | cycle=7 | pos=(200.000,100.000,20.000)
 
 [EVENT] 509.319 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(200.000,80.000,20.000)
 
-[EVENT] 510.622 | event=UAVWaypointArrival | nodeId=402 | cycle=5 | pos=(120.000,100.000,20.000)
+[EVENT] 509.778 | event=UAVWaypointArrival | nodeId=402 | cycle=7 | pos=(220.000,100.000,20.000)
 
-[EVENT] 515.955 | event=UAVWaypointArrival | nodeId=402 | cycle=5 | pos=(40.000,100.000,20.000)
+[EVENT] 511.778 | event=UAVWaypointArrival | nodeId=402 | cycle=7 | pos=(220.000,140.000,20.000)
+
+[EVENT] 523.440 | event=UAVWaypointArrival | nodeId=402 | cycle=7 | pos=(20.000,260.000,20.000)
+
+[EVENT] 525.440 | event=UAVWaypointArrival | nodeId=402 | cycle=7 | pos=(20.000,220.000,20.000)
 
 [EVENT] 526.932 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(200.000,100.000,20.000)
 
-[EVENT] 528.029 | event=UAVWaypointArrival | nodeId=402 | cycle=5 | pos=(20.000,280.000,20.000)
+[EVENT] 532.614 | event=UAVWaypointArrival | nodeId=402 | cycle=7 | pos=(155.789,266.316,20.000)
+
+[EVENT] 541.120 | event=UAVWaypointArrival | nodeId=402 | cycle=7 | pos=(120.000,100.000,20.000)
 
 [EVENT] 544.546 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(180.000,100.000,20.000)
 
-[EVENT] 545.104 | event=UAVWaypointArrival | nodeId=402 | cycle=6 | pos=(60.000,100.000,20.000)
+[EVENT] 545.120 | event=UAVWaypointArrival | nodeId=402 | cycle=7 | pos=(40.000,100.000,20.000)
 
-[EVENT] 549.104 | event=UAVWaypointArrival | nodeId=402 | cycle=6 | pos=(60.000,160.000,20.000)
-
-[EVENT] 553.104 | event=UAVWaypointArrival | nodeId=402 | cycle=6 | pos=(60.000,220.000,20.000)
-
-[EVENT] 554.437 | event=UAVWaypointArrival | nodeId=402 | cycle=6 | pos=(60.000,240.000,20.000)
-
-[EVENT] 558.437 | event=UAVWaypointArrival | nodeId=402 | cycle=6 | pos=(120.000,240.000,20.000)
-
-[EVENT] 561.104 | event=UAVWaypointArrival | nodeId=402 | cycle=6 | pos=(160.000,240.000,20.000)
+[EVENT] 554.175 | event=UAVWaypointArrival | nodeId=402 | cycle=7 | pos=(20.000,280.000,20.000)
 
 [EVENT] 562.159 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(160.000,100.000,20.000)
 
-[EVENT] 565.104 | event=UAVWaypointArrival | nodeId=402 | cycle=6 | pos=(160.000,180.000,20.000)
+[EVENT] 566.981 | event=UAVWaypointArrival | nodeId=402 | cycle=8 | pos=(60.000,100.000,20.000)
 
-[EVENT] 569.104 | event=UAVWaypointArrival | nodeId=402 | cycle=6 | pos=(160.000,120.000,20.000)
+[EVENT] 569.981 | event=UAVWaypointArrival | nodeId=402 | cycle=8 | pos=(60.000,160.000,20.000)
 
-[EVENT] 572.085 | event=UAVWaypointArrival | nodeId=402 | cycle=6 | pos=(200.000,100.000,20.000)
+[EVENT] 572.981 | event=UAVWaypointArrival | nodeId=402 | cycle=8 | pos=(60.000,220.000,20.000)
 
-[EVENT] 573.418 | event=UAVWaypointArrival | nodeId=402 | cycle=6 | pos=(220.000,100.000,20.000)
+[EVENT] 573.981 | event=UAVWaypointArrival | nodeId=402 | cycle=8 | pos=(60.000,240.000,20.000)
 
-[EVENT] 576.085 | event=UAVWaypointArrival | nodeId=402 | cycle=6 | pos=(220.000,140.000,20.000)
+[EVENT] 576.981 | event=UAVWaypointArrival | nodeId=402 | cycle=8 | pos=(120.000,240.000,20.000)
+
+[EVENT] 578.981 | event=UAVWaypointArrival | nodeId=402 | cycle=8 | pos=(160.000,240.000,20.000)
 
 [EVENT] 579.772 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(140.000,100.000,20.000)
 
-[EVENT] 591.634 | event=UAVWaypointArrival | nodeId=402 | cycle=6 | pos=(20.000,260.000,20.000)
+[EVENT] 581.981 | event=UAVWaypointArrival | nodeId=402 | cycle=8 | pos=(160.000,180.000,20.000)
 
-[EVENT] 594.301 | event=UAVWaypointArrival | nodeId=402 | cycle=6 | pos=(20.000,220.000,20.000)
+[EVENT] 584.981 | event=UAVWaypointArrival | nodeId=402 | cycle=8 | pos=(160.000,120.000,20.000)
+
+[EVENT] 587.217 | event=UAVWaypointArrival | nodeId=402 | cycle=8 | pos=(200.000,100.000,20.000)
+
+[EVENT] 588.217 | event=UAVWaypointArrival | nodeId=402 | cycle=8 | pos=(220.000,100.000,20.000)
+
+[EVENT] 590.217 | event=UAVWaypointArrival | nodeId=402 | cycle=8 | pos=(220.000,140.000,20.000)
 
 [EVENT] 597.386 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(140.000,120.000,20.000)
 
-[EVENT] 603.866 | event=UAVWaypointArrival | nodeId=402 | cycle=6 | pos=(155.789,266.316,20.000)
+[EVENT] 601.879 | event=UAVWaypointArrival | nodeId=402 | cycle=8 | pos=(20.000,260.000,20.000)
+
+[EVENT] 603.879 | event=UAVWaypointArrival | nodeId=402 | cycle=8 | pos=(20.000,220.000,20.000)
+
+[EVENT] 611.053 | event=UAVWaypointArrival | nodeId=402 | cycle=8 | pos=(155.789,266.316,20.000)
 
 [EVENT] 614.999 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(120.000,120.000,20.000)
 
-[EVENT] 615.207 | event=UAVWaypointArrival | nodeId=402 | cycle=6 | pos=(120.000,100.000,20.000)
+[EVENT] 619.559 | event=UAVWaypointArrival | nodeId=402 | cycle=8 | pos=(120.000,100.000,20.000)
 
-[EVENT] 620.541 | event=UAVWaypointArrival | nodeId=402 | cycle=6 | pos=(40.000,100.000,20.000)
+[EVENT] 623.559 | event=UAVWaypointArrival | nodeId=402 | cycle=8 | pos=(40.000,100.000,20.000)
 
 [EVENT] 632.613 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(100.000,120.000,20.000)
 
-[EVENT] 632.614 | event=UAVWaypointArrival | nodeId=402 | cycle=6 | pos=(20.000,280.000,20.000)
+[EVENT] 632.614 | event=UAVWaypointArrival | nodeId=402 | cycle=8 | pos=(20.000,280.000,20.000)
 
 
 === SCENARIO4 SUMMARY ===
@@ -1817,7 +2517,7 @@ neighborDiscoveryRadius=80.000
 broadcastRadius=50.000
 uav1Speed=20.000
 uav1HoverTime=2.000
-uav2Speed=15.000
+uav2Speed=20.000
 uav2HoverTime=0.000
 masterFileConfidence=0.900
 
@@ -1829,4 +2529,4 @@ generatedFragments=10
 
 [MISSION]
 uav1CompletedTime=not-completed
-uav2CompletedTime=35.566
+uav2CompletedTime=184.140

@@ -536,7 +536,7 @@ void InitializeCellCooperationTimeout()
                 (state.fragments.fragments.size() >= state.expectedFragmentCount);
             if (state.cooperationEnabled && state.cellId >= 0 && !state.cooperationTimeoutScheduled && !hasAllFragments)
             {
-                RequestFragmentSharing(nodeId, state.cellId);
+                ScheduleFragmentSharingRequest(nodeId, state.cellId);
                 triggeredCount++;
             }
             else if (state.cooperationEnabled && state.cellId >= 0 && state.cooperationTimeoutScheduled)

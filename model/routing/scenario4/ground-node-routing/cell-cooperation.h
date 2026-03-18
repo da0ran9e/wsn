@@ -9,6 +9,8 @@ namespace scenario4 {
 namespace routing {
 
 void InitializeCellCooperation();
+double ComputeCellCooperationStaggerDelay(uint32_t nodeId, int32_t cellId);
+void ScheduleFragmentSharingRequest(uint32_t nodeId, int32_t cellId);
 void RequestFragmentSharing(uint32_t nodeId, int32_t cellId);
 void ShareFragments(uint32_t fromNode, uint32_t toNode);
 

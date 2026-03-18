@@ -342,11 +342,14 @@ OnGroundNodeReceivePacket(uint32_t nodeId, Ptr<const Packet> packet, double rssi
                         if (state.cooperationEnabled && state.cellId >= 0 && !hasAllFragments &&
                             belowReliableReconstruction)
                         {
+                            const double staggerDelay =
+                                ComputeCellCooperationStaggerDelay(nodeId, state.cellId);
                             NS_LOG_INFO("Node " << nodeId << " cooperation timeout triggered"
                                        << " | confidence=" << state.confidence
+                                       << " | level_stagger=" << staggerDelay << "s"
                                        << " | threshold="
                                        << ::ns3::wsn::scenario4::params::COOPERATION_THRESHOLD);
-                            RequestFragmentSharing(nodeId, state.cellId);
+                            ScheduleFragmentSharingRequest(nodeId, state.cellId);
                         }
                     });
                 }
