@@ -1,288 +1,199 @@
-# System Model — Scenario 4
-
-> Tài liệu này tổng hợp toàn bộ mô hình hệ thống đã cài đặt trong **scenario4**, phục vụ viết phần **System Model** cho bài báo.  
-> File nguồn chính: `paper.tex` (Section II).
-
----
-
-## 1. Tổng quan kiến trúc
-
-Hệ thống nghiên cứu tập trung vào **một UAV thực hiện nhiệm vụ phát tán fragment và hỗ trợ phát hiện sớm**, hoạt động trên một mạng IoT đô thị dạng lưới. Kiến trúc gồm **ba thành phần chính**:
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                      Smart City Area                        │
-│                                                             │
-│   [GN] [GN] [GN] ...  ←── N×N ground node grid            │
-│   [GN] [GN] [GN] ...      spacing Δ metres                 │
-│                                                             │
-│         ↑ UAV (GMC coverage path)                           │
-│                                                             │
-│   [BS]  Base Station — planning & command                   │
-└─────────────────────────────────────────────────────────────┘
-```
-
-| Thành phần | Số lượng | Vai trò |
-|---|---|---|
-| Ground Node (GN) | N × N | Thu nhận fragment, hợp tác intra-cell, phát cảnh báo |
-| UAV | 1 | Bay phủ sóng theo GMC, broadcast fragment liên tục khi bay |
-| Base Station (BS) | 1 | Thu topology, chọn vùng nghi vấn, lập kế hoạch đường bay, sinh fragment |
-
-**Mặc định thực nghiệm:** `N = 20`, `Δ = 20 m`, 30% suspicious nodes, 10 fragments, tốc độ UAV = 20 m/s.
-
----
-
-## 2. Mô hình mạng (Network Topology)
-
-### 2.1 Lưới IoT
-
-Các GN được bố trí trên lưới đều $N \times N$ với khoảng cách $\Delta$ m. Node ở hàng $r$, cột $c$ có tọa độ $(c \cdot \Delta,\; r \cdot \Delta,\; 0)$.
-
-Tổng số node: $|\mathcal{N}| = N^2$.  
-Node ID: $i = r \cdot N + c$ (row-major, 0-indexed).
-
-### 2.2 Tổ chức Cell Lục giác
-
-Các GN được nhóm thành **cell lục giác (hexagonal cell)** với bán kính $r_\text{cell} = 80$ m. Cell ID được tính theo hệ tọa độ trục (axial coordinates) của lưới lục giác:
-
-$$\text{cellId} = q + r \cdot \text{gridOffset}$$
-
-Trong mỗi cell:
-- **Cell Leader (CL)** được bầu tự động dựa trên vị trí gần tâm cell nhất.
-- **Cell Members** là các node còn lại trong cell.
-- Mỗi cặp cell liền kề có **gateway pair** để định tuyến liên-cell.
-
-### 2.3 Giai đoạn Startup Discovery
-
-Trong $t_\text{startup} = 5$ s đầu tiên, mỗi GN:
-1. Phát gói Beacon để khám phá neighbor.
-2. Xây dựng bảng láng giềng (1-hop và 2-hop) + đo RSSI.
-3. Hình thành Cell Forwarding Tree (CFT) nội-cell.
-4. Đồng bộ thời gian (clock offset tracking).
-
-Sau startup, BS nhận **topology snapshot** gồm vị trí, neighbor list, RSSI trung bình của toàn bộ mạng.
-
----
-
-## 3. Mô hình Fragment và Confidence
-
-### 3.1 Phân mảnh ảnh (Image Fragmentation)
-
-Ảnh tham chiếu (recognition file) có kích thước $W \times H$ pixel (mặc định $416 \times 416$ px, RGB = 3 bytes/pixel) được phân thành $K$ fragment bằng **pixel-stride interleaving**:
-
-$$\text{fragment}_{i} = \{ \text{pixel}_{j} \mid j \equiv i \pmod{K},\; j = 0,1,\ldots,W \cdot H - 1 \},\quad i = 0,\ldots,K-1$$
-
-Mỗi fragment $i$ chứa $s_i = \lfloor W \cdot H / K \rfloor$ pixel (đồng đều). Kích thước byte: $b_i = s_i \times 3$.
-
-Stride interleaving đảm bảo mỗi fragment là **mẫu không gian đều** của toàn ảnh, tránh thiên lệch vùng ảnh.
-
-### 3.2 Mô hình Confidence
-
-Confidence của fragment $i$ dựa trên **xác suất nhận dạng từng phần** (union probability):
-
-$$p_i = 1 - (1 - p_{\text{base}})^{s_i / (W \cdot H)}$$
-
-với $p_{\text{base}} = C_{\text{master}} = 0.90$ là confidence của ảnh đầy đủ.
-
-Confidence tích lũy tại node $n$ khi giữ tập fragment $\mathcal{F}_n$:
-
-$$C_n = 1 - \prod_{i \in \mathcal{F}_n} (1 - p_i)$$
-
-Tính chất quan trọng: khi node $n$ giữ **toàn bộ** $K$ fragment, $C_n = C_{\text{master}} = 0.90$.
-
-### 3.3 Ngưỡng điều khiển
-
-| Ngưỡng | Ký hiệu | Giá trị | Hành động |
-|---|---|---|---|
-| Cooperation threshold | $\tau_\text{coop}$ | 0.30 | Kích hoạt chia sẻ fragment intra-cell |
-| Alert threshold | $\tau_\text{alert}$ | 0.75 | Phát cảnh báo đến BS + đánh dấu nhiệm vụ hoàn thành |
-
----
-
-## 4. Lập kế hoạch đường bay UAV (Path Planning)
-
-### 4.1 Chọn vùng nghi vấn (Suspicious Region Selection)
-
-Từ topology snapshot, BS xác định tập **suspicious nodes** $\mathcal{P}$:
-- Chọn top $\rho = 30\%$ node có mật độ kết nối (degree) cao nhất — đại diện cho các nút giao thông, hub đô thị.
-- Đặt **seed node** $n^* = \arg\min_{n \in \mathcal{P}} \|pos(n) - \text{centroid}(\mathcal{P})\|$ — node gần tâm vùng nghi vấn nhất, dùng làm "mục tiêu quan sát chính".
-
-### 4.2 UAV — Greedy Max-Coverage with Cost (GMC)
-
-UAV áp dụng thuật toán **GMC** đề xuất:
-
-**Bước 1 — Xây dựng tập ứng viên waypoint $\mathcal{C}$:**
-
-$$\mathcal{C} = \mathcal{P} \;\cup\; \text{KMeans}(\mathcal{P},\; k),\quad k = \min(k_{\max},\; \lfloor |\mathcal{P}| / 4 \rfloor)$$
-
-K-means với $k_{\max} = 8$, tối đa 20 iterations, tạo ra $k$ **hub centroid** có thể phủ nhiều suspicious node trong một lần ghé.
-
-**Bước 2 — Precompute Coverage Set:**
-
-$$\text{CS}(c) = \{ p \in \mathcal{P} \mid d(c, p) \le R_b \},\quad R_b = 50 \text{ m}$$
-
-**Bước 3 — Greedy Selection:**
-
-Tại mỗi vòng lặp, chọn waypoint $c^*$ tối đa hóa:
-
-$$\text{score}(c) = \frac{|\text{CS}(c) \setminus \text{Covered}|}{\left(d(x_t, c) / v_\text{UAV}\right)^\alpha + \varepsilon}$$
-
-với $\alpha = 1.0$ (cân bằng gain/cost), $\varepsilon = 10^{-6}$, $v_\text{UAV} = 20$ m/s.
-
-Cập nhật: $\text{Covered} \leftarrow \text{Covered} \cup \text{CS}(c^*)$, tiếp tục đến khi $\text{Covered} = \mathcal{P}$.
-
-UAV **không hover** — broadcast fragment liên tục khi đang bay, lặp lại toàn bộ quỹ đạo tuần hoàn cho đến khi kết thúc mô phỏng hoặc đến khi nhiệm vụ hoàn thành.
-
----
-
-## 5. Giao thức vật lý (Physical Layer)
-
-### 5.1 Radio Model — CC2420 (IEEE 802.15.4)
-
-| Thông số | Giá trị |
-|---|---|
-| Tần số | 2.4 GHz |
-| Tốc độ dữ liệu | 250 kbps (O-QPSK) |
-| Công suất phát | 0 dBm |
-| Ngưỡng thu | −95 dBm |
-| DSSS Processing Gain | 9.03 dB |
-| Modulation | O-QPSK |
-
-### 5.2 Mô hình suy hao đường truyền (Path Loss)
-
-$$PL(d) = PL_0 + 10n\log_{10}\!\left(\frac{d}{d_0}\right) + X_\sigma + X_f + L_h$$
-
-với $PL_0 = 40.05$ dB tại $d_0 = 1$ m.
-
-Profile truyền sóng theo góc ngẩng $\theta$ (UAV–GN elevation angle):
-
-| Profile | Điều kiện | $n$ | $\sigma$ (dB) | K (Rician) |
-|---|---|---|---|---|
-| LoS | $\theta \ge 40°$ | 2.0 | 4 | 15 |
-| Mixed | $20° \le \theta < 40°$ | 2.5 | 6 | 6 |
-| NLoS | $\theta < 20°$ | 3.0 | 8 | 0 (Rayleigh) |
-| Ground | air-to-ground, low alt | 3.2 | 7 | 0 |
-
-Fast fading: $\sigma_f = 5.57 / \sqrt{1 + K}$ (dB).
-
-### 5.3 Contact-Window Validation
-
-Mỗi gói tin được chấp nhận **chỉ khi** công suất thu vượt ngưỡng trong **toàn bộ thời gian truyền**:
-
-$$P_{rx}(t) \ge P_\text{sens} \quad \forall t \in [0,\; T_\text{air} + T_g]$$
-
-với $T_\text{air} = 8L / R$ (airtime của gói $L$ bytes), $T_g = 2$ ms (guard interval).  
-Vị trí UAV và GN được nội suy tuyến tính theo bước $T_\text{step} = 1$ ms.
-
-### 5.4 BER và Packet Error Rate
-
-$$\text{BER} = \frac{1}{2} \operatorname{erfc}\!\left(\sqrt{\text{SNR}_\text{lin} \cdot G_{p,\text{lin}}}\right)$$
-
-$$\text{PER} = 1 - (1 - \text{BER})^{8L}$$
-
-Quyết định drop packet: Bernoulli trial độc lập với xác suất $\text{PER}$.
-
----
-
-## 6. Giao thức hợp tác intra-cell (Cell Cooperation Protocol)
-
-### 6.1 Kích hoạt hợp tác
-
-Khi $C_n \ge \tau_\text{coop} = 0.30$, node $n$ phát **manifest packet** liệt kê các fragment ID đang giữ đến toàn bộ cell peers.
-
-### 6.2 Fragment Sharing
-
-Mỗi cell peer nhận manifest sẽ đáp lại bằng cách gửi fragment mà $n$ còn thiếu — **ShareFragments(fromNode, toNode)**. Confidence của `toNode` được cập nhật ngay sau khi nhận fragment mới.
-
-**Staggered scheduling**: Để tránh collision storm trong cùng cell, delay của mỗi request được tính:
-
-$$t_\text{delay} = l \cdot \delta_\text{level} + \text{Uniform}(0, J_\text{max})$$
-
-với $l$ = độ sâu trong CFT, $\delta_\text{level} = 20$ ms, $J_\text{max} = 15$ ms.
-
-### 6.3 Global Cooperation Timeout
-
-Sau một khoảng thời gian cố định kể từ startup, BS kích hoạt **global cooperation** buộc toàn bộ mạng chia sẻ fragment, đảm bảo không có node nào bị bỏ lỡ do kết nối kém với UAV.
-
-### 6.4 Hoàn thành nhiệm vụ UAV
-
-Nhiệm vụ của UAV được đánh dấu hoàn thành khi confidence của **seed node** $n^*$ đạt $\tau_\text{alert}$:
-
-$$C_{n^*}(t^*) \ge \tau_\text{alert} \;\Rightarrow\; \text{MISSION\_COMPLETE at } t^*$$
-
-Cơ chế phát hiện được kích hoạt theo **ba đường**:
-1. **Direct reception**: Khi UAV broadcast fragment trực tiếp đến $n^*$.
-2. **ShareFragments path**: Sau khi `ShareFragments(peer, n*)` cập nhật confidence của $n^*$.
-3. **Periodic fallback check**: Mỗi 0.5 s, kiểm tra $C_{n^*}$ để bắt các trường hợp bị bỏ lỡ.
-
----
-
-## 7. Tiêu chí hoàn thành nhiệm vụ và Early-Stop
-
-| Sự kiện | Điều kiện | Thời điểm ghi nhận |
-|---|---|---|
-| `UAVMissionComplete` | $C_{n^*} \ge \tau_\text{alert} = 0.75$ | Thời điểm confidence vượt ngưỡng |
-| `EarlyStop` | Nhiệm vụ UAV đã hoàn thành | `Simulator::Stop(+1.0 s)` |
-
-Metric chính: **mission completion time** $T_\text{complete}$, là thời điểm seed node đạt ngưỡng cảnh báo.  
-Các chỉ số phụ gồm: số fragment được thu trực tiếp từ UAV, số fragment được bù qua hợp tác intra-cell, và quãng trễ từ lúc bắt đầu broadcast đến khi hoàn thành nhiệm vụ.
-
----
-
-## 8. Luồng thực thi tổng thể
-
-```
-t = 0.0s   → Network initialized (N×N GNs + 1 UAV + BS)
-t = 0..5s  → Startup phase: neighbor discovery, cell formation, topology build
-t = 5.01s  → BS post-init: fragment generation + UAV path planning (GMC)
-t = 5.02s  → BS control tick: receive topology snapshot
-t = 5.10s  → InitializeUavFlight: schedule GMC waypoints for UAV
-t = 5.20s  → InitializeUavBroadcast: UAV starts fragment broadcast loop
-t = 5.30s  → InitializeCellCooperationTimeout: schedule global cooperation
-t = 5.50s  → Periodic topology updates (every 1s)
-             Periodic confidence snapshots (every 10s)
-             Periodic mission-completion check (every 0.5s)
-...
-t = T_complete → UAVMissionComplete (seed node confidence ≥ 0.75)
-t = T_complete + 1.0s → EarlyStop
-```
-
----
-
-## 9. Tham số mô phỏng tóm tắt
-
-| Tham số | Ký hiệu | Giá trị mặc định |
-|---|---|---|
-| Grid size | $N$ | 20 |
-| Grid spacing | $\Delta$ | 20 m |
-| Number of fragments | $K$ | 10 |
-| Master file confidence | $C_\text{master}$ | 0.90 |
-| Cooperation threshold | $\tau_\text{coop}$ | 0.30 |
-| Alert threshold | $\tau_\text{alert}$ | 0.75 |
-| Suspicious fraction | $\rho$ | 30% |
-| UAV speed | $v$ | 20 m/s |
-| UAV altitude | $h$ | 20 m |
-| UAV broadcast radius | $R_b$ | 50 m |
-| Cell radius | $r_\text{cell}$ | 80 m |
-| TX power | $P_\text{tx}$ | 0 dBm |
-| RX sensitivity | $P_\text{sens}$ | −95 dBm |
-| Radio bitrate | $R$ | 250 kbps |
-| Image size | $W \times H$ | 416 × 416 px |
-| Startup duration | $t_\text{startup}$ | 5 s |
-| GMC cost exponent | $\alpha$ | 1.0 |
-| GMC max centroids | $k_\text{max}$ | 8 |
-| UAV hover time | — | 0 s (broadcast-while-flying) |
-
----
-
-## 10. Mapping sang paper.tex
-
-| Subsection trong paper | Nội dung tương ứng tại đây |
-|---|---|
-| II-A Network Topology | Mục 2 (lưới, cell, startup) |
-| II-B Fragment Confidence Model | Mục 3 (stride fragment, union prob, ngưỡng) |
-| II-C Intra-Cell Cooperative Protocol | Mục 6 (ShareFragments, stagger, timeout) |
-| II-D Mission Completion Criterion | Mục 7 (completion, metrics, early-stop) |
-| III Problem Formulation | Mục 4.2 (CS, coverage constraint, objective) |
-| IV GMC Algorithm | Mục 4.2 (candidate set, score function, pseudocode) |
-| V Physical Layer | Mục 5 (path loss, fading, contact-window, BER/PER) |
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\begin{document}
+
+\title{Conference Paper Title*\\
+{\footnotesize \textsuperscript{*}Note: Sub-titles are not captured in Xplore and
+should not be used}
+\thanks{Identify applicable funding agency here. If none, delete this.}
+}
+
+\author{\IEEEauthorblockN{1\textsuperscript{st} Given Name Surname}
+\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
+\textit{name of organization (of Aff.)}\\
+City, Country \\
+email address or ORCID}
+\and
+\IEEEauthorblockN{2\textsuperscript{nd} Given Name Surname}
+\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
+\textit{name of organization (of Aff.)}\\
+City, Country \\
+email address or ORCID}
+\and
+\IEEEauthorblockN{3\textsuperscript{rd} Given Name Surname}
+\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
+\textit{name of organization (of Aff.)}\\
+City, Country \\
+email address or ORCID}
+\and
+\IEEEauthorblockN{4\textsuperscript{th} Given Name Surname}
+\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
+\textit{name of organization (of Aff.)}\\
+City, Country \\
+email address or ORCID}
+\and
+\IEEEauthorblockN{5\textsuperscript{th} Given Name Surname}
+\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
+\textit{name of organization (of Aff.)}\\
+City, Country \\
+email address or ORCID}
+\and
+\IEEEauthorblockN{6\textsuperscript{th} Given Name Surname}
+\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
+\textit{name of organization (of Aff.)}\\
+City, Country \\
+email address or ORCID}
+}
+
+\maketitle
+
+\begin{abstract}
+This document is a model and instructions for \LaTeX.
+This and the IEEEtran.cls file define the components of your paper [title, text, heads, etc.]. *CRITICAL: Do Not Use Symbols, Special Characters, Footnotes, 
+or Math in Paper Title or Abstract.
+\end{abstract}
+
+\begin{IEEEkeywords}
+% --- Paper skeleton (sections only) -----------------------------
+\begin{abstract}
+% Abstract (placeholder)
+\end{abstract}
+
+\begin{IEEEkeywords}
+% keywords (placeholder)
+\end{IEEEkeywords}
+
+\section{Introduction}
+Trong bối cảnh đô thị thông minh, nhu cầu truy vết và nhận diện nhanh đối tượng bị truy nã từ mạng camera IoT ngày càng cấp thiết. Tuy nhiên, dữ liệu nhận diện (ảnh/video chất lượng cao) thường có kích thước lớn, trong khi các nút biên có tài nguyên tính toán và băng thông hạn chế. Nếu UAV dừng tại từng nút để truyền toàn bộ dữ liệu, thời gian nhiệm vụ tăng mạnh và khó đáp ứng yêu cầu phát hiện sớm theo thời gian thực.
+
+Bài báo này xem UAV như một ``data ferry'' bay qua khu vực khả nghi để phát quảng bá dữ liệu nhận diện theo từng mảnh (fragment). Thay vì yêu cầu mỗi nút phải nhận trọn bộ dữ liệu, chúng tôi sử dụng cơ chế tích lũy độ tin cậy theo xác suất: mỗi fragment đóng góp một phần bằng chứng, và nút sẽ phát cảnh báo khi mức tin cậy vượt ngưỡng. Cơ chế hợp tác nội ô (intra-cell cooperation) được kích hoạt theo ngưỡng trung gian để các nút trao đổi fragment còn thiếu ngay trong khi UAV đang bay, giúp rút ngắn thời gian đến cảnh báo đầu tiên.
+
+Ở lớp truyền dẫn, nghiên cứu không chỉ dựa trên mô hình ``in-range'' tức thời mà tích hợp chuỗi quyết định gói tin theo hướng thực tế hơn: suy hao theo hình học không-đối-đất (air-to-ground), shadowing/fading, kiểm tra ``contact-window'' trên toàn bộ thời lượng phát gói, và ánh xạ SNR $\rightarrow$ BER $\rightarrow$ PER để quyết định mất gói ở mức xác suất. Nhờ đó, đánh giá thuật toán đường bay phản ánh đúng hơn các ràng buộc PHY trong môi trường đô thị.
+
+Để tối ưu lộ trình UAV, chúng tôi xây dựng heuristic ``Greedy Max-Coverage with Cost'' (GMC), cân bằng lợi ích phủ sóng và chi phí di chuyển qua hàm điểm $\text{score}=\frac{\text{gain}}{\text{cost}^{\alpha}+\varepsilon}$. Tập ứng viên waypoint gồm vị trí nút nghi vấn và các centroid tùy chọn, cho phép bao phủ hiệu quả hơn so với chiến lược đi tuần tự lân cận gần nhất.
+
+Các đóng góp chính của bài báo gồm: (i) mô hình phát hiện phân mảnh theo độ tin cậy tích lũy kết hợp hợp tác nội ô thời gian thực; (ii) pipeline PHY mức gói gắn với chuyển động UAV để đánh giá khả năng nhận gói theo thời gian; và (iii) thuật toán GMC cho bài toán cân bằng độ phủ--chi phí trong nhiệm vụ phát hiện khẩn cấp. Trên nền ns-3 mở rộng, chúng tôi cho thấy cách tiếp cận này có tiềm năng giảm thời gian phát hiện đầu tiên trong khi vẫn duy trì tính khả thi triển khai.
+
+Phần còn lại của bài báo được tổ chức như sau: Mục II tổng quan công trình liên quan; Mục III mô tả mô hình hệ thống; Mục IV phát biểu bài toán; Mục V trình bày phương pháp đề xuất; Mục VI đánh giá hiệu năng; Mục VII thảo luận giới hạn; và Mục VIII kết luận.
+
+\section{Related Work}
+% Summarize related literature (skeleton only).
+
+\section{System Model}
+% Describe network/model assumptions and notation.
+% - Thiết lập mạng: Mô tả cách các edge node được triển khai trong khu vực đô thị và các thông số liên quan đến vị trí và phạm vi hoạt động của UAV.
+% - Mô hình hệ thống: Khu vực mạng được chia thành các cell, mỗi cell chứa một số nút biên. Mỗi nút có khả năng nhận diện đối tượng sử dụng fragments. Khu vực khả nghi được BS xác định trong đó có khả năng xuất hiện đối tượng bị truy nã.
+% - Mô hình lập kế hoạch quỹ đạo: UAV có vùng phủ sóng giới hạn và phải lên kế hoạch quỹ đạo để tối ưu hóa việc phát dữ liệu đến các nút biên trong khu vực khả nghi.
+% - Mô hình dữ liệu: Dữ liệu nhận diện được chia thành các fragment có kích thước nhỏ hơn, mỗi fragment chứa một phần thông tin về đối tượng bị truy nã. Mỗi fragment có xác suất được nhận thành công tại nút biên dựa trên mô hình truyền dẫn.
+% - Mô hình phát tán dữ liệu: UAV phát dữ liệu theo từng fragment khi bay qua khu vực khả nghi. Các nút biên tích lũy độ tin cậy dựa trên số lượng fragment nhận được và có thể trao đổi fragment với nhau để tăng độ tin cậy.
+% - Mô hình kênh truyền thông: Mô hình truyền dẫn air-to-ground bao gồm suy hao theo hình học, shadowing/fading, và xác suất mất gói dựa trên SNR $\rightarrow$ BER $\rightarrow$ PER.
+% - Mô hình tốc độ truyền: Tốc độ truyền dữ liệu giữa UAV và nút biên phụ thuộc vào khoảng cách, điều kiện kênh, và có thể thay đổi theo thời gian khi UAV di chuyển.
+Chúng tôi xét một mạng IoT đô thị gồm tập nút biên $\mathcal{N}$, một UAV và một trạm gốc (BS). Các nút biên được triển khai theo lưới trong khu vực giám sát, mỗi nút có khả năng nhận dạng cục bộ và lưu trữ fragment. BS thu thập topology, xác định vùng nghi vấn, tạo dữ liệu phân mảnh và điều phối nhiệm vụ bay của UAV.
+
+\subsection{Thiết lập mạng và mô hình hệ thống}
+Khu vực giám sát được chia thành các cell để hỗ trợ hợp tác nội ô. Mỗi cell có một tập node thành viên, trong đó một node có thể đóng vai trò điều phối cục bộ (cell leader) trong quá trình chia sẻ fragment. Từ thông tin topology ban đầu, BS xác định tập nút nghi vấn $\mathcal{P} \subseteq \mathcal{N}$, tương ứng vùng có xác suất cao xuất hiện đối tượng truy nã. Trong mô hình này, một node đạt phát hiện khi độ tin cậy tích lũy vượt ngưỡng cảnh báo.
+
+\subsection{Mô hình lập kế hoạch quỹ đạo UAV}
+UAV bay ở độ cao cố định với vùng phủ sóng quảng bá hữu hạn $R_b$, và phải chọn dãy waypoint để phủ tập $\mathcal{P}$. Chúng tôi sử dụng heuristic Greedy Max-Coverage with Cost (GMC), chọn waypoint tối đa hóa tỉ số giữa lợi ích phủ mới và chi phí di chuyển:
+\begin{equation}
+\text{score}(c)=\frac{\left|\mathrm{CS}(c)\setminus \mathrm{Covered}\right|}{\left(d(x_t,c)/v\right)^{\alpha}+\varepsilon},
+\end{equation}
+trong đó $\mathrm{CS}(c)$ là tập nút nghi vấn nằm trong bán kính phủ của ứng viên $c$, $d(x_t,c)$ là khoảng cách từ vị trí hiện tại của UAV đến $c$, và $v$ là vận tốc bay.
+
+\subsection{Mô hình dữ liệu và phát tán fragment}
+Dữ liệu nhận diện gốc được chia thành $K$ fragment; UAV phát tuần tự các fragment trong khi di chuyển, thay vì dừng để truyền toàn bộ dữ liệu cho từng nút. Mỗi node $n$ duy trì tập fragment đã nhận $\mathcal{F}_n$ và tính độ tin cậy tích lũy theo mô hình hợp nhất xác suất:
+\begin{equation}
+C_n = 1-\prod_{i\in\mathcal{F}_n}(1-p_i),
+\end{equation}
+với $p_i$ là mức đóng góp nhận dạng của fragment $i$. Khi $C_n$ vượt ngưỡng hợp tác, node có thể yêu cầu/trao đổi fragment còn thiếu trong cell; khi $C_n$ vượt ngưỡng cảnh báo, node phát cảnh báo lên BS.
+
+\subsection{Mô hình kênh truyền và tốc độ truyền}
+Liên kết UAV--node sử dụng mô hình air-to-ground theo hình học, bao gồm suy hao khoảng cách, shadowing và fast fading. Công suất thu tại thời điểm $t$ được biểu diễn dạng tổng quát:
+\begin{equation}
+P_{rx}(t)=P_{tx}-PL(d_t)-X_{\sigma}(t)-X_f(t),
+\end{equation}
+trong đó $d_t$ biến thiên theo chuyển động UAV. Từ SNR tức thời, hệ thống ánh xạ sang BER và PER để quyết định mất gói ở mức packet:
+\begin{equation}
+\mathrm{PER}=1-(1-\mathrm{BER})^{8L}.
+\end{equation}
+Ngoài ra, điều kiện nhận gói còn phụ thuộc contact-window: liên kết phải duy trì trên ngưỡng thu trong toàn bộ thời lượng truyền gói. Do đó, tốc độ truyền hiệu dụng giữa UAV và node không cố định mà thay đổi theo khoảng cách, profile kênh và trạng thái chuyển động theo thời gian.
+
+
+\section{Problem Statement}
+% Formal problem definition and objectives.
+% - Mục tiêu: tối đa hóa thời gian phát hiện đầu tiên của đối tượng bị truy nã tại các nút biên trong khu vực khả nghi.
+% - Ràng buộc: UAV có vùng phủ sóng giới hạn, dữ liệu nhận diện được chia thành các fragment, và các nút biên có tài nguyên hạn chế để nhận và xử lý dữ liệu.
+% - Bài toán: Lập kế hoạch quỹ đạo cho UAV để phát dữ liệu nhận và trao đổi dữ liệu giữa các nút biên nhằm đạt được độ tin cậy tích lũy vượt ngưỡng trong thời gian ngắn nhất có thể.
+Cho tập nút nghi vấn $\mathcal{P}$ do BS xác định, UAV cần phát tập fragment $\mathcal{F}=\{1,\ldots,K\}$ trong khi di chuyển để một nút trong $\mathcal{P}$ đạt ngưỡng cảnh báo sớm nhất. Bài toán kết hợp hai quyết định đồng thời: (i) quỹ đạo UAV qua chuỗi waypoint và (ii) lịch phát fragment theo thời gian.
+
+Ký hiệu $\Pi=(w_1,w_2,\ldots,w_M)$ là quỹ đạo UAV, với $w_m$ là waypoint thứ $m$, và $\mathcal{S}=\{(f,\tau_f)\}$ là lịch phát fragment $f$ tại thời điểm $\tau_f$. Gọi $C_n(t)$ là độ tin cậy tích lũy tại node $n$ ở thời điểm $t$, và $\tau_{\text{alert}}$ là ngưỡng cảnh báo. Thời điểm phát hiện đầu tiên được định nghĩa:
+\begin{equation}
+T_{\text{detect}}(\Pi,\mathcal{S}) = \inf\{t\ge 0\;|\;\exists n\in\mathcal{P}: C_n(t)\ge \tau_{\text{alert}}\}.
+\end{equation}
+
+Mục tiêu tối ưu là rút ngắn thời gian phát hiện kỳ vọng:
+\begin{equation}
+\min_{\Pi,\mathcal{S}}\;\mathbb{E}[T_{\text{detect}}(\Pi,\mathcal{S})].
+\end{equation}
+
+Bài toán chịu các ràng buộc vận hành sau:
+\begin{equation}
+d(w_m,w_{m+1}) \le v_{\max}\,\Delta t_m,\;\forall m,
+\end{equation}
+\begin{equation}
+\sum_{m=1}^{M-1}\frac{d(w_m,w_{m+1})}{v}+\sum_f t_f^{\text{tx}} \le T_{\max},
+\end{equation}
+\begin{equation}
+\mathbf{1}_{\{n\leftarrow f\}}(t)=1 \Rightarrow P_{rx}^{(n)}(t')\ge P_{\text{sens}},\;\forall t'\in[t,t+t_f^{\text{tx}}],
+\end{equation}
+\begin{equation}
+\Pr[\text{packet error}|n,f,t]=\mathrm{PER}(\mathrm{SNR}_{n,f}(t),L_f),
+\end{equation}
+\begin{equation}
+\sum_{f\in\mathcal{F}_n(t)} b_f \le B_n^{\max},\;\forall n\in\mathcal{P},
+\end{equation}
+trong đó $v_{\max}$ là tốc độ bay cực đại, $T_{\max}$ là thời hạn nhiệm vụ, $P_{\text{sens}}$ là ngưỡng thu, $L_f$ và $b_f$ lần lượt là kích thước gói và dữ liệu fragment, còn $B_n^{\max}$ là giới hạn bộ đệm tại node.
+
+Do bài toán có bản chất tổ hợp (tối ưu quỹ đạo rời rạc, lịch phát theo thời gian và ràng buộc kênh ngẫu nhiên), nghiệm tối ưu toàn cục khó đạt theo thời gian thực. Vì vậy, phần tiếp theo đề xuất chiến lược heuristic GMC để xấp xỉ bài toán và duy trì cân bằng giữa độ phủ, chi phí di chuyển và xác suất nhận thành công ở mức gói.
+
+\section{Proposed Approach}
+\subsection{Overview}
+% High-level description of the proposed method.
+\subsection{Algorithm}
+% Pseudocode / algorithm sketch.
+
+\section{Performance Evaluation}
+\subsection{Simulation Setup}
+% Describe simulation environment and parameters.
+\subsection{Metrics}
+% Define evaluation metrics.
+\subsection{Results}
+% Placeholder for figures/tables and result discussion.
+
+\section{Discussion}
+% Limitations and interpretation.
+
+\section{Conclusion}
+% Summary and future work.
+
+\section*{Acknowledgment}
+% Acknowledgments (if any).
+
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+\appendix
+\section{Appendix: Additional Material}
+% Optional appendices.
+
+\end{document}
+\end{equation}
