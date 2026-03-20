@@ -379,22 +379,13 @@ The dissemination model uses logical payload fragments (synthetic blocks) rather
 % - điều kiện dừng mô phỏng (mission complete hoặc timeout T_max).
 
 \subsection{Metrics}
-% Define evaluation metrics.
-% Metrics nên tách 3 nhóm để khớp đóng góp:
-% A. Mission objective metrics:
-%    - Time-to-detection T_detect (chính)
-%    - Mission completion rate trước deadline
-% B. Dissemination/cooperation metrics:
-%    - số fragment nhận trực tiếp từ UAV
-%    - số fragment nhận qua cooperation
-%    - cooperation overhead (bytes/messages/latency)
-% C. Trajectory + PHY realism metrics:
-%    - total path length, travel time, number of waypoints
-%    - packet delivery ratio (PDR), PER-observed, contact-window reject ratio
-%
-% Lưu ý nhất quán:
-% - Nếu termination theo suspicion point n^*, metric chính phải đo theo n^*.
-% - Tránh chỉ báo cáo metric trung bình toàn \mathcal{P} nếu objective formal không dùng nó.
+To evaluate the effectiveness of the proposed fragment-based cooperative detection and GMC planning, we employ the following metrics:
+\begin{itemize}
+    \item \textbf{Mission Completion Time ($T_{\text{complete}}$)}: The primary metric, defined as the time interval from UAV flight initialization until the designated suspicion point reaches the alert threshold $\tau_{\text{alert}}$.
+    \item \textbf{UAV Path Length}: The cumulative distance traveled by the UAV along its waypoint sequence until the mission is completed.
+    \item \textbf{Cooperation Gain}: The ratio of fragments received through intra-cell cooperative exchange versus those received directly from UAV broadcasts. This measures the effectiveness of the cell layer in compensating for link failures.
+    \item \textbf{Packet Delivery Ratio (PDR)}: The fraction of successfully received fragment packets over the total number of packets broadcast by the UAV, illustrating the impact of mobility-aware PHY constraints.
+\end{itemize}
 
 \subsection{Results}
 % Placeholder for figures/tables and result discussion.
