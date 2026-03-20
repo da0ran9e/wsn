@@ -1251,6 +1251,7 @@ PlanUavFlightPathsForBsInit()
         // directly covers >30% of a cell's suspicious nodes, the entire cell
         // is considered reachable via intra-cell cooperation, so we expand
         // the coverage set to include all nodes of that cell.
+        // Expansion can be disabled at runtime via params::COOP_GMC.
         constexpr double kCellCoverageExpansionThreshold = 0.30;
         std::map<int32_t, std::vector<uint32_t>> cellToSuspiciousIndices;
         for (uint32_t ni = 0; ni < suspiciousPoints.size(); ++ni)
@@ -1277,34 +1278,37 @@ PlanUavFlightPathsForBsInit()
                 }
             }
 
-            // Step 2: cell-cooperation expansion.
+            // Step 2: cell-cooperation expansion (optional via params::COOP_GMC).
             // For each cell, if the candidate directly covers > threshold fraction
             // of that cell's suspicious nodes, expand coverage to the whole cell.
             std::set<uint32_t> expandedSet = directlyCovered;
-            std::map<int32_t, uint32_t> directHitPerCell;
-            for (uint32_t ni : directlyCovered)
+            if (::ns3::wsn::scenario4::params::COOP_GMC)
             {
-                const int32_t cid = suspiciousPointCellIds[ni];
-                if (cid >= 0)
+                std::map<int32_t, uint32_t> directHitPerCell;
+                for (uint32_t ni : directlyCovered)
                 {
-                    directHitPerCell[cid]++;
-                }
-            }
-            for (const auto& [cid, hitCount] : directHitPerCell)
-            {
-                auto cellIt = cellToSuspiciousIndices.find(cid);
-                if (cellIt == cellToSuspiciousIndices.end())
-                {
-                    continue;
-                }
-                const double cellSize = static_cast<double>(cellIt->second.size());
-                if (cellSize > 0.0 &&
-                    static_cast<double>(hitCount) / cellSize > kCellCoverageExpansionThreshold)
-                {
-                    // Entire cell is reachable via cooperation — add all its nodes.
-                    for (uint32_t ni : cellIt->second)
+                    const int32_t cid = suspiciousPointCellIds[ni];
+                    if (cid >= 0)
                     {
-                        expandedSet.insert(ni);
+                        directHitPerCell[cid]++;
+                    }
+                }
+                for (const auto& [cid, hitCount] : directHitPerCell)
+                {
+                    auto cellIt = cellToSuspiciousIndices.find(cid);
+                    if (cellIt == cellToSuspiciousIndices.end())
+                    {
+                        continue;
+                    }
+                    const double cellSize = static_cast<double>(cellIt->second.size());
+                    if (cellSize > 0.0 &&
+                        static_cast<double>(hitCount) / cellSize > kCellCoverageExpansionThreshold)
+                    {
+                        // Entire cell is reachable via cooperation — add all its nodes.
+                        for (uint32_t ni : cellIt->second)
+                        {
+                            expandedSet.insert(ni);
+                        }
                     }
                 }
             }

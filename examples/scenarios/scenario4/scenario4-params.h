@@ -118,6 +118,10 @@ constexpr double UAV2_ALPHA = 1.0;
 constexpr double UAV2_SCORE_EPS = 1e-6;
 constexpr bool UAV2_USE_TRAVEL_TIME = true;
 
+// Enable/disable GMC cell-aware expansion (when a candidate covers > threshold
+// fraction of a cell's suspicious nodes, expand coverage to the whole cell).
+constexpr bool COOP_GMC = true;
+
 inline int32_t
 ComputeDefaultHexGridOffset(uint32_t nodeCount)
 {
