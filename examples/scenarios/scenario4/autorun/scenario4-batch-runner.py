@@ -33,6 +33,8 @@ class RoundResult:
     suspicious_recv: Optional[dict] = None
     suspicious_uav_depart: Optional[dict] = None
     suspicious_mission_complete: Optional[dict] = None
+    uav1_path_len_m: Optional[float] = None
+    uav2_path_len_m: Optional[float] = None
 
 
 def _parse_time(value: str) -> Optional[float]:
@@ -186,6 +188,42 @@ def _extract_suspicious_metrics(result_path: Path) -> dict:
     }
 
 
+def _extract_uav_path_lengths(result_path: Path) -> dict:
+    """
+    Parse result file for lines like:
+    [UAV-PATH] <nodeId> strategy=... totalDistance=516.8m ...
+    Map strategies to uav1/uav2 based on strategy name:
+      - GreedyNearestNeighbor -> uav1
+      - GreedyMaxCoverageCost  -> uav2
+    Returns dict {"uav1": float_meters, "uav2": float_meters} with 0.0 defaults.
+    """
+    import re
+
+    re_uavpath = re.compile(r"\[UAV-PATH\]\s+(\d+)\s+strategy=([^\s]+)\s+totalDistance=([0-9\.]+)m")
+    uav1 = 0.0
+    uav2 = 0.0
+
+    for raw in result_path.read_text(encoding="utf-8").splitlines():
+        m = re_uavpath.search(raw)
+        if not m:
+            continue
+        node_id = m.group(1)
+        strategy = m.group(2)
+        dist = float(m.group(3))
+        if "GreedyNearestNeighbor" in strategy or "NearestNeighbor" in strategy:
+            uav1 = dist
+        elif "GreedyMaxCoverage" in strategy or "MaxCoverage" in strategy or "MaxCoverageCost" in strategy:
+            uav2 = dist
+        else:
+            # If unknown strategy, try to fill whichever is zero first
+            if uav1 == 0.0:
+                uav1 = dist
+            elif uav2 == 0.0:
+                uav2 = dist
+
+    return {"uav1": uav1, "uav2": uav2}
+
+
 def _format_value(value: Optional[float]) -> str:
     if value is None:
         return "not-completed"
@@ -260,6 +298,8 @@ def _append_round_to_report(report_path: Path, row: RoundResult) -> None:
         f"  suspicious_recv={row.suspicious_recv if row.suspicious_recv is not None else 'None'}",
         f"  suspicious_uav_depart={row.suspicious_uav_depart if row.suspicious_uav_depart is not None else 'None'}",
         f"  suspicious_mission_complete={row.suspicious_mission_complete if row.suspicious_mission_complete is not None else 'None'}",
+        f"  uav1_path_len_m={row.uav1_path_len_m if row.uav1_path_len_m is not None else 0.0}",
+        f"  uav2_path_len_m={row.uav2_path_len_m if row.uav2_path_len_m is not None else 0.0}",
         "",
     ]
     with report_path.open("a", encoding="utf-8") as f:
@@ -344,6 +384,14 @@ def _append_conclusion_to_report(report_path: Path, agg: dict) -> None:
         f"mission_complete_fromp_mean={_fmt(agg.get('mission_complete_fromp_mean'))}",
         f"mission_complete_fromp_min={_fmt(agg.get('mission_complete_fromp_min'))}",
         f"mission_complete_fromp_max={_fmt(agg.get('mission_complete_fromp_max'))}",
+        "",
+        "[UAV_PATH_AGGREGATE]",
+        f"uav1_path_mean={_fmt(agg.get('uav1_path_mean'))}",
+        f"uav1_path_min={_fmt(agg.get('uav1_path_min'))}",
+        f"uav1_path_max={_fmt(agg.get('uav1_path_max'))}",
+        f"uav2_path_mean={_fmt(agg.get('uav2_path_mean'))}",
+        f"uav2_path_min={_fmt(agg.get('uav2_path_min'))}",
+        f"uav2_path_max={_fmt(agg.get('uav2_path_max'))}",
         "",
     ]
     with report_path.open("a", encoding="utf-8") as f:
@@ -489,9 +537,11 @@ def run_batch(args: argparse.Namespace) -> tuple[list[RoundResult], dict]:
             if status == "ok" and parsed.get("scenario") != "scenario4":
                 status = "invalid-summary"
 
-            # Extract suspicious event metrics from the result file before cleanup
+            # Extract suspicious event metrics and UAV path lengths from the result file
             susp_metrics = _extract_suspicious_metrics(result_file)
+            uav_path_lens = _extract_uav_path_lengths(result_file)
 
+            # remove per-run result file now that we've parsed values
             result_file.unlink(missing_ok=True)
         else:
             if status == "ok":
@@ -512,6 +562,8 @@ def run_batch(args: argparse.Namespace) -> tuple[list[RoundResult], dict]:
             suspicious_recv=susp_metrics.get("recv"),
             suspicious_uav_depart=susp_metrics.get("uav_depart"),
             suspicious_mission_complete=susp_metrics.get("mission_complete"),
+            uav1_path_len_m=uav_path_lens.get("uav1", 0.0),
+            uav2_path_len_m=uav_path_lens.get("uav2", 0.0),
         )
         all_rows.append(row)
         _append_round_to_report(report_path, row)
@@ -607,6 +659,15 @@ def run_batch(args: argparse.Namespace) -> tuple[list[RoundResult], dict]:
         agg[f"{short}_fromp_mean"] = _safe_stat(fromp_vals, "mean")
         agg[f"{short}_fromp_min"] = _safe_stat(fromp_vals, "min")
         agg[f"{short}_fromp_max"] = _safe_stat(fromp_vals, "max")
+    # UAV path length aggregates
+    u1_paths = [r.uav1_path_len_m for r in all_rows if r.uav1_path_len_m is not None]
+    u2_paths = [r.uav2_path_len_m for r in all_rows if r.uav2_path_len_m is not None]
+    agg["uav1_path_mean"] = _safe_stat(u1_paths, "mean")
+    agg["uav1_path_min"] = _safe_stat(u1_paths, "min")
+    agg["uav1_path_max"] = _safe_stat(u1_paths, "max")
+    agg["uav2_path_mean"] = _safe_stat(u2_paths, "mean")
+    agg["uav2_path_min"] = _safe_stat(u2_paths, "min")
+    agg["uav2_path_max"] = _safe_stat(u2_paths, "max")
     _append_conclusion_to_report(report_path, agg)
 
     # Rename final report to include number_of_nodes, COOP_GMC and timestamp
