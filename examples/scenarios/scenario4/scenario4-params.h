@@ -32,7 +32,7 @@ extern std::map<int32_t, std::map<int32_t, std::vector<uint32_t>>> g_cellGateway
 // ===== SCENARIO PARAMETERS =====
 
 // Grid parameters
-constexpr uint32_t DEFAULT_GRID_SIZE = 20;
+constexpr uint32_t DEFAULT_GRID_SIZE = 35;
 constexpr double DEFAULT_SPACING = 20.0;
 
 // Base station location (far from network to avoid interference)

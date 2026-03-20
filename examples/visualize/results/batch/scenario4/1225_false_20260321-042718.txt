@@ -1,0 +1,1084 @@
+SCENARIO4 AUTORUN REPORT
+
+[CONFIGS]
+rounds=100
+startSeed=60
+startRunId=1
+simTime=default
+gridSize=default
+gridSpacing=default
+numFragments=default
+numUavs=default
+timeoutSec=300
+buildFirst=false
+extraArgs=-
+
+[PARAMS]
+cellRadius=80.000
+neighborDiscoveryRadius=80.000
+broadcastRadius=50.000
+uav1Speed=20.000
+uav1HoverTime=2.000
+uav2Speed=20.000
+uav2HoverTime=0.000
+masterFileConfidence=0.900
+
+[ROUNDS]
+round=1 seed=60 runId=1 status=ok
+  durationSec=8.475
+  suspiciousNodes=405
+  uav1CompletedTime=6712.685
+  uav2CompletedTime=305.422
+  suspicious_recv={'confidence': 0.684, 'fromUAV': 2, 'fromPeers': 3}
+  suspicious_uav_depart={'confidence': 0.8, 'fromUAV': 3, 'fromPeers': 4}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 3, 'fromPeers': 4}
+  uav1_path_len_m=9076.2
+  uav2_path_len_m=4724.3
+round=2 seed=61 runId=2 status=ok
+  durationSec=2.551
+  suspiciousNodes=377
+  uav1CompletedTime=188.305
+  uav2CompletedTime=25.967
+  suspicious_recv={'confidence': 0.602, 'fromUAV': 0, 'fromPeers': 4}
+  suspicious_uav_depart={'confidence': 0.684, 'fromUAV': 1, 'fromPeers': 4}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 1, 'fromPeers': 6}
+  uav1_path_len_m=7975.7
+  uav2_path_len_m=3916.3
+round=3 seed=62 runId=3 status=ok
+  durationSec=2.563
+  suspiciousNodes=405
+  uav1CompletedTime=4123.519
+  uav2CompletedTime=130.839
+  suspicious_recv={'confidence': 0.684, 'fromUAV': 0, 'fromPeers': 5}
+  suspicious_uav_depart={'confidence': 0.8, 'fromUAV': 1, 'fromPeers': 6}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 1, 'fromPeers': 6}
+  uav1_path_len_m=9189.1
+  uav2_path_len_m=4355.4
+round=4 seed=63 runId=4 status=ok
+  durationSec=2.571
+  suspiciousNodes=377
+  uav1CompletedTime=6584.922
+  uav2CompletedTime=266.732
+  suspicious_recv={'confidence': 0.602, 'fromUAV': 2, 'fromPeers': 2}
+  suspicious_uav_depart={'confidence': 0.684, 'fromUAV': 3, 'fromPeers': 2}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 3, 'fromPeers': 4}
+  uav1_path_len_m=8072.9
+  uav2_path_len_m=4065.6
+round=5 seed=64 runId=5 status=ok
+  durationSec=2.477
+  suspiciousNodes=407
+  uav1CompletedTime=2728.684
+  uav2CompletedTime=112.197
+  suspicious_recv={'confidence': 0.499, 'fromUAV': 0, 'fromPeers': 3}
+  suspicious_uav_depart={'confidence': 0.602, 'fromUAV': 1, 'fromPeers': 3}
+  suspicious_mission_complete={'confidence': 0.842, 'fromUAV': 1, 'fromPeers': 7}
+  uav1_path_len_m=9064.1
+  uav2_path_len_m=4630.2
+round=6 seed=65 runId=6 status=ok
+  durationSec=3.641
+  suspiciousNodes=381
+  uav1CompletedTime=1861.257
+  uav2CompletedTime=48.914
+  suspicious_recv={'confidence': 0.684, 'fromUAV': 2, 'fromPeers': 3}
+  suspicious_uav_depart={'confidence': 0.749, 'fromUAV': 3, 'fromPeers': 3}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 3, 'fromPeers': 4}
+  uav1_path_len_m=8410.4
+  uav2_path_len_m=4717.3
+round=7 seed=66 runId=7 status=ok
+  durationSec=2.443
+  suspiciousNodes=401
+  uav1CompletedTime=29.784
+  uav2CompletedTime=203.691
+  suspicious_recv={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_uav_depart={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 0, 'fromPeers': 7}
+  uav1_path_len_m=8480.4
+  uav2_path_len_m=3730.9
+round=8 seed=67 runId=8 status=ok
+  durationSec=2.377
+  suspiciousNodes=407
+  uav1CompletedTime=4638.041
+  uav2CompletedTime=57.075
+  suspicious_recv={'confidence': 0.602, 'fromUAV': 1, 'fromPeers': 3}
+  suspicious_uav_depart={'confidence': 0.684, 'fromUAV': 2, 'fromPeers': 3}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 2, 'fromPeers': 5}
+  uav1_path_len_m=8857.9
+  uav2_path_len_m=3784.6
+round=9 seed=68 runId=9 status=ok
+  durationSec=2.350
+  suspiciousNodes=396
+  uav1CompletedTime=5235.895
+  uav2CompletedTime=58.751
+  suspicious_recv={'confidence': 0.684, 'fromUAV': 0, 'fromPeers': 5}
+  suspicious_uav_depart={'confidence': 0.749, 'fromUAV': 1, 'fromPeers': 5}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 1, 'fromPeers': 6}
+  uav1_path_len_m=8796.6
+  uav2_path_len_m=3879.8
+round=10 seed=69 runId=10 status=ok
+  durationSec=2.371
+  suspiciousNodes=397
+  uav1CompletedTime=6737.726
+  uav2CompletedTime=51.763
+  suspicious_recv={'confidence': 0.749, 'fromUAV': 1, 'fromPeers': 5}
+  suspicious_uav_depart={'confidence': 0.8, 'fromUAV': 2, 'fromPeers': 5}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 2, 'fromPeers': 5}
+  uav1_path_len_m=8790.9
+  uav2_path_len_m=4210.2
+round=11 seed=70 runId=11 status=ok
+  durationSec=2.333
+  suspiciousNodes=367
+  uav1CompletedTime=2473.266
+  uav2CompletedTime=72.578
+  suspicious_recv={'confidence': 0.749, 'fromUAV': 2, 'fromPeers': 4}
+  suspicious_uav_depart={'confidence': 0.499, 'fromUAV': 2, 'fromPeers': 1}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 2, 'fromPeers': 5}
+  uav1_path_len_m=8025.4
+  uav2_path_len_m=4174.4
+round=12 seed=71 runId=12 status=ok
+  durationSec=2.333
+  suspiciousNodes=375
+  uav1CompletedTime=3112.115
+  uav2CompletedTime=66.322
+  suspicious_recv={'confidence': 0.369, 'fromUAV': 1, 'fromPeers': 1}
+  suspicious_uav_depart={'confidence': 0.499, 'fromUAV': 2, 'fromPeers': 1}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 2, 'fromPeers': 5}
+  uav1_path_len_m=8234.5
+  uav2_path_len_m=4114.9
+round=13 seed=72 runId=13 status=ok
+  durationSec=2.454
+  suspiciousNodes=396
+  uav1CompletedTime=2358.297
+  uav2CompletedTime=91.346
+  suspicious_recv={'confidence': 0.684, 'fromUAV': 0, 'fromPeers': 5}
+  suspicious_uav_depart={'confidence': 0.749, 'fromUAV': 1, 'fromPeers': 5}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 1, 'fromPeers': 6}
+  uav1_path_len_m=8743.8
+  uav2_path_len_m=4290.5
+round=14 seed=73 runId=14 status=ok
+  durationSec=2.269
+  suspiciousNodes=370
+  uav1CompletedTime=1735.787
+  uav2CompletedTime=42.760
+  suspicious_recv={'confidence': 0.369, 'fromUAV': 2, 'fromPeers': 0}
+  suspicious_uav_depart={'confidence': 0.499, 'fromUAV': 3, 'fromPeers': 0}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 3, 'fromPeers': 4}
+  uav1_path_len_m=8532.4
+  uav2_path_len_m=3604.0
+round=15 seed=74 runId=15 status=ok
+  durationSec=5.109
+  suspiciousNodes=401
+  uav1CompletedTime=389.981
+  uav2CompletedTime=4114.090
+  suspicious_recv={'confidence': 0.749, 'fromUAV': 0, 'fromPeers': 6}
+  suspicious_uav_depart={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 0, 'fromPeers': 7}
+  uav1_path_len_m=8814.3
+  uav2_path_len_m=4654.6
+round=16 seed=75 runId=16 status=ok
+  durationSec=2.347
+  suspiciousNodes=382
+  uav1CompletedTime=4688.868
+  uav2CompletedTime=52.100
+  suspicious_recv={'confidence': 0.602, 'fromUAV': 0, 'fromPeers': 4}
+  suspicious_uav_depart={'confidence': 0.684, 'fromUAV': 1, 'fromPeers': 4}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 1, 'fromPeers': 6}
+  uav1_path_len_m=8269.2
+  uav2_path_len_m=3853.3
+round=17 seed=76 runId=17 status=ok
+  durationSec=2.359
+  suspiciousNodes=402
+  uav1CompletedTime=3756.659
+  uav2CompletedTime=82.591
+  suspicious_recv={'confidence': 0.602, 'fromUAV': 2, 'fromPeers': 2}
+  suspicious_uav_depart={'confidence': 0.684, 'fromUAV': 3, 'fromPeers': 2}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 3, 'fromPeers': 4}
+  uav1_path_len_m=8548.2
+  uav2_path_len_m=3854.9
+round=18 seed=77 runId=18 status=ok
+  durationSec=2.373
+  suspiciousNodes=394
+  uav1CompletedTime=5588.104
+  uav2CompletedTime=93.708
+  suspicious_recv={'confidence': 0.684, 'fromUAV': 1, 'fromPeers': 4}
+  suspicious_uav_depart={'confidence': 0.749, 'fromUAV': 2, 'fromPeers': 4}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 2, 'fromPeers': 5}
+  uav1_path_len_m=8364.5
+  uav2_path_len_m=3394.1
+round=19 seed=78 runId=19 status=ok
+  durationSec=2.744
+  suspiciousNodes=399
+  uav1CompletedTime=4149.304
+  uav2CompletedTime=49.705
+  suspicious_recv={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_uav_depart={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_mission_complete={'confidence': 0.842, 'fromUAV': 0, 'fromPeers': 8}
+  uav1_path_len_m=8913.0
+  uav2_path_len_m=4527.5
+round=20 seed=79 runId=20 status=ok
+  durationSec=2.353
+  suspiciousNodes=402
+  uav1CompletedTime=4517.397
+  uav2CompletedTime=45.471
+  suspicious_recv={'confidence': 0.684, 'fromUAV': 1, 'fromPeers': 4}
+  suspicious_uav_depart={'confidence': 0.749, 'fromUAV': 2, 'fromPeers': 4}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 2, 'fromPeers': 5}
+  uav1_path_len_m=8896.0
+  uav2_path_len_m=3456.4
+round=21 seed=80 runId=21 status=ok
+  durationSec=2.361
+  suspiciousNodes=394
+  uav1CompletedTime=3942.197
+  uav2CompletedTime=36.697
+  suspicious_recv={'confidence': 0.749, 'fromUAV': 2, 'fromPeers': 4}
+  suspicious_uav_depart={'confidence': 0.8, 'fromUAV': 3, 'fromPeers': 4}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 3, 'fromPeers': 4}
+  uav1_path_len_m=8540.0
+  uav2_path_len_m=4187.8
+round=22 seed=81 runId=22 status=ok
+  durationSec=2.369
+  suspiciousNodes=386
+  uav1CompletedTime=3826.825
+  uav2CompletedTime=91.985
+  suspicious_recv={'confidence': 0.749, 'fromUAV': 3, 'fromPeers': 3}
+  suspicious_uav_depart={'confidence': 0.749, 'fromUAV': 3, 'fromPeers': 3}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 3, 'fromPeers': 4}
+  uav1_path_len_m=8499.9
+  uav2_path_len_m=3202.2
+round=23 seed=82 runId=23 status=ok
+  durationSec=2.397
+  suspiciousNodes=380
+  uav1CompletedTime=47.398
+  uav2CompletedTime=145.546
+  suspicious_recv={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_uav_depart={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 0, 'fromPeers': 7}
+  uav1_path_len_m=8036.9
+  uav2_path_len_m=3470.3
+round=24 seed=83 runId=24 status=ok
+  durationSec=2.364
+  suspiciousNodes=406
+  uav1CompletedTime=3863.332
+  uav2CompletedTime=81.991
+  suspicious_recv={'confidence': 0.749, 'fromUAV': 2, 'fromPeers': 4}
+  suspicious_uav_depart={'confidence': 0.602, 'fromUAV': 2, 'fromPeers': 2}
+  suspicious_mission_complete={'confidence': 0.842, 'fromUAV': 2, 'fromPeers': 6}
+  uav1_path_len_m=8550.7
+  uav2_path_len_m=4090.3
+round=25 seed=84 runId=25 status=ok
+  durationSec=2.358
+  suspiciousNodes=372
+  uav1CompletedTime=4835.812
+  uav2CompletedTime=82.939
+  suspicious_recv={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_uav_depart={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 0, 'fromPeers': 7}
+  uav1_path_len_m=8167.9
+  uav2_path_len_m=3484.6
+round=26 seed=85 runId=26 status=ok
+  durationSec=2.420
+  suspiciousNodes=388
+  uav1CompletedTime=5602.719
+  uav2CompletedTime=119.380
+  suspicious_recv={'confidence': 0.749, 'fromUAV': 1, 'fromPeers': 5}
+  suspicious_uav_depart={'confidence': 0.8, 'fromUAV': 2, 'fromPeers': 5}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 2, 'fromPeers': 5}
+  uav1_path_len_m=8464.1
+  uav2_path_len_m=4166.5
+round=27 seed=86 runId=27 status=ok
+  durationSec=2.307
+  suspiciousNodes=389
+  uav1CompletedTime=2546.417
+  uav2CompletedTime=44.425
+  suspicious_recv={'confidence': 0.369, 'fromUAV': 0, 'fromPeers': 2}
+  suspicious_uav_depart={'confidence': 0.499, 'fromUAV': 1, 'fromPeers': 2}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 1, 'fromPeers': 6}
+  uav1_path_len_m=8998.9
+  uav2_path_len_m=4626.7
+round=28 seed=87 runId=28 status=ok
+  durationSec=2.410
+  suspiciousNodes=403
+  uav1CompletedTime=4074.515
+  uav2CompletedTime=101.668
+  suspicious_recv={'confidence': 0.749, 'fromUAV': 0, 'fromPeers': 6}
+  suspicious_uav_depart={'confidence': 0.842, 'fromUAV': 1, 'fromPeers': 7}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 1, 'fromPeers': 6}
+  uav1_path_len_m=8867.8
+  uav2_path_len_m=3944.0
+round=29 seed=88 runId=29 status=ok
+  durationSec=3.565
+  suspiciousNodes=394
+  uav1CompletedTime=3895.897
+  uav2CompletedTime=94.671
+  suspicious_recv={'confidence': 0.369, 'fromUAV': 2, 'fromPeers': 0}
+  suspicious_uav_depart={'confidence': 0.499, 'fromUAV': 3, 'fromPeers': 0}
+  suspicious_mission_complete={'confidence': 0.842, 'fromUAV': 3, 'fromPeers': 5}
+  uav1_path_len_m=8972.5
+  uav2_path_len_m=4059.9
+round=30 seed=89 runId=30 status=ok
+  durationSec=2.473
+  suspiciousNodes=385
+  uav1CompletedTime=4280.860
+  uav2CompletedTime=119.067
+  suspicious_recv={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_uav_depart={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 0, 'fromPeers': 7}
+  uav1_path_len_m=8770.2
+  uav2_path_len_m=4485.4
+round=31 seed=90 runId=31 status=ok
+  durationSec=2.353
+  suspiciousNodes=396
+  uav1CompletedTime=5165.678
+  uav2CompletedTime=59.554
+  suspicious_recv={'confidence': 0.749, 'fromUAV': 0, 'fromPeers': 6}
+  suspicious_uav_depart={'confidence': 0.8, 'fromUAV': 1, 'fromPeers': 6}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 1, 'fromPeers': 6}
+  uav1_path_len_m=8438.8
+  uav2_path_len_m=3735.1
+round=32 seed=91 runId=32 status=ok
+  durationSec=2.456
+  suspiciousNodes=388
+  uav1CompletedTime=3605.289
+  uav2CompletedTime=207.531
+  suspicious_recv={'confidence': 0.499, 'fromUAV': 1, 'fromPeers': 2}
+  suspicious_uav_depart={'confidence': 0.602, 'fromUAV': 2, 'fromPeers': 2}
+  suspicious_mission_complete={'confidence': 0.842, 'fromUAV': 2, 'fromPeers': 6}
+  uav1_path_len_m=8319.5
+  uav2_path_len_m=4175.6
+round=33 seed=92 runId=33 status=ok
+  durationSec=2.418
+  suspiciousNodes=379
+  uav1CompletedTime=290.324
+  uav2CompletedTime=156.019
+  suspicious_recv={'confidence': 0.684, 'fromUAV': 0, 'fromPeers': 5}
+  suspicious_uav_depart={'confidence': 0.8, 'fromUAV': 1, 'fromPeers': 6}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 1, 'fromPeers': 6}
+  uav1_path_len_m=8452.2
+  uav2_path_len_m=3985.5
+round=34 seed=93 runId=34 status=ok
+  durationSec=2.264
+  suspiciousNodes=378
+  uav1CompletedTime=618.955
+  uav2CompletedTime=35.495
+  suspicious_recv={'confidence': 0.602, 'fromUAV': 1, 'fromPeers': 3}
+  suspicious_uav_depart={'confidence': 0.684, 'fromUAV': 2, 'fromPeers': 3}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 2, 'fromPeers': 5}
+  uav1_path_len_m=8380.2
+  uav2_path_len_m=3752.0
+round=35 seed=94 runId=35 status=ok
+  durationSec=2.386
+  suspiciousNodes=378
+  uav1CompletedTime=1766.317
+  uav2CompletedTime=126.542
+  suspicious_recv={'confidence': 0.749, 'fromUAV': 1, 'fromPeers': 5}
+  suspicious_uav_depart={'confidence': 0.8, 'fromUAV': 2, 'fromPeers': 5}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 2, 'fromPeers': 5}
+  uav1_path_len_m=8322.4
+  uav2_path_len_m=4017.7
+round=36 seed=95 runId=36 status=ok
+  durationSec=2.457
+  suspiciousNodes=375
+  uav1CompletedTime=344.072
+  uav2CompletedTime=155.419
+  suspicious_recv={'confidence': 0.206, 'fromUAV': 1, 'fromPeers': 0}
+  suspicious_uav_depart={'confidence': 0.369, 'fromUAV': 2, 'fromPeers': 0}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 2, 'fromPeers': 5}
+  uav1_path_len_m=8304.8
+  uav2_path_len_m=3932.5
+round=37 seed=96 runId=37 status=ok
+  durationSec=2.291
+  suspiciousNodes=401
+  uav1CompletedTime=2365.270
+  uav2CompletedTime=42.141
+  suspicious_recv={'confidence': 0.684, 'fromUAV': 2, 'fromPeers': 3}
+  suspicious_uav_depart={'confidence': 0.749, 'fromUAV': 3, 'fromPeers': 3}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 3, 'fromPeers': 4}
+  uav1_path_len_m=8837.1
+  uav2_path_len_m=3745.5
+round=38 seed=97 runId=38 status=ok
+  durationSec=2.387
+  suspiciousNodes=386
+  uav1CompletedTime=5922.767
+  uav2CompletedTime=98.044
+  suspicious_recv={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_uav_depart={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 0, 'fromPeers': 7}
+  uav1_path_len_m=8716.7
+  uav2_path_len_m=3930.3
+round=39 seed=98 runId=39 status=ok
+  durationSec=2.334
+  suspiciousNodes=377
+  uav1CompletedTime=3986.346
+  uav2CompletedTime=40.482
+  suspicious_recv={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_uav_depart={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 0, 'fromPeers': 7}
+  uav1_path_len_m=8099.4
+  uav2_path_len_m=3980.3
+round=40 seed=99 runId=40 status=ok
+  durationSec=2.372
+  suspiciousNodes=377
+  uav1CompletedTime=5439.658
+  uav2CompletedTime=84.188
+  suspicious_recv={'confidence': 0.684, 'fromUAV': 2, 'fromPeers': 3}
+  suspicious_uav_depart={'confidence': 0.8, 'fromUAV': 3, 'fromPeers': 4}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 3, 'fromPeers': 4}
+  uav1_path_len_m=8409.9
+  uav2_path_len_m=4050.3
+round=41 seed=100 runId=41 status=ok
+  durationSec=2.413
+  suspiciousNodes=396
+  uav1CompletedTime=739.293
+  uav2CompletedTime=151.783
+  suspicious_recv={'confidence': 0.684, 'fromUAV': 0, 'fromPeers': 5}
+  suspicious_uav_depart={'confidence': 0.8, 'fromUAV': 1, 'fromPeers': 6}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 1, 'fromPeers': 6}
+  uav1_path_len_m=8618.6
+  uav2_path_len_m=4527.2
+round=42 seed=101 runId=42 status=ok
+  durationSec=2.306
+  suspiciousNodes=400
+  uav1CompletedTime=3446.779
+  uav2CompletedTime=30.261
+  suspicious_recv={'confidence': 0.369, 'fromUAV': 2, 'fromPeers': 0}
+  suspicious_uav_depart={'confidence': 0.499, 'fromUAV': 3, 'fromPeers': 0}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 3, 'fromPeers': 4}
+  uav1_path_len_m=8339.3
+  uav2_path_len_m=3767.8
+round=43 seed=102 runId=43 status=ok
+  durationSec=2.276
+  suspiciousNodes=377
+  uav1CompletedTime=1166.732
+  uav2CompletedTime=45.535
+  suspicious_recv={'confidence': 0.499, 'fromUAV': 2, 'fromPeers': 1}
+  suspicious_uav_depart={'confidence': 0.602, 'fromUAV': 3, 'fromPeers': 1}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 3, 'fromPeers': 4}
+  uav1_path_len_m=8011.9
+  uav2_path_len_m=3367.8
+round=44 seed=103 runId=44 status=ok
+  durationSec=2.359
+  suspiciousNodes=381
+  uav1CompletedTime=1942.549
+  uav2CompletedTime=85.008
+  suspicious_recv={'confidence': 0.749, 'fromUAV': 2, 'fromPeers': 4}
+  suspicious_uav_depart={'confidence': 0.8, 'fromUAV': 3, 'fromPeers': 4}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 3, 'fromPeers': 4}
+  uav1_path_len_m=8502.6
+  uav2_path_len_m=3679.6
+round=45 seed=104 runId=45 status=ok
+  durationSec=2.336
+  suspiciousNodes=375
+  uav1CompletedTime=5624.658
+  uav2CompletedTime=56.464
+  suspicious_recv={'confidence': 0.684, 'fromUAV': 1, 'fromPeers': 4}
+  suspicious_uav_depart={'confidence': 0.749, 'fromUAV': 2, 'fromPeers': 4}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 2, 'fromPeers': 5}
+  uav1_path_len_m=8666.4
+  uav2_path_len_m=4438.0
+round=46 seed=105 runId=46 status=ok
+  durationSec=2.404
+  suspiciousNodes=383
+  uav1CompletedTime=5961.088
+  uav2CompletedTime=134.012
+  suspicious_recv={'confidence': 0.749, 'fromUAV': 1, 'fromPeers': 5}
+  suspicious_uav_depart={'confidence': 0.8, 'fromUAV': 2, 'fromPeers': 5}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 2, 'fromPeers': 5}
+  uav1_path_len_m=8450.9
+  uav2_path_len_m=3921.2
+round=47 seed=106 runId=47 status=ok
+  durationSec=2.366
+  suspiciousNodes=386
+  uav1CompletedTime=350.050
+  uav2CompletedTime=118.845
+  suspicious_recv={'confidence': 0.499, 'fromUAV': 1, 'fromPeers': 2}
+  suspicious_uav_depart={'confidence': 0.602, 'fromUAV': 2, 'fromPeers': 2}
+  suspicious_mission_complete={'confidence': 0.842, 'fromUAV': 2, 'fromPeers': 6}
+  uav1_path_len_m=8097.8
+  uav2_path_len_m=3781.1
+round=48 seed=107 runId=48 status=ok
+  durationSec=2.411
+  suspiciousNodes=393
+  uav1CompletedTime=5687.727
+  uav2CompletedTime=103.370
+  suspicious_recv={'confidence': 0.749, 'fromUAV': 1, 'fromPeers': 5}
+  suspicious_uav_depart={'confidence': 0.8, 'fromUAV': 2, 'fromPeers': 5}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 2, 'fromPeers': 5}
+  uav1_path_len_m=8487.7
+  uav2_path_len_m=4494.7
+round=49 seed=108 runId=49 status=ok
+  durationSec=2.328
+  suspiciousNodes=397
+  uav1CompletedTime=5302.629
+  uav2CompletedTime=49.572
+  suspicious_recv={'confidence': 0.749, 'fromUAV': 3, 'fromPeers': 3}
+  suspicious_uav_depart={'confidence': 0.8, 'fromUAV': 4, 'fromPeers': 3}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 4, 'fromPeers': 3}
+  uav1_path_len_m=8722.8
+  uav2_path_len_m=4100.6
+round=50 seed=109 runId=50 status=ok
+  durationSec=2.406
+  suspiciousNodes=389
+  uav1CompletedTime=6004.694
+  uav2CompletedTime=107.233
+  suspicious_recv={'confidence': 0.684, 'fromUAV': 1, 'fromPeers': 4}
+  suspicious_uav_depart={'confidence': 0.749, 'fromUAV': 2, 'fromPeers': 4}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 2, 'fromPeers': 5}
+  uav1_path_len_m=8447.4
+  uav2_path_len_m=4377.5
+round=51 seed=110 runId=51 status=ok
+  durationSec=2.329
+  suspiciousNodes=394
+  uav1CompletedTime=2030.202
+  uav2CompletedTime=48.847
+  suspicious_recv={'confidence': 0.684, 'fromUAV': 2, 'fromPeers': 3}
+  suspicious_uav_depart={'confidence': 0.749, 'fromUAV': 3, 'fromPeers': 3}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 3, 'fromPeers': 4}
+  uav1_path_len_m=8341.3
+  uav2_path_len_m=3644.8
+round=52 seed=111 runId=52 status=ok
+  durationSec=2.479
+  suspiciousNodes=392
+  uav1CompletedTime=2693.179
+  uav2CompletedTime=240.471
+  suspicious_recv={'confidence': 0.749, 'fromUAV': 3, 'fromPeers': 3}
+  suspicious_uav_depart={'confidence': 0.499, 'fromUAV': 3, 'fromPeers': 0}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 3, 'fromPeers': 4}
+  uav1_path_len_m=8774.8
+  uav2_path_len_m=3745.1
+round=53 seed=112 runId=53 status=ok
+  durationSec=3.227
+  suspiciousNodes=396
+  uav1CompletedTime=5179.116
+  uav2CompletedTime=117.823
+  suspicious_recv={'confidence': 0.602, 'fromUAV': 1, 'fromPeers': 3}
+  suspicious_uav_depart={'confidence': 0.684, 'fromUAV': 2, 'fromPeers': 3}
+  suspicious_mission_complete={'confidence': 0.842, 'fromUAV': 2, 'fromPeers': 6}
+  uav1_path_len_m=8747.6
+  uav2_path_len_m=4327.6
+round=54 seed=113 runId=54 status=ok
+  durationSec=2.906
+  suspiciousNodes=394
+  uav1CompletedTime=3958.293
+  uav2CompletedTime=100.594
+  suspicious_recv={'confidence': 0.749, 'fromUAV': 2, 'fromPeers': 4}
+  suspicious_uav_depart={'confidence': 0.602, 'fromUAV': 2, 'fromPeers': 2}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 2, 'fromPeers': 5}
+  uav1_path_len_m=8949.5
+  uav2_path_len_m=4195.4
+round=55 seed=114 runId=55 status=ok
+  durationSec=2.354
+  suspiciousNodes=370
+  uav1CompletedTime=1209.148
+  uav2CompletedTime=110.267
+  suspicious_recv={'confidence': 0.206, 'fromUAV': 1, 'fromPeers': 0}
+  suspicious_uav_depart={'confidence': 0.369, 'fromUAV': 2, 'fromPeers': 0}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 2, 'fromPeers': 5}
+  uav1_path_len_m=8051.7
+  uav2_path_len_m=3762.3
+round=56 seed=115 runId=56 status=ok
+  durationSec=2.330
+  suspiciousNodes=383
+  uav1CompletedTime=2730.190
+  uav2CompletedTime=40.468
+  suspicious_recv={'confidence': 0.499, 'fromUAV': 2, 'fromPeers': 1}
+  suspicious_uav_depart={'confidence': 0.602, 'fromUAV': 3, 'fromPeers': 1}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 3, 'fromPeers': 4}
+  uav1_path_len_m=8166.9
+  uav2_path_len_m=3437.8
+round=57 seed=116 runId=57 status=ok
+  durationSec=2.829
+  suspiciousNodes=389
+  uav1CompletedTime=6794.726
+  uav2CompletedTime=549.016
+  suspicious_recv={'confidence': 0.749, 'fromUAV': 4, 'fromPeers': 2}
+  suspicious_uav_depart={'confidence': 0.842, 'fromUAV': 5, 'fromPeers': 3}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 5, 'fromPeers': 2}
+  uav1_path_len_m=8674.1
+  uav2_path_len_m=4111.2
+round=58 seed=117 runId=58 status=ok
+  durationSec=2.409
+  suspiciousNodes=396
+  uav1CompletedTime=196.100
+  uav2CompletedTime=151.151
+  suspicious_recv={'confidence': 0.749, 'fromUAV': 2, 'fromPeers': 4}
+  suspicious_uav_depart={'confidence': 0.8, 'fromUAV': 3, 'fromPeers': 4}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 3, 'fromPeers': 4}
+  uav1_path_len_m=8581.3
+  uav2_path_len_m=3914.4
+round=59 seed=118 runId=59 status=ok
+  durationSec=2.366
+  suspiciousNodes=367
+  uav1CompletedTime=3531.069
+  uav2CompletedTime=65.932
+  suspicious_recv={'confidence': 0.602, 'fromUAV': 2, 'fromPeers': 2}
+  suspicious_uav_depart={'confidence': 0.684, 'fromUAV': 3, 'fromPeers': 2}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 3, 'fromPeers': 4}
+  uav1_path_len_m=7895.9
+  uav2_path_len_m=4034.9
+round=60 seed=119 runId=60 status=ok
+  durationSec=2.321
+  suspiciousNodes=369
+  uav1CompletedTime=2303.560
+  uav2CompletedTime=57.497
+  suspicious_recv={'confidence': 0.369, 'fromUAV': 2, 'fromPeers': 0}
+  suspicious_uav_depart={'confidence': 0.499, 'fromUAV': 3, 'fromPeers': 0}
+  suspicious_mission_complete={'confidence': 0.842, 'fromUAV': 3, 'fromPeers': 5}
+  uav1_path_len_m=7672.3
+  uav2_path_len_m=3443.6
+round=61 seed=120 runId=61 status=ok
+  durationSec=2.368
+  suspiciousNodes=392
+  uav1CompletedTime=2952.266
+  uav2CompletedTime=50.754
+  suspicious_recv={'confidence': 0.602, 'fromUAV': 2, 'fromPeers': 2}
+  suspicious_uav_depart={'confidence': 0.684, 'fromUAV': 3, 'fromPeers': 2}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 3, 'fromPeers': 4}
+  uav1_path_len_m=8592.4
+  uav2_path_len_m=4086.4
+round=62 seed=121 runId=62 status=ok
+  durationSec=2.372
+  suspiciousNodes=368
+  uav1CompletedTime=2399.008
+  uav2CompletedTime=90.317
+  suspicious_recv={'confidence': 0.369, 'fromUAV': 2, 'fromPeers': 0}
+  suspicious_uav_depart={'confidence': 0.499, 'fromUAV': 3, 'fromPeers': 0}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 3, 'fromPeers': 4}
+  uav1_path_len_m=8140.1
+  uav2_path_len_m=3709.6
+round=63 seed=122 runId=63 status=ok
+  durationSec=2.408
+  suspiciousNodes=379
+  uav1CompletedTime=4333.319
+  uav2CompletedTime=98.642
+  suspicious_recv={'confidence': 0.602, 'fromUAV': 1, 'fromPeers': 3}
+  suspicious_uav_depart={'confidence': 0.684, 'fromUAV': 2, 'fromPeers': 3}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 2, 'fromPeers': 5}
+  uav1_path_len_m=8355.8
+  uav2_path_len_m=3801.1
+round=64 seed=123 runId=64 status=ok
+  durationSec=2.328
+  suspiciousNodes=374
+  uav1CompletedTime=4733.304
+  uav2CompletedTime=47.744
+  suspicious_recv={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_uav_depart={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 0, 'fromPeers': 7}
+  uav1_path_len_m=8128.6
+  uav2_path_len_m=3636.4
+round=65 seed=124 runId=65 status=ok
+  durationSec=2.319
+  suspiciousNodes=386
+  uav1CompletedTime=1692.142
+  uav2CompletedTime=86.414
+  suspicious_recv={'confidence': 0.602, 'fromUAV': 1, 'fromPeers': 3}
+  suspicious_uav_depart={'confidence': 0.684, 'fromUAV': 2, 'fromPeers': 3}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 2, 'fromPeers': 5}
+  uav1_path_len_m=8799.2
+  uav2_path_len_m=3996.8
+round=66 seed=125 runId=66 status=ok
+  durationSec=2.353
+  suspiciousNodes=373
+  uav1CompletedTime=5166.558
+  uav2CompletedTime=56.054
+  suspicious_recv={'confidence': 0.684, 'fromUAV': 1, 'fromPeers': 4}
+  suspicious_uav_depart={'confidence': 0.749, 'fromUAV': 2, 'fromPeers': 4}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 2, 'fromPeers': 5}
+  uav1_path_len_m=8175.9
+  uav2_path_len_m=3753.1
+round=67 seed=126 runId=67 status=ok
+  durationSec=2.447
+  suspiciousNodes=381
+  uav1CompletedTime=4215.734
+  uav2CompletedTime=161.756
+  suspicious_recv={'confidence': 0.499, 'fromUAV': 2, 'fromPeers': 1}
+  suspicious_uav_depart={'confidence': 0.602, 'fromUAV': 3, 'fromPeers': 1}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 3, 'fromPeers': 4}
+  uav1_path_len_m=8177.9
+  uav2_path_len_m=3953.8
+round=68 seed=127 runId=68 status=ok
+  durationSec=2.346
+  suspiciousNodes=385
+  uav1CompletedTime=5691.388
+  uav2CompletedTime=80.970
+  suspicious_recv={'confidence': 0.684, 'fromUAV': 0, 'fromPeers': 5}
+  suspicious_uav_depart={'confidence': 0.749, 'fromUAV': 1, 'fromPeers': 5}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 1, 'fromPeers': 6}
+  uav1_path_len_m=8949.1
+  uav2_path_len_m=4266.5
+round=69 seed=128 runId=69 status=ok
+  durationSec=2.450
+  suspiciousNodes=391
+  uav1CompletedTime=451.358
+  uav2CompletedTime=180.152
+  suspicious_recv={'confidence': 0.749, 'fromUAV': 2, 'fromPeers': 4}
+  suspicious_uav_depart={'confidence': 0.602, 'fromUAV': 2, 'fromPeers': 2}
+  suspicious_mission_complete={'confidence': 0.842, 'fromUAV': 2, 'fromPeers': 6}
+  uav1_path_len_m=8456.8
+  uav2_path_len_m=3449.5
+round=70 seed=129 runId=70 status=ok
+  durationSec=2.346
+  suspiciousNodes=378
+  uav1CompletedTime=223.532
+  uav2CompletedTime=95.703
+  suspicious_recv={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_uav_depart={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 0, 'fromPeers': 7}
+  uav1_path_len_m=7860.4
+  uav2_path_len_m=3291.6
+round=71 seed=130 runId=71 status=ok
+  durationSec=2.501
+  suspiciousNodes=405
+  uav1CompletedTime=4403.773
+  uav2CompletedTime=262.255
+  suspicious_recv={'confidence': 0.749, 'fromUAV': 2, 'fromPeers': 4}
+  suspicious_uav_depart={'confidence': 0.8, 'fromUAV': 3, 'fromPeers': 4}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 3, 'fromPeers': 4}
+  uav1_path_len_m=8824.1
+  uav2_path_len_m=4130.4
+round=72 seed=131 runId=72 status=ok
+  durationSec=2.333
+  suspiciousNodes=396
+  uav1CompletedTime=4089.975
+  uav2CompletedTime=60.635
+  suspicious_recv={'confidence': 0.749, 'fromUAV': 2, 'fromPeers': 4}
+  suspicious_uav_depart={'confidence': 0.8, 'fromUAV': 3, 'fromPeers': 4}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 3, 'fromPeers': 4}
+  uav1_path_len_m=8956.7
+  uav2_path_len_m=4094.9
+round=73 seed=132 runId=73 status=ok
+  durationSec=2.382
+  suspiciousNodes=377
+  uav1CompletedTime=5051.737
+  uav2CompletedTime=67.368
+  suspicious_recv={'confidence': 0.369, 'fromUAV': 2, 'fromPeers': 0}
+  suspicious_uav_depart={'confidence': 0.499, 'fromUAV': 3, 'fromPeers': 0}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 3, 'fromPeers': 4}
+  uav1_path_len_m=8270.7
+  uav2_path_len_m=4186.2
+round=74 seed=133 runId=74 status=ok
+  durationSec=2.334
+  suspiciousNodes=375
+  uav1CompletedTime=2698.678
+  uav2CompletedTime=73.695
+  suspicious_recv={'confidence': 0.369, 'fromUAV': 1, 'fromPeers': 1}
+  suspicious_uav_depart={'confidence': 0.499, 'fromUAV': 2, 'fromPeers': 1}
+  suspicious_mission_complete={'confidence': 0.842, 'fromUAV': 2, 'fromPeers': 6}
+  uav1_path_len_m=8021.1
+  uav2_path_len_m=3877.8
+round=75 seed=134 runId=75 status=ok
+  durationSec=2.295
+  suspiciousNodes=370
+  uav1CompletedTime=673.972
+  uav2CompletedTime=43.866
+  suspicious_recv={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_uav_depart={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 0, 'fromPeers': 7}
+  uav1_path_len_m=7861.3
+  uav2_path_len_m=3336.4
+round=76 seed=135 runId=76 status=ok
+  durationSec=2.413
+  suspiciousNodes=367
+  uav1CompletedTime=3489.630
+  uav2CompletedTime=62.065
+  suspicious_recv={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_uav_depart={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 0, 'fromPeers': 7}
+  uav1_path_len_m=7663.5
+  uav2_path_len_m=3334.8
+round=77 seed=136 runId=77 status=ok
+  durationSec=2.511
+  suspiciousNodes=370
+  uav1CompletedTime=5519.787
+  uav2CompletedTime=92.382
+  suspicious_recv={'confidence': 0.684, 'fromUAV': 2, 'fromPeers': 3}
+  suspicious_uav_depart={'confidence': 0.749, 'fromUAV': 3, 'fromPeers': 3}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 3, 'fromPeers': 4}
+  uav1_path_len_m=7807.6
+  uav2_path_len_m=3903.9
+round=78 seed=137 runId=78 status=ok
+  durationSec=3.828
+  suspiciousNodes=375
+  uav1CompletedTime=4016.285
+  uav2CompletedTime=108.601
+  suspicious_recv={'confidence': 0.206, 'fromUAV': 1, 'fromPeers': 0}
+  suspicious_uav_depart={'confidence': 0.369, 'fromUAV': 2, 'fromPeers': 0}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 2, 'fromPeers': 5}
+  uav1_path_len_m=8470.2
+  uav2_path_len_m=4434.9
+round=79 seed=138 runId=79 status=ok
+  durationSec=2.401
+  suspiciousNodes=387
+  uav1CompletedTime=4931.106
+  uav2CompletedTime=72.561
+  suspicious_recv={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_uav_depart={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 0, 'fromPeers': 7}
+  uav1_path_len_m=8392.2
+  uav2_path_len_m=4255.7
+round=80 seed=139 runId=80 status=ok
+  durationSec=2.475
+  suspiciousNodes=372
+  uav1CompletedTime=3042.247
+  uav2CompletedTime=190.056
+  suspicious_recv={'confidence': 0.749, 'fromUAV': 3, 'fromPeers': 3}
+  suspicious_uav_depart={'confidence': 0.8, 'fromUAV': 4, 'fromPeers': 3}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 4, 'fromPeers': 3}
+  uav1_path_len_m=8101.4
+  uav2_path_len_m=3678.2
+round=81 seed=140 runId=81 status=ok
+  durationSec=2.301
+  suspiciousNodes=390
+  uav1CompletedTime=3539.052
+  uav2CompletedTime=53.308
+  suspicious_recv={'confidence': 0.749, 'fromUAV': 0, 'fromPeers': 6}
+  suspicious_uav_depart={'confidence': 0.8, 'fromUAV': 1, 'fromPeers': 6}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 1, 'fromPeers': 6}
+  uav1_path_len_m=8986.7
+  uav2_path_len_m=4399.5
+round=82 seed=141 runId=82 status=ok
+  durationSec=2.319
+  suspiciousNodes=400
+  uav1CompletedTime=3783.179
+  uav2CompletedTime=55.086
+  suspicious_recv={'confidence': 0.749, 'fromUAV': 1, 'fromPeers': 5}
+  suspicious_uav_depart={'confidence': 0.8, 'fromUAV': 2, 'fromPeers': 5}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 2, 'fromPeers': 5}
+  uav1_path_len_m=8787.6
+  uav2_path_len_m=4320.3
+round=83 seed=142 runId=83 status=ok
+  durationSec=2.254
+  suspiciousNodes=378
+  uav1CompletedTime=840.000
+  uav2CompletedTime=29.255
+  suspicious_recv={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_uav_depart={'confidence': 0.206, 'fromUAV': 1, 'fromPeers': 0}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 1, 'fromPeers': 6}
+  uav1_path_len_m=7915.7
+  uav2_path_len_m=3985.7
+round=84 seed=143 runId=84 status=ok
+  durationSec=2.343
+  suspiciousNodes=377
+  uav1CompletedTime=3539.721
+  uav2CompletedTime=68.989
+  suspicious_recv={'confidence': 0.684, 'fromUAV': 1, 'fromPeers': 4}
+  suspicious_uav_depart={'confidence': 0.749, 'fromUAV': 2, 'fromPeers': 4}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 2, 'fromPeers': 5}
+  uav1_path_len_m=8530.1
+  uav2_path_len_m=3806.3
+round=85 seed=144 runId=85 status=ok
+  durationSec=2.393
+  suspiciousNodes=406
+  uav1CompletedTime=4149.976
+  uav2CompletedTime=59.863
+  suspicious_recv={'confidence': 0.749, 'fromUAV': 3, 'fromPeers': 3}
+  suspicious_uav_depart={'confidence': 0.8, 'fromUAV': 4, 'fromPeers': 3}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 4, 'fromPeers': 3}
+  uav1_path_len_m=9078.2
+  uav2_path_len_m=3804.0
+round=86 seed=145 runId=86 status=ok
+  durationSec=2.402
+  suspiciousNodes=375
+  uav1CompletedTime=540.572
+  uav2CompletedTime=68.434
+  suspicious_recv={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_uav_depart={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 0, 'fromPeers': 7}
+  uav1_path_len_m=8124.1
+  uav2_path_len_m=3974.5
+round=87 seed=146 runId=87 status=ok
+  durationSec=2.367
+  suspiciousNodes=392
+  uav1CompletedTime=4246.683
+  uav2CompletedTime=61.062
+  suspicious_recv={'confidence': 0.684, 'fromUAV': 1, 'fromPeers': 4}
+  suspicious_uav_depart={'confidence': 0.749, 'fromUAV': 2, 'fromPeers': 4}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 2, 'fromPeers': 5}
+  uav1_path_len_m=8597.4
+  uav2_path_len_m=4202.5
+round=88 seed=147 runId=88 status=ok
+  durationSec=2.372
+  suspiciousNodes=390
+  uav1CompletedTime=2763.911
+  uav2CompletedTime=69.009
+  suspicious_recv={'confidence': 0.749, 'fromUAV': 0, 'fromPeers': 6}
+  suspicious_uav_depart={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 0, 'fromPeers': 7}
+  uav1_path_len_m=8173.2
+  uav2_path_len_m=3368.9
+round=89 seed=148 runId=89 status=ok
+  durationSec=2.308
+  suspiciousNodes=375
+  uav1CompletedTime=808.548
+  uav2CompletedTime=46.265
+  suspicious_recv={'confidence': 0.369, 'fromUAV': 2, 'fromPeers': 0}
+  suspicious_uav_depart={'confidence': 0.499, 'fromUAV': 3, 'fromPeers': 0}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 3, 'fromPeers': 4}
+  uav1_path_len_m=8296.5
+  uav2_path_len_m=3635.8
+round=90 seed=149 runId=90 status=ok
+  durationSec=2.358
+  suspiciousNodes=370
+  uav1CompletedTime=4696.596
+  uav2CompletedTime=65.523
+  suspicious_recv={'confidence': 0.749, 'fromUAV': 0, 'fromPeers': 6}
+  suspicious_uav_depart={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 0, 'fromPeers': 7}
+  uav1_path_len_m=8033.2
+  uav2_path_len_m=3242.6
+round=91 seed=150 runId=91 status=ok
+  durationSec=2.459
+  suspiciousNodes=379
+  uav1CompletedTime=1618.213
+  uav2CompletedTime=202.571
+  suspicious_recv={'confidence': 0.749, 'fromUAV': 5, 'fromPeers': 1}
+  suspicious_uav_depart={'confidence': 0.8, 'fromUAV': 6, 'fromPeers': 1}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 6, 'fromPeers': 1}
+  uav1_path_len_m=8098.9
+  uav2_path_len_m=3223.5
+round=92 seed=151 runId=92 status=ok
+  durationSec=2.438
+  suspiciousNodes=379
+  uav1CompletedTime=6468.349
+  uav2CompletedTime=82.017
+  suspicious_recv={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_uav_depart={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_mission_complete={'confidence': 0.842, 'fromUAV': 0, 'fromPeers': 8}
+  uav1_path_len_m=8272.1
+  uav2_path_len_m=3945.9
+round=93 seed=152 runId=93 status=ok
+  durationSec=2.800
+  suspiciousNodes=380
+  uav1CompletedTime=4774.486
+  uav2CompletedTime=103.905
+  suspicious_recv={'confidence': 0.684, 'fromUAV': 2, 'fromPeers': 3}
+  suspicious_uav_depart={'confidence': 0.749, 'fromUAV': 3, 'fromPeers': 3}
+  suspicious_mission_complete={'confidence': 0.842, 'fromUAV': 3, 'fromPeers': 5}
+  uav1_path_len_m=8090.5
+  uav2_path_len_m=3818.1
+round=94 seed=153 runId=94 status=ok
+  durationSec=4.382
+  suspiciousNodes=394
+  uav1CompletedTime=3311.297
+  uav2CompletedTime=71.030
+  suspicious_recv={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_uav_depart={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 0, 'fromPeers': 7}
+  uav1_path_len_m=9035.0
+  uav2_path_len_m=4966.5
+round=95 seed=154 runId=95 status=ok
+  durationSec=2.353
+  suspiciousNodes=387
+  uav1CompletedTime=1406.402
+  uav2CompletedTime=49.433
+  suspicious_recv={'confidence': 0.602, 'fromUAV': 2, 'fromPeers': 2}
+  suspicious_uav_depart={'confidence': 0.684, 'fromUAV': 3, 'fromPeers': 2}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 3, 'fromPeers': 4}
+  uav1_path_len_m=8508.0
+  uav2_path_len_m=3834.4
+round=96 seed=155 runId=96 status=ok
+  durationSec=2.451
+  suspiciousNodes=379
+  uav1CompletedTime=5428.044
+  uav2CompletedTime=74.219
+  suspicious_recv={'confidence': 0.369, 'fromUAV': 1, 'fromPeers': 1}
+  suspicious_uav_depart={'confidence': 0.499, 'fromUAV': 2, 'fromPeers': 1}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 2, 'fromPeers': 5}
+  uav1_path_len_m=8285.0
+  uav2_path_len_m=4201.4
+round=97 seed=156 runId=97 status=ok
+  durationSec=2.368
+  suspiciousNodes=389
+  uav1CompletedTime=4208.721
+  uav2CompletedTime=45.983
+  suspicious_recv={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_uav_depart={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 0, 'fromPeers': 7}
+  uav1_path_len_m=8472.2
+  uav2_path_len_m=4432.6
+round=98 seed=157 runId=98 status=ok
+  durationSec=2.299
+  suspiciousNodes=375
+  uav1CompletedTime=2385.436
+  uav2CompletedTime=44.348
+  suspicious_recv={'confidence': 0.499, 'fromUAV': 2, 'fromPeers': 1}
+  suspicious_uav_depart={'confidence': 0.602, 'fromUAV': 3, 'fromPeers': 1}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 3, 'fromPeers': 4}
+  uav1_path_len_m=8185.4
+  uav2_path_len_m=3725.3
+round=99 seed=158 runId=99 status=ok
+  durationSec=2.376
+  suspiciousNodes=399
+  uav1CompletedTime=5282.545
+  uav2CompletedTime=110.772
+  suspicious_recv={'confidence': 0.206, 'fromUAV': 1, 'fromPeers': 0}
+  suspicious_uav_depart={'confidence': 0.369, 'fromUAV': 2, 'fromPeers': 0}
+  suspicious_mission_complete={'confidence': 0.842, 'fromUAV': 2, 'fromPeers': 6}
+  uav1_path_len_m=8726.2
+  uav2_path_len_m=3436.8
+round=100 seed=159 runId=100 status=ok
+  durationSec=2.525
+  suspiciousNodes=385
+  uav1CompletedTime=4748.234
+  uav2CompletedTime=70.384
+  suspicious_recv={'confidence': 0.499, 'fromUAV': 2, 'fromPeers': 1}
+  suspicious_uav_depart={'confidence': 0.602, 'fromUAV': 3, 'fromPeers': 1}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 3, 'fromPeers': 4}
+  uav1_path_len_m=8407.0
+  uav2_path_len_m=4515.7
+[CONCLUSION]
+totalRounds=100
+okRounds=100
+failedRounds=0
+uav1CompletionCount=100
+uav2CompletionCount=100
+bothCompletionCount=100
+uav1CompletionRate=1.000
+uav2CompletionRate=1.000
+bothCompletionRate=1.000
+uav2EarlierCount=97
+uav1EarlierCount=3
+uav2EarlierRate=0.970
+uav1MeanCompletionTime=3431.988
+uav2MeanCompletionTime=136.734
+uav1MinCompletionTime=29.784
+uav2MinCompletionTime=25.967
+uav1MaxCompletionTime=6794.726
+uav2MaxCompletionTime=4114.090
+avgEarlierGapSec=3295.254
+
+[SUSPICIOUS_EVENTS_AGGREGATE]
+# format: <event>_<metric>_<stat>=value
+recv_conf_mean=0.508
+recv_conf_min=0.000
+recv_conf_max=0.749
+recv_fromu_mean=1.170
+recv_fromu_min=0.000
+recv_fromu_max=5.000
+recv_fromp_mean=2.490
+recv_fromp_min=0.000
+recv_fromp_max=6.000
+uav_depart_conf_mean=0.543
+uav_depart_conf_min=0.000
+uav_depart_conf_max=0.842
+uav_depart_fromu_mean=1.920
+uav_depart_fromu_min=0.000
+uav_depart_fromu_max=6.000
+uav_depart_fromp_mean=2.260
+uav_depart_fromp_min=0.000
+uav_depart_fromp_max=7.000
+mission_complete_conf_mean=0.805
+mission_complete_conf_min=0.800
+mission_complete_conf_max=0.842
+mission_complete_fromu_mean=1.920
+mission_complete_fromu_min=0.000
+mission_complete_fromu_max=6.000
+mission_complete_fromp_mean=5.210
+mission_complete_fromp_min=1.000
+mission_complete_fromp_max=8.000
+
+[UAV_PATH_AGGREGATE]
+uav1_path_mean=8450.142
+uav1_path_min=7663.500
+uav1_path_max=9189.100
+uav2_path_mean=3960.526
+uav2_path_min=3202.200
+uav2_path_max=4966.500
