@@ -1157,11 +1157,15 @@ PlanUavFlightPathsForBsInit()
                     << uav2StartPos.x << "," << uav2StartPos.y << "," << uav2StartPos.z << ")");
         
         std::vector<Vector> suspiciousPoints;
+        std::vector<int32_t> suspiciousPointCellIds; // parallel: cellId for each suspiciousPoints[ni]
         suspiciousPoints.reserve(suspiciousNodePositions.size());
+        suspiciousPointCellIds.reserve(suspiciousNodePositions.size());
         for (const auto& [nodeId, pos] : suspiciousNodePositions)
         {
-            (void)nodeId;
             suspiciousPoints.push_back(pos);
+            auto stateIt = g_groundNetworkPerNode.find(nodeId);
+            suspiciousPointCellIds.push_back(
+                stateIt != g_groundNetworkPerNode.end() ? stateIt->second.cellId : -1);
         }
 
         std::vector<Vector> candidates = suspiciousPoints;
@@ -1242,18 +1246,70 @@ PlanUavFlightPathsForBsInit()
             }
         }
 
+        // Pre-build per-cell node count among suspicious points.
+        // Used by the cell-expansion heuristic: if a candidate's broadcast
+        // directly covers >30% of a cell's suspicious nodes, the entire cell
+        // is considered reachable via intra-cell cooperation, so we expand
+        // the coverage set to include all nodes of that cell.
+        constexpr double kCellCoverageExpansionThreshold = 0.30;
+        std::map<int32_t, std::vector<uint32_t>> cellToSuspiciousIndices;
+        for (uint32_t ni = 0; ni < suspiciousPoints.size(); ++ni)
+        {
+            const int32_t cid = suspiciousPointCellIds[ni];
+            if (cid >= 0)
+            {
+                cellToSuspiciousIndices[cid].push_back(ni);
+            }
+        }
+
         std::vector<std::vector<uint32_t>> coverageSets(candidates.size());
         for (uint32_t ci = 0; ci < candidates.size(); ++ci)
         {
+            // Step 1: direct broadcast coverage.
+            std::set<uint32_t> directlyCovered;
             for (uint32_t ni = 0; ni < suspiciousPoints.size(); ++ni)
             {
                 const double dist = helper::CalculateDistance(
                     candidates[ci].x, candidates[ci].y, suspiciousPoints[ni].x, suspiciousPoints[ni].y);
                 if (dist <= broadcastRadius)
                 {
-                    coverageSets[ci].push_back(ni);
+                    directlyCovered.insert(ni);
                 }
             }
+
+            // Step 2: cell-cooperation expansion.
+            // For each cell, if the candidate directly covers > threshold fraction
+            // of that cell's suspicious nodes, expand coverage to the whole cell.
+            std::set<uint32_t> expandedSet = directlyCovered;
+            std::map<int32_t, uint32_t> directHitPerCell;
+            for (uint32_t ni : directlyCovered)
+            {
+                const int32_t cid = suspiciousPointCellIds[ni];
+                if (cid >= 0)
+                {
+                    directHitPerCell[cid]++;
+                }
+            }
+            for (const auto& [cid, hitCount] : directHitPerCell)
+            {
+                auto cellIt = cellToSuspiciousIndices.find(cid);
+                if (cellIt == cellToSuspiciousIndices.end())
+                {
+                    continue;
+                }
+                const double cellSize = static_cast<double>(cellIt->second.size());
+                if (cellSize > 0.0 &&
+                    static_cast<double>(hitCount) / cellSize > kCellCoverageExpansionThreshold)
+                {
+                    // Entire cell is reachable via cooperation — add all its nodes.
+                    for (uint32_t ni : cellIt->second)
+                    {
+                        expandedSet.insert(ni);
+                    }
+                }
+            }
+
+            coverageSets[ci].assign(expandedSet.begin(), expandedSet.end());
         }
 
         std::vector<bool> covered(suspiciousPoints.size(), false);

@@ -314,41 +314,55 @@ OnGroundNodeReceivePacket(uint32_t nodeId, Ptr<const Packet> packet, double rssi
                         << "(" << fragId << ") ";
                 }
 
-                // Schedule per-node cooperation timeout after first fragment
+                // Schedule per-node cooperation timeout after first fragment.
+                // Delay = numFragments × broadcast interval + margin so that the node waits
+                // until the UAV has broadcast its full fragment set before cooperating.
+                // This ensures the node cooperates with its complete fragment subset rather
+                // than prematurely sharing only 1-2 fragments.
                 if (state.cooperationEnabled && updated && !state.cooperationTimeoutScheduled)
                 {
-                    // Timeout = 2 × fragment broadcast interval to ensure all fragments arrive
-                    const double cooperationDelay = 2.0 * ns3::wsn::scenario4::params::FRAGMENT_BROADCAST_INTERVAL;
+                    const double cooperationDelay =
+                        static_cast<double>(state.expectedFragmentCount) *
+                            ns3::wsn::scenario4::params::FRAGMENT_BROADCAST_INTERVAL +
+                        0.5; // 0.5s margin after UAV finishes broadcasting
                     const double timeoutTime = now + cooperationDelay;
-                    
+
                     state.cooperationTimeoutScheduled = true;
                     state.cooperationTimeoutTime = timeoutTime;
-                    
+
                     NS_LOG_DEBUG("Node " << nodeId << " scheduled cooperation timeout"
                                 << " | delay=" << cooperationDelay << "s"
                                 << " | timeout_at=" << timeoutTime << "s");
-                    
+
                     // Schedule timeout callback
                     Simulator::Schedule(Seconds(cooperationDelay), [nodeId]() {
                         if (g_groundNetworkPerNode.find(nodeId) == g_groundNetworkPerNode.end())
+                        {
                             return;
-                        
+                        }
+
                         auto& state = g_groundNetworkPerNode[nodeId];
                         const bool hasAllFragments =
                             (state.expectedFragmentCount > 0) &&
                             (state.fragments.fragments.size() >= state.expectedFragmentCount);
-                        const bool belowReliableReconstruction =
-                            state.confidence < ::ns3::wsn::scenario4::params::COOPERATION_THRESHOLD;
-                        if (state.cooperationEnabled && state.cellId >= 0 && !hasAllFragments &&
-                            belowReliableReconstruction)
+                        // Cooperate whenever the node is incomplete — regardless of confidence.
+                        // The old belowReliableReconstruction gate (confidence < COOPERATION_THRESHOLD=0.3)
+                        // was incorrectly suppressing cooperation for nodes with 2+ fragments
+                        // (confidence ≈ 0.37), leaving zero-fragment cell-mates without help.
+                        //
+                        // Reset the flag so that subsequent UAV fragments (from later broadcast
+                        // cycles) can re-trigger cooperation — each new fragment subset is
+                        // more complete and worth spreading to cell-mates.
+                        state.cooperationTimeoutScheduled = false;
+                        if (state.cooperationEnabled && state.cellId >= 0 && !hasAllFragments)
                         {
                             const double staggerDelay =
                                 ComputeCellCooperationStaggerDelay(nodeId, state.cellId);
                             NS_LOG_INFO("Node " << nodeId << " cooperation timeout triggered"
                                        << " | confidence=" << state.confidence
-                                       << " | level_stagger=" << staggerDelay << "s"
-                                       << " | threshold="
-                                       << ::ns3::wsn::scenario4::params::COOPERATION_THRESHOLD);
+                                       << " | frags=" << state.fragments.fragments.size()
+                                       << "/" << state.expectedFragmentCount
+                                       << " | level_stagger=" << staggerDelay << "s");
                             ScheduleFragmentSharingRequest(nodeId, state.cellId);
                         }
                     });

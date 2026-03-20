@@ -176,45 +176,135 @@ RequestFragmentSharing(uint32_t nodeId, int32_t cellId)
     {
         return;
     }
-    
+
     state.cooperationRequestsSent++;
     state.lastCooperationTime = Simulator::Now().GetSeconds();
-    
+
+    NS_LOG_INFO("[CELL-COOP] RequestFragmentSharing: node " << nodeId
+                << " | cellId=" << cellId
+                << " | myFrags=" << state.fragments.fragments.size()
+                << "/" << state.expectedFragmentCount
+                << " | conf=" << state.confidence
+                << " | t=" << Simulator::Now().GetSeconds() << "s");
+
     for (const auto& [peerId, peerState] : g_groundNetworkPerNode)
     {
-        if (peerId != nodeId && peerState.cellId == cellId)
+        if (peerId == nodeId || peerState.cellId != cellId)
         {
-            bool peerHasUsefulFragment = false;
-            for (const auto& [fragId, frag] : peerState.fragments.fragments)
-            {
-                (void)frag;
-                if (!state.fragments.HasFragment(fragId))
-                {
-                    peerHasUsefulFragment = true;
-                    break;
-                }
-            }
+            continue;
+        }
 
-            if (!peerHasUsefulFragment)
+        // Determine what each side can offer the other
+        bool peerHasUsefulForMe = false;
+        for (const auto& [fragId, frag] : peerState.fragments.fragments)
+        {
+            (void)frag;
+            if (!state.fragments.HasFragment(fragId))
             {
-                continue;
+                peerHasUsefulForMe = true;
+                break;
             }
+        }
 
-            state.cellPeers.insert(peerId);
-            state.peerConfidence[peerId] = peerState.confidence;
+        bool weHaveUsefulForPeer = false;
+        for (const auto& [fragId, frag] : state.fragments.fragments)
+        {
+            (void)frag;
+            if (!peerState.fragments.HasFragment(fragId))
+            {
+                weHaveUsefulForPeer = true;
+                break;
+            }
+        }
+
+        // Skip if no exchange is possible in either direction
+        if (!peerHasUsefulForMe && !weHaveUsefulForPeer)
+        {
+            continue;
+        }
+
+        state.cellPeers.insert(peerId);
+        state.peerConfidence[peerId] = peerState.confidence;
+
+        // PULL: receive fragments we're missing from this peer
+        if (peerHasUsefulForMe)
+        {
             ShareFragments(peerId, nodeId);
         }
+
+        // PUSH (manifest echo): send fragments the peer is missing.
+        // Critical for nodes that missed the UAV broadcast entirely (zero-fragment nodes):
+        // they cannot self-trigger cooperation, so the node that DID receive fragments
+        // must proactively push to them here.
+        if (weHaveUsefulForPeer)
+        {
+            auto peerIt = g_groundNetworkPerNode.find(peerId);
+            if (peerIt != g_groundNetworkPerNode.end())
+            {
+                const uint32_t peerFragsBefore =
+                    static_cast<uint32_t>(peerIt->second.fragments.fragments.size());
+                peerIt->second.cellPeers.insert(nodeId);
+                peerIt->second.peerConfidence[nodeId] = state.confidence;
+                ShareFragments(nodeId, peerId);
+
+                NS_LOG_INFO("[CELL-COOP] Push to peer: node " << nodeId
+                            << " -> peer " << peerId
+                            << " | peerFrags: " << peerFragsBefore
+                            << " -> " << peerIt->second.fragments.fragments.size()
+                            << " | cellId=" << cellId
+                            << " | t=" << Simulator::Now().GetSeconds() << "s");
+
+                // Cascade: if the peer is still incomplete after our push, schedule its
+                // own RequestFragmentSharing so it can pull remaining fragments from
+                // other cell members (e.g. nodes that have different fragment subsets).
+                // NOTE: do NOT set cooperationTimeoutScheduled=true here — that flag guards
+                // only the initial "wait-for-UAV" timer. Touching it here would prevent
+                // the peer from re-triggering cooperation when it later receives real UAV
+                // fragments across subsequent broadcast cycles.
+                const bool peerStillIncomplete =
+                    (peerIt->second.expectedFragmentCount > 0) &&
+                    (peerIt->second.fragments.fragments.size() <
+                     peerIt->second.expectedFragmentCount);
+                if (peerStillIncomplete && peerIt->second.cooperationEnabled)
+                {
+                    const double staggerDelay =
+                        ComputeCellCooperationStaggerDelay(peerId, cellId);
+                    NS_LOG_INFO("[CELL-COOP] Cascade scheduled: peer " << peerId
+                                << " will request in " << staggerDelay << "s"
+                                << " | cellId=" << cellId);
+                    Simulator::Schedule(Seconds(staggerDelay), [peerId, cellId]() {
+                        auto it = g_groundNetworkPerNode.find(peerId);
+                        if (it == g_groundNetworkPerNode.end())
+                        {
+                            return;
+                        }
+                        const bool hasAll =
+                            (it->second.expectedFragmentCount > 0) &&
+                            (it->second.fragments.fragments.size() >=
+                             it->second.expectedFragmentCount);
+                        if (!hasAll && it->second.cooperationEnabled)
+                        {
+                            RequestFragmentSharing(peerId, cellId);
+                        }
+                    });
+                }
+            }
+        }
     }
-    // Format: [EVENT] time | event=RequestFragmentSharing | nodeId=... | cellId=... | confidence=... | fragments= fragId1 fragId2 ...
+
+    // Log event to result file
     if (ns3::wsn::scenario4::params::g_resultFileStream)
-    {        *ns3::wsn::scenario4::params::g_resultFileStream << "\n[EVENT] " << Simulator::Now().GetSeconds()
+    {
+        *ns3::wsn::scenario4::params::g_resultFileStream
+            << "\n[EVENT] " << Simulator::Now().GetSeconds()
             << " | event=RequestFragmentSharing"
             << " | nodeId=" << nodeId
             << " | cellId=" << cellId
             << " | confidence=" << state.confidence
             << " | fragments=";
         for (const auto& [fragId, frag] : state.fragments.fragments)
-        {             *ns3::wsn::scenario4::params::g_resultFileStream << fragId << " ";
+        {
+            *ns3::wsn::scenario4::params::g_resultFileStream << fragId << " ";
         }
         *ns3::wsn::scenario4::params::g_resultFileStream << "\n";
     }

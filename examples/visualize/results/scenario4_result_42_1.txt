@@ -1307,70 +1307,252 @@ Step 11: Plan UAV Flight Paths
 [EVENT] 24.435 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=0 | packetSize=51935 | srcAddr=01:93|dropCount=12|dsts=184,202,203,204,205,206,221,222,226,227,241,247
 402-D-184(0) 402-D-202(0) 402-D-203(0) 402-D-204(0) 402-D-205(0) 402-D-206(0) 402-D-221(0) 402-D-222(0) 402-D-226(0) 402-D-227(0) 402-D-241(0) 402-D-247(0) 
 402-R-223(0) 402-R-224(0) 402-R-225(0) 402-R-242(0) 402-R-243(0) 402-R-244(0) 402-R-245(0) 402-R-246(0) 402-R-262(0) 402-R-263(0) 402-R-264(0) 402-R-265(0) 402-R-266(0) 402-R-267(0) 402-R-282(0) 402-R-283(0) 402-R-284(0) 402-R-285(0) 402-R-286(0) 402-R-304(0) 
-[EVENT] 24.856 | event=RequestFragmentSharing | nodeId=246 | cellId=20000 | confidence=0.206 | fragments=0 
-
-[EVENT] 24.857 | event=RequestFragmentSharing | nodeId=262 | cellId=19999 | confidence=0.206 | fragments=0 
-
-[EVENT] 24.858 | event=RequestFragmentSharing | nodeId=224 | cellId=20000 | confidence=0.206 | fragments=0 
-
-[EVENT] 24.858 | event=RequestFragmentSharing | nodeId=282 | cellId=19999 | confidence=0.206 | fragments=0 
-
-[EVENT] 24.860 | event=RequestFragmentSharing | nodeId=267 | cellId=20000 | confidence=0.206 | fragments=0 
-
-[EVENT] 24.861 | event=RequestFragmentSharing | nodeId=284 | cellId=20000 | confidence=0.206 | fragments=0 
-
-[EVENT] 24.861 | event=RequestFragmentSharing | nodeId=266 | cellId=20000 | confidence=0.206 | fragments=0 
-
-[EVENT] 24.862 | event=RequestFragmentSharing | nodeId=304 | cellId=29999 | confidence=0.206 | fragments=0 
-
-[EVENT] 24.862 | event=RequestFragmentSharing | nodeId=264 | cellId=20000 | confidence=0.206 | fragments=0 
-
-[EVENT] 24.862 | event=RequestFragmentSharing | nodeId=285 | cellId=20000 | confidence=0.206 | fragments=0 
-
-[EVENT] 24.862 | event=RequestFragmentSharing | nodeId=283 | cellId=19999 | confidence=0.206 | fragments=0 
-
-[EVENT] 24.863 | event=RequestFragmentSharing | nodeId=245 | cellId=20000 | confidence=0.206 | fragments=0 
-
-[EVENT] 24.864 | event=RequestFragmentSharing | nodeId=223 | cellId=19999 | confidence=0.206 | fragments=0 
-
-[EVENT] 24.866 | event=RequestFragmentSharing | nodeId=263 | cellId=19999 | confidence=0.206 | fragments=0 
-
-[EVENT] 24.866 | event=RequestFragmentSharing | nodeId=244 | cellId=20000 | confidence=0.206 | fragments=0 
-
-[EVENT] 24.866 | event=RequestFragmentSharing | nodeId=286 | cellId=20000 | confidence=0.206 | fragments=0 
-
-[EVENT] 24.868 | event=RequestFragmentSharing | nodeId=265 | cellId=20000 | confidence=0.206 | fragments=0 
-
-[EVENT] 24.869 | event=RequestFragmentSharing | nodeId=225 | cellId=20000 | confidence=0.206 | fragments=0 
-
-[EVENT] 24.869 | event=RequestFragmentSharing | nodeId=242 | cellId=19999 | confidence=0.206 | fragments=0 
-
-[EVENT] 24.869 | event=RequestFragmentSharing | nodeId=243 | cellId=19999 | confidence=0.206 | fragments=0 
-
 [EVENT] 25.500 | event=SuspiciousConfidenceSnapshot | 180(0.000) 181(0.000) 186(0.000) 187(0.000) 188(0.000) 200(0.000) 201(0.000) 202(0.000) 203(0.000) 204(0.000) 205(0.000) 206(0.000) 207(0.000) 208(0.000) 209(0.000) 210(0.000) 220(0.000) 221(0.000) 222(0.000) 223(0.206) 224(0.206) 225(0.206) 226(0.000) 227(0.000) 228(0.000) 229(0.000) 230(0.000) 240(0.000) 241(0.000) 242(0.206) 243(0.206) 244(0.206) 245(0.206) 246(0.206) 247(0.000) 248(0.000) 249(0.000) 250(0.000) 260(0.000) 261(0.000) 262(0.206) 263(0.206) 264(0.206) 265(0.206) 266(0.206) 267(0.206) 268(0.000) 269(0.000) 270(0.000) 280(0.000) 281(0.000) 282(0.206) 283(0.206) 284(0.206) 285(0.206) 286(0.206) 287(0.000) 288(0.000) 289(0.000) 290(0.000) 300(0.000) 301(0.000) 302(0.000) 303(0.000) 304(0.206) 305(0.000) 306(0.000) 307(0.000) 308(0.000) 309(0.000) 310(0.000) 311(0.000) 312(0.000) 320(0.000) 321(0.000) 322(0.000) 323(0.000) 324(0.000) 325(0.000) 326(0.000) 327(0.000) 328(0.000) 329(0.000) 330(0.000) 331(0.000) 332(0.000) 333(0.000) 340(0.000) 341(0.000) 342(0.000) 343(0.000) 344(0.000) 345(0.000) 346(0.000) 347(0.000) 348(0.000) 349(0.000) 350(0.000) 351(0.000) 352(0.000) 353(0.000) 361(0.000) 362(0.000) 363(0.000) 364(0.000) 365(0.000) 366(0.000) 367(0.000) 368(0.000) 369(0.000) 370(0.000) 371(0.000) 372(0.000) 373(0.000) 381(0.000) 382(0.000) 383(0.000) 384(0.000) 385(0.000) 386(0.000) 387(0.000) 388(0.000) 389(0.000) 390(0.000) 391(0.000) 392(0.000) 393(0.000) 
 
 [EVENT] 26.097 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=1 | cycle=1 | confidence=0.206 | pixels=17306
 
 [EVENT] 26.097 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=1 | packetSize=51935 | srcAddr=01:93|dropCount=12|dsts=223,224,225,242,243,244,245,246,261,267,281,287
 402-D-223(1) 402-D-224(1) 402-D-225(1) 402-D-242(1) 402-D-243(1) 402-D-244(1) 402-D-245(1) 402-D-246(1) 402-D-261(1) 402-D-267(1) 402-D-281(1) 402-D-287(1) 
-402-R-262(1) 402-R-263(1) 402-R-264(1) 402-R-265(1) 402-R-266(1) 402-R-282(1) 402-R-283(1) 402-R-284(1) 402-R-285(1) 402-R-286(1) 402-R-302(1) 402-R-303(1) 402-R-304(1) 402-R-305(1) 402-R-306(1) 402-R-323(1) 402-R-324(1) 402-R-325(1) 402-R-326(1) 402-R-344(1) 304-S-326(0) 
-[EVENT] 26.517 | event=RequestFragmentSharing | nodeId=326 | cellId=29999 | confidence=0.369 | fragments=0 1 
-304-S-305(0) 
-[EVENT] 26.518 | event=RequestFragmentSharing | nodeId=305 | cellId=29999 | confidence=0.369 | fragments=0 1 
-304-S-303(0) 
-[EVENT] 26.519 | event=RequestFragmentSharing | nodeId=303 | cellId=29999 | confidence=0.369 | fragments=0 1 
-303-S-302(0) 
-[EVENT] 26.520 | event=RequestFragmentSharing | nodeId=302 | cellId=29999 | confidence=0.369 | fragments=0 1 
-224-S-306(0) 306-S-224(1) 
-[EVENT] 26.522 | event=RequestFragmentSharing | nodeId=306 | cellId=20000 | confidence=0.369 | fragments=0 1 
-302-S-324(0) 
-[EVENT] 26.524 | event=RequestFragmentSharing | nodeId=324 | cellId=29999 | confidence=0.369 | fragments=0 1 
-302-S-323(0) 
-[EVENT] 26.529 | event=RequestFragmentSharing | nodeId=323 | cellId=29999 | confidence=0.369 | fragments=0 1 
-302-S-325(0) 
-[EVENT] 26.529 | event=RequestFragmentSharing | nodeId=325 | cellId=29999 | confidence=0.369 | fragments=0 1 
-302-S-344(0) 
-[EVENT] 26.531 | event=RequestFragmentSharing | nodeId=344 | cellId=29999 | confidence=0.369 | fragments=0 1 
+402-R-262(1) 402-R-263(1) 402-R-264(1) 402-R-265(1) 402-R-266(1) 402-R-282(1) 402-R-283(1) 402-R-284(1) 402-R-285(1) 402-R-286(1) 402-R-302(1) 402-R-303(1) 402-R-304(1) 402-R-305(1) 402-R-306(1) 402-R-323(1) 402-R-324(1) 402-R-325(1) 402-R-326(1) 402-R-344(1) 246-S-186(0) 246-S-187(0) 246-S-188(0) 246-S-204(0) 246-S-205(0) 246-S-206(0) 246-S-207(0) 246-S-208(0) 246-S-209(0) 246-S-210(0) 246-S-226(0) 246-S-227(0) 246-S-228(0) 246-S-229(0) 246-S-230(0) 246-S-247(0) 246-S-248(0) 246-S-249(0) 246-S-250(0) 264-S-246(1) 246-S-267(1) 246-S-268(0) 246-S-268(1) 246-S-269(0) 246-S-269(1) 246-S-270(0) 246-S-270(1) 246-S-287(0) 246-S-287(1) 246-S-288(0) 246-S-288(1) 246-S-289(0) 246-S-289(1) 246-S-290(0) 246-S-290(1) 246-S-306(0) 246-S-307(0) 246-S-307(1) 246-S-308(0) 246-S-308(1) 
+[EVENT] 26.956 | event=RequestFragmentSharing | nodeId=246 | cellId=20000 | confidence=0.369 | fragments=0 1 
+246-S-247(1) 247-S-248(1) 247-S-249(1) 247-S-250(1) 
+[EVENT] 26.957 | event=RequestFragmentSharing | nodeId=247 | cellId=20000 | confidence=0.369 | fragments=0 1 
+262-S-180(0) 262-S-180(1) 262-S-181(0) 262-S-181(1) 262-S-200(0) 262-S-200(1) 262-S-201(0) 262-S-201(1) 262-S-202(0) 262-S-202(1) 262-S-203(0) 262-S-203(1) 262-S-220(0) 262-S-220(1) 262-S-221(0) 262-S-221(1) 262-S-222(0) 262-S-222(1) 262-S-223(1) 262-S-240(0) 262-S-240(1) 262-S-241(0) 262-S-241(1) 262-S-242(1) 262-S-243(1) 262-S-260(0) 262-S-260(1) 262-S-261(0) 262-S-261(1) 262-S-280(0) 262-S-280(1) 262-S-281(0) 262-S-281(1) 262-S-300(0) 262-S-300(1) 262-S-301(0) 262-S-301(1) 262-S-320(0) 262-S-320(1) 
+[EVENT] 26.957 | event=RequestFragmentSharing | nodeId=262 | cellId=19999 | confidence=0.369 | fragments=0 1 
+246-S-224(1) 
+[EVENT] 26.958 | event=RequestFragmentSharing | nodeId=224 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.958 | event=RequestFragmentSharing | nodeId=282 | cellId=19999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.959 | event=RequestFragmentSharing | nodeId=240 | cellId=19999 | confidence=0.369 | fragments=0 1 
+267-S-186(1) 267-S-187(1) 267-S-188(1) 267-S-204(1) 267-S-205(1) 267-S-206(1) 267-S-207(1) 267-S-208(1) 267-S-209(1) 267-S-210(1) 267-S-225(1) 267-S-226(1) 267-S-227(1) 267-S-228(1) 267-S-229(1) 267-S-230(1) 267-S-244(1) 267-S-245(1) 
+[EVENT] 26.960 | event=RequestFragmentSharing | nodeId=267 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.961 | event=RequestFragmentSharing | nodeId=284 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.961 | event=RequestFragmentSharing | nodeId=266 | cellId=20000 | confidence=0.369 | fragments=0 1 
+304-S-302(0) 304-S-303(0) 304-S-305(0) 304-S-321(0) 304-S-321(1) 304-S-322(0) 304-S-322(1) 304-S-323(0) 304-S-324(0) 304-S-325(0) 304-S-326(0) 304-S-340(0) 304-S-340(1) 304-S-341(0) 304-S-341(1) 304-S-342(0) 304-S-342(1) 304-S-343(0) 304-S-343(1) 304-S-344(0) 304-S-345(0) 304-S-345(1) 304-S-346(0) 304-S-346(1) 304-S-361(0) 304-S-361(1) 304-S-362(0) 304-S-362(1) 304-S-363(0) 304-S-363(1) 304-S-364(0) 304-S-364(1) 304-S-365(0) 304-S-365(1) 304-S-366(0) 304-S-366(1) 304-S-381(0) 304-S-381(1) 304-S-382(0) 304-S-382(1) 304-S-383(0) 304-S-383(1) 304-S-384(0) 304-S-384(1) 304-S-385(0) 304-S-385(1) 304-S-386(0) 304-S-386(1) 
+[EVENT] 26.962 | event=RequestFragmentSharing | nodeId=304 | cellId=29999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.962 | event=RequestFragmentSharing | nodeId=264 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.962 | event=RequestFragmentSharing | nodeId=285 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.962 | event=RequestFragmentSharing | nodeId=283 | cellId=19999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.963 | event=RequestFragmentSharing | nodeId=245 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.964 | event=RequestFragmentSharing | nodeId=223 | cellId=19999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.966 | event=RequestFragmentSharing | nodeId=263 | cellId=19999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.966 | event=RequestFragmentSharing | nodeId=244 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.966 | event=RequestFragmentSharing | nodeId=286 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.968 | event=RequestFragmentSharing | nodeId=265 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.969 | event=RequestFragmentSharing | nodeId=225 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.969 | event=RequestFragmentSharing | nodeId=242 | cellId=19999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.969 | event=RequestFragmentSharing | nodeId=243 | cellId=19999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.974 | event=RequestFragmentSharing | nodeId=363 | cellId=29999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.977 | event=RequestFragmentSharing | nodeId=230 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.977 | event=RequestFragmentSharing | nodeId=290 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.977 | event=RequestFragmentSharing | nodeId=242 | cellId=19999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.978 | event=RequestFragmentSharing | nodeId=207 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.978 | event=RequestFragmentSharing | nodeId=188 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.978 | event=RequestFragmentSharing | nodeId=289 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.978 | event=RequestFragmentSharing | nodeId=206 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.978 | event=RequestFragmentSharing | nodeId=204 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.979 | event=RequestFragmentSharing | nodeId=203 | cellId=19999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.979 | event=RequestFragmentSharing | nodeId=269 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.979 | event=RequestFragmentSharing | nodeId=221 | cellId=19999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.979 | event=RequestFragmentSharing | nodeId=186 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.979 | event=RequestFragmentSharing | nodeId=226 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.980 | event=RequestFragmentSharing | nodeId=187 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.980 | event=RequestFragmentSharing | nodeId=267 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.980 | event=RequestFragmentSharing | nodeId=261 | cellId=19999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.980 | event=RequestFragmentSharing | nodeId=287 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.981 | event=RequestFragmentSharing | nodeId=205 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.981 | event=RequestFragmentSharing | nodeId=260 | cellId=19999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.982 | event=RequestFragmentSharing | nodeId=244 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.982 | event=RequestFragmentSharing | nodeId=208 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.982 | event=RequestFragmentSharing | nodeId=226 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.982 | event=RequestFragmentSharing | nodeId=245 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.982 | event=RequestFragmentSharing | nodeId=248 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.982 | event=RequestFragmentSharing | nodeId=210 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.983 | event=RequestFragmentSharing | nodeId=320 | cellId=19999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.983 | event=RequestFragmentSharing | nodeId=200 | cellId=19999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.983 | event=RequestFragmentSharing | nodeId=228 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.983 | event=RequestFragmentSharing | nodeId=222 | cellId=19999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.983 | event=RequestFragmentSharing | nodeId=384 | cellId=29999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.984 | event=RequestFragmentSharing | nodeId=386 | cellId=29999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.984 | event=RequestFragmentSharing | nodeId=227 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.984 | event=RequestFragmentSharing | nodeId=227 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.984 | event=RequestFragmentSharing | nodeId=365 | cellId=29999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.985 | event=RequestFragmentSharing | nodeId=188 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.985 | event=RequestFragmentSharing | nodeId=250 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.985 | event=RequestFragmentSharing | nodeId=207 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.985 | event=RequestFragmentSharing | nodeId=223 | cellId=19999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.985 | event=RequestFragmentSharing | nodeId=248 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.985 | event=RequestFragmentSharing | nodeId=241 | cellId=19999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.985 | event=RequestFragmentSharing | nodeId=346 | cellId=29999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.986 | event=RequestFragmentSharing | nodeId=228 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.986 | event=RequestFragmentSharing | nodeId=208 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.986 | event=RequestFragmentSharing | nodeId=340 | cellId=29999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.986 | event=RequestFragmentSharing | nodeId=206 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.986 | event=RequestFragmentSharing | nodeId=205 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.986 | event=RequestFragmentSharing | nodeId=342 | cellId=29999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.986 | event=RequestFragmentSharing | nodeId=300 | cellId=19999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.987 | event=RequestFragmentSharing | nodeId=288 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.987 | event=RequestFragmentSharing | nodeId=180 | cellId=19999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.987 | event=RequestFragmentSharing | nodeId=302 | cellId=29999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.987 | event=RequestFragmentSharing | nodeId=229 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.988 | event=RequestFragmentSharing | nodeId=225 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.988 | event=RequestFragmentSharing | nodeId=308 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.988 | event=RequestFragmentSharing | nodeId=281 | cellId=19999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.988 | event=RequestFragmentSharing | nodeId=268 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.988 | event=RequestFragmentSharing | nodeId=210 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.989 | event=RequestFragmentSharing | nodeId=186 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.989 | event=RequestFragmentSharing | nodeId=301 | cellId=19999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.989 | event=RequestFragmentSharing | nodeId=230 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.989 | event=RequestFragmentSharing | nodeId=229 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.989 | event=RequestFragmentSharing | nodeId=341 | cellId=29999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.989 | event=RequestFragmentSharing | nodeId=326 | cellId=29999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.989 | event=RequestFragmentSharing | nodeId=209 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.989 | event=RequestFragmentSharing | nodeId=270 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.989 | event=RequestFragmentSharing | nodeId=220 | cellId=19999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.989 | event=RequestFragmentSharing | nodeId=321 | cellId=29999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.989 | event=RequestFragmentSharing | nodeId=325 | cellId=29999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.990 | event=RequestFragmentSharing | nodeId=280 | cellId=19999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.990 | event=RequestFragmentSharing | nodeId=181 | cellId=19999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.990 | event=RequestFragmentSharing | nodeId=305 | cellId=29999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.990 | event=RequestFragmentSharing | nodeId=202 | cellId=19999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.990 | event=RequestFragmentSharing | nodeId=385 | cellId=29999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.991 | event=RequestFragmentSharing | nodeId=364 | cellId=29999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.991 | event=RequestFragmentSharing | nodeId=249 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.991 | event=RequestFragmentSharing | nodeId=344 | cellId=29999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.991 | event=RequestFragmentSharing | nodeId=250 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.991 | event=RequestFragmentSharing | nodeId=307 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.991 | event=RequestFragmentSharing | nodeId=323 | cellId=29999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.991 | event=RequestFragmentSharing | nodeId=306 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.991 | event=RequestFragmentSharing | nodeId=343 | cellId=29999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.991 | event=RequestFragmentSharing | nodeId=209 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.991 | event=RequestFragmentSharing | nodeId=249 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.992 | event=RequestFragmentSharing | nodeId=243 | cellId=19999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.992 | event=RequestFragmentSharing | nodeId=201 | cellId=19999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.992 | event=RequestFragmentSharing | nodeId=204 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.992 | event=RequestFragmentSharing | nodeId=383 | cellId=29999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.992 | event=RequestFragmentSharing | nodeId=345 | cellId=29999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.992 | event=RequestFragmentSharing | nodeId=382 | cellId=29999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.992 | event=RequestFragmentSharing | nodeId=324 | cellId=29999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.993 | event=RequestFragmentSharing | nodeId=187 | cellId=20000 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.994 | event=RequestFragmentSharing | nodeId=362 | cellId=29999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.994 | event=RequestFragmentSharing | nodeId=361 | cellId=29999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.994 | event=RequestFragmentSharing | nodeId=303 | cellId=29999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.995 | event=RequestFragmentSharing | nodeId=381 | cellId=29999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.996 | event=RequestFragmentSharing | nodeId=366 | cellId=29999 | confidence=0.369 | fragments=0 1 
+
+[EVENT] 26.996 | event=RequestFragmentSharing | nodeId=322 | cellId=29999 | confidence=0.369 | fragments=0 1 
 
 [EVENT] 27.335 | event=UAVWaypointArrival | nodeId=402 | cycle=1 | pos=(80.000,300.000,20.000)
 
@@ -1378,43 +1560,327 @@ Step 11: Plan UAV Flight Paths
 
 [EVENT] 27.758 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=2 | packetSize=51935 | srcAddr=01:93|dropCount=8|dsts=263,264,282,283,302,322,342,363
 402-D-263(2) 402-D-264(2) 402-D-282(2) 402-D-283(2) 402-D-302(2) 402-D-322(2) 402-D-342(2) 402-D-363(2) 
-402-R-265(2) 402-R-266(2) 402-R-284(2) 402-R-285(2) 402-R-286(2) 402-R-303(2) 402-R-304(2) 402-R-305(2) 402-R-306(2) 402-R-307(2) 402-R-323(2) 402-R-324(2) 402-R-325(2) 402-R-326(2) 402-R-327(2) 402-R-344(2) 402-R-345(2) 402-R-346(2) 402-R-365(2) 402-R-366(2) 302-S-346(0) 302-S-346(1) 346-S-302(2) 
-[EVENT] 28.180 | event=RequestFragmentSharing | nodeId=346 | cellId=29999 | confidence=0.499 | fragments=0 1 2 
+402-R-265(2) 402-R-266(2) 402-R-284(2) 402-R-285(2) 402-R-286(2) 402-R-303(2) 402-R-304(2) 402-R-305(2) 402-R-306(2) 402-R-307(2) 402-R-323(2) 402-R-324(2) 402-R-325(2) 402-R-326(2) 402-R-327(2) 402-R-344(2) 402-R-345(2) 402-R-346(2) 402-R-365(2) 402-R-366(2) 323-S-302(2) 323-S-321(2) 323-S-322(2) 323-S-340(2) 323-S-341(2) 323-S-342(2) 323-S-343(2) 323-S-361(2) 323-S-362(2) 323-S-363(2) 323-S-364(2) 323-S-381(2) 323-S-382(2) 323-S-383(2) 323-S-384(2) 323-S-385(2) 323-S-386(2) 
+[EVENT] 28.617 | event=RequestFragmentSharing | nodeId=323 | cellId=29999 | confidence=0.499 | fragments=0 1 2 
 
-[EVENT] 28.180 | event=RequestFragmentSharing | nodeId=327 | cellId=30000 | confidence=0.206 | fragments=2 
-224-S-307(0) 224-S-307(1) 307-S-224(2) 
-[EVENT] 28.181 | event=RequestFragmentSharing | nodeId=307 | cellId=20000 | confidence=0.499 | fragments=0 1 2 
-302-S-345(0) 302-S-345(1) 
-[EVENT] 28.182 | event=RequestFragmentSharing | nodeId=345 | cellId=29999 | confidence=0.499 | fragments=0 1 2 
-302-S-366(0) 302-S-366(1) 
-[EVENT] 28.190 | event=RequestFragmentSharing | nodeId=366 | cellId=29999 | confidence=0.499 | fragments=0 1 2 
-302-S-365(0) 302-S-365(1) 
-[EVENT] 28.193 | event=RequestFragmentSharing | nodeId=365 | cellId=29999 | confidence=0.499 | fragments=0 1 2 
+[EVENT] 28.618 | event=RequestFragmentSharing | nodeId=305 | cellId=29999 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.619 | event=RequestFragmentSharing | nodeId=326 | cellId=29999 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.625 | event=RequestFragmentSharing | nodeId=325 | cellId=29999 | confidence=0.499 | fragments=0 1 2 
+306-S-186(2) 306-S-187(2) 306-S-188(2) 306-S-204(2) 306-S-205(2) 306-S-206(2) 306-S-207(2) 306-S-208(2) 306-S-209(2) 306-S-210(2) 306-S-224(2) 306-S-225(2) 306-S-226(2) 306-S-227(2) 306-S-228(2) 306-S-229(2) 306-S-230(2) 306-S-244(2) 306-S-245(2) 306-S-246(2) 306-S-247(2) 306-S-248(2) 306-S-249(2) 306-S-250(2) 306-S-264(2) 306-S-267(2) 306-S-268(2) 306-S-269(2) 306-S-270(2) 306-S-287(2) 306-S-288(2) 306-S-289(2) 306-S-290(2) 306-S-308(2) 
+[EVENT] 28.625 | event=RequestFragmentSharing | nodeId=306 | cellId=20000 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.625 | event=RequestFragmentSharing | nodeId=324 | cellId=29999 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.626 | event=RequestFragmentSharing | nodeId=302 | cellId=29999 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.627 | event=RequestFragmentSharing | nodeId=303 | cellId=29999 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.628 | event=RequestFragmentSharing | nodeId=344 | cellId=29999 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.631 | event=RequestFragmentSharing | nodeId=363 | cellId=29999 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.634 | event=RequestFragmentSharing | nodeId=247 | cellId=20000 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.637 | event=RequestFragmentSharing | nodeId=362 | cellId=29999 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.637 | event=RequestFragmentSharing | nodeId=382 | cellId=29999 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.638 | event=RequestFragmentSharing | nodeId=342 | cellId=29999 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.639 | event=RequestFragmentSharing | nodeId=340 | cellId=29999 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.639 | event=RequestFragmentSharing | nodeId=383 | cellId=29999 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.639 | event=RequestFragmentSharing | nodeId=385 | cellId=29999 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.642 | event=RequestFragmentSharing | nodeId=364 | cellId=29999 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.642 | event=RequestFragmentSharing | nodeId=381 | cellId=29999 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.642 | event=RequestFragmentSharing | nodeId=321 | cellId=29999 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.644 | event=RequestFragmentSharing | nodeId=343 | cellId=29999 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.645 | event=RequestFragmentSharing | nodeId=386 | cellId=29999 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.645 | event=RequestFragmentSharing | nodeId=290 | cellId=20000 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.645 | event=RequestFragmentSharing | nodeId=287 | cellId=20000 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.646 | event=RequestFragmentSharing | nodeId=341 | cellId=29999 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.646 | event=RequestFragmentSharing | nodeId=268 | cellId=20000 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.647 | event=RequestFragmentSharing | nodeId=205 | cellId=20000 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.647 | event=RequestFragmentSharing | nodeId=308 | cellId=20000 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.647 | event=RequestFragmentSharing | nodeId=361 | cellId=29999 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.648 | event=RequestFragmentSharing | nodeId=289 | cellId=20000 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.648 | event=RequestFragmentSharing | nodeId=384 | cellId=29999 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.648 | event=RequestFragmentSharing | nodeId=187 | cellId=20000 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.649 | event=RequestFragmentSharing | nodeId=225 | cellId=20000 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.649 | event=RequestFragmentSharing | nodeId=288 | cellId=20000 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.649 | event=RequestFragmentSharing | nodeId=188 | cellId=20000 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.649 | event=RequestFragmentSharing | nodeId=267 | cellId=20000 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.650 | event=RequestFragmentSharing | nodeId=250 | cellId=20000 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.650 | event=RequestFragmentSharing | nodeId=230 | cellId=20000 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.650 | event=RequestFragmentSharing | nodeId=264 | cellId=20000 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.651 | event=RequestFragmentSharing | nodeId=207 | cellId=20000 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.651 | event=RequestFragmentSharing | nodeId=226 | cellId=20000 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.651 | event=RequestFragmentSharing | nodeId=322 | cellId=29999 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.652 | event=RequestFragmentSharing | nodeId=302 | cellId=29999 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.652 | event=RequestFragmentSharing | nodeId=229 | cellId=20000 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.653 | event=RequestFragmentSharing | nodeId=206 | cellId=20000 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.653 | event=RequestFragmentSharing | nodeId=224 | cellId=20000 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.653 | event=RequestFragmentSharing | nodeId=210 | cellId=20000 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.654 | event=RequestFragmentSharing | nodeId=249 | cellId=20000 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.655 | event=RequestFragmentSharing | nodeId=248 | cellId=20000 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.655 | event=RequestFragmentSharing | nodeId=246 | cellId=20000 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.656 | event=RequestFragmentSharing | nodeId=270 | cellId=20000 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.656 | event=RequestFragmentSharing | nodeId=204 | cellId=20000 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.656 | event=RequestFragmentSharing | nodeId=245 | cellId=20000 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.657 | event=RequestFragmentSharing | nodeId=208 | cellId=20000 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.657 | event=RequestFragmentSharing | nodeId=209 | cellId=20000 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.657 | event=RequestFragmentSharing | nodeId=186 | cellId=20000 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.659 | event=RequestFragmentSharing | nodeId=227 | cellId=20000 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.659 | event=RequestFragmentSharing | nodeId=269 | cellId=20000 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.659 | event=RequestFragmentSharing | nodeId=228 | cellId=20000 | confidence=0.499 | fragments=0 1 2 
+
+[EVENT] 28.659 | event=RequestFragmentSharing | nodeId=244 | cellId=20000 | confidence=0.499 | fragments=0 1 2 
 
 [EVENT] 29.420 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=3 | cycle=1 | confidence=0.206 | pixels=17306
 
 [EVENT] 29.420 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=3 | packetSize=51935 | srcAddr=01:93|dropCount=11|dsts=265,266,284,285,286,303,304,323,324,343,364
 402-D-265(3) 402-D-266(3) 402-D-284(3) 402-D-285(3) 402-D-286(3) 402-D-303(3) 402-D-304(3) 402-D-323(3) 402-D-324(3) 402-D-343(3) 402-D-364(3) 
-402-R-287(3) 402-R-305(3) 402-R-306(3) 402-R-307(3) 402-R-308(3) 402-R-325(3) 402-R-326(3) 402-R-327(3) 402-R-328(3) 402-R-344(3) 402-R-345(3) 402-R-346(3) 402-R-347(3) 402-R-348(3) 402-R-365(3) 402-R-366(3) 402-R-367(3) 402-R-368(3) 402-R-385(3) 402-R-386(3) 402-R-387(3) 302-S-385(0) 302-S-385(1) 302-S-385(2) 385-S-302(3) 
-[EVENT] 29.840 | event=RequestFragmentSharing | nodeId=385 | cellId=29999 | confidence=0.602 | fragments=0 1 2 3 
-327-S-368(2) 
-[EVENT] 29.842 | event=RequestFragmentSharing | nodeId=368 | cellId=30000 | confidence=0.369 | fragments=2 3 
-302-S-386(0) 302-S-386(1) 302-S-386(2) 
-[EVENT] 29.844 | event=RequestFragmentSharing | nodeId=386 | cellId=29999 | confidence=0.602 | fragments=0 1 2 3 
-327-S-328(2) 
-[EVENT] 29.845 | event=RequestFragmentSharing | nodeId=328 | cellId=30000 | confidence=0.369 | fragments=2 3 
-327-S-367(2) 
-[EVENT] 29.846 | event=RequestFragmentSharing | nodeId=367 | cellId=30000 | confidence=0.369 | fragments=2 3 
-224-S-308(0) 224-S-308(1) 224-S-308(2) 308-S-224(3) 
-[EVENT] 29.849 | event=RequestFragmentSharing | nodeId=308 | cellId=20000 | confidence=0.602 | fragments=0 1 2 3 
-327-S-348(2) 
-[EVENT] 29.852 | event=RequestFragmentSharing | nodeId=348 | cellId=30000 | confidence=0.369 | fragments=2 3 
-327-S-387(2) 
-[EVENT] 29.852 | event=RequestFragmentSharing | nodeId=387 | cellId=30000 | confidence=0.369 | fragments=2 3 
-327-S-347(2) 
-[EVENT] 29.853 | event=RequestFragmentSharing | nodeId=347 | cellId=30000 | confidence=0.369 | fragments=2 3 
-224-S-287(0) 224-S-287(1) 224-S-287(2) 
-[EVENT] 29.854 | event=RequestFragmentSharing | nodeId=287 | cellId=20000 | confidence=0.602 | fragments=0 1 2 3 
+402-R-287(3) 402-R-305(3) 402-R-306(3) 402-R-307(3) 402-R-308(3) 402-R-325(3) 402-R-326(3) 402-R-327(3) 402-R-328(3) 402-R-344(3) 402-R-345(3) 402-R-346(3) 402-R-347(3) 402-R-348(3) 402-R-365(3) 402-R-366(3) 402-R-367(3) 402-R-368(3) 402-R-385(3) 402-R-386(3) 402-R-387(3) 346-S-302(3) 346-S-303(3) 346-S-304(3) 346-S-321(3) 346-S-322(3) 346-S-323(3) 346-S-324(3) 346-S-340(3) 346-S-341(3) 346-S-342(3) 346-S-343(3) 346-S-361(3) 346-S-362(3) 346-S-363(3) 346-S-364(3) 346-S-381(3) 346-S-382(3) 346-S-383(3) 346-S-384(3) 
+[EVENT] 30.281 | event=RequestFragmentSharing | nodeId=346 | cellId=29999 | confidence=0.602 | fragments=0 1 2 3 
+327-S-309(2) 327-S-309(3) 327-S-310(2) 327-S-310(3) 327-S-311(2) 327-S-311(3) 327-S-312(2) 327-S-312(3) 327-S-328(2) 327-S-329(2) 327-S-329(3) 327-S-330(2) 327-S-330(3) 327-S-331(2) 327-S-331(3) 327-S-332(2) 327-S-332(3) 327-S-333(2) 327-S-333(3) 327-S-347(2) 327-S-348(2) 327-S-349(2) 327-S-349(3) 327-S-350(2) 327-S-350(3) 327-S-351(2) 327-S-351(3) 327-S-352(2) 327-S-352(3) 327-S-353(2) 327-S-353(3) 327-S-367(2) 327-S-368(2) 327-S-369(2) 327-S-369(3) 327-S-370(2) 327-S-370(3) 327-S-371(2) 327-S-371(3) 327-S-372(2) 327-S-372(3) 327-S-373(2) 327-S-373(3) 327-S-387(2) 327-S-388(2) 327-S-388(3) 327-S-389(2) 327-S-389(3) 327-S-390(2) 327-S-390(3) 327-S-391(2) 327-S-391(3) 327-S-392(2) 327-S-392(3) 327-S-393(2) 327-S-393(3) 
+[EVENT] 30.284 | event=RequestFragmentSharing | nodeId=327 | cellId=30000 | confidence=0.369 | fragments=2 3 
+
+[EVENT] 30.285 | event=RequestFragmentSharing | nodeId=363 | cellId=29999 | confidence=0.602 | fragments=0 1 2 3 
+287-S-285(3) 285-S-288(3) 285-S-289(3) 285-S-290(3) 
+[EVENT] 30.286 | event=RequestFragmentSharing | nodeId=285 | cellId=20000 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.286 | event=RequestFragmentSharing | nodeId=366 | cellId=29999 | confidence=0.602 | fragments=0 1 2 3 
+307-S-186(3) 307-S-187(3) 307-S-188(3) 307-S-204(3) 307-S-205(3) 307-S-206(3) 307-S-207(3) 307-S-208(3) 307-S-209(3) 307-S-210(3) 307-S-224(3) 307-S-225(3) 307-S-226(3) 307-S-227(3) 307-S-228(3) 307-S-229(3) 307-S-230(3) 307-S-244(3) 307-S-245(3) 307-S-246(3) 307-S-247(3) 307-S-248(3) 307-S-249(3) 307-S-250(3) 307-S-264(3) 307-S-265(3) 307-S-266(3) 307-S-267(3) 307-S-268(3) 307-S-269(3) 307-S-270(3) 307-S-284(3) 307-S-286(3) 
+[EVENT] 30.286 | event=RequestFragmentSharing | nodeId=307 | cellId=20000 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.287 | event=RequestFragmentSharing | nodeId=266 | cellId=20000 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.287 | event=RequestFragmentSharing | nodeId=247 | cellId=20000 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.288 | event=RequestFragmentSharing | nodeId=345 | cellId=29999 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.289 | event=RequestFragmentSharing | nodeId=304 | cellId=29999 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.290 | event=RequestFragmentSharing | nodeId=284 | cellId=20000 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.290 | event=RequestFragmentSharing | nodeId=286 | cellId=20000 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.291 | event=RequestFragmentSharing | nodeId=265 | cellId=20000 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.293 | event=RequestFragmentSharing | nodeId=365 | cellId=29999 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.296 | event=RequestFragmentSharing | nodeId=370 | cellId=30000 | confidence=0.369 | fragments=2 3 
+
+[EVENT] 30.301 | event=RequestFragmentSharing | nodeId=361 | cellId=29999 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.302 | event=RequestFragmentSharing | nodeId=304 | cellId=29999 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.302 | event=RequestFragmentSharing | nodeId=342 | cellId=29999 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.303 | event=RequestFragmentSharing | nodeId=383 | cellId=29999 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.303 | event=RequestFragmentSharing | nodeId=382 | cellId=29999 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.305 | event=RequestFragmentSharing | nodeId=309 | cellId=30000 | confidence=0.369 | fragments=2 3 
+
+[EVENT] 30.305 | event=RequestFragmentSharing | nodeId=390 | cellId=30000 | confidence=0.369 | fragments=2 3 
+
+[EVENT] 30.305 | event=RequestFragmentSharing | nodeId=352 | cellId=30000 | confidence=0.369 | fragments=2 3 
+
+[EVENT] 30.305 | event=RequestFragmentSharing | nodeId=393 | cellId=30000 | confidence=0.369 | fragments=2 3 
+
+[EVENT] 30.305 | event=RequestFragmentSharing | nodeId=350 | cellId=30000 | confidence=0.369 | fragments=2 3 
+
+[EVENT] 30.306 | event=RequestFragmentSharing | nodeId=331 | cellId=30000 | confidence=0.369 | fragments=2 3 
+
+[EVENT] 30.306 | event=RequestFragmentSharing | nodeId=248 | cellId=20000 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.306 | event=RequestFragmentSharing | nodeId=389 | cellId=30000 | confidence=0.369 | fragments=2 3 
+
+[EVENT] 30.306 | event=RequestFragmentSharing | nodeId=269 | cellId=20000 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.306 | event=RequestFragmentSharing | nodeId=364 | cellId=29999 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.306 | event=RequestFragmentSharing | nodeId=303 | cellId=29999 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.306 | event=RequestFragmentSharing | nodeId=246 | cellId=20000 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.307 | event=RequestFragmentSharing | nodeId=323 | cellId=29999 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.307 | event=RequestFragmentSharing | nodeId=384 | cellId=29999 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.307 | event=RequestFragmentSharing | nodeId=206 | cellId=20000 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.307 | event=RequestFragmentSharing | nodeId=343 | cellId=29999 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.307 | event=RequestFragmentSharing | nodeId=349 | cellId=30000 | confidence=0.369 | fragments=2 3 
+
+[EVENT] 30.307 | event=RequestFragmentSharing | nodeId=268 | cellId=20000 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.308 | event=RequestFragmentSharing | nodeId=230 | cellId=20000 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.308 | event=RequestFragmentSharing | nodeId=267 | cellId=20000 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.308 | event=RequestFragmentSharing | nodeId=244 | cellId=20000 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.308 | event=RequestFragmentSharing | nodeId=341 | cellId=29999 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.308 | event=RequestFragmentSharing | nodeId=207 | cellId=20000 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.308 | event=RequestFragmentSharing | nodeId=266 | cellId=20000 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.308 | event=RequestFragmentSharing | nodeId=328 | cellId=30000 | confidence=0.369 | fragments=2 3 
+
+[EVENT] 30.309 | event=RequestFragmentSharing | nodeId=288 | cellId=20000 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.309 | event=RequestFragmentSharing | nodeId=353 | cellId=30000 | confidence=0.369 | fragments=2 3 
+
+[EVENT] 30.309 | event=RequestFragmentSharing | nodeId=330 | cellId=30000 | confidence=0.369 | fragments=2 3 
+
+[EVENT] 30.309 | event=RequestFragmentSharing | nodeId=208 | cellId=20000 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.309 | event=RequestFragmentSharing | nodeId=187 | cellId=20000 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.309 | event=RequestFragmentSharing | nodeId=286 | cellId=20000 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.310 | event=RequestFragmentSharing | nodeId=210 | cellId=20000 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.310 | event=RequestFragmentSharing | nodeId=209 | cellId=20000 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.310 | event=RequestFragmentSharing | nodeId=333 | cellId=30000 | confidence=0.369 | fragments=2 3 
+
+[EVENT] 30.310 | event=RequestFragmentSharing | nodeId=387 | cellId=30000 | confidence=0.369 | fragments=2 3 
+
+[EVENT] 30.310 | event=RequestFragmentSharing | nodeId=324 | cellId=29999 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.310 | event=RequestFragmentSharing | nodeId=362 | cellId=29999 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.310 | event=RequestFragmentSharing | nodeId=310 | cellId=30000 | confidence=0.369 | fragments=2 3 
+
+[EVENT] 30.311 | event=RequestFragmentSharing | nodeId=388 | cellId=30000 | confidence=0.369 | fragments=2 3 
+
+[EVENT] 30.311 | event=RequestFragmentSharing | nodeId=312 | cellId=30000 | confidence=0.369 | fragments=2 3 
+
+[EVENT] 30.311 | event=RequestFragmentSharing | nodeId=332 | cellId=30000 | confidence=0.369 | fragments=2 3 
+
+[EVENT] 30.311 | event=RequestFragmentSharing | nodeId=264 | cellId=20000 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.311 | event=RequestFragmentSharing | nodeId=321 | cellId=29999 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.312 | event=RequestFragmentSharing | nodeId=369 | cellId=30000 | confidence=0.369 | fragments=2 3 
+
+[EVENT] 30.312 | event=RequestFragmentSharing | nodeId=372 | cellId=30000 | confidence=0.369 | fragments=2 3 
+
+[EVENT] 30.312 | event=RequestFragmentSharing | nodeId=265 | cellId=20000 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.313 | event=RequestFragmentSharing | nodeId=228 | cellId=20000 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.313 | event=RequestFragmentSharing | nodeId=329 | cellId=30000 | confidence=0.369 | fragments=2 3 
+
+[EVENT] 30.313 | event=RequestFragmentSharing | nodeId=250 | cellId=20000 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.313 | event=RequestFragmentSharing | nodeId=381 | cellId=29999 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.314 | event=RequestFragmentSharing | nodeId=340 | cellId=29999 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.314 | event=RequestFragmentSharing | nodeId=391 | cellId=30000 | confidence=0.369 | fragments=2 3 
+
+[EVENT] 30.314 | event=RequestFragmentSharing | nodeId=229 | cellId=20000 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.314 | event=RequestFragmentSharing | nodeId=205 | cellId=20000 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.314 | event=RequestFragmentSharing | nodeId=322 | cellId=29999 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.314 | event=RequestFragmentSharing | nodeId=302 | cellId=29999 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.314 | event=RequestFragmentSharing | nodeId=368 | cellId=30000 | confidence=0.369 | fragments=2 3 
+
+[EVENT] 30.315 | event=RequestFragmentSharing | nodeId=348 | cellId=30000 | confidence=0.369 | fragments=2 3 
+
+[EVENT] 30.315 | event=RequestFragmentSharing | nodeId=351 | cellId=30000 | confidence=0.369 | fragments=2 3 
+
+[EVENT] 30.315 | event=RequestFragmentSharing | nodeId=227 | cellId=20000 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.316 | event=RequestFragmentSharing | nodeId=347 | cellId=30000 | confidence=0.369 | fragments=2 3 
+
+[EVENT] 30.316 | event=RequestFragmentSharing | nodeId=225 | cellId=20000 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.316 | event=RequestFragmentSharing | nodeId=284 | cellId=20000 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.316 | event=RequestFragmentSharing | nodeId=373 | cellId=30000 | confidence=0.369 | fragments=2 3 
+
+[EVENT] 30.316 | event=RequestFragmentSharing | nodeId=392 | cellId=30000 | confidence=0.369 | fragments=2 3 
+
+[EVENT] 30.316 | event=RequestFragmentSharing | nodeId=311 | cellId=30000 | confidence=0.369 | fragments=2 3 
+
+[EVENT] 30.318 | event=RequestFragmentSharing | nodeId=371 | cellId=30000 | confidence=0.369 | fragments=2 3 
+
+[EVENT] 30.318 | event=RequestFragmentSharing | nodeId=204 | cellId=20000 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.318 | event=RequestFragmentSharing | nodeId=367 | cellId=30000 | confidence=0.369 | fragments=2 3 
+
+[EVENT] 30.318 | event=RequestFragmentSharing | nodeId=249 | cellId=20000 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.318 | event=RequestFragmentSharing | nodeId=270 | cellId=20000 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.319 | event=RequestFragmentSharing | nodeId=186 | cellId=20000 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.319 | event=RequestFragmentSharing | nodeId=290 | cellId=20000 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.319 | event=RequestFragmentSharing | nodeId=188 | cellId=20000 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.319 | event=RequestFragmentSharing | nodeId=289 | cellId=20000 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.319 | event=RequestFragmentSharing | nodeId=224 | cellId=20000 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.319 | event=RequestFragmentSharing | nodeId=226 | cellId=20000 | confidence=0.602 | fragments=0 1 2 3 
+
+[EVENT] 30.321 | event=RequestFragmentSharing | nodeId=245 | cellId=20000 | confidence=0.602 | fragments=0 1 2 3 
 
 [EVENT] 30.941 | event=UAVWaypointArrival | nodeId=402 | cycle=1 | pos=(140.000,340.000,20.000)
 
@@ -1422,109 +1888,588 @@ Step 11: Plan UAV Flight Paths
 
 [EVENT] 31.081 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=4 | packetSize=51935 | srcAddr=01:93|dropCount=4|dsts=330,350,370,389
 402-D-330(4) 402-D-350(4) 402-D-370(4) 402-D-389(4) 
-402-R-287(4) 402-R-288(4) 402-R-306(4) 402-R-307(4) 402-R-308(4) 402-R-309(4) 402-R-324(4) 402-R-325(4) 402-R-326(4) 402-R-327(4) 402-R-328(4) 402-R-329(4) 402-R-345(4) 402-R-346(4) 402-R-347(4) 402-R-348(4) 402-R-349(4) 402-R-364(4) 402-R-365(4) 402-R-366(4) 402-R-367(4) 402-R-368(4) 402-R-369(4) 402-R-385(4) 402-R-386(4) 402-R-387(4) 402-R-388(4) 327-S-388(2) 327-S-388(3) 
-[EVENT] 31.503 | event=RequestFragmentSharing | nodeId=388 | cellId=30000 | confidence=0.499 | fragments=2 3 4 
-327-S-369(2) 327-S-369(3) 
-[EVENT] 31.506 | event=RequestFragmentSharing | nodeId=369 | cellId=30000 | confidence=0.499 | fragments=2 3 4 
-302-S-364(0) 302-S-364(1) 302-S-364(2) 302-S-364(3) 364-S-302(4) 
-[EVENT] 31.507 | event=RequestFragmentSharing | nodeId=364 | cellId=29999 | confidence=0.684 | fragments=0 1 2 3 4 
-327-S-309(2) 327-S-309(3) 
-[EVENT] 31.507 | event=RequestFragmentSharing | nodeId=309 | cellId=30000 | confidence=0.499 | fragments=2 3 4 
-224-S-288(0) 224-S-288(1) 224-S-288(2) 224-S-288(3) 288-S-224(4) 
-[EVENT] 31.510 | event=RequestFragmentSharing | nodeId=288 | cellId=20000 | confidence=0.684 | fragments=0 1 2 3 4 
-309-S-349(2) 309-S-349(3) 
-[EVENT] 31.512 | event=RequestFragmentSharing | nodeId=349 | cellId=30000 | confidence=0.499 | fragments=2 3 4 
-309-S-329(2) 309-S-329(3) 
-[EVENT] 31.513 | event=RequestFragmentSharing | nodeId=329 | cellId=30000 | confidence=0.499 | fragments=2 3 4 
+402-R-287(4) 402-R-288(4) 402-R-306(4) 402-R-307(4) 402-R-308(4) 402-R-309(4) 402-R-324(4) 402-R-325(4) 402-R-326(4) 402-R-327(4) 402-R-328(4) 402-R-329(4) 402-R-345(4) 402-R-346(4) 402-R-347(4) 402-R-348(4) 402-R-349(4) 402-R-364(4) 402-R-365(4) 402-R-366(4) 402-R-367(4) 402-R-368(4) 402-R-369(4) 402-R-385(4) 402-R-386(4) 402-R-387(4) 402-R-388(4) 306-S-186(4) 306-S-187(4) 306-S-188(4) 306-S-204(4) 306-S-205(4) 306-S-206(4) 306-S-207(4) 306-S-208(4) 306-S-209(4) 306-S-210(4) 306-S-224(4) 306-S-225(4) 306-S-226(4) 306-S-227(4) 306-S-228(4) 306-S-229(4) 306-S-230(4) 306-S-244(4) 306-S-245(4) 306-S-246(4) 306-S-247(4) 306-S-248(4) 306-S-249(4) 306-S-250(4) 306-S-264(4) 306-S-265(4) 306-S-266(4) 306-S-267(4) 306-S-268(4) 306-S-269(4) 306-S-270(4) 306-S-284(4) 306-S-285(4) 306-S-286(4) 306-S-289(4) 306-S-290(4) 
+[EVENT] 31.940 | event=RequestFragmentSharing | nodeId=306 | cellId=20000 | confidence=0.684 | fragments=0 1 2 3 4 
+347-S-310(4) 347-S-311(4) 347-S-312(4) 347-S-330(4) 347-S-331(4) 347-S-332(4) 347-S-333(4) 347-S-350(4) 347-S-351(4) 347-S-352(4) 347-S-353(4) 347-S-370(4) 347-S-371(4) 347-S-372(4) 347-S-373(4) 347-S-389(4) 347-S-390(4) 347-S-391(4) 347-S-392(4) 347-S-393(4) 
+[EVENT] 31.940 | event=RequestFragmentSharing | nodeId=347 | cellId=30000 | confidence=0.499 | fragments=2 3 4 
+325-S-302(4) 325-S-303(4) 325-S-304(4) 325-S-305(4) 325-S-321(4) 325-S-322(4) 325-S-323(4) 325-S-340(4) 325-S-341(4) 325-S-342(4) 325-S-343(4) 325-S-344(4) 325-S-361(4) 325-S-362(4) 325-S-363(4) 325-S-381(4) 325-S-382(4) 325-S-383(4) 325-S-384(4) 
+[EVENT] 31.942 | event=RequestFragmentSharing | nodeId=325 | cellId=29999 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.943 | event=RequestFragmentSharing | nodeId=367 | cellId=30000 | confidence=0.499 | fragments=2 3 4 
+
+[EVENT] 31.943 | event=RequestFragmentSharing | nodeId=308 | cellId=20000 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.945 | event=RequestFragmentSharing | nodeId=386 | cellId=29999 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.945 | event=RequestFragmentSharing | nodeId=368 | cellId=30000 | confidence=0.499 | fragments=2 3 4 
+
+[EVENT] 31.946 | event=RequestFragmentSharing | nodeId=387 | cellId=30000 | confidence=0.499 | fragments=2 3 4 
+
+[EVENT] 31.948 | event=RequestFragmentSharing | nodeId=247 | cellId=20000 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.949 | event=RequestFragmentSharing | nodeId=348 | cellId=30000 | confidence=0.499 | fragments=2 3 4 
+
+[EVENT] 31.949 | event=RequestFragmentSharing | nodeId=344 | cellId=29999 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.950 | event=RequestFragmentSharing | nodeId=363 | cellId=29999 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.950 | event=RequestFragmentSharing | nodeId=385 | cellId=29999 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.951 | event=RequestFragmentSharing | nodeId=328 | cellId=30000 | confidence=0.499 | fragments=2 3 4 
+
+[EVENT] 31.952 | event=RequestFragmentSharing | nodeId=305 | cellId=29999 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.952 | event=RequestFragmentSharing | nodeId=326 | cellId=29999 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.953 | event=RequestFragmentSharing | nodeId=287 | cellId=20000 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.953 | event=RequestFragmentSharing | nodeId=370 | cellId=30000 | confidence=0.499 | fragments=2 3 4 
+
+[EVENT] 31.960 | event=RequestFragmentSharing | nodeId=209 | cellId=20000 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.960 | event=RequestFragmentSharing | nodeId=265 | cellId=20000 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.960 | event=RequestFragmentSharing | nodeId=225 | cellId=20000 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.961 | event=RequestFragmentSharing | nodeId=227 | cellId=20000 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.961 | event=RequestFragmentSharing | nodeId=188 | cellId=20000 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.961 | event=RequestFragmentSharing | nodeId=187 | cellId=20000 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.962 | event=RequestFragmentSharing | nodeId=208 | cellId=20000 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.962 | event=RequestFragmentSharing | nodeId=246 | cellId=20000 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.963 | event=RequestFragmentSharing | nodeId=393 | cellId=30000 | confidence=0.499 | fragments=2 3 4 
+
+[EVENT] 31.963 | event=RequestFragmentSharing | nodeId=361 | cellId=29999 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.963 | event=RequestFragmentSharing | nodeId=269 | cellId=20000 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.964 | event=RequestFragmentSharing | nodeId=392 | cellId=30000 | confidence=0.499 | fragments=2 3 4 
+
+[EVENT] 31.964 | event=RequestFragmentSharing | nodeId=224 | cellId=20000 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.964 | event=RequestFragmentSharing | nodeId=226 | cellId=20000 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.965 | event=RequestFragmentSharing | nodeId=303 | cellId=29999 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.965 | event=RequestFragmentSharing | nodeId=267 | cellId=20000 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.965 | event=RequestFragmentSharing | nodeId=302 | cellId=29999 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.965 | event=RequestFragmentSharing | nodeId=322 | cellId=29999 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.965 | event=RequestFragmentSharing | nodeId=206 | cellId=20000 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.966 | event=RequestFragmentSharing | nodeId=353 | cellId=30000 | confidence=0.499 | fragments=2 3 4 
+
+[EVENT] 31.966 | event=RequestFragmentSharing | nodeId=270 | cellId=20000 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.967 | event=RequestFragmentSharing | nodeId=323 | cellId=29999 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.967 | event=RequestFragmentSharing | nodeId=391 | cellId=30000 | confidence=0.499 | fragments=2 3 4 
+
+[EVENT] 31.967 | event=RequestFragmentSharing | nodeId=250 | cellId=20000 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.967 | event=RequestFragmentSharing | nodeId=372 | cellId=30000 | confidence=0.499 | fragments=2 3 4 
+
+[EVENT] 31.968 | event=RequestFragmentSharing | nodeId=351 | cellId=30000 | confidence=0.499 | fragments=2 3 4 
+
+[EVENT] 31.968 | event=RequestFragmentSharing | nodeId=342 | cellId=29999 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.968 | event=RequestFragmentSharing | nodeId=268 | cellId=20000 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.968 | event=RequestFragmentSharing | nodeId=264 | cellId=20000 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.968 | event=RequestFragmentSharing | nodeId=383 | cellId=29999 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.969 | event=RequestFragmentSharing | nodeId=333 | cellId=30000 | confidence=0.499 | fragments=2 3 4 
+
+[EVENT] 31.969 | event=RequestFragmentSharing | nodeId=285 | cellId=20000 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.969 | event=RequestFragmentSharing | nodeId=389 | cellId=30000 | confidence=0.499 | fragments=2 3 4 
+
+[EVENT] 31.969 | event=RequestFragmentSharing | nodeId=341 | cellId=29999 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.969 | event=RequestFragmentSharing | nodeId=245 | cellId=20000 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.970 | event=RequestFragmentSharing | nodeId=362 | cellId=29999 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.970 | event=RequestFragmentSharing | nodeId=321 | cellId=29999 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.970 | event=RequestFragmentSharing | nodeId=186 | cellId=20000 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.970 | event=RequestFragmentSharing | nodeId=249 | cellId=20000 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.970 | event=RequestFragmentSharing | nodeId=205 | cellId=20000 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.970 | event=RequestFragmentSharing | nodeId=207 | cellId=20000 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.970 | event=RequestFragmentSharing | nodeId=284 | cellId=20000 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.971 | event=RequestFragmentSharing | nodeId=230 | cellId=20000 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.971 | event=RequestFragmentSharing | nodeId=248 | cellId=20000 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.971 | event=RequestFragmentSharing | nodeId=244 | cellId=20000 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.971 | event=RequestFragmentSharing | nodeId=289 | cellId=20000 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.971 | event=RequestFragmentSharing | nodeId=310 | cellId=30000 | confidence=0.499 | fragments=2 3 4 
+
+[EVENT] 31.972 | event=RequestFragmentSharing | nodeId=340 | cellId=29999 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.972 | event=RequestFragmentSharing | nodeId=204 | cellId=20000 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.972 | event=RequestFragmentSharing | nodeId=228 | cellId=20000 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.972 | event=RequestFragmentSharing | nodeId=311 | cellId=30000 | confidence=0.499 | fragments=2 3 4 
+
+[EVENT] 31.972 | event=RequestFragmentSharing | nodeId=290 | cellId=20000 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.972 | event=RequestFragmentSharing | nodeId=332 | cellId=30000 | confidence=0.499 | fragments=2 3 4 
+
+[EVENT] 31.972 | event=RequestFragmentSharing | nodeId=210 | cellId=20000 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.972 | event=RequestFragmentSharing | nodeId=286 | cellId=20000 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.972 | event=RequestFragmentSharing | nodeId=390 | cellId=30000 | confidence=0.499 | fragments=2 3 4 
+
+[EVENT] 31.973 | event=RequestFragmentSharing | nodeId=331 | cellId=30000 | confidence=0.499 | fragments=2 3 4 
+
+[EVENT] 31.973 | event=RequestFragmentSharing | nodeId=330 | cellId=30000 | confidence=0.499 | fragments=2 3 4 
+
+[EVENT] 31.973 | event=RequestFragmentSharing | nodeId=312 | cellId=30000 | confidence=0.499 | fragments=2 3 4 
+
+[EVENT] 31.974 | event=RequestFragmentSharing | nodeId=373 | cellId=30000 | confidence=0.499 | fragments=2 3 4 
+
+[EVENT] 31.974 | event=RequestFragmentSharing | nodeId=352 | cellId=30000 | confidence=0.499 | fragments=2 3 4 
+
+[EVENT] 31.974 | event=RequestFragmentSharing | nodeId=371 | cellId=30000 | confidence=0.499 | fragments=2 3 4 
+
+[EVENT] 31.974 | event=RequestFragmentSharing | nodeId=350 | cellId=30000 | confidence=0.499 | fragments=2 3 4 
+
+[EVENT] 31.974 | event=RequestFragmentSharing | nodeId=344 | cellId=29999 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.974 | event=RequestFragmentSharing | nodeId=229 | cellId=20000 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.975 | event=RequestFragmentSharing | nodeId=266 | cellId=20000 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.975 | event=RequestFragmentSharing | nodeId=304 | cellId=29999 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.976 | event=RequestFragmentSharing | nodeId=381 | cellId=29999 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.976 | event=RequestFragmentSharing | nodeId=382 | cellId=29999 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.976 | event=RequestFragmentSharing | nodeId=384 | cellId=29999 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.976 | event=RequestFragmentSharing | nodeId=305 | cellId=29999 | confidence=0.684 | fragments=0 1 2 3 4 
+
+[EVENT] 31.976 | event=RequestFragmentSharing | nodeId=343 | cellId=29999 | confidence=0.684 | fragments=0 1 2 3 4 
 
 [EVENT] 32.742 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=5 | cycle=1 | confidence=0.206 | pixels=17306
 
 [EVENT] 32.742 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=5 | packetSize=51935 | srcAddr=01:93|dropCount=2|dsts=385,388
 402-D-385(5) 402-D-388(5) 
-402-R-286(5) 402-R-287(5) 402-R-288(5) 402-R-304(5) 402-R-305(5) 402-R-306(5) 402-R-308(5) 402-R-309(5) 402-R-325(5) 402-R-326(5) 402-R-327(5) 402-R-328(5) 402-R-329(5) 402-R-345(5) 402-R-346(5) 402-R-347(5) 402-R-348(5) 402-R-349(5) 402-R-364(5) 402-R-365(5) 402-R-366(5) 402-R-367(5) 402-R-368(5) 402-R-369(5) 402-R-386(5) 402-R-387(5) 
+402-R-286(5) 402-R-287(5) 402-R-288(5) 402-R-304(5) 402-R-305(5) 402-R-306(5) 402-R-308(5) 402-R-309(5) 402-R-325(5) 402-R-326(5) 402-R-327(5) 402-R-328(5) 402-R-329(5) 402-R-345(5) 402-R-346(5) 402-R-347(5) 402-R-348(5) 402-R-349(5) 402-R-364(5) 402-R-365(5) 402-R-366(5) 402-R-367(5) 402-R-368(5) 402-R-369(5) 402-R-386(5) 402-R-387(5) 309-S-388(5) 388-S-310(5) 388-S-311(5) 388-S-312(5) 388-S-330(5) 388-S-331(5) 388-S-332(5) 388-S-333(5) 388-S-350(5) 388-S-351(5) 388-S-352(5) 388-S-353(5) 388-S-370(5) 388-S-371(5) 388-S-372(5) 388-S-373(5) 388-S-389(5) 388-S-390(5) 388-S-391(5) 388-S-392(5) 388-S-393(5) 
+[EVENT] 33.602 | event=RequestFragmentSharing | nodeId=388 | cellId=30000 | confidence=0.602 | fragments=2 3 4 5 
+365-S-302(5) 365-S-303(5) 365-S-321(5) 365-S-322(5) 365-S-323(5) 365-S-324(5) 365-S-340(5) 365-S-341(5) 365-S-342(5) 365-S-343(5) 365-S-344(5) 365-S-361(5) 365-S-362(5) 365-S-363(5) 365-S-381(5) 365-S-382(5) 365-S-383(5) 365-S-384(5) 365-S-385(5) 
+[EVENT] 33.602 | event=RequestFragmentSharing | nodeId=365 | cellId=29999 | confidence=0.749 | fragments=0 1 2 3 4 5 
+286-S-307(5) 307-S-289(5) 307-S-290(5) 
+[EVENT] 33.602 | event=RequestFragmentSharing | nodeId=307 | cellId=20000 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.602 | event=RequestFragmentSharing | nodeId=364 | cellId=29999 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.605 | event=RequestFragmentSharing | nodeId=366 | cellId=29999 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.606 | event=RequestFragmentSharing | nodeId=346 | cellId=29999 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.607 | event=RequestFragmentSharing | nodeId=327 | cellId=30000 | confidence=0.602 | fragments=2 3 4 5 
+
+[EVENT] 33.607 | event=RequestFragmentSharing | nodeId=370 | cellId=30000 | confidence=0.602 | fragments=2 3 4 5 
+
+[EVENT] 33.608 | event=RequestFragmentSharing | nodeId=345 | cellId=29999 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.608 | event=RequestFragmentSharing | nodeId=349 | cellId=30000 | confidence=0.602 | fragments=2 3 4 5 
+
+[EVENT] 33.609 | event=RequestFragmentSharing | nodeId=329 | cellId=30000 | confidence=0.602 | fragments=2 3 4 5 
+
+[EVENT] 33.610 | event=RequestFragmentSharing | nodeId=369 | cellId=30000 | confidence=0.602 | fragments=2 3 4 5 
+288-S-186(5) 288-S-187(5) 288-S-188(5) 288-S-204(5) 288-S-205(5) 288-S-206(5) 288-S-207(5) 288-S-208(5) 288-S-209(5) 288-S-210(5) 288-S-224(5) 288-S-225(5) 288-S-226(5) 288-S-227(5) 288-S-228(5) 288-S-229(5) 288-S-230(5) 288-S-244(5) 288-S-245(5) 288-S-246(5) 288-S-247(5) 288-S-248(5) 288-S-249(5) 288-S-250(5) 288-S-264(5) 288-S-265(5) 288-S-266(5) 288-S-267(5) 288-S-268(5) 288-S-269(5) 288-S-270(5) 288-S-284(5) 288-S-285(5) 
+[EVENT] 33.613 | event=RequestFragmentSharing | nodeId=288 | cellId=20000 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.613 | event=RequestFragmentSharing | nodeId=247 | cellId=20000 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.615 | event=RequestFragmentSharing | nodeId=324 | cellId=29999 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.615 | event=RequestFragmentSharing | nodeId=309 | cellId=30000 | confidence=0.602 | fragments=2 3 4 5 
+
+[EVENT] 33.616 | event=RequestFragmentSharing | nodeId=363 | cellId=29999 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.622 | event=RequestFragmentSharing | nodeId=373 | cellId=30000 | confidence=0.602 | fragments=2 3 4 5 
+
+[EVENT] 33.622 | event=RequestFragmentSharing | nodeId=333 | cellId=30000 | confidence=0.602 | fragments=2 3 4 5 
+
+[EVENT] 33.622 | event=RequestFragmentSharing | nodeId=353 | cellId=30000 | confidence=0.602 | fragments=2 3 4 5 
+
+[EVENT] 33.622 | event=RequestFragmentSharing | nodeId=352 | cellId=30000 | confidence=0.602 | fragments=2 3 4 5 
+
+[EVENT] 33.622 | event=RequestFragmentSharing | nodeId=331 | cellId=30000 | confidence=0.602 | fragments=2 3 4 5 
+
+[EVENT] 33.623 | event=RequestFragmentSharing | nodeId=344 | cellId=29999 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.624 | event=RequestFragmentSharing | nodeId=290 | cellId=20000 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.624 | event=RequestFragmentSharing | nodeId=311 | cellId=30000 | confidence=0.602 | fragments=2 3 4 5 
+
+[EVENT] 33.624 | event=RequestFragmentSharing | nodeId=289 | cellId=20000 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.625 | event=RequestFragmentSharing | nodeId=302 | cellId=29999 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.625 | event=RequestFragmentSharing | nodeId=330 | cellId=30000 | confidence=0.602 | fragments=2 3 4 5 
+
+[EVENT] 33.625 | event=RequestFragmentSharing | nodeId=312 | cellId=30000 | confidence=0.602 | fragments=2 3 4 5 
+
+[EVENT] 33.625 | event=RequestFragmentSharing | nodeId=392 | cellId=30000 | confidence=0.602 | fragments=2 3 4 5 
+
+[EVENT] 33.625 | event=RequestFragmentSharing | nodeId=343 | cellId=29999 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.625 | event=RequestFragmentSharing | nodeId=341 | cellId=29999 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.626 | event=RequestFragmentSharing | nodeId=361 | cellId=29999 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.626 | event=RequestFragmentSharing | nodeId=310 | cellId=30000 | confidence=0.602 | fragments=2 3 4 5 
+
+[EVENT] 33.626 | event=RequestFragmentSharing | nodeId=381 | cellId=29999 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.626 | event=RequestFragmentSharing | nodeId=390 | cellId=30000 | confidence=0.602 | fragments=2 3 4 5 
+
+[EVENT] 33.626 | event=RequestFragmentSharing | nodeId=393 | cellId=30000 | confidence=0.602 | fragments=2 3 4 5 
+
+[EVENT] 33.629 | event=RequestFragmentSharing | nodeId=383 | cellId=29999 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.629 | event=RequestFragmentSharing | nodeId=351 | cellId=30000 | confidence=0.602 | fragments=2 3 4 5 
+
+[EVENT] 33.629 | event=RequestFragmentSharing | nodeId=323 | cellId=29999 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.630 | event=RequestFragmentSharing | nodeId=342 | cellId=29999 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.630 | event=RequestFragmentSharing | nodeId=322 | cellId=29999 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.630 | event=RequestFragmentSharing | nodeId=385 | cellId=29999 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.632 | event=RequestFragmentSharing | nodeId=372 | cellId=30000 | confidence=0.602 | fragments=2 3 4 5 
+
+[EVENT] 33.632 | event=RequestFragmentSharing | nodeId=350 | cellId=30000 | confidence=0.602 | fragments=2 3 4 5 
+
+[EVENT] 33.633 | event=RequestFragmentSharing | nodeId=340 | cellId=29999 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.634 | event=RequestFragmentSharing | nodeId=389 | cellId=30000 | confidence=0.602 | fragments=2 3 4 5 
+
+[EVENT] 33.634 | event=RequestFragmentSharing | nodeId=371 | cellId=30000 | confidence=0.602 | fragments=2 3 4 5 
+
+[EVENT] 33.634 | event=RequestFragmentSharing | nodeId=208 | cellId=20000 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.634 | event=RequestFragmentSharing | nodeId=324 | cellId=29999 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.634 | event=RequestFragmentSharing | nodeId=321 | cellId=29999 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.635 | event=RequestFragmentSharing | nodeId=265 | cellId=20000 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.635 | event=RequestFragmentSharing | nodeId=244 | cellId=20000 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.635 | event=RequestFragmentSharing | nodeId=382 | cellId=29999 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.635 | event=RequestFragmentSharing | nodeId=391 | cellId=30000 | confidence=0.602 | fragments=2 3 4 5 
+
+[EVENT] 33.635 | event=RequestFragmentSharing | nodeId=332 | cellId=30000 | confidence=0.602 | fragments=2 3 4 5 
+
+[EVENT] 33.635 | event=RequestFragmentSharing | nodeId=267 | cellId=20000 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.635 | event=RequestFragmentSharing | nodeId=248 | cellId=20000 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.635 | event=RequestFragmentSharing | nodeId=362 | cellId=29999 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.636 | event=RequestFragmentSharing | nodeId=264 | cellId=20000 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.637 | event=RequestFragmentSharing | nodeId=384 | cellId=29999 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.637 | event=RequestFragmentSharing | nodeId=249 | cellId=20000 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.637 | event=RequestFragmentSharing | nodeId=207 | cellId=20000 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.637 | event=RequestFragmentSharing | nodeId=303 | cellId=29999 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.637 | event=RequestFragmentSharing | nodeId=209 | cellId=20000 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.637 | event=RequestFragmentSharing | nodeId=187 | cellId=20000 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.637 | event=RequestFragmentSharing | nodeId=204 | cellId=20000 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.637 | event=RequestFragmentSharing | nodeId=206 | cellId=20000 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.638 | event=RequestFragmentSharing | nodeId=228 | cellId=20000 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.638 | event=RequestFragmentSharing | nodeId=266 | cellId=20000 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.639 | event=RequestFragmentSharing | nodeId=268 | cellId=20000 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.639 | event=RequestFragmentSharing | nodeId=284 | cellId=20000 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.639 | event=RequestFragmentSharing | nodeId=245 | cellId=20000 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.640 | event=RequestFragmentSharing | nodeId=188 | cellId=20000 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.642 | event=RequestFragmentSharing | nodeId=285 | cellId=20000 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.642 | event=RequestFragmentSharing | nodeId=269 | cellId=20000 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.643 | event=RequestFragmentSharing | nodeId=229 | cellId=20000 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.643 | event=RequestFragmentSharing | nodeId=270 | cellId=20000 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.644 | event=RequestFragmentSharing | nodeId=230 | cellId=20000 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.644 | event=RequestFragmentSharing | nodeId=226 | cellId=20000 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.644 | event=RequestFragmentSharing | nodeId=246 | cellId=20000 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.644 | event=RequestFragmentSharing | nodeId=186 | cellId=20000 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.645 | event=RequestFragmentSharing | nodeId=225 | cellId=20000 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.645 | event=RequestFragmentSharing | nodeId=224 | cellId=20000 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.645 | event=RequestFragmentSharing | nodeId=205 | cellId=20000 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.646 | event=RequestFragmentSharing | nodeId=227 | cellId=20000 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.646 | event=RequestFragmentSharing | nodeId=210 | cellId=20000 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
+[EVENT] 33.648 | event=RequestFragmentSharing | nodeId=250 | cellId=20000 | confidence=0.749 | fragments=0 1 2 3 4 5 
+
 [EVENT] 34.404 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=6 | cycle=1 | confidence=0.206 | pixels=17305
 
 [EVENT] 34.404 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=6 | packetSize=51932 | srcAddr=01:93|dropCount=3|dsts=369,386,387
 402-D-369(6) 402-D-386(6) 402-D-387(6) 
-402-R-267(6) 402-R-285(6) 402-R-286(6) 402-R-287(6) 402-R-288(6) 402-R-304(6) 402-R-305(6) 402-R-306(6) 402-R-307(6) 402-R-308(6) 402-R-309(6) 402-R-325(6) 402-R-326(6) 402-R-327(6) 402-R-328(6) 402-R-329(6) 402-R-344(6) 402-R-345(6) 402-R-346(6) 402-R-347(6) 402-R-348(6) 402-R-349(6) 402-R-365(6) 402-R-366(6) 402-R-367(6) 402-R-368(6) 
-[EVENT] 35.500 | event=SuspiciousConfidenceSnapshot | 180(0.000) 181(0.000) 186(0.000) 187(0.000) 188(0.000) 200(0.000) 201(0.000) 202(0.000) 203(0.000) 204(0.000) 205(0.000) 206(0.000) 207(0.000) 208(0.000) 209(0.000) 210(0.000) 220(0.000) 221(0.000) 222(0.000) 223(0.206) 224(0.684) 225(0.206) 226(0.000) 227(0.000) 228(0.000) 229(0.000) 230(0.000) 240(0.000) 241(0.000) 242(0.206) 243(0.206) 244(0.206) 245(0.206) 246(0.206) 247(0.000) 248(0.000) 249(0.000) 250(0.000) 260(0.000) 261(0.000) 262(0.369) 263(0.369) 264(0.369) 265(0.499) 266(0.499) 267(0.369) 268(0.000) 269(0.000) 270(0.000) 280(0.000) 281(0.000) 282(0.369) 283(0.369) 284(0.499) 285(0.602) 286(0.684) 287(0.800) 288(0.800) 289(0.000) 290(0.000) 300(0.000) 301(0.000) 302(0.684) 303(0.499) 304(0.684) 305(0.749) 306(0.800) 307(0.749) 308(0.800) 309(0.684) 310(0.000) 311(0.000) 312(0.000) 320(0.000) 321(0.000) 322(0.000) 323(0.499) 324(0.602) 325(0.800) 326(0.800) 327(0.684) 328(0.684) 329(0.684) 330(0.000) 331(0.000) 332(0.000) 333(0.000) 340(0.000) 341(0.000) 342(0.000) 343(0.000) 344(0.684) 345(0.800) 346(0.800) 347(0.684) 348(0.684) 349(0.684) 350(0.000) 351(0.000) 352(0.000) 353(0.000) 361(0.000) 362(0.000) 363(0.000) 364(0.749) 365(0.800) 366(0.800) 367(0.684) 368(0.684) 369(0.602) 370(0.000) 371(0.000) 372(0.000) 373(0.000) 381(0.000) 382(0.000) 383(0.000) 384(0.000) 385(0.684) 386(0.749) 387(0.602) 388(0.499) 389(0.000) 390(0.000) 391(0.000) 392(0.000) 393(0.000) 
+402-R-267(6) 402-R-285(6) 402-R-286(6) 402-R-287(6) 402-R-288(6) 402-R-304(6) 402-R-305(6) 402-R-306(6) 402-R-307(6) 402-R-308(6) 402-R-309(6) 402-R-325(6) 402-R-326(6) 402-R-327(6) 402-R-328(6) 402-R-329(6) 402-R-344(6) 402-R-345(6) 402-R-346(6) 402-R-347(6) 402-R-348(6) 402-R-349(6) 402-R-365(6) 402-R-366(6) 402-R-367(6) 402-R-368(6) 308-S-186(6) 308-S-187(6) 308-S-188(6) 308-S-204(6) 308-S-205(6) 308-S-206(6) 308-S-207(6) 308-S-208(6) 308-S-209(6) 308-S-210(6) 308-S-224(6) 308-S-225(6) 308-S-226(6) 308-S-227(6) 
+[EVENT] 35.263 | event=UAV2MissionComplete | triggerNodeId=227 | confidence=0.800
+308-S-228(6) 308-S-229(6) 308-S-230(6) 308-S-244(6) 308-S-245(6) 308-S-246(6) 308-S-247(6) 308-S-248(6) 308-S-249(6) 308-S-250(6) 308-S-264(6) 308-S-265(6) 308-S-266(6) 308-S-268(6) 308-S-269(6) 308-S-270(6) 308-S-284(6) 308-S-289(6) 308-S-290(6) 
+[EVENT] 35.263 | event=RequestFragmentSharing | nodeId=308 | cellId=20000 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+347-S-310(6) 347-S-311(6) 347-S-312(6) 347-S-330(6) 347-S-331(6) 347-S-332(6) 347-S-333(6) 347-S-350(6) 347-S-351(6) 347-S-352(6) 347-S-353(6) 347-S-369(6) 347-S-370(6) 347-S-371(6) 347-S-372(6) 347-S-373(6) 347-S-387(6) 347-S-388(6) 347-S-389(6) 347-S-390(6) 347-S-391(6) 347-S-392(6) 347-S-393(6) 
+[EVENT] 35.263 | event=RequestFragmentSharing | nodeId=347 | cellId=30000 | confidence=0.684 | fragments=2 3 4 5 6 
 
-[EVENT] 36.065 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=7 | cycle=1 | confidence=0.206 | pixels=17305
+[EVENT] 35.263 | event=RequestFragmentSharing | nodeId=306 | cellId=20000 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+325-S-302(6) 325-S-303(6) 325-S-321(6) 325-S-322(6) 325-S-323(6) 325-S-324(6) 325-S-340(6) 325-S-341(6) 325-S-342(6) 325-S-343(6) 325-S-361(6) 325-S-362(6) 325-S-363(6) 325-S-364(6) 325-S-381(6) 325-S-382(6) 325-S-383(6) 325-S-384(6) 325-S-385(6) 325-S-386(6) 
+[EVENT] 35.264 | event=RequestFragmentSharing | nodeId=325 | cellId=29999 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
 
-[EVENT] 36.065 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=7 | packetSize=51932 | srcAddr=01:93|dropCount=3|dsts=349,364,368
-402-D-349(7) 402-D-364(7) 402-D-368(7) 
-402-R-266(7) 402-R-267(7) 402-R-285(7) 402-R-286(7) 402-R-287(7) 402-R-288(7) 402-R-304(7) 402-R-305(7) 402-R-306(7) 402-R-307(7) 402-R-308(7) 402-R-309(7) 402-R-324(7) 402-R-325(7) 402-R-326(7) 402-R-327(7) 402-R-328(7) 402-R-344(7) 402-R-345(7) 402-R-346(7) 402-R-347(7) 402-R-348(7) 402-R-365(7) 402-R-366(7) 402-R-367(7) 
+[EVENT] 35.265 | event=RequestFragmentSharing | nodeId=348 | cellId=30000 | confidence=0.684 | fragments=2 3 4 5 6 
+
+[EVENT] 35.265 | event=RequestFragmentSharing | nodeId=387 | cellId=30000 | confidence=0.684 | fragments=2 3 4 5 6 
+
+[EVENT] 35.270 | event=RequestFragmentSharing | nodeId=304 | cellId=29999 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.271 | event=RequestFragmentSharing | nodeId=363 | cellId=29999 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.271 | event=RequestFragmentSharing | nodeId=386 | cellId=29999 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.272 | event=RequestFragmentSharing | nodeId=286 | cellId=20000 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.272 | event=RequestFragmentSharing | nodeId=367 | cellId=30000 | confidence=0.684 | fragments=2 3 4 5 6 
+
+[EVENT] 35.273 | event=RequestFragmentSharing | nodeId=287 | cellId=20000 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.275 | event=RequestFragmentSharing | nodeId=247 | cellId=20000 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.276 | event=RequestFragmentSharing | nodeId=370 | cellId=30000 | confidence=0.684 | fragments=2 3 4 5 6 
+
+[EVENT] 35.276 | event=RequestFragmentSharing | nodeId=328 | cellId=30000 | confidence=0.684 | fragments=2 3 4 5 6 
+
+[EVENT] 35.276 | event=RequestFragmentSharing | nodeId=326 | cellId=29999 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.276 | event=RequestFragmentSharing | nodeId=305 | cellId=29999 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.277 | event=RequestFragmentSharing | nodeId=368 | cellId=30000 | confidence=0.684 | fragments=2 3 4 5 6 
+
+[EVENT] 35.283 | event=RequestFragmentSharing | nodeId=207 | cellId=20000 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.283 | event=RequestFragmentSharing | nodeId=226 | cellId=20000 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.283 | event=RequestFragmentSharing | nodeId=248 | cellId=20000 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.283 | event=RequestFragmentSharing | nodeId=350 | cellId=30000 | confidence=0.684 | fragments=2 3 4 5 6 
+
+[EVENT] 35.283 | event=RequestFragmentSharing | nodeId=228 | cellId=20000 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.284 | event=RequestFragmentSharing | nodeId=372 | cellId=30000 | confidence=0.684 | fragments=2 3 4 5 6 
+
+[EVENT] 35.284 | event=RequestFragmentSharing | nodeId=382 | cellId=29999 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.284 | event=RequestFragmentSharing | nodeId=361 | cellId=29999 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.284 | event=RequestFragmentSharing | nodeId=310 | cellId=30000 | confidence=0.684 | fragments=2 3 4 5 6 
+
+[EVENT] 35.285 | event=RequestFragmentSharing | nodeId=249 | cellId=20000 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.286 | event=RequestFragmentSharing | nodeId=383 | cellId=29999 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.286 | event=RequestFragmentSharing | nodeId=385 | cellId=29999 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.286 | event=RequestFragmentSharing | nodeId=371 | cellId=30000 | confidence=0.684 | fragments=2 3 4 5 6 
+
+[EVENT] 35.286 | event=RequestFragmentSharing | nodeId=206 | cellId=20000 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.286 | event=RequestFragmentSharing | nodeId=389 | cellId=30000 | confidence=0.684 | fragments=2 3 4 5 6 
+
+[EVENT] 35.286 | event=RequestFragmentSharing | nodeId=265 | cellId=20000 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.286 | event=RequestFragmentSharing | nodeId=390 | cellId=30000 | confidence=0.684 | fragments=2 3 4 5 6 
+
+[EVENT] 35.287 | event=RequestFragmentSharing | nodeId=330 | cellId=30000 | confidence=0.684 | fragments=2 3 4 5 6 
+
+[EVENT] 35.287 | event=RequestFragmentSharing | nodeId=323 | cellId=29999 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.287 | event=RequestFragmentSharing | nodeId=386 | cellId=29999 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.287 | event=RequestFragmentSharing | nodeId=353 | cellId=30000 | confidence=0.684 | fragments=2 3 4 5 6 
+
+[EVENT] 35.288 | event=RequestFragmentSharing | nodeId=204 | cellId=20000 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.288 | event=RequestFragmentSharing | nodeId=343 | cellId=29999 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.288 | event=RequestFragmentSharing | nodeId=393 | cellId=30000 | confidence=0.684 | fragments=2 3 4 5 6 
+
+[EVENT] 35.288 | event=RequestFragmentSharing | nodeId=388 | cellId=30000 | confidence=0.684 | fragments=2 3 4 5 6 
+
+[EVENT] 35.288 | event=RequestFragmentSharing | nodeId=205 | cellId=20000 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.289 | event=RequestFragmentSharing | nodeId=227 | cellId=20000 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.289 | event=RequestFragmentSharing | nodeId=332 | cellId=30000 | confidence=0.684 | fragments=2 3 4 5 6 
+
+[EVENT] 35.289 | event=RequestFragmentSharing | nodeId=369 | cellId=30000 | confidence=0.684 | fragments=2 3 4 5 6 
+
+[EVENT] 35.289 | event=RequestFragmentSharing | nodeId=209 | cellId=20000 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.290 | event=RequestFragmentSharing | nodeId=187 | cellId=20000 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.290 | event=RequestFragmentSharing | nodeId=210 | cellId=20000 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.290 | event=RequestFragmentSharing | nodeId=341 | cellId=29999 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.290 | event=RequestFragmentSharing | nodeId=270 | cellId=20000 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.290 | event=RequestFragmentSharing | nodeId=244 | cellId=20000 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.290 | event=RequestFragmentSharing | nodeId=302 | cellId=29999 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.290 | event=RequestFragmentSharing | nodeId=324 | cellId=29999 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.291 | event=RequestFragmentSharing | nodeId=387 | cellId=30000 | confidence=0.684 | fragments=2 3 4 5 6 
+
+[EVENT] 35.291 | event=RequestFragmentSharing | nodeId=246 | cellId=20000 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.291 | event=RequestFragmentSharing | nodeId=264 | cellId=20000 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.291 | event=RequestFragmentSharing | nodeId=352 | cellId=30000 | confidence=0.684 | fragments=2 3 4 5 6 
+
+[EVENT] 35.292 | event=RequestFragmentSharing | nodeId=303 | cellId=29999 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.292 | event=RequestFragmentSharing | nodeId=351 | cellId=30000 | confidence=0.684 | fragments=2 3 4 5 6 
+
+[EVENT] 35.292 | event=RequestFragmentSharing | nodeId=289 | cellId=20000 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.293 | event=RequestFragmentSharing | nodeId=340 | cellId=29999 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.293 | event=RequestFragmentSharing | nodeId=245 | cellId=20000 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.293 | event=RequestFragmentSharing | nodeId=364 | cellId=29999 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.293 | event=RequestFragmentSharing | nodeId=333 | cellId=30000 | confidence=0.684 | fragments=2 3 4 5 6 
+
+[EVENT] 35.293 | event=RequestFragmentSharing | nodeId=266 | cellId=20000 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.294 | event=RequestFragmentSharing | nodeId=186 | cellId=20000 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.294 | event=RequestFragmentSharing | nodeId=268 | cellId=20000 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.294 | event=RequestFragmentSharing | nodeId=392 | cellId=30000 | confidence=0.684 | fragments=2 3 4 5 6 
+
+[EVENT] 35.294 | event=RequestFragmentSharing | nodeId=225 | cellId=20000 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.295 | event=RequestFragmentSharing | nodeId=391 | cellId=30000 | confidence=0.684 | fragments=2 3 4 5 6 
+
+[EVENT] 35.295 | event=RequestFragmentSharing | nodeId=229 | cellId=20000 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.295 | event=RequestFragmentSharing | nodeId=373 | cellId=30000 | confidence=0.684 | fragments=2 3 4 5 6 
+
+[EVENT] 35.295 | event=RequestFragmentSharing | nodeId=312 | cellId=30000 | confidence=0.684 | fragments=2 3 4 5 6 
+
+[EVENT] 35.295 | event=RequestFragmentSharing | nodeId=331 | cellId=30000 | confidence=0.684 | fragments=2 3 4 5 6 
+
+[EVENT] 35.296 | event=RequestFragmentSharing | nodeId=342 | cellId=29999 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.296 | event=RequestFragmentSharing | nodeId=290 | cellId=20000 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.296 | event=RequestFragmentSharing | nodeId=381 | cellId=29999 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.296 | event=RequestFragmentSharing | nodeId=224 | cellId=20000 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.296 | event=RequestFragmentSharing | nodeId=321 | cellId=29999 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.296 | event=RequestFragmentSharing | nodeId=284 | cellId=20000 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.297 | event=RequestFragmentSharing | nodeId=322 | cellId=29999 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.297 | event=RequestFragmentSharing | nodeId=188 | cellId=20000 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.297 | event=RequestFragmentSharing | nodeId=250 | cellId=20000 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.297 | event=RequestFragmentSharing | nodeId=362 | cellId=29999 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.297 | event=RequestFragmentSharing | nodeId=208 | cellId=20000 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.297 | event=RequestFragmentSharing | nodeId=230 | cellId=20000 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.297 | event=RequestFragmentSharing | nodeId=269 | cellId=20000 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.298 | event=RequestFragmentSharing | nodeId=311 | cellId=30000 | confidence=0.684 | fragments=2 3 4 5 6 
+
+[EVENT] 35.299 | event=RequestFragmentSharing | nodeId=384 | cellId=29999 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 35.500 | event=SuspiciousConfidenceSnapshot | 180(0.369) 181(0.369) 186(0.800) 187(0.800) 188(0.800) 200(0.369) 201(0.369) 202(0.369) 203(0.369) 204(0.800) 205(0.800) 206(0.800) 207(0.800) 208(0.800) 209(0.800) 210(0.800) 220(0.369) 221(0.369) 222(0.369) 223(0.369) 224(0.800) 225(0.800) 226(0.800) 227(0.800) 228(0.800) 229(0.800) 230(0.800) 240(0.369) 241(0.369) 242(0.369) 243(0.369) 244(0.800) 245(0.800) 246(0.800) 247(0.800) 248(0.800) 249(0.800) 250(0.800) 260(0.369) 261(0.369) 262(0.369) 263(0.369) 264(0.800) 265(0.800) 266(0.800) 267(0.800) 268(0.800) 269(0.800) 270(0.800) 280(0.369) 281(0.369) 282(0.369) 283(0.369) 284(0.800) 285(0.800) 286(0.800) 287(0.800) 288(0.800) 289(0.800) 290(0.800) 300(0.369) 301(0.369) 302(0.800) 303(0.800) 304(0.800) 305(0.800) 306(0.800) 307(0.800) 308(0.800) 309(0.684) 310(0.684) 311(0.684) 312(0.684) 320(0.369) 321(0.800) 322(0.800) 323(0.800) 324(0.800) 325(0.800) 326(0.800) 327(0.684) 328(0.684) 329(0.684) 330(0.684) 331(0.684) 332(0.684) 333(0.684) 340(0.800) 341(0.800) 342(0.800) 343(0.800) 344(0.800) 345(0.800) 346(0.800) 347(0.684) 348(0.684) 349(0.684) 350(0.684) 351(0.684) 352(0.684) 353(0.684) 361(0.800) 362(0.800) 363(0.800) 364(0.800) 365(0.800) 366(0.800) 367(0.684) 368(0.684) 369(0.684) 370(0.684) 371(0.684) 372(0.684) 373(0.684) 381(0.800) 382(0.800) 383(0.800) 384(0.800) 385(0.800) 386(0.800) 387(0.684) 388(0.684) 389(0.684) 390(0.684) 391(0.684) 392(0.684) 393(0.684) 
+
+[EVENT] 36.926 | event=RequestFragmentSharing | nodeId=285 | cellId=20000 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 36.926 | event=RequestFragmentSharing | nodeId=349 | cellId=30000 | confidence=0.684 | fragments=2 3 4 5 6 
+
+[EVENT] 36.927 | event=RequestFragmentSharing | nodeId=267 | cellId=20000 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 36.928 | event=RequestFragmentSharing | nodeId=366 | cellId=29999 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 36.930 | event=RequestFragmentSharing | nodeId=345 | cellId=29999 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 36.931 | event=RequestFragmentSharing | nodeId=329 | cellId=30000 | confidence=0.684 | fragments=2 3 4 5 6 
+
+[EVENT] 36.931 | event=RequestFragmentSharing | nodeId=288 | cellId=20000 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 36.932 | event=RequestFragmentSharing | nodeId=365 | cellId=29999 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 36.933 | event=RequestFragmentSharing | nodeId=344 | cellId=29999 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 36.933 | event=RequestFragmentSharing | nodeId=309 | cellId=30000 | confidence=0.684 | fragments=2 3 4 5 6 
+
+[EVENT] 36.936 | event=RequestFragmentSharing | nodeId=346 | cellId=29999 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 36.938 | event=RequestFragmentSharing | nodeId=307 | cellId=20000 | confidence=0.800 | fragments=0 1 2 3 4 5 6 
+
+[EVENT] 36.938 | event=RequestFragmentSharing | nodeId=327 | cellId=30000 | confidence=0.684 | fragments=2 3 4 5 6 
+
 [EVENT] 37.579 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(20.000,180.000,20.000)
 
-[EVENT] 37.726 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=8 | cycle=1 | confidence=0.206 | pixels=17305
-
-[EVENT] 37.726 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=8 | packetSize=51932 | srcAddr=01:93|dropCount=4|dsts=309,329,365,367
-402-D-309(8) 402-D-329(8) 402-D-365(8) 402-D-367(8) 
-402-R-265(8) 402-R-266(8) 402-R-268(8) 402-R-284(8) 402-R-285(8) 402-R-286(8) 402-R-287(8) 402-R-288(8) 402-R-303(8) 402-R-304(8) 402-R-305(8) 402-R-306(8) 402-R-307(8) 402-R-308(8) 402-R-324(8) 402-R-325(8) 402-R-326(8) 402-R-327(8) 402-R-328(8) 402-R-344(8) 402-R-345(8) 402-R-346(8) 402-R-347(8) 402-R-348(8) 402-R-366(8) 224-S-268(0) 224-S-268(1) 224-S-268(2) 224-S-268(3) 224-S-268(4) 268-S-224(8) 266-S-268(7) 268-S-266(3) 268-S-266(4) 267-S-268(6) 268-S-267(1) 268-S-267(2) 268-S-267(3) 268-S-267(4) 268-S-267(8) 286-S-268(5) 268-S-286(3) 268-S-286(4) 
-[EVENT] 38.148 | event=RequestFragmentSharing | nodeId=268 | cellId=20000 | confidence=0.874 | fragments=0 1 2 3 4 5 6 7 8 
-
-[EVENT] 39.387 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=9 | cycle=1 | confidence=0.206 | pixels=17305
-
-[EVENT] 39.387 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=9 | packetSize=51932 | srcAddr=01:93|dropCount=2|dsts=348,366
-402-D-348(9) 402-D-366(9) 
-402-R-246(9) 402-R-247(9) 402-R-264(9) 402-R-265(9) 402-R-266(9) 402-R-267(9) 402-R-283(9) 402-R-284(9) 402-R-285(9) 402-R-286(9) 402-R-287(9) 402-R-288(9) 402-R-303(9) 402-R-304(9) 402-R-305(9) 402-R-306(9) 402-R-307(9) 402-R-308(9) 402-R-324(9) 402-R-325(9) 402-R-326(9) 402-R-327(9) 402-R-328(9) 402-R-345(9) 402-R-346(9) 402-R-347(9) 224-S-247(0) 224-S-247(1) 224-S-247(2) 224-S-247(3) 224-S-247(4) 224-S-247(8) 247-S-224(9) 266-S-247(7) 267-S-247(6) 268-S-247(5) 247-S-268(9) 
-[EVENT] 39.793 | event=RequestFragmentSharing | nodeId=247 | cellId=20000 | confidence=0.900 | fragments=0 1 2 3 4 5 6 7 8 9 
-
-[EVENT] 41.049 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=0 | cycle=2 | confidence=0.206 | pixels=17306
-
-[EVENT] 41.049 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=0 | packetSize=51935 | srcAddr=01:93|dropCount=3|dsts=328,344,347
-402-D-328(0) 402-D-344(0) 402-D-347(0) 
-402-R-244(0) 402-R-245(0) 402-R-246(0) 402-R-263(0) 402-R-264(0) 402-R-265(0) 402-R-266(0) 402-R-267(0) 402-R-283(0) 402-R-284(0) 402-R-285(0) 402-R-286(0) 402-R-287(0) 402-R-288(0) 402-R-303(0) 402-R-304(0) 402-R-305(0) 402-R-306(0) 402-R-307(0) 402-R-308(0) 402-R-324(0) 402-R-325(0) 402-R-326(0) 402-R-345(0) 402-R-346(0) 
-[EVENT] 42.710 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=1 | cycle=2 | confidence=0.206 | pixels=17306
-
-[EVENT] 42.710 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=1 | packetSize=51935 | srcAddr=01:93|dropCount=4|dsts=308,327,345,346
-402-D-308(1) 402-D-327(1) 402-D-345(1) 402-D-346(1) 
-402-R-224(1) 402-R-244(1) 402-R-245(1) 402-R-246(1) 402-R-247(1) 402-R-263(1) 402-R-264(1) 402-R-265(1) 402-R-266(1) 402-R-267(1) 402-R-268(1) 402-R-282(1) 402-R-283(1) 402-R-284(1) 402-R-285(1) 402-R-286(1) 402-R-287(1) 402-R-304(1) 402-R-305(1) 402-R-306(1) 402-R-307(1) 402-R-324(1) 402-R-325(1) 402-R-326(1) 
-[EVENT] 44.372 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=2 | cycle=2 | confidence=0.206 | pixels=17306
-
-[EVENT] 44.372 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=2 | packetSize=51935 | srcAddr=01:93|dropCount=3|dsts=268,288,323
-402-D-268(2) 402-D-288(2) 402-D-323(2) 
-402-R-224(2) 402-R-225(2) 402-R-226(2) 402-R-243(2) 402-R-244(2) 402-R-245(2) 402-R-246(2) 402-R-247(2) 402-R-262(2) 402-R-263(2) 402-R-264(2) 402-R-265(2) 402-R-266(2) 402-R-267(2) 402-R-282(2) 402-R-283(2) 402-R-284(2) 402-R-285(2) 402-R-286(2) 402-R-287(2) 402-R-303(2) 402-R-304(2) 402-R-305(2) 402-R-306(2) 402-R-307(2) 402-R-325(2) 402-R-326(2) 224-S-226(0) 224-S-226(1) 224-S-226(3) 224-S-226(4) 224-S-226(8) 224-S-226(9) 247-S-226(5) 247-S-226(6) 247-S-226(7) 
-[EVENT] 44.800 | event=RequestFragmentSharing | nodeId=226 | cellId=20000 | confidence=0.900 | fragments=0 1 2 3 4 5 6 7 8 9 
-
-[EVENT] 45.500 | event=SuspiciousConfidenceSnapshot | 180(0.000) 181(0.000) 186(0.000) 187(0.000) 188(0.000) 200(0.000) 201(0.000) 202(0.000) 203(0.000) 204(0.000) 205(0.000) 206(0.000) 207(0.000) 208(0.000) 209(0.000) 210(0.000) 220(0.000) 221(0.000) 222(0.000) 223(0.206) 224(0.800) 225(0.369) 226(0.900) 227(0.000) 228(0.000) 229(0.000) 230(0.000) 240(0.000) 241(0.000) 242(0.206) 243(0.369) 244(0.499) 245(0.499) 246(0.602) 247(0.900) 248(0.000) 249(0.000) 250(0.000) 260(0.000) 261(0.000) 262(0.499) 263(0.499) 264(0.602) 265(0.684) 266(0.842) 267(0.874) 268(0.900) 269(0.000) 270(0.000) 280(0.000) 281(0.000) 282(0.499) 283(0.602) 284(0.684) 285(0.800) 286(0.900) 287(0.900) 288(0.900) 289(0.000) 290(0.000) 300(0.000) 301(0.000) 302(0.684) 303(0.684) 304(0.842) 305(0.874) 306(0.900) 307(0.874) 308(0.900) 309(0.749) 310(0.000) 311(0.000) 312(0.000) 320(0.000) 321(0.000) 322(0.000) 323(0.499) 324(0.800) 325(0.900) 326(0.900) 327(0.842) 328(0.842) 329(0.684) 330(0.000) 331(0.000) 332(0.000) 333(0.000) 340(0.000) 341(0.000) 342(0.000) 343(0.000) 344(0.800) 345(0.900) 346(0.900) 347(0.842) 348(0.800) 349(0.684) 350(0.000) 351(0.000) 352(0.000) 353(0.000) 361(0.000) 362(0.000) 363(0.000) 364(0.749) 365(0.842) 366(0.874) 367(0.749) 368(0.684) 369(0.602) 370(0.000) 371(0.000) 372(0.000) 373(0.000) 381(0.000) 382(0.000) 383(0.000) 384(0.000) 385(0.684) 386(0.749) 387(0.602) 388(0.499) 389(0.000) 390(0.000) 391(0.000) 392(0.000) 393(0.000) 
-
-[EVENT] 46.033 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=3 | cycle=2 | confidence=0.206 | pixels=17306
-
-[EVENT] 46.033 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=3 | packetSize=51935 | srcAddr=01:93|dropCount=4|dsts=307,324,325,326
-402-D-307(3) 402-D-324(3) 402-D-325(3) 402-D-326(3) 
-402-R-204(3) 402-R-223(3) 402-R-224(3) 402-R-225(3) 402-R-226(3) 402-R-242(3) 402-R-243(3) 402-R-244(3) 402-R-245(3) 402-R-246(3) 402-R-247(3) 402-R-262(3) 402-R-263(3) 402-R-264(3) 402-R-265(3) 402-R-266(3) 402-R-267(3) 402-R-283(3) 402-R-284(3) 402-R-285(3) 402-R-286(3) 402-R-287(3) 402-R-303(3) 402-R-304(3) 402-R-305(3) 402-R-306(3) 224-S-204(0) 224-S-204(1) 224-S-204(2) 224-S-204(4) 224-S-204(8) 224-S-204(9) 226-S-204(5) 226-S-204(6) 226-S-204(7) 
-[EVENT] 46.455 | event=RequestFragmentSharing | nodeId=204 | cellId=20000 | confidence=0.900 | fragments=0 1 2 3 4 5 6 7 8 9 
-
-[EVENT] 47.694 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=4 | cycle=2 | confidence=0.206 | pixels=17306
-
-[EVENT] 47.694 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=4 | packetSize=51935 | srcAddr=01:93|dropCount=2|dsts=287,306
-402-D-287(4) 402-D-306(4) 
-402-R-204(4) 402-R-205(4) 402-R-206(4) 402-R-223(4) 402-R-224(4) 402-R-225(4) 402-R-226(4) 402-R-242(4) 402-R-243(4) 402-R-244(4) 402-R-245(4) 402-R-246(4) 402-R-247(4) 402-R-262(4) 402-R-263(4) 402-R-264(4) 402-R-265(4) 402-R-266(4) 402-R-267(4) 402-R-282(4) 402-R-284(4) 402-R-285(4) 402-R-286(4) 402-R-303(4) 402-R-304(4) 402-R-305(4) 204-S-206(0) 204-S-206(1) 204-S-206(2) 204-S-206(3) 204-S-206(5) 204-S-206(6) 204-S-206(7) 204-S-206(8) 204-S-206(9) 
-[EVENT] 48.122 | event=RequestFragmentSharing | nodeId=206 | cellId=20000 | confidence=0.900 | fragments=0 1 2 3 4 5 6 7 8 9 
-204-S-205(0) 204-S-205(1) 204-S-205(2) 204-S-205(3) 204-S-205(5) 204-S-205(6) 204-S-205(7) 204-S-205(8) 204-S-205(9) 
-[EVENT] 48.127 | event=RequestFragmentSharing | nodeId=205 | cellId=20000 | confidence=0.900 | fragments=0 1 2 3 4 5 6 7 8 9 
-
-[EVENT] 49.356 | event=UAVFragmentBroadcast | nodeId=402 | fragmentId=5 | cycle=2 | confidence=0.206 | pixels=17306
-
-[EVENT] 49.356 | event=ContactDropGoodRssi | srcNodeId=402 | fragmentId=5 | packetSize=51935 | srcAddr=01:93|dropCount=3|dsts=267,303,305
-402-D-267(5) 402-D-303(5) 402-D-305(5) 
-402-R-184(5) 402-R-202(5) 402-R-203(5) 402-R-204(5) 402-R-205(5) 402-R-206(5) 402-R-222(5) 402-R-223(5) 402-R-224(5) 402-R-225(5) 402-R-226(5) 402-R-227(5) 402-R-241(5) 402-R-242(5) 402-R-243(5) 402-R-244(5) 402-R-245(5) 402-R-246(5) 402-R-247(5) 402-R-261(5) 402-R-262(5) 402-R-263(5) 402-R-264(5) 402-R-265(5) 402-R-266(5) 402-R-282(5) 402-R-283(5) 402-R-284(5) 402-R-285(5) 402-R-286(5) 402-R-304(5) 223-S-241(0) 223-S-241(3) 223-S-241(4) 243-S-241(2) 262-S-241(1) 283-S-241(9) 241-S-283(4) 
-[EVENT] 49.779 | event=RequestFragmentSharing | nodeId=241 | cellId=19999 | confidence=0.800 | fragments=0 1 2 3 4 5 9 
-223-S-203(0) 223-S-203(3) 223-S-203(4) 241-S-203(1) 241-S-203(2) 241-S-203(9) 
-[EVENT] 49.780 | event=RequestFragmentSharing | nodeId=203 | cellId=19999 | confidence=0.800 | fragments=0 1 2 3 4 5 9 
-203-S-222(0) 203-S-222(1) 203-S-222(2) 203-S-222(3) 203-S-222(4) 203-S-222(9) 
-[EVENT] 49.780 | event=RequestFragmentSharing | nodeId=222 | cellId=19999 | confidence=0.800 | fragments=0 1 2 3 4 5 9 
-203-S-202(0) 203-S-202(1) 203-S-202(2) 203-S-202(3) 203-S-202(4) 203-S-202(9) 
-[EVENT] 49.783 | event=RequestFragmentSharing | nodeId=202 | cellId=19999 | confidence=0.800 | fragments=0 1 2 3 4 5 9 
-204-S-227(0) 204-S-227(1) 204-S-227(2) 204-S-227(3) 204-S-227(4) 204-S-227(6) 204-S-227(7) 204-S-227(8) 204-S-227(9) 
-[EVENT] 49.785 | event=UAV2MissionComplete | triggerNodeId=227 | confidence=0.900
-
-[EVENT] 49.785 | event=RequestFragmentSharing | nodeId=227 | cellId=20000 | confidence=0.900 | fragments=0 1 2 3 4 5 6 7 8 9 
-
-[EVENT] 49.785 | event=RequestFragmentSharing | nodeId=184 | cellId=10000 | confidence=0.206 | fragments=5 
-202-S-261(0) 202-S-261(1) 202-S-261(2) 202-S-261(3) 202-S-261(4) 202-S-261(9) 
-[EVENT] 49.788 | event=RequestFragmentSharing | nodeId=261 | cellId=19999 | confidence=0.800 | fragments=0 1 2 3 4 5 9 
+[EVENT] 45.500 | event=SuspiciousConfidenceSnapshot | 180(0.369) 181(0.369) 186(0.800) 187(0.800) 188(0.800) 200(0.369) 201(0.369) 202(0.369) 203(0.369) 204(0.800) 205(0.800) 206(0.800) 207(0.800) 208(0.800) 209(0.800) 210(0.800) 220(0.369) 221(0.369) 222(0.369) 223(0.369) 224(0.800) 225(0.800) 226(0.800) 227(0.800) 228(0.800) 229(0.800) 230(0.800) 240(0.369) 241(0.369) 242(0.369) 243(0.369) 244(0.800) 245(0.800) 246(0.800) 247(0.800) 248(0.800) 249(0.800) 250(0.800) 260(0.369) 261(0.369) 262(0.369) 263(0.369) 264(0.800) 265(0.800) 266(0.800) 267(0.800) 268(0.800) 269(0.800) 270(0.800) 280(0.369) 281(0.369) 282(0.369) 283(0.369) 284(0.800) 285(0.800) 286(0.800) 287(0.800) 288(0.800) 289(0.800) 290(0.800) 300(0.369) 301(0.369) 302(0.800) 303(0.800) 304(0.800) 305(0.800) 306(0.800) 307(0.800) 308(0.800) 309(0.684) 310(0.684) 311(0.684) 312(0.684) 320(0.369) 321(0.800) 322(0.800) 323(0.800) 324(0.800) 325(0.800) 326(0.800) 327(0.684) 328(0.684) 329(0.684) 330(0.684) 331(0.684) 332(0.684) 333(0.684) 340(0.800) 341(0.800) 342(0.800) 343(0.800) 344(0.800) 345(0.800) 346(0.800) 347(0.684) 348(0.684) 349(0.684) 350(0.684) 351(0.684) 352(0.684) 353(0.684) 361(0.800) 362(0.800) 363(0.800) 364(0.800) 365(0.800) 366(0.800) 367(0.684) 368(0.684) 369(0.684) 370(0.684) 371(0.684) 372(0.684) 373(0.684) 381(0.800) 382(0.800) 383(0.800) 384(0.800) 385(0.800) 386(0.800) 387(0.684) 388(0.684) 389(0.684) 390(0.684) 391(0.684) 392(0.684) 393(0.684) 
 
 [EVENT] 50.176 | event=UAVWaypointArrival | nodeId=402 | cycle=2 | pos=(80.000,240.000,20.000)
 
@@ -1532,15 +2477,15 @@ Step 11: Plan UAV Flight Paths
 
 [EVENT] 55.193 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(20.000,200.000,20.000)
 
-[EVENT] 55.500 | event=SuspiciousConfidenceSnapshot | 180(0.000) 181(0.000) 186(0.000) 187(0.000) 188(0.000) 200(0.000) 201(0.000) 202(0.800) 203(0.800) 204(0.900) 205(0.900) 206(0.900) 207(0.000) 208(0.000) 209(0.000) 210(0.000) 220(0.000) 221(0.000) 222(0.800) 223(0.602) 224(0.842) 225(0.684) 226(0.900) 227(0.900) 228(0.000) 229(0.000) 230(0.000) 240(0.000) 241(0.800) 242(0.602) 243(0.684) 244(0.749) 245(0.749) 246(0.800) 247(0.900) 248(0.000) 249(0.000) 250(0.000) 260(0.000) 261(0.800) 262(0.749) 263(0.749) 264(0.800) 265(0.842) 266(0.874) 267(0.874) 268(0.900) 269(0.000) 270(0.000) 280(0.000) 281(0.000) 282(0.684) 283(0.800) 284(0.842) 285(0.900) 286(0.900) 287(0.900) 288(0.900) 289(0.000) 290(0.000) 300(0.000) 301(0.000) 302(0.684) 303(0.800) 304(0.900) 305(0.900) 306(0.900) 307(0.874) 308(0.900) 309(0.749) 310(0.000) 311(0.000) 312(0.000) 320(0.000) 321(0.000) 322(0.000) 323(0.499) 324(0.800) 325(0.900) 326(0.900) 327(0.842) 328(0.842) 329(0.684) 330(0.000) 331(0.000) 332(0.000) 333(0.000) 340(0.000) 341(0.000) 342(0.000) 343(0.000) 344(0.800) 345(0.900) 346(0.900) 347(0.842) 348(0.800) 349(0.684) 350(0.000) 351(0.000) 352(0.000) 353(0.000) 361(0.000) 362(0.000) 363(0.000) 364(0.749) 365(0.842) 366(0.874) 367(0.749) 368(0.684) 369(0.602) 370(0.000) 371(0.000) 372(0.000) 373(0.000) 381(0.000) 382(0.000) 383(0.000) 384(0.000) 385(0.684) 386(0.749) 387(0.602) 388(0.499) 389(0.000) 390(0.000) 391(0.000) 392(0.000) 393(0.000) 
+[EVENT] 55.500 | event=SuspiciousConfidenceSnapshot | 180(0.369) 181(0.369) 186(0.800) 187(0.800) 188(0.800) 200(0.369) 201(0.369) 202(0.369) 203(0.369) 204(0.800) 205(0.800) 206(0.800) 207(0.800) 208(0.800) 209(0.800) 210(0.800) 220(0.369) 221(0.369) 222(0.369) 223(0.369) 224(0.800) 225(0.800) 226(0.800) 227(0.800) 228(0.800) 229(0.800) 230(0.800) 240(0.369) 241(0.369) 242(0.369) 243(0.369) 244(0.800) 245(0.800) 246(0.800) 247(0.800) 248(0.800) 249(0.800) 250(0.800) 260(0.369) 261(0.369) 262(0.369) 263(0.369) 264(0.800) 265(0.800) 266(0.800) 267(0.800) 268(0.800) 269(0.800) 270(0.800) 280(0.369) 281(0.369) 282(0.369) 283(0.369) 284(0.800) 285(0.800) 286(0.800) 287(0.800) 288(0.800) 289(0.800) 290(0.800) 300(0.369) 301(0.369) 302(0.800) 303(0.800) 304(0.800) 305(0.800) 306(0.800) 307(0.800) 308(0.800) 309(0.684) 310(0.684) 311(0.684) 312(0.684) 320(0.369) 321(0.800) 322(0.800) 323(0.800) 324(0.800) 325(0.800) 326(0.800) 327(0.684) 328(0.684) 329(0.684) 330(0.684) 331(0.684) 332(0.684) 333(0.684) 340(0.800) 341(0.800) 342(0.800) 343(0.800) 344(0.800) 345(0.800) 346(0.800) 347(0.684) 348(0.684) 349(0.684) 350(0.684) 351(0.684) 352(0.684) 353(0.684) 361(0.800) 362(0.800) 363(0.800) 364(0.800) 365(0.800) 366(0.800) 367(0.684) 368(0.684) 369(0.684) 370(0.684) 371(0.684) 372(0.684) 373(0.684) 381(0.800) 382(0.800) 383(0.800) 384(0.800) 385(0.800) 386(0.800) 387(0.684) 388(0.684) 389(0.684) 390(0.684) 391(0.684) 392(0.684) 393(0.684) 
 
 [EVENT] 56.782 | event=UAVWaypointArrival | nodeId=402 | cycle=2 | pos=(140.000,340.000,20.000)
 
-[EVENT] 65.500 | event=SuspiciousConfidenceSnapshot | 180(0.000) 181(0.000) 186(0.000) 187(0.000) 188(0.000) 200(0.000) 201(0.000) 202(0.800) 203(0.800) 204(0.900) 205(0.900) 206(0.900) 207(0.000) 208(0.000) 209(0.000) 210(0.000) 220(0.000) 221(0.000) 222(0.800) 223(0.602) 224(0.842) 225(0.684) 226(0.900) 227(0.900) 228(0.000) 229(0.000) 230(0.000) 240(0.000) 241(0.800) 242(0.602) 243(0.684) 244(0.749) 245(0.749) 246(0.800) 247(0.900) 248(0.000) 249(0.000) 250(0.000) 260(0.000) 261(0.800) 262(0.749) 263(0.749) 264(0.800) 265(0.842) 266(0.874) 267(0.874) 268(0.900) 269(0.000) 270(0.000) 280(0.000) 281(0.000) 282(0.684) 283(0.800) 284(0.842) 285(0.900) 286(0.900) 287(0.900) 288(0.900) 289(0.000) 290(0.000) 300(0.000) 301(0.000) 302(0.684) 303(0.800) 304(0.900) 305(0.900) 306(0.900) 307(0.874) 308(0.900) 309(0.749) 310(0.000) 311(0.000) 312(0.000) 320(0.000) 321(0.000) 322(0.000) 323(0.499) 324(0.800) 325(0.900) 326(0.900) 327(0.842) 328(0.842) 329(0.684) 330(0.000) 331(0.000) 332(0.000) 333(0.000) 340(0.000) 341(0.000) 342(0.000) 343(0.000) 344(0.800) 345(0.900) 346(0.900) 347(0.842) 348(0.800) 349(0.684) 350(0.000) 351(0.000) 352(0.000) 353(0.000) 361(0.000) 362(0.000) 363(0.000) 364(0.749) 365(0.842) 366(0.874) 367(0.749) 368(0.684) 369(0.602) 370(0.000) 371(0.000) 372(0.000) 373(0.000) 381(0.000) 382(0.000) 383(0.000) 384(0.000) 385(0.684) 386(0.749) 387(0.602) 388(0.499) 389(0.000) 390(0.000) 391(0.000) 392(0.000) 393(0.000) 
+[EVENT] 65.500 | event=SuspiciousConfidenceSnapshot | 180(0.369) 181(0.369) 186(0.800) 187(0.800) 188(0.800) 200(0.369) 201(0.369) 202(0.369) 203(0.369) 204(0.800) 205(0.800) 206(0.800) 207(0.800) 208(0.800) 209(0.800) 210(0.800) 220(0.369) 221(0.369) 222(0.369) 223(0.369) 224(0.800) 225(0.800) 226(0.800) 227(0.800) 228(0.800) 229(0.800) 230(0.800) 240(0.369) 241(0.369) 242(0.369) 243(0.369) 244(0.800) 245(0.800) 246(0.800) 247(0.800) 248(0.800) 249(0.800) 250(0.800) 260(0.369) 261(0.369) 262(0.369) 263(0.369) 264(0.800) 265(0.800) 266(0.800) 267(0.800) 268(0.800) 269(0.800) 270(0.800) 280(0.369) 281(0.369) 282(0.369) 283(0.369) 284(0.800) 285(0.800) 286(0.800) 287(0.800) 288(0.800) 289(0.800) 290(0.800) 300(0.369) 301(0.369) 302(0.800) 303(0.800) 304(0.800) 305(0.800) 306(0.800) 307(0.800) 308(0.800) 309(0.684) 310(0.684) 311(0.684) 312(0.684) 320(0.369) 321(0.800) 322(0.800) 323(0.800) 324(0.800) 325(0.800) 326(0.800) 327(0.684) 328(0.684) 329(0.684) 330(0.684) 331(0.684) 332(0.684) 333(0.684) 340(0.800) 341(0.800) 342(0.800) 343(0.800) 344(0.800) 345(0.800) 346(0.800) 347(0.684) 348(0.684) 349(0.684) 350(0.684) 351(0.684) 352(0.684) 353(0.684) 361(0.800) 362(0.800) 363(0.800) 364(0.800) 365(0.800) 366(0.800) 367(0.684) 368(0.684) 369(0.684) 370(0.684) 371(0.684) 372(0.684) 373(0.684) 381(0.800) 382(0.800) 383(0.800) 384(0.800) 385(0.800) 386(0.800) 387(0.684) 388(0.684) 389(0.684) 390(0.684) 391(0.684) 392(0.684) 393(0.684) 
 
 [EVENT] 72.806 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(0.000,200.000,20.000)
 
-[EVENT] 75.500 | event=SuspiciousConfidenceSnapshot | 180(0.000) 181(0.000) 186(0.000) 187(0.000) 188(0.000) 200(0.000) 201(0.000) 202(0.800) 203(0.800) 204(0.900) 205(0.900) 206(0.900) 207(0.000) 208(0.000) 209(0.000) 210(0.000) 220(0.000) 221(0.000) 222(0.800) 223(0.602) 224(0.842) 225(0.684) 226(0.900) 227(0.900) 228(0.000) 229(0.000) 230(0.000) 240(0.000) 241(0.800) 242(0.602) 243(0.684) 244(0.749) 245(0.749) 246(0.800) 247(0.900) 248(0.000) 249(0.000) 250(0.000) 260(0.000) 261(0.800) 262(0.749) 263(0.749) 264(0.800) 265(0.842) 266(0.874) 267(0.874) 268(0.900) 269(0.000) 270(0.000) 280(0.000) 281(0.000) 282(0.684) 283(0.800) 284(0.842) 285(0.900) 286(0.900) 287(0.900) 288(0.900) 289(0.000) 290(0.000) 300(0.000) 301(0.000) 302(0.684) 303(0.800) 304(0.900) 305(0.900) 306(0.900) 307(0.874) 308(0.900) 309(0.749) 310(0.000) 311(0.000) 312(0.000) 320(0.000) 321(0.000) 322(0.000) 323(0.499) 324(0.800) 325(0.900) 326(0.900) 327(0.842) 328(0.842) 329(0.684) 330(0.000) 331(0.000) 332(0.000) 333(0.000) 340(0.000) 341(0.000) 342(0.000) 343(0.000) 344(0.800) 345(0.900) 346(0.900) 347(0.842) 348(0.800) 349(0.684) 350(0.000) 351(0.000) 352(0.000) 353(0.000) 361(0.000) 362(0.000) 363(0.000) 364(0.749) 365(0.842) 366(0.874) 367(0.749) 368(0.684) 369(0.602) 370(0.000) 371(0.000) 372(0.000) 373(0.000) 381(0.000) 382(0.000) 383(0.000) 384(0.000) 385(0.684) 386(0.749) 387(0.602) 388(0.499) 389(0.000) 390(0.000) 391(0.000) 392(0.000) 393(0.000) 
+[EVENT] 75.500 | event=SuspiciousConfidenceSnapshot | 180(0.369) 181(0.369) 186(0.800) 187(0.800) 188(0.800) 200(0.369) 201(0.369) 202(0.369) 203(0.369) 204(0.800) 205(0.800) 206(0.800) 207(0.800) 208(0.800) 209(0.800) 210(0.800) 220(0.369) 221(0.369) 222(0.369) 223(0.369) 224(0.800) 225(0.800) 226(0.800) 227(0.800) 228(0.800) 229(0.800) 230(0.800) 240(0.369) 241(0.369) 242(0.369) 243(0.369) 244(0.800) 245(0.800) 246(0.800) 247(0.800) 248(0.800) 249(0.800) 250(0.800) 260(0.369) 261(0.369) 262(0.369) 263(0.369) 264(0.800) 265(0.800) 266(0.800) 267(0.800) 268(0.800) 269(0.800) 270(0.800) 280(0.369) 281(0.369) 282(0.369) 283(0.369) 284(0.800) 285(0.800) 286(0.800) 287(0.800) 288(0.800) 289(0.800) 290(0.800) 300(0.369) 301(0.369) 302(0.800) 303(0.800) 304(0.800) 305(0.800) 306(0.800) 307(0.800) 308(0.800) 309(0.684) 310(0.684) 311(0.684) 312(0.684) 320(0.369) 321(0.800) 322(0.800) 323(0.800) 324(0.800) 325(0.800) 326(0.800) 327(0.684) 328(0.684) 329(0.684) 330(0.684) 331(0.684) 332(0.684) 333(0.684) 340(0.800) 341(0.800) 342(0.800) 343(0.800) 344(0.800) 345(0.800) 346(0.800) 347(0.684) 348(0.684) 349(0.684) 350(0.684) 351(0.684) 352(0.684) 353(0.684) 361(0.800) 362(0.800) 363(0.800) 364(0.800) 365(0.800) 366(0.800) 367(0.684) 368(0.684) 369(0.684) 370(0.684) 371(0.684) 372(0.684) 373(0.684) 381(0.800) 382(0.800) 383(0.800) 384(0.800) 385(0.800) 386(0.800) 387(0.684) 388(0.684) 389(0.684) 390(0.684) 391(0.684) 392(0.684) 393(0.684) 
 
 [EVENT] 76.017 | event=UAVWaypointArrival | nodeId=402 | cycle=3 | pos=(80.000,240.000,20.000)
 
@@ -1548,25 +2493,25 @@ Step 11: Plan UAV Flight Paths
 
 [EVENT] 82.623 | event=UAVWaypointArrival | nodeId=402 | cycle=3 | pos=(140.000,340.000,20.000)
 
-[EVENT] 85.500 | event=SuspiciousConfidenceSnapshot | 180(0.000) 181(0.000) 186(0.000) 187(0.000) 188(0.000) 200(0.000) 201(0.000) 202(0.800) 203(0.800) 204(0.900) 205(0.900) 206(0.900) 207(0.000) 208(0.000) 209(0.000) 210(0.000) 220(0.000) 221(0.000) 222(0.800) 223(0.602) 224(0.842) 225(0.684) 226(0.900) 227(0.900) 228(0.000) 229(0.000) 230(0.000) 240(0.000) 241(0.800) 242(0.602) 243(0.684) 244(0.749) 245(0.749) 246(0.800) 247(0.900) 248(0.000) 249(0.000) 250(0.000) 260(0.000) 261(0.800) 262(0.749) 263(0.749) 264(0.800) 265(0.842) 266(0.874) 267(0.874) 268(0.900) 269(0.000) 270(0.000) 280(0.000) 281(0.000) 282(0.684) 283(0.800) 284(0.842) 285(0.900) 286(0.900) 287(0.900) 288(0.900) 289(0.000) 290(0.000) 300(0.000) 301(0.000) 302(0.684) 303(0.800) 304(0.900) 305(0.900) 306(0.900) 307(0.874) 308(0.900) 309(0.749) 310(0.000) 311(0.000) 312(0.000) 320(0.000) 321(0.000) 322(0.000) 323(0.499) 324(0.800) 325(0.900) 326(0.900) 327(0.842) 328(0.842) 329(0.684) 330(0.000) 331(0.000) 332(0.000) 333(0.000) 340(0.000) 341(0.000) 342(0.000) 343(0.000) 344(0.800) 345(0.900) 346(0.900) 347(0.842) 348(0.800) 349(0.684) 350(0.000) 351(0.000) 352(0.000) 353(0.000) 361(0.000) 362(0.000) 363(0.000) 364(0.749) 365(0.842) 366(0.874) 367(0.749) 368(0.684) 369(0.602) 370(0.000) 371(0.000) 372(0.000) 373(0.000) 381(0.000) 382(0.000) 383(0.000) 384(0.000) 385(0.684) 386(0.749) 387(0.602) 388(0.499) 389(0.000) 390(0.000) 391(0.000) 392(0.000) 393(0.000) 
+[EVENT] 85.500 | event=SuspiciousConfidenceSnapshot | 180(0.369) 181(0.369) 186(0.800) 187(0.800) 188(0.800) 200(0.369) 201(0.369) 202(0.369) 203(0.369) 204(0.800) 205(0.800) 206(0.800) 207(0.800) 208(0.800) 209(0.800) 210(0.800) 220(0.369) 221(0.369) 222(0.369) 223(0.369) 224(0.800) 225(0.800) 226(0.800) 227(0.800) 228(0.800) 229(0.800) 230(0.800) 240(0.369) 241(0.369) 242(0.369) 243(0.369) 244(0.800) 245(0.800) 246(0.800) 247(0.800) 248(0.800) 249(0.800) 250(0.800) 260(0.369) 261(0.369) 262(0.369) 263(0.369) 264(0.800) 265(0.800) 266(0.800) 267(0.800) 268(0.800) 269(0.800) 270(0.800) 280(0.369) 281(0.369) 282(0.369) 283(0.369) 284(0.800) 285(0.800) 286(0.800) 287(0.800) 288(0.800) 289(0.800) 290(0.800) 300(0.369) 301(0.369) 302(0.800) 303(0.800) 304(0.800) 305(0.800) 306(0.800) 307(0.800) 308(0.800) 309(0.684) 310(0.684) 311(0.684) 312(0.684) 320(0.369) 321(0.800) 322(0.800) 323(0.800) 324(0.800) 325(0.800) 326(0.800) 327(0.684) 328(0.684) 329(0.684) 330(0.684) 331(0.684) 332(0.684) 333(0.684) 340(0.800) 341(0.800) 342(0.800) 343(0.800) 344(0.800) 345(0.800) 346(0.800) 347(0.684) 348(0.684) 349(0.684) 350(0.684) 351(0.684) 352(0.684) 353(0.684) 361(0.800) 362(0.800) 363(0.800) 364(0.800) 365(0.800) 366(0.800) 367(0.684) 368(0.684) 369(0.684) 370(0.684) 371(0.684) 372(0.684) 373(0.684) 381(0.800) 382(0.800) 383(0.800) 384(0.800) 385(0.800) 386(0.800) 387(0.684) 388(0.684) 389(0.684) 390(0.684) 391(0.684) 392(0.684) 393(0.684) 
 
 [EVENT] 90.420 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(0.000,220.000,20.000)
 
-[EVENT] 95.500 | event=SuspiciousConfidenceSnapshot | 180(0.000) 181(0.000) 186(0.000) 187(0.000) 188(0.000) 200(0.000) 201(0.000) 202(0.800) 203(0.800) 204(0.900) 205(0.900) 206(0.900) 207(0.000) 208(0.000) 209(0.000) 210(0.000) 220(0.000) 221(0.000) 222(0.800) 223(0.602) 224(0.842) 225(0.684) 226(0.900) 227(0.900) 228(0.000) 229(0.000) 230(0.000) 240(0.000) 241(0.800) 242(0.602) 243(0.684) 244(0.749) 245(0.749) 246(0.800) 247(0.900) 248(0.000) 249(0.000) 250(0.000) 260(0.000) 261(0.800) 262(0.749) 263(0.749) 264(0.800) 265(0.842) 266(0.874) 267(0.874) 268(0.900) 269(0.000) 270(0.000) 280(0.000) 281(0.000) 282(0.684) 283(0.800) 284(0.842) 285(0.900) 286(0.900) 287(0.900) 288(0.900) 289(0.000) 290(0.000) 300(0.000) 301(0.000) 302(0.684) 303(0.800) 304(0.900) 305(0.900) 306(0.900) 307(0.874) 308(0.900) 309(0.749) 310(0.000) 311(0.000) 312(0.000) 320(0.000) 321(0.000) 322(0.000) 323(0.499) 324(0.800) 325(0.900) 326(0.900) 327(0.842) 328(0.842) 329(0.684) 330(0.000) 331(0.000) 332(0.000) 333(0.000) 340(0.000) 341(0.000) 342(0.000) 343(0.000) 344(0.800) 345(0.900) 346(0.900) 347(0.842) 348(0.800) 349(0.684) 350(0.000) 351(0.000) 352(0.000) 353(0.000) 361(0.000) 362(0.000) 363(0.000) 364(0.749) 365(0.842) 366(0.874) 367(0.749) 368(0.684) 369(0.602) 370(0.000) 371(0.000) 372(0.000) 373(0.000) 381(0.000) 382(0.000) 383(0.000) 384(0.000) 385(0.684) 386(0.749) 387(0.602) 388(0.499) 389(0.000) 390(0.000) 391(0.000) 392(0.000) 393(0.000) 
+[EVENT] 95.500 | event=SuspiciousConfidenceSnapshot | 180(0.369) 181(0.369) 186(0.800) 187(0.800) 188(0.800) 200(0.369) 201(0.369) 202(0.369) 203(0.369) 204(0.800) 205(0.800) 206(0.800) 207(0.800) 208(0.800) 209(0.800) 210(0.800) 220(0.369) 221(0.369) 222(0.369) 223(0.369) 224(0.800) 225(0.800) 226(0.800) 227(0.800) 228(0.800) 229(0.800) 230(0.800) 240(0.369) 241(0.369) 242(0.369) 243(0.369) 244(0.800) 245(0.800) 246(0.800) 247(0.800) 248(0.800) 249(0.800) 250(0.800) 260(0.369) 261(0.369) 262(0.369) 263(0.369) 264(0.800) 265(0.800) 266(0.800) 267(0.800) 268(0.800) 269(0.800) 270(0.800) 280(0.369) 281(0.369) 282(0.369) 283(0.369) 284(0.800) 285(0.800) 286(0.800) 287(0.800) 288(0.800) 289(0.800) 290(0.800) 300(0.369) 301(0.369) 302(0.800) 303(0.800) 304(0.800) 305(0.800) 306(0.800) 307(0.800) 308(0.800) 309(0.684) 310(0.684) 311(0.684) 312(0.684) 320(0.369) 321(0.800) 322(0.800) 323(0.800) 324(0.800) 325(0.800) 326(0.800) 327(0.684) 328(0.684) 329(0.684) 330(0.684) 331(0.684) 332(0.684) 333(0.684) 340(0.800) 341(0.800) 342(0.800) 343(0.800) 344(0.800) 345(0.800) 346(0.800) 347(0.684) 348(0.684) 349(0.684) 350(0.684) 351(0.684) 352(0.684) 353(0.684) 361(0.800) 362(0.800) 363(0.800) 364(0.800) 365(0.800) 366(0.800) 367(0.684) 368(0.684) 369(0.684) 370(0.684) 371(0.684) 372(0.684) 373(0.684) 381(0.800) 382(0.800) 383(0.800) 384(0.800) 385(0.800) 386(0.800) 387(0.684) 388(0.684) 389(0.684) 390(0.684) 391(0.684) 392(0.684) 393(0.684) 
 
 [EVENT] 101.858 | event=UAVWaypointArrival | nodeId=402 | cycle=4 | pos=(80.000,240.000,20.000)
 
 [EVENT] 104.858 | event=UAVWaypointArrival | nodeId=402 | cycle=4 | pos=(80.000,300.000,20.000)
 
-[EVENT] 105.500 | event=SuspiciousConfidenceSnapshot | 180(0.000) 181(0.000) 186(0.000) 187(0.000) 188(0.000) 200(0.000) 201(0.000) 202(0.800) 203(0.800) 204(0.900) 205(0.900) 206(0.900) 207(0.000) 208(0.000) 209(0.000) 210(0.000) 220(0.000) 221(0.000) 222(0.800) 223(0.602) 224(0.842) 225(0.684) 226(0.900) 227(0.900) 228(0.000) 229(0.000) 230(0.000) 240(0.000) 241(0.800) 242(0.602) 243(0.684) 244(0.749) 245(0.749) 246(0.800) 247(0.900) 248(0.000) 249(0.000) 250(0.000) 260(0.000) 261(0.800) 262(0.749) 263(0.749) 264(0.800) 265(0.842) 266(0.874) 267(0.874) 268(0.900) 269(0.000) 270(0.000) 280(0.000) 281(0.000) 282(0.684) 283(0.800) 284(0.842) 285(0.900) 286(0.900) 287(0.900) 288(0.900) 289(0.000) 290(0.000) 300(0.000) 301(0.000) 302(0.684) 303(0.800) 304(0.900) 305(0.900) 306(0.900) 307(0.874) 308(0.900) 309(0.749) 310(0.000) 311(0.000) 312(0.000) 320(0.000) 321(0.000) 322(0.000) 323(0.499) 324(0.800) 325(0.900) 326(0.900) 327(0.842) 328(0.842) 329(0.684) 330(0.000) 331(0.000) 332(0.000) 333(0.000) 340(0.000) 341(0.000) 342(0.000) 343(0.000) 344(0.800) 345(0.900) 346(0.900) 347(0.842) 348(0.800) 349(0.684) 350(0.000) 351(0.000) 352(0.000) 353(0.000) 361(0.000) 362(0.000) 363(0.000) 364(0.749) 365(0.842) 366(0.874) 367(0.749) 368(0.684) 369(0.602) 370(0.000) 371(0.000) 372(0.000) 373(0.000) 381(0.000) 382(0.000) 383(0.000) 384(0.000) 385(0.684) 386(0.749) 387(0.602) 388(0.499) 389(0.000) 390(0.000) 391(0.000) 392(0.000) 393(0.000) 
+[EVENT] 105.500 | event=SuspiciousConfidenceSnapshot | 180(0.369) 181(0.369) 186(0.800) 187(0.800) 188(0.800) 200(0.369) 201(0.369) 202(0.369) 203(0.369) 204(0.800) 205(0.800) 206(0.800) 207(0.800) 208(0.800) 209(0.800) 210(0.800) 220(0.369) 221(0.369) 222(0.369) 223(0.369) 224(0.800) 225(0.800) 226(0.800) 227(0.800) 228(0.800) 229(0.800) 230(0.800) 240(0.369) 241(0.369) 242(0.369) 243(0.369) 244(0.800) 245(0.800) 246(0.800) 247(0.800) 248(0.800) 249(0.800) 250(0.800) 260(0.369) 261(0.369) 262(0.369) 263(0.369) 264(0.800) 265(0.800) 266(0.800) 267(0.800) 268(0.800) 269(0.800) 270(0.800) 280(0.369) 281(0.369) 282(0.369) 283(0.369) 284(0.800) 285(0.800) 286(0.800) 287(0.800) 288(0.800) 289(0.800) 290(0.800) 300(0.369) 301(0.369) 302(0.800) 303(0.800) 304(0.800) 305(0.800) 306(0.800) 307(0.800) 308(0.800) 309(0.684) 310(0.684) 311(0.684) 312(0.684) 320(0.369) 321(0.800) 322(0.800) 323(0.800) 324(0.800) 325(0.800) 326(0.800) 327(0.684) 328(0.684) 329(0.684) 330(0.684) 331(0.684) 332(0.684) 333(0.684) 340(0.800) 341(0.800) 342(0.800) 343(0.800) 344(0.800) 345(0.800) 346(0.800) 347(0.684) 348(0.684) 349(0.684) 350(0.684) 351(0.684) 352(0.684) 353(0.684) 361(0.800) 362(0.800) 363(0.800) 364(0.800) 365(0.800) 366(0.800) 367(0.684) 368(0.684) 369(0.684) 370(0.684) 371(0.684) 372(0.684) 373(0.684) 381(0.800) 382(0.800) 383(0.800) 384(0.800) 385(0.800) 386(0.800) 387(0.684) 388(0.684) 389(0.684) 390(0.684) 391(0.684) 392(0.684) 393(0.684) 
 
 [EVENT] 108.033 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(20.000,220.000,20.000)
 
 [EVENT] 108.464 | event=UAVWaypointArrival | nodeId=402 | cycle=4 | pos=(140.000,340.000,20.000)
 
-[EVENT] 115.500 | event=SuspiciousConfidenceSnapshot | 180(0.000) 181(0.000) 186(0.000) 187(0.000) 188(0.000) 200(0.000) 201(0.000) 202(0.800) 203(0.800) 204(0.900) 205(0.900) 206(0.900) 207(0.000) 208(0.000) 209(0.000) 210(0.000) 220(0.000) 221(0.000) 222(0.800) 223(0.602) 224(0.842) 225(0.684) 226(0.900) 227(0.900) 228(0.000) 229(0.000) 230(0.000) 240(0.000) 241(0.800) 242(0.602) 243(0.684) 244(0.749) 245(0.749) 246(0.800) 247(0.900) 248(0.000) 249(0.000) 250(0.000) 260(0.000) 261(0.800) 262(0.749) 263(0.749) 264(0.800) 265(0.842) 266(0.874) 267(0.874) 268(0.900) 269(0.000) 270(0.000) 280(0.000) 281(0.000) 282(0.684) 283(0.800) 284(0.842) 285(0.900) 286(0.900) 287(0.900) 288(0.900) 289(0.000) 290(0.000) 300(0.000) 301(0.000) 302(0.684) 303(0.800) 304(0.900) 305(0.900) 306(0.900) 307(0.874) 308(0.900) 309(0.749) 310(0.000) 311(0.000) 312(0.000) 320(0.000) 321(0.000) 322(0.000) 323(0.499) 324(0.800) 325(0.900) 326(0.900) 327(0.842) 328(0.842) 329(0.684) 330(0.000) 331(0.000) 332(0.000) 333(0.000) 340(0.000) 341(0.000) 342(0.000) 343(0.000) 344(0.800) 345(0.900) 346(0.900) 347(0.842) 348(0.800) 349(0.684) 350(0.000) 351(0.000) 352(0.000) 353(0.000) 361(0.000) 362(0.000) 363(0.000) 364(0.749) 365(0.842) 366(0.874) 367(0.749) 368(0.684) 369(0.602) 370(0.000) 371(0.000) 372(0.000) 373(0.000) 381(0.000) 382(0.000) 383(0.000) 384(0.000) 385(0.684) 386(0.749) 387(0.602) 388(0.499) 389(0.000) 390(0.000) 391(0.000) 392(0.000) 393(0.000) 
+[EVENT] 115.500 | event=SuspiciousConfidenceSnapshot | 180(0.369) 181(0.369) 186(0.800) 187(0.800) 188(0.800) 200(0.369) 201(0.369) 202(0.369) 203(0.369) 204(0.800) 205(0.800) 206(0.800) 207(0.800) 208(0.800) 209(0.800) 210(0.800) 220(0.369) 221(0.369) 222(0.369) 223(0.369) 224(0.800) 225(0.800) 226(0.800) 227(0.800) 228(0.800) 229(0.800) 230(0.800) 240(0.369) 241(0.369) 242(0.369) 243(0.369) 244(0.800) 245(0.800) 246(0.800) 247(0.800) 248(0.800) 249(0.800) 250(0.800) 260(0.369) 261(0.369) 262(0.369) 263(0.369) 264(0.800) 265(0.800) 266(0.800) 267(0.800) 268(0.800) 269(0.800) 270(0.800) 280(0.369) 281(0.369) 282(0.369) 283(0.369) 284(0.800) 285(0.800) 286(0.800) 287(0.800) 288(0.800) 289(0.800) 290(0.800) 300(0.369) 301(0.369) 302(0.800) 303(0.800) 304(0.800) 305(0.800) 306(0.800) 307(0.800) 308(0.800) 309(0.684) 310(0.684) 311(0.684) 312(0.684) 320(0.369) 321(0.800) 322(0.800) 323(0.800) 324(0.800) 325(0.800) 326(0.800) 327(0.684) 328(0.684) 329(0.684) 330(0.684) 331(0.684) 332(0.684) 333(0.684) 340(0.800) 341(0.800) 342(0.800) 343(0.800) 344(0.800) 345(0.800) 346(0.800) 347(0.684) 348(0.684) 349(0.684) 350(0.684) 351(0.684) 352(0.684) 353(0.684) 361(0.800) 362(0.800) 363(0.800) 364(0.800) 365(0.800) 366(0.800) 367(0.684) 368(0.684) 369(0.684) 370(0.684) 371(0.684) 372(0.684) 373(0.684) 381(0.800) 382(0.800) 383(0.800) 384(0.800) 385(0.800) 386(0.800) 387(0.684) 388(0.684) 389(0.684) 390(0.684) 391(0.684) 392(0.684) 393(0.684) 
 
-[EVENT] 125.500 | event=SuspiciousConfidenceSnapshot | 180(0.000) 181(0.000) 186(0.000) 187(0.000) 188(0.000) 200(0.000) 201(0.000) 202(0.800) 203(0.800) 204(0.900) 205(0.900) 206(0.900) 207(0.000) 208(0.000) 209(0.000) 210(0.000) 220(0.000) 221(0.000) 222(0.800) 223(0.602) 224(0.842) 225(0.684) 226(0.900) 227(0.900) 228(0.000) 229(0.000) 230(0.000) 240(0.000) 241(0.800) 242(0.602) 243(0.684) 244(0.749) 245(0.749) 246(0.800) 247(0.900) 248(0.000) 249(0.000) 250(0.000) 260(0.000) 261(0.800) 262(0.749) 263(0.749) 264(0.800) 265(0.842) 266(0.874) 267(0.874) 268(0.900) 269(0.000) 270(0.000) 280(0.000) 281(0.000) 282(0.684) 283(0.800) 284(0.842) 285(0.900) 286(0.900) 287(0.900) 288(0.900) 289(0.000) 290(0.000) 300(0.000) 301(0.000) 302(0.684) 303(0.800) 304(0.900) 305(0.900) 306(0.900) 307(0.874) 308(0.900) 309(0.749) 310(0.000) 311(0.000) 312(0.000) 320(0.000) 321(0.000) 322(0.000) 323(0.499) 324(0.800) 325(0.900) 326(0.900) 327(0.842) 328(0.842) 329(0.684) 330(0.000) 331(0.000) 332(0.000) 333(0.000) 340(0.000) 341(0.000) 342(0.000) 343(0.000) 344(0.800) 345(0.900) 346(0.900) 347(0.842) 348(0.800) 349(0.684) 350(0.000) 351(0.000) 352(0.000) 353(0.000) 361(0.000) 362(0.000) 363(0.000) 364(0.749) 365(0.842) 366(0.874) 367(0.749) 368(0.684) 369(0.602) 370(0.000) 371(0.000) 372(0.000) 373(0.000) 381(0.000) 382(0.000) 383(0.000) 384(0.000) 385(0.684) 386(0.749) 387(0.602) 388(0.499) 389(0.000) 390(0.000) 391(0.000) 392(0.000) 393(0.000) 
+[EVENT] 125.500 | event=SuspiciousConfidenceSnapshot | 180(0.369) 181(0.369) 186(0.800) 187(0.800) 188(0.800) 200(0.369) 201(0.369) 202(0.369) 203(0.369) 204(0.800) 205(0.800) 206(0.800) 207(0.800) 208(0.800) 209(0.800) 210(0.800) 220(0.369) 221(0.369) 222(0.369) 223(0.369) 224(0.800) 225(0.800) 226(0.800) 227(0.800) 228(0.800) 229(0.800) 230(0.800) 240(0.369) 241(0.369) 242(0.369) 243(0.369) 244(0.800) 245(0.800) 246(0.800) 247(0.800) 248(0.800) 249(0.800) 250(0.800) 260(0.369) 261(0.369) 262(0.369) 263(0.369) 264(0.800) 265(0.800) 266(0.800) 267(0.800) 268(0.800) 269(0.800) 270(0.800) 280(0.369) 281(0.369) 282(0.369) 283(0.369) 284(0.800) 285(0.800) 286(0.800) 287(0.800) 288(0.800) 289(0.800) 290(0.800) 300(0.369) 301(0.369) 302(0.800) 303(0.800) 304(0.800) 305(0.800) 306(0.800) 307(0.800) 308(0.800) 309(0.684) 310(0.684) 311(0.684) 312(0.684) 320(0.369) 321(0.800) 322(0.800) 323(0.800) 324(0.800) 325(0.800) 326(0.800) 327(0.684) 328(0.684) 329(0.684) 330(0.684) 331(0.684) 332(0.684) 333(0.684) 340(0.800) 341(0.800) 342(0.800) 343(0.800) 344(0.800) 345(0.800) 346(0.800) 347(0.684) 348(0.684) 349(0.684) 350(0.684) 351(0.684) 352(0.684) 353(0.684) 361(0.800) 362(0.800) 363(0.800) 364(0.800) 365(0.800) 366(0.800) 367(0.684) 368(0.684) 369(0.684) 370(0.684) 371(0.684) 372(0.684) 373(0.684) 381(0.800) 382(0.800) 383(0.800) 384(0.800) 385(0.800) 386(0.800) 387(0.684) 388(0.684) 389(0.684) 390(0.684) 391(0.684) 392(0.684) 393(0.684) 
 
 [EVENT] 125.646 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(40.000,220.000,20.000)
 
@@ -1576,15 +2521,15 @@ Step 11: Plan UAV Flight Paths
 
 [EVENT] 134.305 | event=UAVWaypointArrival | nodeId=402 | cycle=5 | pos=(140.000,340.000,20.000)
 
-[EVENT] 135.500 | event=SuspiciousConfidenceSnapshot | 180(0.000) 181(0.000) 186(0.000) 187(0.000) 188(0.000) 200(0.000) 201(0.000) 202(0.800) 203(0.800) 204(0.900) 205(0.900) 206(0.900) 207(0.000) 208(0.000) 209(0.000) 210(0.000) 220(0.000) 221(0.000) 222(0.800) 223(0.602) 224(0.842) 225(0.684) 226(0.900) 227(0.900) 228(0.000) 229(0.000) 230(0.000) 240(0.000) 241(0.800) 242(0.602) 243(0.684) 244(0.749) 245(0.749) 246(0.800) 247(0.900) 248(0.000) 249(0.000) 250(0.000) 260(0.000) 261(0.800) 262(0.749) 263(0.749) 264(0.800) 265(0.842) 266(0.874) 267(0.874) 268(0.900) 269(0.000) 270(0.000) 280(0.000) 281(0.000) 282(0.684) 283(0.800) 284(0.842) 285(0.900) 286(0.900) 287(0.900) 288(0.900) 289(0.000) 290(0.000) 300(0.000) 301(0.000) 302(0.684) 303(0.800) 304(0.900) 305(0.900) 306(0.900) 307(0.874) 308(0.900) 309(0.749) 310(0.000) 311(0.000) 312(0.000) 320(0.000) 321(0.000) 322(0.000) 323(0.499) 324(0.800) 325(0.900) 326(0.900) 327(0.842) 328(0.842) 329(0.684) 330(0.000) 331(0.000) 332(0.000) 333(0.000) 340(0.000) 341(0.000) 342(0.000) 343(0.000) 344(0.800) 345(0.900) 346(0.900) 347(0.842) 348(0.800) 349(0.684) 350(0.000) 351(0.000) 352(0.000) 353(0.000) 361(0.000) 362(0.000) 363(0.000) 364(0.749) 365(0.842) 366(0.874) 367(0.749) 368(0.684) 369(0.602) 370(0.000) 371(0.000) 372(0.000) 373(0.000) 381(0.000) 382(0.000) 383(0.000) 384(0.000) 385(0.684) 386(0.749) 387(0.602) 388(0.499) 389(0.000) 390(0.000) 391(0.000) 392(0.000) 393(0.000) 
+[EVENT] 135.500 | event=SuspiciousConfidenceSnapshot | 180(0.369) 181(0.369) 186(0.800) 187(0.800) 188(0.800) 200(0.369) 201(0.369) 202(0.369) 203(0.369) 204(0.800) 205(0.800) 206(0.800) 207(0.800) 208(0.800) 209(0.800) 210(0.800) 220(0.369) 221(0.369) 222(0.369) 223(0.369) 224(0.800) 225(0.800) 226(0.800) 227(0.800) 228(0.800) 229(0.800) 230(0.800) 240(0.369) 241(0.369) 242(0.369) 243(0.369) 244(0.800) 245(0.800) 246(0.800) 247(0.800) 248(0.800) 249(0.800) 250(0.800) 260(0.369) 261(0.369) 262(0.369) 263(0.369) 264(0.800) 265(0.800) 266(0.800) 267(0.800) 268(0.800) 269(0.800) 270(0.800) 280(0.369) 281(0.369) 282(0.369) 283(0.369) 284(0.800) 285(0.800) 286(0.800) 287(0.800) 288(0.800) 289(0.800) 290(0.800) 300(0.369) 301(0.369) 302(0.800) 303(0.800) 304(0.800) 305(0.800) 306(0.800) 307(0.800) 308(0.800) 309(0.684) 310(0.684) 311(0.684) 312(0.684) 320(0.369) 321(0.800) 322(0.800) 323(0.800) 324(0.800) 325(0.800) 326(0.800) 327(0.684) 328(0.684) 329(0.684) 330(0.684) 331(0.684) 332(0.684) 333(0.684) 340(0.800) 341(0.800) 342(0.800) 343(0.800) 344(0.800) 345(0.800) 346(0.800) 347(0.684) 348(0.684) 349(0.684) 350(0.684) 351(0.684) 352(0.684) 353(0.684) 361(0.800) 362(0.800) 363(0.800) 364(0.800) 365(0.800) 366(0.800) 367(0.684) 368(0.684) 369(0.684) 370(0.684) 371(0.684) 372(0.684) 373(0.684) 381(0.800) 382(0.800) 383(0.800) 384(0.800) 385(0.800) 386(0.800) 387(0.684) 388(0.684) 389(0.684) 390(0.684) 391(0.684) 392(0.684) 393(0.684) 
 
 [EVENT] 143.260 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(40.000,200.000,20.000)
 
-[EVENT] 145.500 | event=SuspiciousConfidenceSnapshot | 180(0.000) 181(0.000) 186(0.000) 187(0.000) 188(0.000) 200(0.000) 201(0.000) 202(0.800) 203(0.800) 204(0.900) 205(0.900) 206(0.900) 207(0.000) 208(0.000) 209(0.000) 210(0.000) 220(0.000) 221(0.000) 222(0.800) 223(0.602) 224(0.842) 225(0.684) 226(0.900) 227(0.900) 228(0.000) 229(0.000) 230(0.000) 240(0.000) 241(0.800) 242(0.602) 243(0.684) 244(0.749) 245(0.749) 246(0.800) 247(0.900) 248(0.000) 249(0.000) 250(0.000) 260(0.000) 261(0.800) 262(0.749) 263(0.749) 264(0.800) 265(0.842) 266(0.874) 267(0.874) 268(0.900) 269(0.000) 270(0.000) 280(0.000) 281(0.000) 282(0.684) 283(0.800) 284(0.842) 285(0.900) 286(0.900) 287(0.900) 288(0.900) 289(0.000) 290(0.000) 300(0.000) 301(0.000) 302(0.684) 303(0.800) 304(0.900) 305(0.900) 306(0.900) 307(0.874) 308(0.900) 309(0.749) 310(0.000) 311(0.000) 312(0.000) 320(0.000) 321(0.000) 322(0.000) 323(0.499) 324(0.800) 325(0.900) 326(0.900) 327(0.842) 328(0.842) 329(0.684) 330(0.000) 331(0.000) 332(0.000) 333(0.000) 340(0.000) 341(0.000) 342(0.000) 343(0.000) 344(0.800) 345(0.900) 346(0.900) 347(0.842) 348(0.800) 349(0.684) 350(0.000) 351(0.000) 352(0.000) 353(0.000) 361(0.000) 362(0.000) 363(0.000) 364(0.749) 365(0.842) 366(0.874) 367(0.749) 368(0.684) 369(0.602) 370(0.000) 371(0.000) 372(0.000) 373(0.000) 381(0.000) 382(0.000) 383(0.000) 384(0.000) 385(0.684) 386(0.749) 387(0.602) 388(0.499) 389(0.000) 390(0.000) 391(0.000) 392(0.000) 393(0.000) 
+[EVENT] 145.500 | event=SuspiciousConfidenceSnapshot | 180(0.369) 181(0.369) 186(0.800) 187(0.800) 188(0.800) 200(0.369) 201(0.369) 202(0.369) 203(0.369) 204(0.800) 205(0.800) 206(0.800) 207(0.800) 208(0.800) 209(0.800) 210(0.800) 220(0.369) 221(0.369) 222(0.369) 223(0.369) 224(0.800) 225(0.800) 226(0.800) 227(0.800) 228(0.800) 229(0.800) 230(0.800) 240(0.369) 241(0.369) 242(0.369) 243(0.369) 244(0.800) 245(0.800) 246(0.800) 247(0.800) 248(0.800) 249(0.800) 250(0.800) 260(0.369) 261(0.369) 262(0.369) 263(0.369) 264(0.800) 265(0.800) 266(0.800) 267(0.800) 268(0.800) 269(0.800) 270(0.800) 280(0.369) 281(0.369) 282(0.369) 283(0.369) 284(0.800) 285(0.800) 286(0.800) 287(0.800) 288(0.800) 289(0.800) 290(0.800) 300(0.369) 301(0.369) 302(0.800) 303(0.800) 304(0.800) 305(0.800) 306(0.800) 307(0.800) 308(0.800) 309(0.684) 310(0.684) 311(0.684) 312(0.684) 320(0.369) 321(0.800) 322(0.800) 323(0.800) 324(0.800) 325(0.800) 326(0.800) 327(0.684) 328(0.684) 329(0.684) 330(0.684) 331(0.684) 332(0.684) 333(0.684) 340(0.800) 341(0.800) 342(0.800) 343(0.800) 344(0.800) 345(0.800) 346(0.800) 347(0.684) 348(0.684) 349(0.684) 350(0.684) 351(0.684) 352(0.684) 353(0.684) 361(0.800) 362(0.800) 363(0.800) 364(0.800) 365(0.800) 366(0.800) 367(0.684) 368(0.684) 369(0.684) 370(0.684) 371(0.684) 372(0.684) 373(0.684) 381(0.800) 382(0.800) 383(0.800) 384(0.800) 385(0.800) 386(0.800) 387(0.684) 388(0.684) 389(0.684) 390(0.684) 391(0.684) 392(0.684) 393(0.684) 
 
 [EVENT] 153.540 | event=UAVWaypointArrival | nodeId=402 | cycle=6 | pos=(80.000,240.000,20.000)
 
-[EVENT] 155.500 | event=SuspiciousConfidenceSnapshot | 180(0.000) 181(0.000) 186(0.000) 187(0.000) 188(0.000) 200(0.000) 201(0.000) 202(0.800) 203(0.800) 204(0.900) 205(0.900) 206(0.900) 207(0.000) 208(0.000) 209(0.000) 210(0.000) 220(0.000) 221(0.000) 222(0.800) 223(0.602) 224(0.842) 225(0.684) 226(0.900) 227(0.900) 228(0.000) 229(0.000) 230(0.000) 240(0.000) 241(0.800) 242(0.602) 243(0.684) 244(0.749) 245(0.749) 246(0.800) 247(0.900) 248(0.000) 249(0.000) 250(0.000) 260(0.000) 261(0.800) 262(0.749) 263(0.749) 264(0.800) 265(0.842) 266(0.874) 267(0.874) 268(0.900) 269(0.000) 270(0.000) 280(0.000) 281(0.000) 282(0.684) 283(0.800) 284(0.842) 285(0.900) 286(0.900) 287(0.900) 288(0.900) 289(0.000) 290(0.000) 300(0.000) 301(0.000) 302(0.684) 303(0.800) 304(0.900) 305(0.900) 306(0.900) 307(0.874) 308(0.900) 309(0.749) 310(0.000) 311(0.000) 312(0.000) 320(0.000) 321(0.000) 322(0.000) 323(0.499) 324(0.800) 325(0.900) 326(0.900) 327(0.842) 328(0.842) 329(0.684) 330(0.000) 331(0.000) 332(0.000) 333(0.000) 340(0.000) 341(0.000) 342(0.000) 343(0.000) 344(0.800) 345(0.900) 346(0.900) 347(0.842) 348(0.800) 349(0.684) 350(0.000) 351(0.000) 352(0.000) 353(0.000) 361(0.000) 362(0.000) 363(0.000) 364(0.749) 365(0.842) 366(0.874) 367(0.749) 368(0.684) 369(0.602) 370(0.000) 371(0.000) 372(0.000) 373(0.000) 381(0.000) 382(0.000) 383(0.000) 384(0.000) 385(0.684) 386(0.749) 387(0.602) 388(0.499) 389(0.000) 390(0.000) 391(0.000) 392(0.000) 393(0.000) 
+[EVENT] 155.500 | event=SuspiciousConfidenceSnapshot | 180(0.369) 181(0.369) 186(0.800) 187(0.800) 188(0.800) 200(0.369) 201(0.369) 202(0.369) 203(0.369) 204(0.800) 205(0.800) 206(0.800) 207(0.800) 208(0.800) 209(0.800) 210(0.800) 220(0.369) 221(0.369) 222(0.369) 223(0.369) 224(0.800) 225(0.800) 226(0.800) 227(0.800) 228(0.800) 229(0.800) 230(0.800) 240(0.369) 241(0.369) 242(0.369) 243(0.369) 244(0.800) 245(0.800) 246(0.800) 247(0.800) 248(0.800) 249(0.800) 250(0.800) 260(0.369) 261(0.369) 262(0.369) 263(0.369) 264(0.800) 265(0.800) 266(0.800) 267(0.800) 268(0.800) 269(0.800) 270(0.800) 280(0.369) 281(0.369) 282(0.369) 283(0.369) 284(0.800) 285(0.800) 286(0.800) 287(0.800) 288(0.800) 289(0.800) 290(0.800) 300(0.369) 301(0.369) 302(0.800) 303(0.800) 304(0.800) 305(0.800) 306(0.800) 307(0.800) 308(0.800) 309(0.684) 310(0.684) 311(0.684) 312(0.684) 320(0.369) 321(0.800) 322(0.800) 323(0.800) 324(0.800) 325(0.800) 326(0.800) 327(0.684) 328(0.684) 329(0.684) 330(0.684) 331(0.684) 332(0.684) 333(0.684) 340(0.800) 341(0.800) 342(0.800) 343(0.800) 344(0.800) 345(0.800) 346(0.800) 347(0.684) 348(0.684) 349(0.684) 350(0.684) 351(0.684) 352(0.684) 353(0.684) 361(0.800) 362(0.800) 363(0.800) 364(0.800) 365(0.800) 366(0.800) 367(0.684) 368(0.684) 369(0.684) 370(0.684) 371(0.684) 372(0.684) 373(0.684) 381(0.800) 382(0.800) 383(0.800) 384(0.800) 385(0.800) 386(0.800) 387(0.684) 388(0.684) 389(0.684) 390(0.684) 391(0.684) 392(0.684) 393(0.684) 
 
 [EVENT] 156.540 | event=UAVWaypointArrival | nodeId=402 | cycle=6 | pos=(80.000,300.000,20.000)
 
@@ -1592,9 +2537,9 @@ Step 11: Plan UAV Flight Paths
 
 [EVENT] 160.873 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(60.000,200.000,20.000)
 
-[EVENT] 165.500 | event=SuspiciousConfidenceSnapshot | 180(0.000) 181(0.000) 186(0.000) 187(0.000) 188(0.000) 200(0.000) 201(0.000) 202(0.800) 203(0.800) 204(0.900) 205(0.900) 206(0.900) 207(0.000) 208(0.000) 209(0.000) 210(0.000) 220(0.000) 221(0.000) 222(0.800) 223(0.602) 224(0.842) 225(0.684) 226(0.900) 227(0.900) 228(0.000) 229(0.000) 230(0.000) 240(0.000) 241(0.800) 242(0.602) 243(0.684) 244(0.749) 245(0.749) 246(0.800) 247(0.900) 248(0.000) 249(0.000) 250(0.000) 260(0.000) 261(0.800) 262(0.749) 263(0.749) 264(0.800) 265(0.842) 266(0.874) 267(0.874) 268(0.900) 269(0.000) 270(0.000) 280(0.000) 281(0.000) 282(0.684) 283(0.800) 284(0.842) 285(0.900) 286(0.900) 287(0.900) 288(0.900) 289(0.000) 290(0.000) 300(0.000) 301(0.000) 302(0.684) 303(0.800) 304(0.900) 305(0.900) 306(0.900) 307(0.874) 308(0.900) 309(0.749) 310(0.000) 311(0.000) 312(0.000) 320(0.000) 321(0.000) 322(0.000) 323(0.499) 324(0.800) 325(0.900) 326(0.900) 327(0.842) 328(0.842) 329(0.684) 330(0.000) 331(0.000) 332(0.000) 333(0.000) 340(0.000) 341(0.000) 342(0.000) 343(0.000) 344(0.800) 345(0.900) 346(0.900) 347(0.842) 348(0.800) 349(0.684) 350(0.000) 351(0.000) 352(0.000) 353(0.000) 361(0.000) 362(0.000) 363(0.000) 364(0.749) 365(0.842) 366(0.874) 367(0.749) 368(0.684) 369(0.602) 370(0.000) 371(0.000) 372(0.000) 373(0.000) 381(0.000) 382(0.000) 383(0.000) 384(0.000) 385(0.684) 386(0.749) 387(0.602) 388(0.499) 389(0.000) 390(0.000) 391(0.000) 392(0.000) 393(0.000) 
+[EVENT] 165.500 | event=SuspiciousConfidenceSnapshot | 180(0.369) 181(0.369) 186(0.800) 187(0.800) 188(0.800) 200(0.369) 201(0.369) 202(0.369) 203(0.369) 204(0.800) 205(0.800) 206(0.800) 207(0.800) 208(0.800) 209(0.800) 210(0.800) 220(0.369) 221(0.369) 222(0.369) 223(0.369) 224(0.800) 225(0.800) 226(0.800) 227(0.800) 228(0.800) 229(0.800) 230(0.800) 240(0.369) 241(0.369) 242(0.369) 243(0.369) 244(0.800) 245(0.800) 246(0.800) 247(0.800) 248(0.800) 249(0.800) 250(0.800) 260(0.369) 261(0.369) 262(0.369) 263(0.369) 264(0.800) 265(0.800) 266(0.800) 267(0.800) 268(0.800) 269(0.800) 270(0.800) 280(0.369) 281(0.369) 282(0.369) 283(0.369) 284(0.800) 285(0.800) 286(0.800) 287(0.800) 288(0.800) 289(0.800) 290(0.800) 300(0.369) 301(0.369) 302(0.800) 303(0.800) 304(0.800) 305(0.800) 306(0.800) 307(0.800) 308(0.800) 309(0.684) 310(0.684) 311(0.684) 312(0.684) 320(0.369) 321(0.800) 322(0.800) 323(0.800) 324(0.800) 325(0.800) 326(0.800) 327(0.684) 328(0.684) 329(0.684) 330(0.684) 331(0.684) 332(0.684) 333(0.684) 340(0.800) 341(0.800) 342(0.800) 343(0.800) 344(0.800) 345(0.800) 346(0.800) 347(0.684) 348(0.684) 349(0.684) 350(0.684) 351(0.684) 352(0.684) 353(0.684) 361(0.800) 362(0.800) 363(0.800) 364(0.800) 365(0.800) 366(0.800) 367(0.684) 368(0.684) 369(0.684) 370(0.684) 371(0.684) 372(0.684) 373(0.684) 381(0.800) 382(0.800) 383(0.800) 384(0.800) 385(0.800) 386(0.800) 387(0.684) 388(0.684) 389(0.684) 390(0.684) 391(0.684) 392(0.684) 393(0.684) 
 
-[EVENT] 175.500 | event=SuspiciousConfidenceSnapshot | 180(0.000) 181(0.000) 186(0.000) 187(0.000) 188(0.000) 200(0.000) 201(0.000) 202(0.800) 203(0.800) 204(0.900) 205(0.900) 206(0.900) 207(0.000) 208(0.000) 209(0.000) 210(0.000) 220(0.000) 221(0.000) 222(0.800) 223(0.602) 224(0.842) 225(0.684) 226(0.900) 227(0.900) 228(0.000) 229(0.000) 230(0.000) 240(0.000) 241(0.800) 242(0.602) 243(0.684) 244(0.749) 245(0.749) 246(0.800) 247(0.900) 248(0.000) 249(0.000) 250(0.000) 260(0.000) 261(0.800) 262(0.749) 263(0.749) 264(0.800) 265(0.842) 266(0.874) 267(0.874) 268(0.900) 269(0.000) 270(0.000) 280(0.000) 281(0.000) 282(0.684) 283(0.800) 284(0.842) 285(0.900) 286(0.900) 287(0.900) 288(0.900) 289(0.000) 290(0.000) 300(0.000) 301(0.000) 302(0.684) 303(0.800) 304(0.900) 305(0.900) 306(0.900) 307(0.874) 308(0.900) 309(0.749) 310(0.000) 311(0.000) 312(0.000) 320(0.000) 321(0.000) 322(0.000) 323(0.499) 324(0.800) 325(0.900) 326(0.900) 327(0.842) 328(0.842) 329(0.684) 330(0.000) 331(0.000) 332(0.000) 333(0.000) 340(0.000) 341(0.000) 342(0.000) 343(0.000) 344(0.800) 345(0.900) 346(0.900) 347(0.842) 348(0.800) 349(0.684) 350(0.000) 351(0.000) 352(0.000) 353(0.000) 361(0.000) 362(0.000) 363(0.000) 364(0.749) 365(0.842) 366(0.874) 367(0.749) 368(0.684) 369(0.602) 370(0.000) 371(0.000) 372(0.000) 373(0.000) 381(0.000) 382(0.000) 383(0.000) 384(0.000) 385(0.684) 386(0.749) 387(0.602) 388(0.499) 389(0.000) 390(0.000) 391(0.000) 392(0.000) 393(0.000) 
+[EVENT] 175.500 | event=SuspiciousConfidenceSnapshot | 180(0.369) 181(0.369) 186(0.800) 187(0.800) 188(0.800) 200(0.369) 201(0.369) 202(0.369) 203(0.369) 204(0.800) 205(0.800) 206(0.800) 207(0.800) 208(0.800) 209(0.800) 210(0.800) 220(0.369) 221(0.369) 222(0.369) 223(0.369) 224(0.800) 225(0.800) 226(0.800) 227(0.800) 228(0.800) 229(0.800) 230(0.800) 240(0.369) 241(0.369) 242(0.369) 243(0.369) 244(0.800) 245(0.800) 246(0.800) 247(0.800) 248(0.800) 249(0.800) 250(0.800) 260(0.369) 261(0.369) 262(0.369) 263(0.369) 264(0.800) 265(0.800) 266(0.800) 267(0.800) 268(0.800) 269(0.800) 270(0.800) 280(0.369) 281(0.369) 282(0.369) 283(0.369) 284(0.800) 285(0.800) 286(0.800) 287(0.800) 288(0.800) 289(0.800) 290(0.800) 300(0.369) 301(0.369) 302(0.800) 303(0.800) 304(0.800) 305(0.800) 306(0.800) 307(0.800) 308(0.800) 309(0.684) 310(0.684) 311(0.684) 312(0.684) 320(0.369) 321(0.800) 322(0.800) 323(0.800) 324(0.800) 325(0.800) 326(0.800) 327(0.684) 328(0.684) 329(0.684) 330(0.684) 331(0.684) 332(0.684) 333(0.684) 340(0.800) 341(0.800) 342(0.800) 343(0.800) 344(0.800) 345(0.800) 346(0.800) 347(0.684) 348(0.684) 349(0.684) 350(0.684) 351(0.684) 352(0.684) 353(0.684) 361(0.800) 362(0.800) 363(0.800) 364(0.800) 365(0.800) 366(0.800) 367(0.684) 368(0.684) 369(0.684) 370(0.684) 371(0.684) 372(0.684) 373(0.684) 381(0.800) 382(0.800) 383(0.800) 384(0.800) 385(0.800) 386(0.800) 387(0.684) 388(0.684) 389(0.684) 390(0.684) 391(0.684) 392(0.684) 393(0.684) 
 
 [EVENT] 178.486 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(80.000,200.000,20.000)
 
@@ -1602,17 +2547,17 @@ Step 11: Plan UAV Flight Paths
 
 [EVENT] 182.381 | event=UAVWaypointArrival | nodeId=402 | cycle=7 | pos=(80.000,300.000,20.000)
 
-[EVENT] 185.500 | event=SuspiciousConfidenceSnapshot | 180(0.000) 181(0.000) 186(0.000) 187(0.000) 188(0.000) 200(0.000) 201(0.000) 202(0.800) 203(0.800) 204(0.900) 205(0.900) 206(0.900) 207(0.000) 208(0.000) 209(0.000) 210(0.000) 220(0.000) 221(0.000) 222(0.800) 223(0.602) 224(0.842) 225(0.684) 226(0.900) 227(0.900) 228(0.000) 229(0.000) 230(0.000) 240(0.000) 241(0.800) 242(0.602) 243(0.684) 244(0.749) 245(0.749) 246(0.800) 247(0.900) 248(0.000) 249(0.000) 250(0.000) 260(0.000) 261(0.800) 262(0.749) 263(0.749) 264(0.800) 265(0.842) 266(0.874) 267(0.874) 268(0.900) 269(0.000) 270(0.000) 280(0.000) 281(0.000) 282(0.684) 283(0.800) 284(0.842) 285(0.900) 286(0.900) 287(0.900) 288(0.900) 289(0.000) 290(0.000) 300(0.000) 301(0.000) 302(0.684) 303(0.800) 304(0.900) 305(0.900) 306(0.900) 307(0.874) 308(0.900) 309(0.749) 310(0.000) 311(0.000) 312(0.000) 320(0.000) 321(0.000) 322(0.000) 323(0.499) 324(0.800) 325(0.900) 326(0.900) 327(0.842) 328(0.842) 329(0.684) 330(0.000) 331(0.000) 332(0.000) 333(0.000) 340(0.000) 341(0.000) 342(0.000) 343(0.000) 344(0.800) 345(0.900) 346(0.900) 347(0.842) 348(0.800) 349(0.684) 350(0.000) 351(0.000) 352(0.000) 353(0.000) 361(0.000) 362(0.000) 363(0.000) 364(0.749) 365(0.842) 366(0.874) 367(0.749) 368(0.684) 369(0.602) 370(0.000) 371(0.000) 372(0.000) 373(0.000) 381(0.000) 382(0.000) 383(0.000) 384(0.000) 385(0.684) 386(0.749) 387(0.602) 388(0.499) 389(0.000) 390(0.000) 391(0.000) 392(0.000) 393(0.000) 
+[EVENT] 185.500 | event=SuspiciousConfidenceSnapshot | 180(0.369) 181(0.369) 186(0.800) 187(0.800) 188(0.800) 200(0.369) 201(0.369) 202(0.369) 203(0.369) 204(0.800) 205(0.800) 206(0.800) 207(0.800) 208(0.800) 209(0.800) 210(0.800) 220(0.369) 221(0.369) 222(0.369) 223(0.369) 224(0.800) 225(0.800) 226(0.800) 227(0.800) 228(0.800) 229(0.800) 230(0.800) 240(0.369) 241(0.369) 242(0.369) 243(0.369) 244(0.800) 245(0.800) 246(0.800) 247(0.800) 248(0.800) 249(0.800) 250(0.800) 260(0.369) 261(0.369) 262(0.369) 263(0.369) 264(0.800) 265(0.800) 266(0.800) 267(0.800) 268(0.800) 269(0.800) 270(0.800) 280(0.369) 281(0.369) 282(0.369) 283(0.369) 284(0.800) 285(0.800) 286(0.800) 287(0.800) 288(0.800) 289(0.800) 290(0.800) 300(0.369) 301(0.369) 302(0.800) 303(0.800) 304(0.800) 305(0.800) 306(0.800) 307(0.800) 308(0.800) 309(0.684) 310(0.684) 311(0.684) 312(0.684) 320(0.369) 321(0.800) 322(0.800) 323(0.800) 324(0.800) 325(0.800) 326(0.800) 327(0.684) 328(0.684) 329(0.684) 330(0.684) 331(0.684) 332(0.684) 333(0.684) 340(0.800) 341(0.800) 342(0.800) 343(0.800) 344(0.800) 345(0.800) 346(0.800) 347(0.684) 348(0.684) 349(0.684) 350(0.684) 351(0.684) 352(0.684) 353(0.684) 361(0.800) 362(0.800) 363(0.800) 364(0.800) 365(0.800) 366(0.800) 367(0.684) 368(0.684) 369(0.684) 370(0.684) 371(0.684) 372(0.684) 373(0.684) 381(0.800) 382(0.800) 383(0.800) 384(0.800) 385(0.800) 386(0.800) 387(0.684) 388(0.684) 389(0.684) 390(0.684) 391(0.684) 392(0.684) 393(0.684) 
 
 [EVENT] 185.987 | event=UAVWaypointArrival | nodeId=402 | cycle=7 | pos=(140.000,340.000,20.000)
 
-[EVENT] 195.500 | event=SuspiciousConfidenceSnapshot | 180(0.000) 181(0.000) 186(0.000) 187(0.000) 188(0.000) 200(0.000) 201(0.000) 202(0.800) 203(0.800) 204(0.900) 205(0.900) 206(0.900) 207(0.000) 208(0.000) 209(0.000) 210(0.000) 220(0.000) 221(0.000) 222(0.800) 223(0.602) 224(0.842) 225(0.684) 226(0.900) 227(0.900) 228(0.000) 229(0.000) 230(0.000) 240(0.000) 241(0.800) 242(0.602) 243(0.684) 244(0.749) 245(0.749) 246(0.800) 247(0.900) 248(0.000) 249(0.000) 250(0.000) 260(0.000) 261(0.800) 262(0.749) 263(0.749) 264(0.800) 265(0.842) 266(0.874) 267(0.874) 268(0.900) 269(0.000) 270(0.000) 280(0.000) 281(0.000) 282(0.684) 283(0.800) 284(0.842) 285(0.900) 286(0.900) 287(0.900) 288(0.900) 289(0.000) 290(0.000) 300(0.000) 301(0.000) 302(0.684) 303(0.800) 304(0.900) 305(0.900) 306(0.900) 307(0.874) 308(0.900) 309(0.749) 310(0.000) 311(0.000) 312(0.000) 320(0.000) 321(0.000) 322(0.000) 323(0.499) 324(0.800) 325(0.900) 326(0.900) 327(0.842) 328(0.842) 329(0.684) 330(0.000) 331(0.000) 332(0.000) 333(0.000) 340(0.000) 341(0.000) 342(0.000) 343(0.000) 344(0.800) 345(0.900) 346(0.900) 347(0.842) 348(0.800) 349(0.684) 350(0.000) 351(0.000) 352(0.000) 353(0.000) 361(0.000) 362(0.000) 363(0.000) 364(0.749) 365(0.842) 366(0.874) 367(0.749) 368(0.684) 369(0.602) 370(0.000) 371(0.000) 372(0.000) 373(0.000) 381(0.000) 382(0.000) 383(0.000) 384(0.000) 385(0.684) 386(0.749) 387(0.602) 388(0.499) 389(0.000) 390(0.000) 391(0.000) 392(0.000) 393(0.000) 
+[EVENT] 195.500 | event=SuspiciousConfidenceSnapshot | 180(0.369) 181(0.369) 186(0.800) 187(0.800) 188(0.800) 200(0.369) 201(0.369) 202(0.369) 203(0.369) 204(0.800) 205(0.800) 206(0.800) 207(0.800) 208(0.800) 209(0.800) 210(0.800) 220(0.369) 221(0.369) 222(0.369) 223(0.369) 224(0.800) 225(0.800) 226(0.800) 227(0.800) 228(0.800) 229(0.800) 230(0.800) 240(0.369) 241(0.369) 242(0.369) 243(0.369) 244(0.800) 245(0.800) 246(0.800) 247(0.800) 248(0.800) 249(0.800) 250(0.800) 260(0.369) 261(0.369) 262(0.369) 263(0.369) 264(0.800) 265(0.800) 266(0.800) 267(0.800) 268(0.800) 269(0.800) 270(0.800) 280(0.369) 281(0.369) 282(0.369) 283(0.369) 284(0.800) 285(0.800) 286(0.800) 287(0.800) 288(0.800) 289(0.800) 290(0.800) 300(0.369) 301(0.369) 302(0.800) 303(0.800) 304(0.800) 305(0.800) 306(0.800) 307(0.800) 308(0.800) 309(0.684) 310(0.684) 311(0.684) 312(0.684) 320(0.369) 321(0.800) 322(0.800) 323(0.800) 324(0.800) 325(0.800) 326(0.800) 327(0.684) 328(0.684) 329(0.684) 330(0.684) 331(0.684) 332(0.684) 333(0.684) 340(0.800) 341(0.800) 342(0.800) 343(0.800) 344(0.800) 345(0.800) 346(0.800) 347(0.684) 348(0.684) 349(0.684) 350(0.684) 351(0.684) 352(0.684) 353(0.684) 361(0.800) 362(0.800) 363(0.800) 364(0.800) 365(0.800) 366(0.800) 367(0.684) 368(0.684) 369(0.684) 370(0.684) 371(0.684) 372(0.684) 373(0.684) 381(0.800) 382(0.800) 383(0.800) 384(0.800) 385(0.800) 386(0.800) 387(0.684) 388(0.684) 389(0.684) 390(0.684) 391(0.684) 392(0.684) 393(0.684) 
 
 [EVENT] 196.100 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(100.000,200.000,20.000)
 
 [EVENT] 205.222 | event=UAVWaypointArrival | nodeId=402 | cycle=8 | pos=(80.000,240.000,20.000)
 
-[EVENT] 205.500 | event=SuspiciousConfidenceSnapshot | 180(0.000) 181(0.000) 186(0.000) 187(0.000) 188(0.000) 200(0.000) 201(0.000) 202(0.800) 203(0.800) 204(0.900) 205(0.900) 206(0.900) 207(0.000) 208(0.000) 209(0.000) 210(0.000) 220(0.000) 221(0.000) 222(0.800) 223(0.602) 224(0.842) 225(0.684) 226(0.900) 227(0.900) 228(0.000) 229(0.000) 230(0.000) 240(0.000) 241(0.800) 242(0.602) 243(0.684) 244(0.749) 245(0.749) 246(0.800) 247(0.900) 248(0.000) 249(0.000) 250(0.000) 260(0.000) 261(0.800) 262(0.749) 263(0.749) 264(0.800) 265(0.842) 266(0.874) 267(0.874) 268(0.900) 269(0.000) 270(0.000) 280(0.000) 281(0.000) 282(0.684) 283(0.800) 284(0.842) 285(0.900) 286(0.900) 287(0.900) 288(0.900) 289(0.000) 290(0.000) 300(0.000) 301(0.000) 302(0.684) 303(0.800) 304(0.900) 305(0.900) 306(0.900) 307(0.874) 308(0.900) 309(0.749) 310(0.000) 311(0.000) 312(0.000) 320(0.000) 321(0.000) 322(0.000) 323(0.499) 324(0.800) 325(0.900) 326(0.900) 327(0.842) 328(0.842) 329(0.684) 330(0.000) 331(0.000) 332(0.000) 333(0.000) 340(0.000) 341(0.000) 342(0.000) 343(0.000) 344(0.800) 345(0.900) 346(0.900) 347(0.842) 348(0.800) 349(0.684) 350(0.000) 351(0.000) 352(0.000) 353(0.000) 361(0.000) 362(0.000) 363(0.000) 364(0.749) 365(0.842) 366(0.874) 367(0.749) 368(0.684) 369(0.602) 370(0.000) 371(0.000) 372(0.000) 373(0.000) 381(0.000) 382(0.000) 383(0.000) 384(0.000) 385(0.684) 386(0.749) 387(0.602) 388(0.499) 389(0.000) 390(0.000) 391(0.000) 392(0.000) 393(0.000) 
+[EVENT] 205.500 | event=SuspiciousConfidenceSnapshot | 180(0.369) 181(0.369) 186(0.800) 187(0.800) 188(0.800) 200(0.369) 201(0.369) 202(0.369) 203(0.369) 204(0.800) 205(0.800) 206(0.800) 207(0.800) 208(0.800) 209(0.800) 210(0.800) 220(0.369) 221(0.369) 222(0.369) 223(0.369) 224(0.800) 225(0.800) 226(0.800) 227(0.800) 228(0.800) 229(0.800) 230(0.800) 240(0.369) 241(0.369) 242(0.369) 243(0.369) 244(0.800) 245(0.800) 246(0.800) 247(0.800) 248(0.800) 249(0.800) 250(0.800) 260(0.369) 261(0.369) 262(0.369) 263(0.369) 264(0.800) 265(0.800) 266(0.800) 267(0.800) 268(0.800) 269(0.800) 270(0.800) 280(0.369) 281(0.369) 282(0.369) 283(0.369) 284(0.800) 285(0.800) 286(0.800) 287(0.800) 288(0.800) 289(0.800) 290(0.800) 300(0.369) 301(0.369) 302(0.800) 303(0.800) 304(0.800) 305(0.800) 306(0.800) 307(0.800) 308(0.800) 309(0.684) 310(0.684) 311(0.684) 312(0.684) 320(0.369) 321(0.800) 322(0.800) 323(0.800) 324(0.800) 325(0.800) 326(0.800) 327(0.684) 328(0.684) 329(0.684) 330(0.684) 331(0.684) 332(0.684) 333(0.684) 340(0.800) 341(0.800) 342(0.800) 343(0.800) 344(0.800) 345(0.800) 346(0.800) 347(0.684) 348(0.684) 349(0.684) 350(0.684) 351(0.684) 352(0.684) 353(0.684) 361(0.800) 362(0.800) 363(0.800) 364(0.800) 365(0.800) 366(0.800) 367(0.684) 368(0.684) 369(0.684) 370(0.684) 371(0.684) 372(0.684) 373(0.684) 381(0.800) 382(0.800) 383(0.800) 384(0.800) 385(0.800) 386(0.800) 387(0.684) 388(0.684) 389(0.684) 390(0.684) 391(0.684) 392(0.684) 393(0.684) 
 
 [EVENT] 208.222 | event=UAVWaypointArrival | nodeId=402 | cycle=8 | pos=(80.000,300.000,20.000)
 
@@ -1620,9 +2565,9 @@ Step 11: Plan UAV Flight Paths
 
 [EVENT] 213.713 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(120.000,200.000,20.000)
 
-[EVENT] 215.500 | event=SuspiciousConfidenceSnapshot | 180(0.000) 181(0.000) 186(0.000) 187(0.000) 188(0.000) 200(0.000) 201(0.000) 202(0.800) 203(0.800) 204(0.900) 205(0.900) 206(0.900) 207(0.000) 208(0.000) 209(0.000) 210(0.000) 220(0.000) 221(0.000) 222(0.800) 223(0.602) 224(0.842) 225(0.684) 226(0.900) 227(0.900) 228(0.000) 229(0.000) 230(0.000) 240(0.000) 241(0.800) 242(0.602) 243(0.684) 244(0.749) 245(0.749) 246(0.800) 247(0.900) 248(0.000) 249(0.000) 250(0.000) 260(0.000) 261(0.800) 262(0.749) 263(0.749) 264(0.800) 265(0.842) 266(0.874) 267(0.874) 268(0.900) 269(0.000) 270(0.000) 280(0.000) 281(0.000) 282(0.684) 283(0.800) 284(0.842) 285(0.900) 286(0.900) 287(0.900) 288(0.900) 289(0.000) 290(0.000) 300(0.000) 301(0.000) 302(0.684) 303(0.800) 304(0.900) 305(0.900) 306(0.900) 307(0.874) 308(0.900) 309(0.749) 310(0.000) 311(0.000) 312(0.000) 320(0.000) 321(0.000) 322(0.000) 323(0.499) 324(0.800) 325(0.900) 326(0.900) 327(0.842) 328(0.842) 329(0.684) 330(0.000) 331(0.000) 332(0.000) 333(0.000) 340(0.000) 341(0.000) 342(0.000) 343(0.000) 344(0.800) 345(0.900) 346(0.900) 347(0.842) 348(0.800) 349(0.684) 350(0.000) 351(0.000) 352(0.000) 353(0.000) 361(0.000) 362(0.000) 363(0.000) 364(0.749) 365(0.842) 366(0.874) 367(0.749) 368(0.684) 369(0.602) 370(0.000) 371(0.000) 372(0.000) 373(0.000) 381(0.000) 382(0.000) 383(0.000) 384(0.000) 385(0.684) 386(0.749) 387(0.602) 388(0.499) 389(0.000) 390(0.000) 391(0.000) 392(0.000) 393(0.000) 
+[EVENT] 215.500 | event=SuspiciousConfidenceSnapshot | 180(0.369) 181(0.369) 186(0.800) 187(0.800) 188(0.800) 200(0.369) 201(0.369) 202(0.369) 203(0.369) 204(0.800) 205(0.800) 206(0.800) 207(0.800) 208(0.800) 209(0.800) 210(0.800) 220(0.369) 221(0.369) 222(0.369) 223(0.369) 224(0.800) 225(0.800) 226(0.800) 227(0.800) 228(0.800) 229(0.800) 230(0.800) 240(0.369) 241(0.369) 242(0.369) 243(0.369) 244(0.800) 245(0.800) 246(0.800) 247(0.800) 248(0.800) 249(0.800) 250(0.800) 260(0.369) 261(0.369) 262(0.369) 263(0.369) 264(0.800) 265(0.800) 266(0.800) 267(0.800) 268(0.800) 269(0.800) 270(0.800) 280(0.369) 281(0.369) 282(0.369) 283(0.369) 284(0.800) 285(0.800) 286(0.800) 287(0.800) 288(0.800) 289(0.800) 290(0.800) 300(0.369) 301(0.369) 302(0.800) 303(0.800) 304(0.800) 305(0.800) 306(0.800) 307(0.800) 308(0.800) 309(0.684) 310(0.684) 311(0.684) 312(0.684) 320(0.369) 321(0.800) 322(0.800) 323(0.800) 324(0.800) 325(0.800) 326(0.800) 327(0.684) 328(0.684) 329(0.684) 330(0.684) 331(0.684) 332(0.684) 333(0.684) 340(0.800) 341(0.800) 342(0.800) 343(0.800) 344(0.800) 345(0.800) 346(0.800) 347(0.684) 348(0.684) 349(0.684) 350(0.684) 351(0.684) 352(0.684) 353(0.684) 361(0.800) 362(0.800) 363(0.800) 364(0.800) 365(0.800) 366(0.800) 367(0.684) 368(0.684) 369(0.684) 370(0.684) 371(0.684) 372(0.684) 373(0.684) 381(0.800) 382(0.800) 383(0.800) 384(0.800) 385(0.800) 386(0.800) 387(0.684) 388(0.684) 389(0.684) 390(0.684) 391(0.684) 392(0.684) 393(0.684) 
 
-[EVENT] 225.500 | event=SuspiciousConfidenceSnapshot | 180(0.000) 181(0.000) 186(0.000) 187(0.000) 188(0.000) 200(0.000) 201(0.000) 202(0.800) 203(0.800) 204(0.900) 205(0.900) 206(0.900) 207(0.000) 208(0.000) 209(0.000) 210(0.000) 220(0.000) 221(0.000) 222(0.800) 223(0.602) 224(0.842) 225(0.684) 226(0.900) 227(0.900) 228(0.000) 229(0.000) 230(0.000) 240(0.000) 241(0.800) 242(0.602) 243(0.684) 244(0.749) 245(0.749) 246(0.800) 247(0.900) 248(0.000) 249(0.000) 250(0.000) 260(0.000) 261(0.800) 262(0.749) 263(0.749) 264(0.800) 265(0.842) 266(0.874) 267(0.874) 268(0.900) 269(0.000) 270(0.000) 280(0.000) 281(0.000) 282(0.684) 283(0.800) 284(0.842) 285(0.900) 286(0.900) 287(0.900) 288(0.900) 289(0.000) 290(0.000) 300(0.000) 301(0.000) 302(0.684) 303(0.800) 304(0.900) 305(0.900) 306(0.900) 307(0.874) 308(0.900) 309(0.749) 310(0.000) 311(0.000) 312(0.000) 320(0.000) 321(0.000) 322(0.000) 323(0.499) 324(0.800) 325(0.900) 326(0.900) 327(0.842) 328(0.842) 329(0.684) 330(0.000) 331(0.000) 332(0.000) 333(0.000) 340(0.000) 341(0.000) 342(0.000) 343(0.000) 344(0.800) 345(0.900) 346(0.900) 347(0.842) 348(0.800) 349(0.684) 350(0.000) 351(0.000) 352(0.000) 353(0.000) 361(0.000) 362(0.000) 363(0.000) 364(0.749) 365(0.842) 366(0.874) 367(0.749) 368(0.684) 369(0.602) 370(0.000) 371(0.000) 372(0.000) 373(0.000) 381(0.000) 382(0.000) 383(0.000) 384(0.000) 385(0.684) 386(0.749) 387(0.602) 388(0.499) 389(0.000) 390(0.000) 391(0.000) 392(0.000) 393(0.000) 
+[EVENT] 225.500 | event=SuspiciousConfidenceSnapshot | 180(0.369) 181(0.369) 186(0.800) 187(0.800) 188(0.800) 200(0.369) 201(0.369) 202(0.369) 203(0.369) 204(0.800) 205(0.800) 206(0.800) 207(0.800) 208(0.800) 209(0.800) 210(0.800) 220(0.369) 221(0.369) 222(0.369) 223(0.369) 224(0.800) 225(0.800) 226(0.800) 227(0.800) 228(0.800) 229(0.800) 230(0.800) 240(0.369) 241(0.369) 242(0.369) 243(0.369) 244(0.800) 245(0.800) 246(0.800) 247(0.800) 248(0.800) 249(0.800) 250(0.800) 260(0.369) 261(0.369) 262(0.369) 263(0.369) 264(0.800) 265(0.800) 266(0.800) 267(0.800) 268(0.800) 269(0.800) 270(0.800) 280(0.369) 281(0.369) 282(0.369) 283(0.369) 284(0.800) 285(0.800) 286(0.800) 287(0.800) 288(0.800) 289(0.800) 290(0.800) 300(0.369) 301(0.369) 302(0.800) 303(0.800) 304(0.800) 305(0.800) 306(0.800) 307(0.800) 308(0.800) 309(0.684) 310(0.684) 311(0.684) 312(0.684) 320(0.369) 321(0.800) 322(0.800) 323(0.800) 324(0.800) 325(0.800) 326(0.800) 327(0.684) 328(0.684) 329(0.684) 330(0.684) 331(0.684) 332(0.684) 333(0.684) 340(0.800) 341(0.800) 342(0.800) 343(0.800) 344(0.800) 345(0.800) 346(0.800) 347(0.684) 348(0.684) 349(0.684) 350(0.684) 351(0.684) 352(0.684) 353(0.684) 361(0.800) 362(0.800) 363(0.800) 364(0.800) 365(0.800) 366(0.800) 367(0.684) 368(0.684) 369(0.684) 370(0.684) 371(0.684) 372(0.684) 373(0.684) 381(0.800) 382(0.800) 383(0.800) 384(0.800) 385(0.800) 386(0.800) 387(0.684) 388(0.684) 389(0.684) 390(0.684) 391(0.684) 392(0.684) 393(0.684) 
 
 [EVENT] 231.063 | event=UAVWaypointArrival | nodeId=402 | cycle=9 | pos=(80.000,240.000,20.000)
 
@@ -1630,15 +2575,15 @@ Step 11: Plan UAV Flight Paths
 
 [EVENT] 234.063 | event=UAVWaypointArrival | nodeId=402 | cycle=9 | pos=(80.000,300.000,20.000)
 
-[EVENT] 235.500 | event=SuspiciousConfidenceSnapshot | 180(0.000) 181(0.000) 186(0.000) 187(0.000) 188(0.000) 200(0.000) 201(0.000) 202(0.800) 203(0.800) 204(0.900) 205(0.900) 206(0.900) 207(0.000) 208(0.000) 209(0.000) 210(0.000) 220(0.000) 221(0.000) 222(0.800) 223(0.602) 224(0.842) 225(0.684) 226(0.900) 227(0.900) 228(0.000) 229(0.000) 230(0.000) 240(0.000) 241(0.800) 242(0.602) 243(0.684) 244(0.749) 245(0.749) 246(0.800) 247(0.900) 248(0.000) 249(0.000) 250(0.000) 260(0.000) 261(0.800) 262(0.749) 263(0.749) 264(0.800) 265(0.842) 266(0.874) 267(0.874) 268(0.900) 269(0.000) 270(0.000) 280(0.000) 281(0.000) 282(0.684) 283(0.800) 284(0.842) 285(0.900) 286(0.900) 287(0.900) 288(0.900) 289(0.000) 290(0.000) 300(0.000) 301(0.000) 302(0.684) 303(0.800) 304(0.900) 305(0.900) 306(0.900) 307(0.874) 308(0.900) 309(0.749) 310(0.000) 311(0.000) 312(0.000) 320(0.000) 321(0.000) 322(0.000) 323(0.499) 324(0.800) 325(0.900) 326(0.900) 327(0.842) 328(0.842) 329(0.684) 330(0.000) 331(0.000) 332(0.000) 333(0.000) 340(0.000) 341(0.000) 342(0.000) 343(0.000) 344(0.800) 345(0.900) 346(0.900) 347(0.842) 348(0.800) 349(0.684) 350(0.000) 351(0.000) 352(0.000) 353(0.000) 361(0.000) 362(0.000) 363(0.000) 364(0.749) 365(0.842) 366(0.874) 367(0.749) 368(0.684) 369(0.602) 370(0.000) 371(0.000) 372(0.000) 373(0.000) 381(0.000) 382(0.000) 383(0.000) 384(0.000) 385(0.684) 386(0.749) 387(0.602) 388(0.499) 389(0.000) 390(0.000) 391(0.000) 392(0.000) 393(0.000) 
+[EVENT] 235.500 | event=SuspiciousConfidenceSnapshot | 180(0.369) 181(0.369) 186(0.800) 187(0.800) 188(0.800) 200(0.369) 201(0.369) 202(0.369) 203(0.369) 204(0.800) 205(0.800) 206(0.800) 207(0.800) 208(0.800) 209(0.800) 210(0.800) 220(0.369) 221(0.369) 222(0.369) 223(0.369) 224(0.800) 225(0.800) 226(0.800) 227(0.800) 228(0.800) 229(0.800) 230(0.800) 240(0.369) 241(0.369) 242(0.369) 243(0.369) 244(0.800) 245(0.800) 246(0.800) 247(0.800) 248(0.800) 249(0.800) 250(0.800) 260(0.369) 261(0.369) 262(0.369) 263(0.369) 264(0.800) 265(0.800) 266(0.800) 267(0.800) 268(0.800) 269(0.800) 270(0.800) 280(0.369) 281(0.369) 282(0.369) 283(0.369) 284(0.800) 285(0.800) 286(0.800) 287(0.800) 288(0.800) 289(0.800) 290(0.800) 300(0.369) 301(0.369) 302(0.800) 303(0.800) 304(0.800) 305(0.800) 306(0.800) 307(0.800) 308(0.800) 309(0.684) 310(0.684) 311(0.684) 312(0.684) 320(0.369) 321(0.800) 322(0.800) 323(0.800) 324(0.800) 325(0.800) 326(0.800) 327(0.684) 328(0.684) 329(0.684) 330(0.684) 331(0.684) 332(0.684) 333(0.684) 340(0.800) 341(0.800) 342(0.800) 343(0.800) 344(0.800) 345(0.800) 346(0.800) 347(0.684) 348(0.684) 349(0.684) 350(0.684) 351(0.684) 352(0.684) 353(0.684) 361(0.800) 362(0.800) 363(0.800) 364(0.800) 365(0.800) 366(0.800) 367(0.684) 368(0.684) 369(0.684) 370(0.684) 371(0.684) 372(0.684) 373(0.684) 381(0.800) 382(0.800) 383(0.800) 384(0.800) 385(0.800) 386(0.800) 387(0.684) 388(0.684) 389(0.684) 390(0.684) 391(0.684) 392(0.684) 393(0.684) 
 
 [EVENT] 237.668 | event=UAVWaypointArrival | nodeId=402 | cycle=9 | pos=(140.000,340.000,20.000)
 
-[EVENT] 245.500 | event=SuspiciousConfidenceSnapshot | 180(0.000) 181(0.000) 186(0.000) 187(0.000) 188(0.000) 200(0.000) 201(0.000) 202(0.800) 203(0.800) 204(0.900) 205(0.900) 206(0.900) 207(0.000) 208(0.000) 209(0.000) 210(0.000) 220(0.000) 221(0.000) 222(0.800) 223(0.602) 224(0.842) 225(0.684) 226(0.900) 227(0.900) 228(0.000) 229(0.000) 230(0.000) 240(0.000) 241(0.800) 242(0.602) 243(0.684) 244(0.749) 245(0.749) 246(0.800) 247(0.900) 248(0.000) 249(0.000) 250(0.000) 260(0.000) 261(0.800) 262(0.749) 263(0.749) 264(0.800) 265(0.842) 266(0.874) 267(0.874) 268(0.900) 269(0.000) 270(0.000) 280(0.000) 281(0.000) 282(0.684) 283(0.800) 284(0.842) 285(0.900) 286(0.900) 287(0.900) 288(0.900) 289(0.000) 290(0.000) 300(0.000) 301(0.000) 302(0.684) 303(0.800) 304(0.900) 305(0.900) 306(0.900) 307(0.874) 308(0.900) 309(0.749) 310(0.000) 311(0.000) 312(0.000) 320(0.000) 321(0.000) 322(0.000) 323(0.499) 324(0.800) 325(0.900) 326(0.900) 327(0.842) 328(0.842) 329(0.684) 330(0.000) 331(0.000) 332(0.000) 333(0.000) 340(0.000) 341(0.000) 342(0.000) 343(0.000) 344(0.800) 345(0.900) 346(0.900) 347(0.842) 348(0.800) 349(0.684) 350(0.000) 351(0.000) 352(0.000) 353(0.000) 361(0.000) 362(0.000) 363(0.000) 364(0.749) 365(0.842) 366(0.874) 367(0.749) 368(0.684) 369(0.602) 370(0.000) 371(0.000) 372(0.000) 373(0.000) 381(0.000) 382(0.000) 383(0.000) 384(0.000) 385(0.684) 386(0.749) 387(0.602) 388(0.499) 389(0.000) 390(0.000) 391(0.000) 392(0.000) 393(0.000) 
+[EVENT] 245.500 | event=SuspiciousConfidenceSnapshot | 180(0.369) 181(0.369) 186(0.800) 187(0.800) 188(0.800) 200(0.369) 201(0.369) 202(0.369) 203(0.369) 204(0.800) 205(0.800) 206(0.800) 207(0.800) 208(0.800) 209(0.800) 210(0.800) 220(0.369) 221(0.369) 222(0.369) 223(0.369) 224(0.800) 225(0.800) 226(0.800) 227(0.800) 228(0.800) 229(0.800) 230(0.800) 240(0.369) 241(0.369) 242(0.369) 243(0.369) 244(0.800) 245(0.800) 246(0.800) 247(0.800) 248(0.800) 249(0.800) 250(0.800) 260(0.369) 261(0.369) 262(0.369) 263(0.369) 264(0.800) 265(0.800) 266(0.800) 267(0.800) 268(0.800) 269(0.800) 270(0.800) 280(0.369) 281(0.369) 282(0.369) 283(0.369) 284(0.800) 285(0.800) 286(0.800) 287(0.800) 288(0.800) 289(0.800) 290(0.800) 300(0.369) 301(0.369) 302(0.800) 303(0.800) 304(0.800) 305(0.800) 306(0.800) 307(0.800) 308(0.800) 309(0.684) 310(0.684) 311(0.684) 312(0.684) 320(0.369) 321(0.800) 322(0.800) 323(0.800) 324(0.800) 325(0.800) 326(0.800) 327(0.684) 328(0.684) 329(0.684) 330(0.684) 331(0.684) 332(0.684) 333(0.684) 340(0.800) 341(0.800) 342(0.800) 343(0.800) 344(0.800) 345(0.800) 346(0.800) 347(0.684) 348(0.684) 349(0.684) 350(0.684) 351(0.684) 352(0.684) 353(0.684) 361(0.800) 362(0.800) 363(0.800) 364(0.800) 365(0.800) 366(0.800) 367(0.684) 368(0.684) 369(0.684) 370(0.684) 371(0.684) 372(0.684) 373(0.684) 381(0.800) 382(0.800) 383(0.800) 384(0.800) 385(0.800) 386(0.800) 387(0.684) 388(0.684) 389(0.684) 390(0.684) 391(0.684) 392(0.684) 393(0.684) 
 
 [EVENT] 248.940 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(140.000,180.000,20.000)
 
-[EVENT] 255.500 | event=SuspiciousConfidenceSnapshot | 180(0.000) 181(0.000) 186(0.000) 187(0.000) 188(0.000) 200(0.000) 201(0.000) 202(0.800) 203(0.800) 204(0.900) 205(0.900) 206(0.900) 207(0.000) 208(0.000) 209(0.000) 210(0.000) 220(0.000) 221(0.000) 222(0.800) 223(0.602) 224(0.842) 225(0.684) 226(0.900) 227(0.900) 228(0.000) 229(0.000) 230(0.000) 240(0.000) 241(0.800) 242(0.602) 243(0.684) 244(0.749) 245(0.749) 246(0.800) 247(0.900) 248(0.000) 249(0.000) 250(0.000) 260(0.000) 261(0.800) 262(0.749) 263(0.749) 264(0.800) 265(0.842) 266(0.874) 267(0.874) 268(0.900) 269(0.000) 270(0.000) 280(0.000) 281(0.000) 282(0.684) 283(0.800) 284(0.842) 285(0.900) 286(0.900) 287(0.900) 288(0.900) 289(0.000) 290(0.000) 300(0.000) 301(0.000) 302(0.684) 303(0.800) 304(0.900) 305(0.900) 306(0.900) 307(0.874) 308(0.900) 309(0.749) 310(0.000) 311(0.000) 312(0.000) 320(0.000) 321(0.000) 322(0.000) 323(0.499) 324(0.800) 325(0.900) 326(0.900) 327(0.842) 328(0.842) 329(0.684) 330(0.000) 331(0.000) 332(0.000) 333(0.000) 340(0.000) 341(0.000) 342(0.000) 343(0.000) 344(0.800) 345(0.900) 346(0.900) 347(0.842) 348(0.800) 349(0.684) 350(0.000) 351(0.000) 352(0.000) 353(0.000) 361(0.000) 362(0.000) 363(0.000) 364(0.749) 365(0.842) 366(0.874) 367(0.749) 368(0.684) 369(0.602) 370(0.000) 371(0.000) 372(0.000) 373(0.000) 381(0.000) 382(0.000) 383(0.000) 384(0.000) 385(0.684) 386(0.749) 387(0.602) 388(0.499) 389(0.000) 390(0.000) 391(0.000) 392(0.000) 393(0.000) 
+[EVENT] 255.500 | event=SuspiciousConfidenceSnapshot | 180(0.369) 181(0.369) 186(0.800) 187(0.800) 188(0.800) 200(0.369) 201(0.369) 202(0.369) 203(0.369) 204(0.800) 205(0.800) 206(0.800) 207(0.800) 208(0.800) 209(0.800) 210(0.800) 220(0.369) 221(0.369) 222(0.369) 223(0.369) 224(0.800) 225(0.800) 226(0.800) 227(0.800) 228(0.800) 229(0.800) 230(0.800) 240(0.369) 241(0.369) 242(0.369) 243(0.369) 244(0.800) 245(0.800) 246(0.800) 247(0.800) 248(0.800) 249(0.800) 250(0.800) 260(0.369) 261(0.369) 262(0.369) 263(0.369) 264(0.800) 265(0.800) 266(0.800) 267(0.800) 268(0.800) 269(0.800) 270(0.800) 280(0.369) 281(0.369) 282(0.369) 283(0.369) 284(0.800) 285(0.800) 286(0.800) 287(0.800) 288(0.800) 289(0.800) 290(0.800) 300(0.369) 301(0.369) 302(0.800) 303(0.800) 304(0.800) 305(0.800) 306(0.800) 307(0.800) 308(0.800) 309(0.684) 310(0.684) 311(0.684) 312(0.684) 320(0.369) 321(0.800) 322(0.800) 323(0.800) 324(0.800) 325(0.800) 326(0.800) 327(0.684) 328(0.684) 329(0.684) 330(0.684) 331(0.684) 332(0.684) 333(0.684) 340(0.800) 341(0.800) 342(0.800) 343(0.800) 344(0.800) 345(0.800) 346(0.800) 347(0.684) 348(0.684) 349(0.684) 350(0.684) 351(0.684) 352(0.684) 353(0.684) 361(0.800) 362(0.800) 363(0.800) 364(0.800) 365(0.800) 366(0.800) 367(0.684) 368(0.684) 369(0.684) 370(0.684) 371(0.684) 372(0.684) 373(0.684) 381(0.800) 382(0.800) 383(0.800) 384(0.800) 385(0.800) 386(0.800) 387(0.684) 388(0.684) 389(0.684) 390(0.684) 391(0.684) 392(0.684) 393(0.684) 
 
 [EVENT] 256.904 | event=UAVWaypointArrival | nodeId=402 | cycle=10 | pos=(80.000,240.000,20.000)
 
@@ -1646,27 +2591,27 @@ Step 11: Plan UAV Flight Paths
 
 [EVENT] 263.509 | event=UAVWaypointArrival | nodeId=402 | cycle=10 | pos=(140.000,340.000,20.000)
 
-[EVENT] 265.500 | event=SuspiciousConfidenceSnapshot | 180(0.000) 181(0.000) 186(0.000) 187(0.000) 188(0.000) 200(0.000) 201(0.000) 202(0.800) 203(0.800) 204(0.900) 205(0.900) 206(0.900) 207(0.000) 208(0.000) 209(0.000) 210(0.000) 220(0.000) 221(0.000) 222(0.800) 223(0.602) 224(0.842) 225(0.684) 226(0.900) 227(0.900) 228(0.000) 229(0.000) 230(0.000) 240(0.000) 241(0.800) 242(0.602) 243(0.684) 244(0.749) 245(0.749) 246(0.800) 247(0.900) 248(0.000) 249(0.000) 250(0.000) 260(0.000) 261(0.800) 262(0.749) 263(0.749) 264(0.800) 265(0.842) 266(0.874) 267(0.874) 268(0.900) 269(0.000) 270(0.000) 280(0.000) 281(0.000) 282(0.684) 283(0.800) 284(0.842) 285(0.900) 286(0.900) 287(0.900) 288(0.900) 289(0.000) 290(0.000) 300(0.000) 301(0.000) 302(0.684) 303(0.800) 304(0.900) 305(0.900) 306(0.900) 307(0.874) 308(0.900) 309(0.749) 310(0.000) 311(0.000) 312(0.000) 320(0.000) 321(0.000) 322(0.000) 323(0.499) 324(0.800) 325(0.900) 326(0.900) 327(0.842) 328(0.842) 329(0.684) 330(0.000) 331(0.000) 332(0.000) 333(0.000) 340(0.000) 341(0.000) 342(0.000) 343(0.000) 344(0.800) 345(0.900) 346(0.900) 347(0.842) 348(0.800) 349(0.684) 350(0.000) 351(0.000) 352(0.000) 353(0.000) 361(0.000) 362(0.000) 363(0.000) 364(0.749) 365(0.842) 366(0.874) 367(0.749) 368(0.684) 369(0.602) 370(0.000) 371(0.000) 372(0.000) 373(0.000) 381(0.000) 382(0.000) 383(0.000) 384(0.000) 385(0.684) 386(0.749) 387(0.602) 388(0.499) 389(0.000) 390(0.000) 391(0.000) 392(0.000) 393(0.000) 
+[EVENT] 265.500 | event=SuspiciousConfidenceSnapshot | 180(0.369) 181(0.369) 186(0.800) 187(0.800) 188(0.800) 200(0.369) 201(0.369) 202(0.369) 203(0.369) 204(0.800) 205(0.800) 206(0.800) 207(0.800) 208(0.800) 209(0.800) 210(0.800) 220(0.369) 221(0.369) 222(0.369) 223(0.369) 224(0.800) 225(0.800) 226(0.800) 227(0.800) 228(0.800) 229(0.800) 230(0.800) 240(0.369) 241(0.369) 242(0.369) 243(0.369) 244(0.800) 245(0.800) 246(0.800) 247(0.800) 248(0.800) 249(0.800) 250(0.800) 260(0.369) 261(0.369) 262(0.369) 263(0.369) 264(0.800) 265(0.800) 266(0.800) 267(0.800) 268(0.800) 269(0.800) 270(0.800) 280(0.369) 281(0.369) 282(0.369) 283(0.369) 284(0.800) 285(0.800) 286(0.800) 287(0.800) 288(0.800) 289(0.800) 290(0.800) 300(0.369) 301(0.369) 302(0.800) 303(0.800) 304(0.800) 305(0.800) 306(0.800) 307(0.800) 308(0.800) 309(0.684) 310(0.684) 311(0.684) 312(0.684) 320(0.369) 321(0.800) 322(0.800) 323(0.800) 324(0.800) 325(0.800) 326(0.800) 327(0.684) 328(0.684) 329(0.684) 330(0.684) 331(0.684) 332(0.684) 333(0.684) 340(0.800) 341(0.800) 342(0.800) 343(0.800) 344(0.800) 345(0.800) 346(0.800) 347(0.684) 348(0.684) 349(0.684) 350(0.684) 351(0.684) 352(0.684) 353(0.684) 361(0.800) 362(0.800) 363(0.800) 364(0.800) 365(0.800) 366(0.800) 367(0.684) 368(0.684) 369(0.684) 370(0.684) 371(0.684) 372(0.684) 373(0.684) 381(0.800) 382(0.800) 383(0.800) 384(0.800) 385(0.800) 386(0.800) 387(0.684) 388(0.684) 389(0.684) 390(0.684) 391(0.684) 392(0.684) 393(0.684) 
 
 [EVENT] 266.553 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(160.000,180.000,20.000)
 
-[EVENT] 275.500 | event=SuspiciousConfidenceSnapshot | 180(0.000) 181(0.000) 186(0.000) 187(0.000) 188(0.000) 200(0.000) 201(0.000) 202(0.800) 203(0.800) 204(0.900) 205(0.900) 206(0.900) 207(0.000) 208(0.000) 209(0.000) 210(0.000) 220(0.000) 221(0.000) 222(0.800) 223(0.602) 224(0.842) 225(0.684) 226(0.900) 227(0.900) 228(0.000) 229(0.000) 230(0.000) 240(0.000) 241(0.800) 242(0.602) 243(0.684) 244(0.749) 245(0.749) 246(0.800) 247(0.900) 248(0.000) 249(0.000) 250(0.000) 260(0.000) 261(0.800) 262(0.749) 263(0.749) 264(0.800) 265(0.842) 266(0.874) 267(0.874) 268(0.900) 269(0.000) 270(0.000) 280(0.000) 281(0.000) 282(0.684) 283(0.800) 284(0.842) 285(0.900) 286(0.900) 287(0.900) 288(0.900) 289(0.000) 290(0.000) 300(0.000) 301(0.000) 302(0.684) 303(0.800) 304(0.900) 305(0.900) 306(0.900) 307(0.874) 308(0.900) 309(0.749) 310(0.000) 311(0.000) 312(0.000) 320(0.000) 321(0.000) 322(0.000) 323(0.499) 324(0.800) 325(0.900) 326(0.900) 327(0.842) 328(0.842) 329(0.684) 330(0.000) 331(0.000) 332(0.000) 333(0.000) 340(0.000) 341(0.000) 342(0.000) 343(0.000) 344(0.800) 345(0.900) 346(0.900) 347(0.842) 348(0.800) 349(0.684) 350(0.000) 351(0.000) 352(0.000) 353(0.000) 361(0.000) 362(0.000) 363(0.000) 364(0.749) 365(0.842) 366(0.874) 367(0.749) 368(0.684) 369(0.602) 370(0.000) 371(0.000) 372(0.000) 373(0.000) 381(0.000) 382(0.000) 383(0.000) 384(0.000) 385(0.684) 386(0.749) 387(0.602) 388(0.499) 389(0.000) 390(0.000) 391(0.000) 392(0.000) 393(0.000) 
+[EVENT] 275.500 | event=SuspiciousConfidenceSnapshot | 180(0.369) 181(0.369) 186(0.800) 187(0.800) 188(0.800) 200(0.369) 201(0.369) 202(0.369) 203(0.369) 204(0.800) 205(0.800) 206(0.800) 207(0.800) 208(0.800) 209(0.800) 210(0.800) 220(0.369) 221(0.369) 222(0.369) 223(0.369) 224(0.800) 225(0.800) 226(0.800) 227(0.800) 228(0.800) 229(0.800) 230(0.800) 240(0.369) 241(0.369) 242(0.369) 243(0.369) 244(0.800) 245(0.800) 246(0.800) 247(0.800) 248(0.800) 249(0.800) 250(0.800) 260(0.369) 261(0.369) 262(0.369) 263(0.369) 264(0.800) 265(0.800) 266(0.800) 267(0.800) 268(0.800) 269(0.800) 270(0.800) 280(0.369) 281(0.369) 282(0.369) 283(0.369) 284(0.800) 285(0.800) 286(0.800) 287(0.800) 288(0.800) 289(0.800) 290(0.800) 300(0.369) 301(0.369) 302(0.800) 303(0.800) 304(0.800) 305(0.800) 306(0.800) 307(0.800) 308(0.800) 309(0.684) 310(0.684) 311(0.684) 312(0.684) 320(0.369) 321(0.800) 322(0.800) 323(0.800) 324(0.800) 325(0.800) 326(0.800) 327(0.684) 328(0.684) 329(0.684) 330(0.684) 331(0.684) 332(0.684) 333(0.684) 340(0.800) 341(0.800) 342(0.800) 343(0.800) 344(0.800) 345(0.800) 346(0.800) 347(0.684) 348(0.684) 349(0.684) 350(0.684) 351(0.684) 352(0.684) 353(0.684) 361(0.800) 362(0.800) 363(0.800) 364(0.800) 365(0.800) 366(0.800) 367(0.684) 368(0.684) 369(0.684) 370(0.684) 371(0.684) 372(0.684) 373(0.684) 381(0.800) 382(0.800) 383(0.800) 384(0.800) 385(0.800) 386(0.800) 387(0.684) 388(0.684) 389(0.684) 390(0.684) 391(0.684) 392(0.684) 393(0.684) 
 
 [EVENT] 282.745 | event=UAVWaypointArrival | nodeId=402 | cycle=11 | pos=(80.000,240.000,20.000)
 
 [EVENT] 284.167 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(160.000,200.000,20.000)
 
-[EVENT] 285.500 | event=SuspiciousConfidenceSnapshot | 180(0.000) 181(0.000) 186(0.000) 187(0.000) 188(0.000) 200(0.000) 201(0.000) 202(0.800) 203(0.800) 204(0.900) 205(0.900) 206(0.900) 207(0.000) 208(0.000) 209(0.000) 210(0.000) 220(0.000) 221(0.000) 222(0.800) 223(0.602) 224(0.842) 225(0.684) 226(0.900) 227(0.900) 228(0.000) 229(0.000) 230(0.000) 240(0.000) 241(0.800) 242(0.602) 243(0.684) 244(0.749) 245(0.749) 246(0.800) 247(0.900) 248(0.000) 249(0.000) 250(0.000) 260(0.000) 261(0.800) 262(0.749) 263(0.749) 264(0.800) 265(0.842) 266(0.874) 267(0.874) 268(0.900) 269(0.000) 270(0.000) 280(0.000) 281(0.000) 282(0.684) 283(0.800) 284(0.842) 285(0.900) 286(0.900) 287(0.900) 288(0.900) 289(0.000) 290(0.000) 300(0.000) 301(0.000) 302(0.684) 303(0.800) 304(0.900) 305(0.900) 306(0.900) 307(0.874) 308(0.900) 309(0.749) 310(0.000) 311(0.000) 312(0.000) 320(0.000) 321(0.000) 322(0.000) 323(0.499) 324(0.800) 325(0.900) 326(0.900) 327(0.842) 328(0.842) 329(0.684) 330(0.000) 331(0.000) 332(0.000) 333(0.000) 340(0.000) 341(0.000) 342(0.000) 343(0.000) 344(0.800) 345(0.900) 346(0.900) 347(0.842) 348(0.800) 349(0.684) 350(0.000) 351(0.000) 352(0.000) 353(0.000) 361(0.000) 362(0.000) 363(0.000) 364(0.749) 365(0.842) 366(0.874) 367(0.749) 368(0.684) 369(0.602) 370(0.000) 371(0.000) 372(0.000) 373(0.000) 381(0.000) 382(0.000) 383(0.000) 384(0.000) 385(0.684) 386(0.749) 387(0.602) 388(0.499) 389(0.000) 390(0.000) 391(0.000) 392(0.000) 393(0.000) 
+[EVENT] 285.500 | event=SuspiciousConfidenceSnapshot | 180(0.369) 181(0.369) 186(0.800) 187(0.800) 188(0.800) 200(0.369) 201(0.369) 202(0.369) 203(0.369) 204(0.800) 205(0.800) 206(0.800) 207(0.800) 208(0.800) 209(0.800) 210(0.800) 220(0.369) 221(0.369) 222(0.369) 223(0.369) 224(0.800) 225(0.800) 226(0.800) 227(0.800) 228(0.800) 229(0.800) 230(0.800) 240(0.369) 241(0.369) 242(0.369) 243(0.369) 244(0.800) 245(0.800) 246(0.800) 247(0.800) 248(0.800) 249(0.800) 250(0.800) 260(0.369) 261(0.369) 262(0.369) 263(0.369) 264(0.800) 265(0.800) 266(0.800) 267(0.800) 268(0.800) 269(0.800) 270(0.800) 280(0.369) 281(0.369) 282(0.369) 283(0.369) 284(0.800) 285(0.800) 286(0.800) 287(0.800) 288(0.800) 289(0.800) 290(0.800) 300(0.369) 301(0.369) 302(0.800) 303(0.800) 304(0.800) 305(0.800) 306(0.800) 307(0.800) 308(0.800) 309(0.684) 310(0.684) 311(0.684) 312(0.684) 320(0.369) 321(0.800) 322(0.800) 323(0.800) 324(0.800) 325(0.800) 326(0.800) 327(0.684) 328(0.684) 329(0.684) 330(0.684) 331(0.684) 332(0.684) 333(0.684) 340(0.800) 341(0.800) 342(0.800) 343(0.800) 344(0.800) 345(0.800) 346(0.800) 347(0.684) 348(0.684) 349(0.684) 350(0.684) 351(0.684) 352(0.684) 353(0.684) 361(0.800) 362(0.800) 363(0.800) 364(0.800) 365(0.800) 366(0.800) 367(0.684) 368(0.684) 369(0.684) 370(0.684) 371(0.684) 372(0.684) 373(0.684) 381(0.800) 382(0.800) 383(0.800) 384(0.800) 385(0.800) 386(0.800) 387(0.684) 388(0.684) 389(0.684) 390(0.684) 391(0.684) 392(0.684) 393(0.684) 
 
 [EVENT] 285.745 | event=UAVWaypointArrival | nodeId=402 | cycle=11 | pos=(80.000,300.000,20.000)
 
 [EVENT] 289.350 | event=UAVWaypointArrival | nodeId=402 | cycle=11 | pos=(140.000,340.000,20.000)
 
-[EVENT] 295.500 | event=SuspiciousConfidenceSnapshot | 180(0.000) 181(0.000) 186(0.000) 187(0.000) 188(0.000) 200(0.000) 201(0.000) 202(0.800) 203(0.800) 204(0.900) 205(0.900) 206(0.900) 207(0.000) 208(0.000) 209(0.000) 210(0.000) 220(0.000) 221(0.000) 222(0.800) 223(0.602) 224(0.842) 225(0.684) 226(0.900) 227(0.900) 228(0.000) 229(0.000) 230(0.000) 240(0.000) 241(0.800) 242(0.602) 243(0.684) 244(0.749) 245(0.749) 246(0.800) 247(0.900) 248(0.000) 249(0.000) 250(0.000) 260(0.000) 261(0.800) 262(0.749) 263(0.749) 264(0.800) 265(0.842) 266(0.874) 267(0.874) 268(0.900) 269(0.000) 270(0.000) 280(0.000) 281(0.000) 282(0.684) 283(0.800) 284(0.842) 285(0.900) 286(0.900) 287(0.900) 288(0.900) 289(0.000) 290(0.000) 300(0.000) 301(0.000) 302(0.684) 303(0.800) 304(0.900) 305(0.900) 306(0.900) 307(0.874) 308(0.900) 309(0.749) 310(0.000) 311(0.000) 312(0.000) 320(0.000) 321(0.000) 322(0.000) 323(0.499) 324(0.800) 325(0.900) 326(0.900) 327(0.842) 328(0.842) 329(0.684) 330(0.000) 331(0.000) 332(0.000) 333(0.000) 340(0.000) 341(0.000) 342(0.000) 343(0.000) 344(0.800) 345(0.900) 346(0.900) 347(0.842) 348(0.800) 349(0.684) 350(0.000) 351(0.000) 352(0.000) 353(0.000) 361(0.000) 362(0.000) 363(0.000) 364(0.749) 365(0.842) 366(0.874) 367(0.749) 368(0.684) 369(0.602) 370(0.000) 371(0.000) 372(0.000) 373(0.000) 381(0.000) 382(0.000) 383(0.000) 384(0.000) 385(0.684) 386(0.749) 387(0.602) 388(0.499) 389(0.000) 390(0.000) 391(0.000) 392(0.000) 393(0.000) 
+[EVENT] 295.500 | event=SuspiciousConfidenceSnapshot | 180(0.369) 181(0.369) 186(0.800) 187(0.800) 188(0.800) 200(0.369) 201(0.369) 202(0.369) 203(0.369) 204(0.800) 205(0.800) 206(0.800) 207(0.800) 208(0.800) 209(0.800) 210(0.800) 220(0.369) 221(0.369) 222(0.369) 223(0.369) 224(0.800) 225(0.800) 226(0.800) 227(0.800) 228(0.800) 229(0.800) 230(0.800) 240(0.369) 241(0.369) 242(0.369) 243(0.369) 244(0.800) 245(0.800) 246(0.800) 247(0.800) 248(0.800) 249(0.800) 250(0.800) 260(0.369) 261(0.369) 262(0.369) 263(0.369) 264(0.800) 265(0.800) 266(0.800) 267(0.800) 268(0.800) 269(0.800) 270(0.800) 280(0.369) 281(0.369) 282(0.369) 283(0.369) 284(0.800) 285(0.800) 286(0.800) 287(0.800) 288(0.800) 289(0.800) 290(0.800) 300(0.369) 301(0.369) 302(0.800) 303(0.800) 304(0.800) 305(0.800) 306(0.800) 307(0.800) 308(0.800) 309(0.684) 310(0.684) 311(0.684) 312(0.684) 320(0.369) 321(0.800) 322(0.800) 323(0.800) 324(0.800) 325(0.800) 326(0.800) 327(0.684) 328(0.684) 329(0.684) 330(0.684) 331(0.684) 332(0.684) 333(0.684) 340(0.800) 341(0.800) 342(0.800) 343(0.800) 344(0.800) 345(0.800) 346(0.800) 347(0.684) 348(0.684) 349(0.684) 350(0.684) 351(0.684) 352(0.684) 353(0.684) 361(0.800) 362(0.800) 363(0.800) 364(0.800) 365(0.800) 366(0.800) 367(0.684) 368(0.684) 369(0.684) 370(0.684) 371(0.684) 372(0.684) 373(0.684) 381(0.800) 382(0.800) 383(0.800) 384(0.800) 385(0.800) 386(0.800) 387(0.684) 388(0.684) 389(0.684) 390(0.684) 391(0.684) 392(0.684) 393(0.684) 
 
 [EVENT] 301.780 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(140.000,200.000,20.000)
 
-[EVENT] 305.500 | event=SuspiciousConfidenceSnapshot | 180(0.000) 181(0.000) 186(0.000) 187(0.000) 188(0.000) 200(0.000) 201(0.000) 202(0.800) 203(0.800) 204(0.900) 205(0.900) 206(0.900) 207(0.000) 208(0.000) 209(0.000) 210(0.000) 220(0.000) 221(0.000) 222(0.800) 223(0.602) 224(0.842) 225(0.684) 226(0.900) 227(0.900) 228(0.000) 229(0.000) 230(0.000) 240(0.000) 241(0.800) 242(0.602) 243(0.684) 244(0.749) 245(0.749) 246(0.800) 247(0.900) 248(0.000) 249(0.000) 250(0.000) 260(0.000) 261(0.800) 262(0.749) 263(0.749) 264(0.800) 265(0.842) 266(0.874) 267(0.874) 268(0.900) 269(0.000) 270(0.000) 280(0.000) 281(0.000) 282(0.684) 283(0.800) 284(0.842) 285(0.900) 286(0.900) 287(0.900) 288(0.900) 289(0.000) 290(0.000) 300(0.000) 301(0.000) 302(0.684) 303(0.800) 304(0.900) 305(0.900) 306(0.900) 307(0.874) 308(0.900) 309(0.749) 310(0.000) 311(0.000) 312(0.000) 320(0.000) 321(0.000) 322(0.000) 323(0.499) 324(0.800) 325(0.900) 326(0.900) 327(0.842) 328(0.842) 329(0.684) 330(0.000) 331(0.000) 332(0.000) 333(0.000) 340(0.000) 341(0.000) 342(0.000) 343(0.000) 344(0.800) 345(0.900) 346(0.900) 347(0.842) 348(0.800) 349(0.684) 350(0.000) 351(0.000) 352(0.000) 353(0.000) 361(0.000) 362(0.000) 363(0.000) 364(0.749) 365(0.842) 366(0.874) 367(0.749) 368(0.684) 369(0.602) 370(0.000) 371(0.000) 372(0.000) 373(0.000) 381(0.000) 382(0.000) 383(0.000) 384(0.000) 385(0.684) 386(0.749) 387(0.602) 388(0.499) 389(0.000) 390(0.000) 391(0.000) 392(0.000) 393(0.000) 
+[EVENT] 305.500 | event=SuspiciousConfidenceSnapshot | 180(0.369) 181(0.369) 186(0.800) 187(0.800) 188(0.800) 200(0.369) 201(0.369) 202(0.369) 203(0.369) 204(0.800) 205(0.800) 206(0.800) 207(0.800) 208(0.800) 209(0.800) 210(0.800) 220(0.369) 221(0.369) 222(0.369) 223(0.369) 224(0.800) 225(0.800) 226(0.800) 227(0.800) 228(0.800) 229(0.800) 230(0.800) 240(0.369) 241(0.369) 242(0.369) 243(0.369) 244(0.800) 245(0.800) 246(0.800) 247(0.800) 248(0.800) 249(0.800) 250(0.800) 260(0.369) 261(0.369) 262(0.369) 263(0.369) 264(0.800) 265(0.800) 266(0.800) 267(0.800) 268(0.800) 269(0.800) 270(0.800) 280(0.369) 281(0.369) 282(0.369) 283(0.369) 284(0.800) 285(0.800) 286(0.800) 287(0.800) 288(0.800) 289(0.800) 290(0.800) 300(0.369) 301(0.369) 302(0.800) 303(0.800) 304(0.800) 305(0.800) 306(0.800) 307(0.800) 308(0.800) 309(0.684) 310(0.684) 311(0.684) 312(0.684) 320(0.369) 321(0.800) 322(0.800) 323(0.800) 324(0.800) 325(0.800) 326(0.800) 327(0.684) 328(0.684) 329(0.684) 330(0.684) 331(0.684) 332(0.684) 333(0.684) 340(0.800) 341(0.800) 342(0.800) 343(0.800) 344(0.800) 345(0.800) 346(0.800) 347(0.684) 348(0.684) 349(0.684) 350(0.684) 351(0.684) 352(0.684) 353(0.684) 361(0.800) 362(0.800) 363(0.800) 364(0.800) 365(0.800) 366(0.800) 367(0.684) 368(0.684) 369(0.684) 370(0.684) 371(0.684) 372(0.684) 373(0.684) 381(0.800) 382(0.800) 383(0.800) 384(0.800) 385(0.800) 386(0.800) 387(0.684) 388(0.684) 389(0.684) 390(0.684) 391(0.684) 392(0.684) 393(0.684) 
 
 [EVENT] 308.586 | event=UAVWaypointArrival | nodeId=402 | cycle=12 | pos=(80.000,240.000,20.000)
 
@@ -1674,15 +2619,15 @@ Step 11: Plan UAV Flight Paths
 
 [EVENT] 315.191 | event=UAVWaypointArrival | nodeId=402 | cycle=12 | pos=(140.000,340.000,20.000)
 
-[EVENT] 315.500 | event=SuspiciousConfidenceSnapshot | 180(0.000) 181(0.000) 186(0.000) 187(0.000) 188(0.000) 200(0.000) 201(0.000) 202(0.800) 203(0.800) 204(0.900) 205(0.900) 206(0.900) 207(0.000) 208(0.000) 209(0.000) 210(0.000) 220(0.000) 221(0.000) 222(0.800) 223(0.602) 224(0.842) 225(0.684) 226(0.900) 227(0.900) 228(0.000) 229(0.000) 230(0.000) 240(0.000) 241(0.800) 242(0.602) 243(0.684) 244(0.749) 245(0.749) 246(0.800) 247(0.900) 248(0.000) 249(0.000) 250(0.000) 260(0.000) 261(0.800) 262(0.749) 263(0.749) 264(0.800) 265(0.842) 266(0.874) 267(0.874) 268(0.900) 269(0.000) 270(0.000) 280(0.000) 281(0.000) 282(0.684) 283(0.800) 284(0.842) 285(0.900) 286(0.900) 287(0.900) 288(0.900) 289(0.000) 290(0.000) 300(0.000) 301(0.000) 302(0.684) 303(0.800) 304(0.900) 305(0.900) 306(0.900) 307(0.874) 308(0.900) 309(0.749) 310(0.000) 311(0.000) 312(0.000) 320(0.000) 321(0.000) 322(0.000) 323(0.499) 324(0.800) 325(0.900) 326(0.900) 327(0.842) 328(0.842) 329(0.684) 330(0.000) 331(0.000) 332(0.000) 333(0.000) 340(0.000) 341(0.000) 342(0.000) 343(0.000) 344(0.800) 345(0.900) 346(0.900) 347(0.842) 348(0.800) 349(0.684) 350(0.000) 351(0.000) 352(0.000) 353(0.000) 361(0.000) 362(0.000) 363(0.000) 364(0.749) 365(0.842) 366(0.874) 367(0.749) 368(0.684) 369(0.602) 370(0.000) 371(0.000) 372(0.000) 373(0.000) 381(0.000) 382(0.000) 383(0.000) 384(0.000) 385(0.684) 386(0.749) 387(0.602) 388(0.499) 389(0.000) 390(0.000) 391(0.000) 392(0.000) 393(0.000) 
+[EVENT] 315.500 | event=SuspiciousConfidenceSnapshot | 180(0.369) 181(0.369) 186(0.800) 187(0.800) 188(0.800) 200(0.369) 201(0.369) 202(0.369) 203(0.369) 204(0.800) 205(0.800) 206(0.800) 207(0.800) 208(0.800) 209(0.800) 210(0.800) 220(0.369) 221(0.369) 222(0.369) 223(0.369) 224(0.800) 225(0.800) 226(0.800) 227(0.800) 228(0.800) 229(0.800) 230(0.800) 240(0.369) 241(0.369) 242(0.369) 243(0.369) 244(0.800) 245(0.800) 246(0.800) 247(0.800) 248(0.800) 249(0.800) 250(0.800) 260(0.369) 261(0.369) 262(0.369) 263(0.369) 264(0.800) 265(0.800) 266(0.800) 267(0.800) 268(0.800) 269(0.800) 270(0.800) 280(0.369) 281(0.369) 282(0.369) 283(0.369) 284(0.800) 285(0.800) 286(0.800) 287(0.800) 288(0.800) 289(0.800) 290(0.800) 300(0.369) 301(0.369) 302(0.800) 303(0.800) 304(0.800) 305(0.800) 306(0.800) 307(0.800) 308(0.800) 309(0.684) 310(0.684) 311(0.684) 312(0.684) 320(0.369) 321(0.800) 322(0.800) 323(0.800) 324(0.800) 325(0.800) 326(0.800) 327(0.684) 328(0.684) 329(0.684) 330(0.684) 331(0.684) 332(0.684) 333(0.684) 340(0.800) 341(0.800) 342(0.800) 343(0.800) 344(0.800) 345(0.800) 346(0.800) 347(0.684) 348(0.684) 349(0.684) 350(0.684) 351(0.684) 352(0.684) 353(0.684) 361(0.800) 362(0.800) 363(0.800) 364(0.800) 365(0.800) 366(0.800) 367(0.684) 368(0.684) 369(0.684) 370(0.684) 371(0.684) 372(0.684) 373(0.684) 381(0.800) 382(0.800) 383(0.800) 384(0.800) 385(0.800) 386(0.800) 387(0.684) 388(0.684) 389(0.684) 390(0.684) 391(0.684) 392(0.684) 393(0.684) 
 
 [EVENT] 319.393 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(140.000,220.000,20.000)
 
-[EVENT] 325.500 | event=SuspiciousConfidenceSnapshot | 180(0.000) 181(0.000) 186(0.000) 187(0.000) 188(0.000) 200(0.000) 201(0.000) 202(0.800) 203(0.800) 204(0.900) 205(0.900) 206(0.900) 207(0.000) 208(0.000) 209(0.000) 210(0.000) 220(0.000) 221(0.000) 222(0.800) 223(0.602) 224(0.842) 225(0.684) 226(0.900) 227(0.900) 228(0.000) 229(0.000) 230(0.000) 240(0.000) 241(0.800) 242(0.602) 243(0.684) 244(0.749) 245(0.749) 246(0.800) 247(0.900) 248(0.000) 249(0.000) 250(0.000) 260(0.000) 261(0.800) 262(0.749) 263(0.749) 264(0.800) 265(0.842) 266(0.874) 267(0.874) 268(0.900) 269(0.000) 270(0.000) 280(0.000) 281(0.000) 282(0.684) 283(0.800) 284(0.842) 285(0.900) 286(0.900) 287(0.900) 288(0.900) 289(0.000) 290(0.000) 300(0.000) 301(0.000) 302(0.684) 303(0.800) 304(0.900) 305(0.900) 306(0.900) 307(0.874) 308(0.900) 309(0.749) 310(0.000) 311(0.000) 312(0.000) 320(0.000) 321(0.000) 322(0.000) 323(0.499) 324(0.800) 325(0.900) 326(0.900) 327(0.842) 328(0.842) 329(0.684) 330(0.000) 331(0.000) 332(0.000) 333(0.000) 340(0.000) 341(0.000) 342(0.000) 343(0.000) 344(0.800) 345(0.900) 346(0.900) 347(0.842) 348(0.800) 349(0.684) 350(0.000) 351(0.000) 352(0.000) 353(0.000) 361(0.000) 362(0.000) 363(0.000) 364(0.749) 365(0.842) 366(0.874) 367(0.749) 368(0.684) 369(0.602) 370(0.000) 371(0.000) 372(0.000) 373(0.000) 381(0.000) 382(0.000) 383(0.000) 384(0.000) 385(0.684) 386(0.749) 387(0.602) 388(0.499) 389(0.000) 390(0.000) 391(0.000) 392(0.000) 393(0.000) 
+[EVENT] 325.500 | event=SuspiciousConfidenceSnapshot | 180(0.369) 181(0.369) 186(0.800) 187(0.800) 188(0.800) 200(0.369) 201(0.369) 202(0.369) 203(0.369) 204(0.800) 205(0.800) 206(0.800) 207(0.800) 208(0.800) 209(0.800) 210(0.800) 220(0.369) 221(0.369) 222(0.369) 223(0.369) 224(0.800) 225(0.800) 226(0.800) 227(0.800) 228(0.800) 229(0.800) 230(0.800) 240(0.369) 241(0.369) 242(0.369) 243(0.369) 244(0.800) 245(0.800) 246(0.800) 247(0.800) 248(0.800) 249(0.800) 250(0.800) 260(0.369) 261(0.369) 262(0.369) 263(0.369) 264(0.800) 265(0.800) 266(0.800) 267(0.800) 268(0.800) 269(0.800) 270(0.800) 280(0.369) 281(0.369) 282(0.369) 283(0.369) 284(0.800) 285(0.800) 286(0.800) 287(0.800) 288(0.800) 289(0.800) 290(0.800) 300(0.369) 301(0.369) 302(0.800) 303(0.800) 304(0.800) 305(0.800) 306(0.800) 307(0.800) 308(0.800) 309(0.684) 310(0.684) 311(0.684) 312(0.684) 320(0.369) 321(0.800) 322(0.800) 323(0.800) 324(0.800) 325(0.800) 326(0.800) 327(0.684) 328(0.684) 329(0.684) 330(0.684) 331(0.684) 332(0.684) 333(0.684) 340(0.800) 341(0.800) 342(0.800) 343(0.800) 344(0.800) 345(0.800) 346(0.800) 347(0.684) 348(0.684) 349(0.684) 350(0.684) 351(0.684) 352(0.684) 353(0.684) 361(0.800) 362(0.800) 363(0.800) 364(0.800) 365(0.800) 366(0.800) 367(0.684) 368(0.684) 369(0.684) 370(0.684) 371(0.684) 372(0.684) 373(0.684) 381(0.800) 382(0.800) 383(0.800) 384(0.800) 385(0.800) 386(0.800) 387(0.684) 388(0.684) 389(0.684) 390(0.684) 391(0.684) 392(0.684) 393(0.684) 
 
 [EVENT] 334.427 | event=UAVWaypointArrival | nodeId=402 | cycle=13 | pos=(80.000,240.000,20.000)
 
-[EVENT] 335.500 | event=SuspiciousConfidenceSnapshot | 180(0.000) 181(0.000) 186(0.000) 187(0.000) 188(0.000) 200(0.000) 201(0.000) 202(0.800) 203(0.800) 204(0.900) 205(0.900) 206(0.900) 207(0.000) 208(0.000) 209(0.000) 210(0.000) 220(0.000) 221(0.000) 222(0.800) 223(0.602) 224(0.842) 225(0.684) 226(0.900) 227(0.900) 228(0.000) 229(0.000) 230(0.000) 240(0.000) 241(0.800) 242(0.602) 243(0.684) 244(0.749) 245(0.749) 246(0.800) 247(0.900) 248(0.000) 249(0.000) 250(0.000) 260(0.000) 261(0.800) 262(0.749) 263(0.749) 264(0.800) 265(0.842) 266(0.874) 267(0.874) 268(0.900) 269(0.000) 270(0.000) 280(0.000) 281(0.000) 282(0.684) 283(0.800) 284(0.842) 285(0.900) 286(0.900) 287(0.900) 288(0.900) 289(0.000) 290(0.000) 300(0.000) 301(0.000) 302(0.684) 303(0.800) 304(0.900) 305(0.900) 306(0.900) 307(0.874) 308(0.900) 309(0.749) 310(0.000) 311(0.000) 312(0.000) 320(0.000) 321(0.000) 322(0.000) 323(0.499) 324(0.800) 325(0.900) 326(0.900) 327(0.842) 328(0.842) 329(0.684) 330(0.000) 331(0.000) 332(0.000) 333(0.000) 340(0.000) 341(0.000) 342(0.000) 343(0.000) 344(0.800) 345(0.900) 346(0.900) 347(0.842) 348(0.800) 349(0.684) 350(0.000) 351(0.000) 352(0.000) 353(0.000) 361(0.000) 362(0.000) 363(0.000) 364(0.749) 365(0.842) 366(0.874) 367(0.749) 368(0.684) 369(0.602) 370(0.000) 371(0.000) 372(0.000) 373(0.000) 381(0.000) 382(0.000) 383(0.000) 384(0.000) 385(0.684) 386(0.749) 387(0.602) 388(0.499) 389(0.000) 390(0.000) 391(0.000) 392(0.000) 393(0.000) 
+[EVENT] 335.500 | event=SuspiciousConfidenceSnapshot | 180(0.369) 181(0.369) 186(0.800) 187(0.800) 188(0.800) 200(0.369) 201(0.369) 202(0.369) 203(0.369) 204(0.800) 205(0.800) 206(0.800) 207(0.800) 208(0.800) 209(0.800) 210(0.800) 220(0.369) 221(0.369) 222(0.369) 223(0.369) 224(0.800) 225(0.800) 226(0.800) 227(0.800) 228(0.800) 229(0.800) 230(0.800) 240(0.369) 241(0.369) 242(0.369) 243(0.369) 244(0.800) 245(0.800) 246(0.800) 247(0.800) 248(0.800) 249(0.800) 250(0.800) 260(0.369) 261(0.369) 262(0.369) 263(0.369) 264(0.800) 265(0.800) 266(0.800) 267(0.800) 268(0.800) 269(0.800) 270(0.800) 280(0.369) 281(0.369) 282(0.369) 283(0.369) 284(0.800) 285(0.800) 286(0.800) 287(0.800) 288(0.800) 289(0.800) 290(0.800) 300(0.369) 301(0.369) 302(0.800) 303(0.800) 304(0.800) 305(0.800) 306(0.800) 307(0.800) 308(0.800) 309(0.684) 310(0.684) 311(0.684) 312(0.684) 320(0.369) 321(0.800) 322(0.800) 323(0.800) 324(0.800) 325(0.800) 326(0.800) 327(0.684) 328(0.684) 329(0.684) 330(0.684) 331(0.684) 332(0.684) 333(0.684) 340(0.800) 341(0.800) 342(0.800) 343(0.800) 344(0.800) 345(0.800) 346(0.800) 347(0.684) 348(0.684) 349(0.684) 350(0.684) 351(0.684) 352(0.684) 353(0.684) 361(0.800) 362(0.800) 363(0.800) 364(0.800) 365(0.800) 366(0.800) 367(0.684) 368(0.684) 369(0.684) 370(0.684) 371(0.684) 372(0.684) 373(0.684) 381(0.800) 382(0.800) 383(0.800) 384(0.800) 385(0.800) 386(0.800) 387(0.684) 388(0.684) 389(0.684) 390(0.684) 391(0.684) 392(0.684) 393(0.684) 
 
 [EVENT] 337.007 | event=UAVWaypointArrival | nodeId=401 | cycle=1 | pos=(120.000,220.000,20.000)
 
@@ -1728,4 +2673,4 @@ generatedFragments=10
 
 [MISSION]
 uav1CompletedTime=337.007
-uav2CompletedTime=49.785
+uav2CompletedTime=35.263
