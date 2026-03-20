@@ -1,0 +1,156 @@
+SCENARIO4 AUTORUN REPORT
+
+[CONFIGS]
+rounds=10
+startSeed=60
+startRunId=1
+simTime=default
+gridSize=default
+gridSpacing=default
+numFragments=default
+numUavs=default
+timeoutSec=300
+buildFirst=false
+extraArgs=-
+
+[PARAMS]
+cellRadius=80.000
+neighborDiscoveryRadius=80.000
+broadcastRadius=50.000
+uav1Speed=20.000
+uav1HoverTime=2.000
+uav2Speed=20.000
+uav2HoverTime=0.000
+masterFileConfidence=0.900
+
+[ROUNDS]
+round=1 seed=60 runId=1 status=ok
+  durationSec=1.741
+  suspiciousNodes=129
+  uav1CompletedTime=1812.374
+  uav2CompletedTime=33.506
+  suspicious_recv={'confidence': 0.684, 'fromUAV': 0, 'fromPeers': 5}
+  suspicious_uav_depart={'confidence': 0.8, 'fromUAV': 1, 'fromPeers': 6}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 1, 'fromPeers': 6}
+round=2 seed=61 runId=2 status=ok
+  durationSec=1.607
+  suspiciousNodes=122
+  uav1CompletedTime=1076.903
+  uav2CompletedTime=41.817
+  suspicious_recv={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_uav_depart={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 0, 'fromPeers': 7}
+round=3 seed=62 runId=3 status=ok
+  durationSec=1.634
+  suspiciousNodes=127
+  uav1CompletedTime=2046.504
+  uav2CompletedTime=35.265
+  suspicious_recv={'confidence': 0.499, 'fromUAV': 0, 'fromPeers': 3}
+  suspicious_uav_depart={'confidence': 0.602, 'fromUAV': 1, 'fromPeers': 3}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 1, 'fromPeers': 6}
+round=4 seed=63 runId=4 status=ok
+  durationSec=1.577
+  suspiciousNodes=140
+  uav1CompletedTime=1911.169
+  uav2CompletedTime=44.868
+  suspicious_recv={'confidence': 0.499, 'fromUAV': 2, 'fromPeers': 1}
+  suspicious_uav_depart={'confidence': 0.602, 'fromUAV': 3, 'fromPeers': 1}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 3, 'fromPeers': 4}
+round=5 seed=64 runId=5 status=ok
+  durationSec=1.636
+  suspiciousNodes=146
+  uav1CompletedTime=407.594
+  uav2CompletedTime=54.238
+  suspicious_recv={'confidence': 0.749, 'fromUAV': 4, 'fromPeers': 2}
+  suspicious_uav_depart={'confidence': 0.8, 'fromUAV': 5, 'fromPeers': 2}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 5, 'fromPeers': 2}
+round=6 seed=65 runId=6 status=ok
+  durationSec=1.652
+  suspiciousNodes=122
+  uav1CompletedTime=974.458
+  uav2CompletedTime=96.632
+  suspicious_recv={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_uav_depart={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_mission_complete={'confidence': 0.842, 'fromUAV': 0, 'fromPeers': 8}
+round=7 seed=66 runId=7 status=ok
+  durationSec=2.132
+  suspiciousNodes=122
+  uav1CompletedTime=1676.993
+  uav2CompletedTime=56.759
+  suspicious_recv={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_uav_depart={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 0, 'fromPeers': 7}
+round=8 seed=67 runId=8 status=ok
+  durationSec=1.646
+  suspiciousNodes=120
+  uav1CompletedTime=1449.276
+  uav2CompletedTime=50.653
+  suspicious_recv={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_uav_depart={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 0, 'fromPeers': 7}
+round=9 seed=68 runId=9 status=ok
+  durationSec=1.611
+  suspiciousNodes=150
+  uav1CompletedTime=703.066
+  uav2CompletedTime=38.972
+  suspicious_recv={'confidence': 0.499, 'fromUAV': 0, 'fromPeers': 3}
+  suspicious_uav_depart={'confidence': 0.602, 'fromUAV': 1, 'fromPeers': 3}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 1, 'fromPeers': 6}
+round=10 seed=69 runId=10 status=ok
+  durationSec=1.679
+  suspiciousNodes=136
+  uav1CompletedTime=2060.710
+  uav2CompletedTime=85.490
+  suspicious_recv={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_uav_depart={'confidence': 0.0, 'fromUAV': 0, 'fromPeers': 0}
+  suspicious_mission_complete={'confidence': 0.8, 'fromUAV': 0, 'fromPeers': 7}
+[CONCLUSION]
+totalRounds=10
+okRounds=10
+failedRounds=0
+uav1CompletionCount=10
+uav2CompletionCount=10
+bothCompletionCount=10
+uav1CompletionRate=1.000
+uav2CompletionRate=1.000
+bothCompletionRate=1.000
+uav2EarlierCount=10
+uav1EarlierCount=0
+uav2EarlierRate=1.000
+uav1MeanCompletionTime=1411.905
+uav2MeanCompletionTime=53.820
+uav1MinCompletionTime=407.594
+uav2MinCompletionTime=33.506
+uav1MaxCompletionTime=2060.710
+uav2MaxCompletionTime=96.632
+avgEarlierGapSec=1358.085
+
+[SUSPICIOUS_EVENTS_AGGREGATE]
+# format: <event>_<metric>_<stat>=value
+recv_conf_mean=0.293
+recv_conf_min=0.000
+recv_conf_max=0.749
+recv_fromu_mean=0.600
+recv_fromu_min=0.000
+recv_fromu_max=4.000
+recv_fromp_mean=1.400
+recv_fromp_min=0.000
+recv_fromp_max=5.000
+uav_depart_conf_mean=0.341
+uav_depart_conf_min=0.000
+uav_depart_conf_max=0.800
+uav_depart_fromu_mean=1.100
+uav_depart_fromu_min=0.000
+uav_depart_fromu_max=5.000
+uav_depart_fromp_mean=1.500
+uav_depart_fromp_min=0.000
+uav_depart_fromp_max=6.000
+mission_complete_conf_mean=0.804
+mission_complete_conf_min=0.800
+mission_complete_conf_max=0.842
+mission_complete_fromu_mean=1.100
+mission_complete_fromu_min=0.000
+mission_complete_fromu_max=5.000
+mission_complete_fromp_mean=6.000
+mission_complete_fromp_min=2.000
+mission_complete_fromp_max=8.000

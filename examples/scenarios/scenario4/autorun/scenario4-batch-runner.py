@@ -30,6 +30,9 @@ class RoundResult:
     uav1_completed_time: Optional[float]
     uav2_completed_time: Optional[float]
     suspicious_nodes: Optional[int]
+    suspicious_recv: Optional[dict] = None
+    suspicious_uav_depart: Optional[dict] = None
+    suspicious_mission_complete: Optional[dict] = None
 
 
 def _parse_time(value: str) -> Optional[float]:
@@ -120,6 +123,69 @@ def parse_result_file(result_path: Path) -> dict:
     return parsed
 
 
+def _extract_suspicious_metrics(result_path: Path) -> dict:
+    """
+    Scan the result file for suspicious-point tags and extract the last seen
+    values for each tag. Returns a dict with keys:
+      - recv
+      - uav_depart
+      - mission_complete
+
+    Each value is either a dict {confidence: float, fromUAV: int, fromPeers: int}
+    or None if the tag was not present.
+    """
+    import re
+
+    tags = {
+        "recv": r"\[SUSPICIOUS-POINT-RECV\]",
+        "uav_depart": r"\[SUSPICIOUS-POINT-UAV-DEPART\]",
+        "mission_complete": r"\[SUSPICIOUS-POINT-MISSION-COMPLETE\]",
+    }
+
+    # regexes to capture values
+    re_conf = re.compile(r"confidence=([0-9\.]+)")
+    re_fromu = re.compile(r"fromUAV=(\d+)")
+    re_fromp = re.compile(r"fromPeers=(\d+)")
+
+    results = {"recv": None, "uav_depart": None, "mission_complete": None}
+
+    for raw in result_path.read_text(encoding="utf-8").splitlines():
+        line = raw.strip()
+        for key, tag_re in tags.items():
+            if re.search(tag_re, line):
+                # extract fields
+                conf_m = re_conf.search(line)
+                uav_m = re_fromu.search(line)
+                peer_m = re_fromp.search(line)
+                try:
+                    conf = float(conf_m.group(1)) if conf_m else None
+                except Exception:
+                    conf = None
+                try:
+                    fromu = int(uav_m.group(1)) if uav_m else None
+                except Exception:
+                    fromu = None
+                try:
+                    fromp = int(peer_m.group(1)) if peer_m else None
+                except Exception:
+                    fromp = None
+
+                results[key] = {
+                    "confidence": conf,
+                    "fromUAV": fromu,
+                    "fromPeers": fromp,
+                }
+    # Replace any missing entries with zeros for easier aggregation downstream
+    def _zeroed():
+        return {"confidence": 0.0, "fromUAV": 0, "fromPeers": 0}
+
+    return {
+        "recv": results["recv"] if results["recv"] is not None else _zeroed(),
+        "uav_depart": results["uav_depart"] if results["uav_depart"] is not None else _zeroed(),
+        "mission_complete": results["mission_complete"] if results["mission_complete"] is not None else _zeroed(),
+    }
+
+
 def _format_value(value: Optional[float]) -> str:
     if value is None:
         return "not-completed"
@@ -191,6 +257,9 @@ def _append_round_to_report(report_path: Path, row: RoundResult) -> None:
         f"  suspiciousNodes={row.suspicious_nodes if row.suspicious_nodes is not None else 'None'}",
         f"  uav1CompletedTime={_format_value(row.uav1_completed_time)}",
         f"  uav2CompletedTime={_format_value(row.uav2_completed_time)}",
+        f"  suspicious_recv={row.suspicious_recv if row.suspicious_recv is not None else 'None'}",
+        f"  suspicious_uav_depart={row.suspicious_uav_depart if row.suspicious_uav_depart is not None else 'None'}",
+        f"  suspicious_mission_complete={row.suspicious_mission_complete if row.suspicious_mission_complete is not None else 'None'}",
         "",
     ]
     with report_path.open("a", encoding="utf-8") as f:
@@ -244,6 +313,38 @@ def _append_conclusion_to_report(report_path: Path, agg: dict) -> None:
         f"uav2MaxCompletionTime={_fmt(agg['uav2_time_max'])}",
         f"avgEarlierGapSec={_fmt(agg['uav2_advantage_mean'])}",
         "",
+        "[SUSPICIOUS_EVENTS_AGGREGATE]",
+        "# format: <event>_<metric>_<stat>=value",
+        f"recv_conf_mean={_fmt(agg.get('recv_conf_mean'))}",
+        f"recv_conf_min={_fmt(agg.get('recv_conf_min'))}",
+        f"recv_conf_max={_fmt(agg.get('recv_conf_max'))}",
+        f"recv_fromu_mean={_fmt(agg.get('recv_fromu_mean'))}",
+        f"recv_fromu_min={_fmt(agg.get('recv_fromu_min'))}",
+        f"recv_fromu_max={_fmt(agg.get('recv_fromu_max'))}",
+        f"recv_fromp_mean={_fmt(agg.get('recv_fromp_mean'))}",
+        f"recv_fromp_min={_fmt(agg.get('recv_fromp_min'))}",
+        f"recv_fromp_max={_fmt(agg.get('recv_fromp_max'))}",
+
+        f"uav_depart_conf_mean={_fmt(agg.get('uav_depart_conf_mean'))}",
+        f"uav_depart_conf_min={_fmt(agg.get('uav_depart_conf_min'))}",
+        f"uav_depart_conf_max={_fmt(agg.get('uav_depart_conf_max'))}",
+        f"uav_depart_fromu_mean={_fmt(agg.get('uav_depart_fromu_mean'))}",
+        f"uav_depart_fromu_min={_fmt(agg.get('uav_depart_fromu_min'))}",
+        f"uav_depart_fromu_max={_fmt(agg.get('uav_depart_fromu_max'))}",
+        f"uav_depart_fromp_mean={_fmt(agg.get('uav_depart_fromp_mean'))}",
+        f"uav_depart_fromp_min={_fmt(agg.get('uav_depart_fromp_min'))}",
+        f"uav_depart_fromp_max={_fmt(agg.get('uav_depart_fromp_max'))}",
+
+        f"mission_complete_conf_mean={_fmt(agg.get('mission_complete_conf_mean'))}",
+        f"mission_complete_conf_min={_fmt(agg.get('mission_complete_conf_min'))}",
+        f"mission_complete_conf_max={_fmt(agg.get('mission_complete_conf_max'))}",
+        f"mission_complete_fromu_mean={_fmt(agg.get('mission_complete_fromu_mean'))}",
+        f"mission_complete_fromu_min={_fmt(agg.get('mission_complete_fromu_min'))}",
+        f"mission_complete_fromu_max={_fmt(agg.get('mission_complete_fromu_max'))}",
+        f"mission_complete_fromp_mean={_fmt(agg.get('mission_complete_fromp_mean'))}",
+        f"mission_complete_fromp_min={_fmt(agg.get('mission_complete_fromp_min'))}",
+        f"mission_complete_fromp_max={_fmt(agg.get('mission_complete_fromp_max'))}",
+        "",
     ]
     with report_path.open("a", encoding="utf-8") as f:
         f.write("\n".join(lines))
@@ -288,6 +389,20 @@ def run_batch(args: argparse.Namespace) -> tuple[list[RoundResult], dict]:
 
     report_path = batch_root / "scenario4_batch_summary.txt"
     _write_initial_txt_report(report_path, args)
+
+    # Attempt to read COOP_GMC value from scenario4-params.h for filename metadata
+    coop_gmc = None
+    try:
+        params_path = repo_root / "src/wsn/examples/scenarios/scenario4/scenario4-params.h"
+        text = params_path.read_text(encoding="utf-8")
+        import re
+        m = re.search(r"constexpr\s+bool\s+COOP_GMC\s*=\s*(true|false)\s*;", text)
+        if m:
+            coop_gmc = m.group(1)
+    except Exception:
+        coop_gmc = None
+
+    number_of_nodes: Optional[int] = None
 
     if args.build_first:
         print("[build] Running ./ns3 build ...")
@@ -342,10 +457,26 @@ def run_batch(args: argparse.Namespace) -> tuple[list[RoundResult], dict]:
         uav2_time: Optional[float] = None
         suspicious_nodes: Optional[int] = None
 
+        # Prepare default zeroed suspicious metrics in case parsing fails or file missing
+        susp_metrics = {
+            "recv": {"confidence": 0.0, "fromUAV": 0, "fromPeers": 0},
+            "uav_depart": {"confidence": 0.0, "fromUAV": 0, "fromPeers": 0},
+            "mission_complete": {"confidence": 0.0, "fromUAV": 0, "fromPeers": 0},
+        }
+
         if result_file.exists():
             parsed = parse_result_file(result_file)
             mission = parsed.get("mission", {})
             network = parsed.get("network", {})
+
+            # Capture groundNodes from first successful parsed summary
+            if number_of_nodes is None:
+                try:
+                    gn = network.get("groundNodes")
+                    if gn is not None:
+                        number_of_nodes = int(gn)
+                except Exception:
+                    number_of_nodes = None
 
             uav1_time = _parse_time(mission.get("uav1CompletedTime", "not-completed"))
             uav2_time = _parse_time(mission.get("uav2CompletedTime", "not-completed"))
@@ -357,6 +488,9 @@ def run_batch(args: argparse.Namespace) -> tuple[list[RoundResult], dict]:
 
             if status == "ok" and parsed.get("scenario") != "scenario4":
                 status = "invalid-summary"
+
+            # Extract suspicious event metrics from the result file before cleanup
+            susp_metrics = _extract_suspicious_metrics(result_file)
 
             result_file.unlink(missing_ok=True)
         else:
@@ -375,6 +509,9 @@ def run_batch(args: argparse.Namespace) -> tuple[list[RoundResult], dict]:
             uav1_completed_time=uav1_time,
             uav2_completed_time=uav2_time,
             suspicious_nodes=suspicious_nodes,
+            suspicious_recv=susp_metrics.get("recv"),
+            suspicious_uav_depart=susp_metrics.get("uav_depart"),
+            suspicious_mission_complete=susp_metrics.get("mission_complete"),
         )
         all_rows.append(row)
         _append_round_to_report(report_path, row)
@@ -436,7 +573,54 @@ def run_batch(args: argparse.Namespace) -> tuple[list[RoundResult], dict]:
         "uav1_earlier_count": uav1_earlier_count,
         "uav2_advantage_mean": _safe_stat(uav2_advantage_values, "mean"),
     }
+    # -----------------------------------------------------------------------
+    # Suspicious-event aggregates (confidence, fromUAV, fromPeers)
+    # Each RoundResult holds zeroed dicts for missing events, so safe to aggregate
+    def _collect(event_key: str, field: str) -> list[float]:
+        vals = []
+        for r in all_rows:
+            entry = getattr(r, event_key)
+            if entry is None:
+                continue
+            v = entry.get(field)
+            if v is None:
+                continue
+            vals.append(float(v))
+        return vals
+
+    # keys: recv, uav_depart, mission_complete
+    for ev in ("suspicious_recv", "suspicious_uav_depart", "suspicious_mission_complete"):
+        # map to short name
+        short = ev.replace("suspicious_", "")
+        conf_vals = _collect(ev, "confidence")
+        fromu_vals = _collect(ev, "fromUAV")
+        fromp_vals = _collect(ev, "fromPeers")
+
+        agg[f"{short}_conf_mean"] = _safe_stat(conf_vals, "mean")
+        agg[f"{short}_conf_min"] = _safe_stat(conf_vals, "min")
+        agg[f"{short}_conf_max"] = _safe_stat(conf_vals, "max")
+
+        agg[f"{short}_fromu_mean"] = _safe_stat(fromu_vals, "mean")
+        agg[f"{short}_fromu_min"] = _safe_stat(fromu_vals, "min")
+        agg[f"{short}_fromu_max"] = _safe_stat(fromu_vals, "max")
+
+        agg[f"{short}_fromp_mean"] = _safe_stat(fromp_vals, "mean")
+        agg[f"{short}_fromp_min"] = _safe_stat(fromp_vals, "min")
+        agg[f"{short}_fromp_max"] = _safe_stat(fromp_vals, "max")
     _append_conclusion_to_report(report_path, agg)
+
+    # Rename final report to include number_of_nodes, COOP_GMC and timestamp
+    try:
+        ts = time.strftime("%Y%m%d-%H%M%S")
+        nodes_str = str(number_of_nodes) if number_of_nodes is not None else "unknown"
+        coop_str = coop_gmc if coop_gmc is not None else "unknown"
+        final_name = f"{nodes_str}_{coop_str}_{ts}.txt"
+        final_path = batch_root / final_name
+        report_path.rename(final_path)
+        report_path = final_path
+    except Exception:
+        # ignore rename errors; leave original report name
+        pass
 
     # Remove empty logs dir if no logs remain
     if logs_dir.exists():

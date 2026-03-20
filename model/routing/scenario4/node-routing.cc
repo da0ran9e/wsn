@@ -171,6 +171,41 @@ MarkUav2MissionCompleted(uint32_t triggerNodeId, double triggerConfidence)
             << std::endl;
     }
 
+    // Also emit a snapshot of the suspicious seed node state at mission completion
+    // so downstream analysis can see fragment origin counts and fragment IDs.
+    const uint32_t suspiciousSeed = GetSuspiciousSeedNodeId();
+    if (suspiciousSeed != std::numeric_limits<uint32_t>::max())
+    {
+        auto it = g_groundNetworkPerNode.find(suspiciousSeed);
+        if (it != g_groundNetworkPerNode.end())
+        {
+            const auto &state = it->second;
+            NS_LOG_INFO("[SUSPICIOUS-POINT-MISSION-COMPLETE] Node " << suspiciousSeed
+                        << " | confidence=" << state.confidence
+                        << " | totalFrags=" << state.fragments.fragments.size()
+                        << " | fromUAV=" << state.fragmentsReceivedFromUav
+                        << " | fromPeers=" << state.fragmentsReceivedFromPeers
+                        << " | t=" << g_uav2MissionCompletedTime << "s");
+
+            if (ns3::wsn::scenario4::params::g_resultFileStream)
+            {
+                *ns3::wsn::scenario4::params::g_resultFileStream
+                    << "[SUSPICIOUS-POINT-MISSION-COMPLETE] " << g_uav2MissionCompletedTime
+                    << " | nodeId=" << suspiciousSeed
+                    << " | confidence=" << std::fixed << std::setprecision(3) << state.confidence
+                    << " | totalFrags=" << state.fragments.fragments.size()
+                    << " | fromUAV=" << state.fragmentsReceivedFromUav
+                    << " | fromPeers=" << state.fragmentsReceivedFromPeers
+                    << " | fragments=";
+                for (const auto &p : state.fragments.fragments)
+                {
+                    *ns3::wsn::scenario4::params::g_resultFileStream << p.first << " ";
+                }
+                *ns3::wsn::scenario4::params::g_resultFileStream << std::endl;
+            }
+        }
+    }
+
     if (g_uav1MissionCompleted && g_uav2MissionCompleted)
     {
         constexpr double kEarlyStopDelay = 1.0;

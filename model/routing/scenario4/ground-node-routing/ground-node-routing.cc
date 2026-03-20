@@ -7,6 +7,7 @@
 #include "../helper/calc-utils.h"
 #include "../node-routing.h"
 #include "cell-cooperation.h"
+#include "../base-station-node/base-station-node.h"
 #include "../../../radio/cc2420/cc2420-net-device.h"
 #include "../../../radio/cc2420/cc2420-mac.h"
 #include "ns3/log.h"
@@ -197,6 +198,34 @@ OnGroundNodeReceivePacket(uint32_t nodeId, Ptr<const Packet> packet, double rssi
     state.remainingEnergy = std::max(0.0, state.remainingEnergy - rxEnergyCost);
     
     // Try to extract packet header
+    // If this node is the suspicious seed point, log its current confidence
+    // and fragment counts (from UAV vs from peers) for debugging/analysis.
+    if (nodeId == ::ns3::wsn::scenario4::routing::g_suspiciousSeedNodeId)
+    {
+        NS_LOG_INFO("[SUSPICIOUS-POINT] Node " << nodeId
+                    << " received packet | confidence=" << state.confidence
+                    << " | totalFrags=" << state.fragments.fragments.size()
+                    << " | fromUAV=" << state.fragmentsReceivedFromUav
+                    << " | fromPeers=" << state.fragmentsReceivedFromPeers
+                    << " | t=" << Simulator::Now().GetSeconds() << "s");
+
+        if (ns3::wsn::scenario4::params::g_resultFileStream)
+        {
+            *ns3::wsn::scenario4::params::g_resultFileStream
+                << "[SUSPICIOUS-POINT-RECV] " << Simulator::Now().GetSeconds()
+                << " | nodeId=" << nodeId
+                << " | confidence=" << state.confidence
+                << " | totalFrags=" << state.fragments.fragments.size()
+                << " | fromUAV=" << state.fragmentsReceivedFromUav
+                << " | fromPeers=" << state.fragmentsReceivedFromPeers
+                << " | fragments=";
+            for (const auto &p : state.fragments.fragments)
+            {
+                *ns3::wsn::scenario4::params::g_resultFileStream << p.first << " ";
+            }
+            *ns3::wsn::scenario4::params::g_resultFileStream << "\n";
+        }
+    }
     Ptr<Packet> copy = packet->Copy();
     PacketHeader header;
     copy->RemoveHeader(header);
@@ -345,6 +374,39 @@ OnGroundNodeReceivePacket(uint32_t nodeId, Ptr<const Packet> packet, double rssi
                         const bool hasAllFragments =
                             (state.expectedFragmentCount > 0) &&
                             (state.fragments.fragments.size() >= state.expectedFragmentCount);
+
+                        // Emit a snapshot immediately after the UAV departure (i.e., when
+                        // this cooperation-timeout callback fires). This mirrors the
+                        // per-packet suspicious logging but is timed to the UAV finish
+                        // so we can observe the node's state right after UAV leaves.
+                        if (nodeId == ::ns3::wsn::scenario4::routing::g_suspiciousSeedNodeId)
+                        {
+                            NS_LOG_INFO("[SUSPICIOUS-POINT-UAV-DEPART] Node " << nodeId
+                                        << " | confidence=" << state.confidence
+                                        << " | totalFrags=" << state.fragments.fragments.size()
+                                        << " | fromUAV=" << state.fragmentsReceivedFromUav
+                                        << " | fromPeers=" << state.fragmentsReceivedFromPeers
+                                        << " | t=" << Simulator::Now().GetSeconds() << "s");
+
+                            if (ns3::wsn::scenario4::params::g_resultFileStream)
+                            {
+                                *ns3::wsn::scenario4::params::g_resultFileStream
+                                    << "[SUSPICIOUS-POINT-UAV-DEPART] "
+                                    << Simulator::Now().GetSeconds()
+                                    << " | nodeId=" << nodeId
+                                    << " | confidence=" << state.confidence
+                                    << " | totalFrags=" << state.fragments.fragments.size()
+                                    << " | fromUAV=" << state.fragmentsReceivedFromUav
+                                    << " | fromPeers=" << state.fragmentsReceivedFromPeers
+                                    << " | fragments=";
+                                for (const auto &p : state.fragments.fragments)
+                                {
+                                    *ns3::wsn::scenario4::params::g_resultFileStream << p.first << " ";
+                                }
+                                *ns3::wsn::scenario4::params::g_resultFileStream << "\n";
+                            }
+                        }
+
                         // Cooperate whenever the node is incomplete — regardless of confidence.
                         // The old belowReliableReconstruction gate (confidence < COOPERATION_THRESHOLD=0.3)
                         // was incorrectly suppressing cooperation for nodes with 2+ fragments
