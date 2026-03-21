@@ -57,22 +57,36 @@ email address or ORCID}
 \maketitle
 
 \begin{abstract}
-This document is a model and instructions for \LaTeX.
-This and the IEEEtran.cls file define the components of your paper [title, text, heads, etc.]. *CRITICAL: Do Not Use Symbols, Special Characters, Footnotes, 
-or Math in Paper Title or Abstract.
+% Bối cảnh, động lực
+% - Mạng camera biên đô thị và các nút IoT ngày càng phổ biến; yêu cầu phát hiện mục tiêu nhanh trong kịch bản khẩn cấp.
+% - Quá trình truyền payload nhận diện chất lượng cao gặp giới hạn cửa sổ tiếp xúc ngắn giữa UAV và nút.
+% 
+% Bài toán và thách thức
+% - Làm thế nào để nhanh chóng đưa dữ liệu hữu ích đến khu vực mục tiêu dưới ràng buộc PHY mức gói.
+% - Thách thức: cửa sổ tiếp xúc ngắn, lỗi gói theo PER, 
+% 
+% Phương pháp đề xuất
+% - Dữ liệu nhận diện được chia thành các fragment logic nhỏ hơn, mỗi fragment đều có giá trị nhận dạng nhất định.
+% - UAV hoạt động như data-ferry, broadcast các fragment ra toàn khu vực
+% - Nodes hợp tác thu thập và khôi phục dữ liệu 
+% -> Phương pháp tổ chức mạng này đưa ra cơ chế phối hợp làm nhiệm vụ thay vì được giải quyết tập trung bởi UAV như những bài toán truyền thống.
+% 
+% Kết quả nổi bật
+% - Phân tích mô phỏng cho thấy cơ chế phối hợp đóng vai trò quan trọng trong việc giảm thời gian hoàn thành nhiệm vụ, đặc biệt khi ràng buộc PHY nghiêm ngặt.
+
 \end{abstract}
 
 \begin{IEEEkeywords}
-UAV-assisted dissemination, edge IoT, fragment-based recognition, cooperative detection, mission completion time
+UAV-assisted dissemination, edge IoT, fragment-based recognition, cooperative detection
 \end{IEEEkeywords}
 
 \section{Introduction}
 
 % Bối cảnh và bài toán
-% Đô thị thông minh ngày càng triển khai mạng camera IoT dày đặc phục vụ giám sát an ninh,
+% - Đô thị thông minh ngày càng triển khai mạng camera IoT dày đặc phục vụ giám sát an ninh,
 % trong đó việc phát hiện nhanh đối tượng khả nghi là yêu cầu cấp thiết. (hoặc có thể giới thiệu bài toán cứu hộ)
-% UAV nổi lên như một phương tiện cơ động có khả năng bao phủ khu vực rộng trong thời gian ngắn.
-% Tuy nhiên, payload nhận diện (ảnh/video chất lượng cao) có kích thước lớn,
+% - UAV nổi lên như một phương tiện cơ động có khả năng bao phủ khu vực rộng trong thời gian ngắn.
+% - Tuy nhiên, payload nhận diện (ảnh/video chất lượng cao) có kích thước lớn,
 % trong khi cửa sổ tiếp xúc giữa UAV và mỗi node chỉ kéo dài vài giây khi UAV bay qua.
 % Nếu UAV dừng tại từng node để truyền đủ payload → mission time tăng mạnh, không đáp ứng yêu cầu realtime.
 % Nếu UAV bay liên tục mà không dừng → mỗi node chỉ có thể nhận một phần payload trong cửa sổ ngắn đó.
@@ -80,35 +94,33 @@ UAV-assisted dissemination, edge IoT, fragment-based recognition, cooperative de
 
 % Tại sao các hướng hiện tại chưa đủ tốt
 % Các công trình UAV path planning (coverage, AoI, buffer-aware, service-time)
-%   → tối ưu quỹ đạo tốt, nhưng giả định payload nguyên khối và mô hình kênh đơn giản (in-range / binary),
-%     không mô hình hóa việc tích lũy bằng chứng từng phần hay tối ưu time-to-first-detection.
-% Các công trình fragment delivery / progressive coding / data fusion
-%   → cho thấy dữ liệu phân mảnh vẫn có giá trị nhận dạng và có thể hợp nhất xác suất,
-%     nhưng không xét đến UAV mobility, quỹ đạo phát tán, hay ràng buộc cửa sổ tiếp xúc.
-% Cả hai hướng đều bỏ qua ràng buộc PHY mức gói (A2G propagation, contact-window, SNR→BER→PER)
+%   - tối ưu quỹ đạo tốt, nhưng thường mục tiêu ưu tiên rất rõ ràng (biết rõ mức độ ưu tiên của các node)
+%   - thường giả định payload nguyên khối và mô hình kênh đơn giản (in-range / binary),
+%   - được tính toán tập trung tại BS hoặc UAV, thiếu cơ chế phối hợp giữa các node để bù đắp cho ràng buộc PHY và tăng tốc độ phát hiện.
+% Các công trình về hợp tác tại edge detection (threshold-triggered alert, peer collaboration, consensus)
+%   - chưa xét đến overhead trao đổi hoặc giả định dữ liệu nhỏ 
+% Các hướng đều bỏ qua ràng buộc PHY mức gói (A2G propagation, contact-window, SNR→BER→PER)
 %   → dẫn đến đánh giá thuật toán không phản ánh đúng môi trường đô thị thực tế.
 
 % Phương pháp đề xuất
+% Các công trình fragment delivery / progressive coding / data fusion
+%   → cho thấy dữ liệu phân mảnh vẫn có giá trị nhận dạng và có thể hợp nhất xác suất,
 % UAV đóng vai trò "data ferry": bay theo quỹ đạo được tối ưu, broadcast fragment liên tục khi di chuyển.
-% Mỗi node tích lũy confidence từ các fragment nhận được qua mô hình union probability.
-% Intra-cell cooperation được kích hoạt theo ngưỡng trung gian để các node bù fragment còn thiếu
-%   trong khi UAV vẫn đang trong vùng — giúp rút ngắn thời gian đến cảnh báo đầu tiên.
-% Lớp PHY được mô hình hóa mức gói: A2G propagation theo hình học + contact-window validation
-%   + ánh xạ SNR→BER→PER để phản ánh khả năng nhận gói thực tế theo chuyển động UAV.
-% Quỹ đạo UAV được tối ưu bằng heuristic GMC (Greedy Max-Coverage with Cost):
-%   cân bằng độ phủ mới và chi phí di chuyển qua hàm điểm score = gain / (cost^α + ε),
-%   với tập ứng viên gồm vị trí node nghi vấn và centroid k-means tùy chọn.
+%   - Không chỉ tối ưu độ phủ mà còn hỗ trợ hợp tác tại biên 
+%   - Quỹ đạo UAV được tối ưu bằng heuristic GMC (Greedy Max-Coverage with Cost) kết hợp cell-layer cooperation để cân bằng độ phủ mới và chi phí di chuyển.
+% Tổ chức mạng mặt đất theo cell-layer (bài báo trước đó của chúng tôi đã giới thiệu ...)
+%   - phù hợp cho hợp tác phục hồi dữ liệu 
+%   - tránh ô nhiễm radio
+% Intra-cell cooperation để thu thập và khôi phục dữ liệu từ các fragment nhận được, 
+
 
 % Đóng góp chính
-% 1. Fragment-based confidence accumulation model kết hợp hợp tác nội ô realtime:
-%      node tích lũy evidence từ fragment, hợp tác chia sẻ khi vượt ngưỡng cooperation,
-%      cảnh báo khi vượt ngưỡng alert — không cần nhận toàn bộ payload.
-% 2. Mobility-coupled packet-level PHY pipeline:
-%      A2G path loss theo góc ngẩng, shadowing/fast-fading, contact-window trên airtime gói,
-%      và Bernoulli packet drop theo PER — cho đánh giá quỹ đạo sát thực hơn.
-% 3. GMC heuristic cho bài toán cân bằng coverage–cost kết hợp cellayer cooperation:
-%      greedy waypoint selection với candidate set mở rộng bằng k-means centroid,
-%      heuristic thực tế, deterministic, và dễ tích hợp vào mission planning loop.
+% 1. Cơ chế hợp tác tại edge-node cho bài toán thu thập và khôi phục dữ liệu bị phân mảnh:
+%      - Hợp tác nội cell
+%      - Hợp tác ngoại cell
+%      - Tránh va chạm gói tin trong mạng bằng cách sử dụng lịch trình cell-layer.
+% 3. Cải tiến GMC heuristic cho bài toán cân bằng coverage–cost kết hợp cellayer cooperation:
+%      greedy waypoint selection với candidate set mở rộng cho cell-cooperation
 
 % P5 — Cấu trúc bài báo
 % Section II: Related Work — 3 hướng và research gap.
@@ -119,13 +131,8 @@ UAV-assisted dissemination, edge IoT, fragment-based recognition, cooperative de
 % Section VII: Discussion — giới hạn và hướng mở rộng.
 % Section VIII: Conclusion.
 
-Smart-city surveillance networks increasingly rely on distributed edge cameras, yet rapid dissemination of high-value recognition payloads remains challenging under strict mission-time constraints. In emergency pursuit scenarios, a UAV can quickly traverse a suspicious area, but each ground node is visible only for a short contact interval. If the UAV stops at each node for full payload delivery, mission latency becomes prohibitive. If it flies continuously, each node receives only partial information. This creates a fundamental trade-off between mobility efficiency and detection reliability.
+In smart-city deployments, dense edge-camera and IoT infrastructures enable distributed recognition but pose a significant challenge for timely dissemination of high-fidelity recognition payloads. In time-critical scenarios such as pursuit or emergency response, unmanned aerial vehicles (UAVs) can rapidly traverse a suspicious area, yet each ground node experiences only a brief contact window as the UAV passes. If the UAV stops at every node to deliver full payloads, mission latency becomes prohibitive; if it flies continuously, nodes receive only partial information and detection probability suffers. The core problem is therefore to balance UAV mobility efficiency against the nodes' ability to accumulate sufficient evidence so that time-to-first-alert is minimized, while respecting packet-level PHY constraints and node buffer limits.
 
-This work models the UAV as a mobile data ferry that continuously broadcasts payload fragments while following an optimized path. Ground nodes accumulate confidence from partial evidence and trigger intra-cell cooperation to exchange missing fragments before the UAV leaves the region. In contrast to simplified binary-link assumptions, we explicitly model packet-level feasibility through geometry-aware air-to-ground propagation, contact-window validation, and SNR-to-BER-to-PER loss mapping.
-
-Our approach combines (i) confidence accumulation from logical payload fragments, (ii) cooperative fragment exchange among neighboring nodes, and (iii) a Greedy Max-Coverage with Cost (GMC) trajectory heuristic to balance newly covered suspicious nodes and travel cost. The resulting framework targets earlier mission completion under realistic communication uncertainty.
-
-The main contributions are threefold: 1) a fragment-based confidence model with threshold-driven intra-cell cooperation; 2) a mobility-coupled packet-level PHY decision pipeline for dissemination feasibility; and 3) a practical GMC-based planning strategy that integrates candidate centroids and deterministic tie-breaking for reproducible execution. The remainder of the paper is organized as follows: Section II reviews related work, Section III presents the system model, Section IV formulates the optimization problem, Section V details the proposed method, Section VI reports evaluation results, and Sections VII--VIII discuss limitations and conclude.
 
 \section{Related Work}
 % Summarize related literature (skeleton only).
@@ -361,8 +368,6 @@ The dissemination model uses logical payload fragments (synthetic blocks) rather
 \section{Performance Evaluation}
 \subsection{Simulation Setup}
 % Describe simulation environment and parameters.
-% Mục tiêu setup: đủ thông tin để người khác reproduce được kết quả.
-% Nên chia thành 5 nhóm tham số:
 % 1) Topology/network:
 %    - số node, grid/cell layout, node spacing, seed, suspicion point selection policy.
 % 2) UAV and mission:
@@ -374,7 +379,6 @@ The dissemination model uses logical payload fragments (synthetic blocks) rather
 % 5) Baselines and variants:
 %    - ví dụ NN path, random waypoint, GMC w/o cooperation, GMC full model.
 %
-% Báo cáo thêm cách chạy:
 % - số seeds, CI 95%, runtime budget mỗi scenario.
 % - điều kiện dừng mô phỏng (mission complete hoặc timeout T_max).
 
@@ -388,18 +392,44 @@ To evaluate the effectiveness of the proposed fragment-based cooperative detecti
 \end{itemize}
 
 \subsection{Results}
-% Placeholder for figures/tables and result discussion.
-% Cách trình bày kết quả gợi ý:
-% 1) Main result table: so sánh các baseline theo T_detect và completion rate.
-% 2) Ablation 1: bỏ cooperation để đo lợi ích collaboration.
-% 3) Ablation 2: thay đổi alpha/eps hoặc tắt centroid để đo ảnh hưởng GMC.
-% 4) Ablation 3: đơn giản hóa PHY (không contact-window) để cho thấy sai lệch khi bỏ realism.
-% 5) Sensitivity analysis: sweep K, speed UAV, \tau_coop, \tau_alert.
-%
-% Khi thảo luận kết quả, nên trả lời trực tiếp 3 câu hỏi:
-% - Cách tiếp cận có giảm T_detect so với baseline không?
-% - Lợi ích đến từ path planning, cooperation hay cả hai?
-% - Kết luận còn giữ khi thay đổi tham số/chế độ kênh không?
+
+% kết quả sẽ có thể được so sánh với các baseline như: 
+% - brute-force nearest neighbor (NN) path planning
+% - GMC không có hợp tác 
+% - perfect channel (không có packet loss)
+
+% - Sắp xếp hình/bảng theo ba phần: (A) kết quả cấp nhiệm vụ tổng quát, (B) phân tích theo lớp giao thức, (C) phân tích nhạy cảm / ablation.
+
+% - (A) Thời gian hoàn thành nhiệm vụ ($T_{\text{complete}}$):cho cả 4 phương pháp (NN, GMC w/o coop, GMC full, perfect channel)
+%     * Hình: CDF trung bình $T_{\text{complete}}$ 
+%       - trục x: network size
+%       - trục y: CDF của $T_{\text{complete}}$ 
+%       - Dữ liệu: mean/median $T_{\text{complete}}$
+
+
+% - (A2) Độ dài đường đi và chi phí: cho 3 phương pháp có tối ưu quỹ đạo (NN, GMC w/o coop, GMC full):
+%     * Hình: CDF trung bình độ dài đường đi của UAV theo từng phương pháp chú thích mean/median.
+%     - Dữ liệu: mean/median đường đi của UAV 
+
+
+% - (B) Lợi ích hợp tác & phân phối fragment: so sánh giữa GMC w/o coop và GMC full 
+%     * Stacked cluster bar + Time-series: 
+%     - trung bình tích lũy độ tin cậy và tỉ lệ fragment confidence nhận từ UAV/hợp tác 
+%     - trục x: thời điểm (hợp tác trước khi UAV đến, khi UAV rời đi, sau khi UAV rời đi, sau khi UAV hoàn thành quỹ đạo, tại $T_{\text{complete}}$)
+%     - Dữ liệu: mean/median độ tin cậy tích lũy và tỉ lệ fragment confidence nhận từ UAV/hợp tác
+%     * heatmap fairness
+%     * pie chart phân phối trung bình fragment nhận được qua UAV vs cooperation của suspicion point $n^*$.
+
+% - (B2) Các chỉ số mức gói (kiểm chứng PHY): (optional)
+%     * PDR theo khoảng cách/độ cao: đường cong hoặc heatmap thể hiện Packet Delivery Ratio theo hình học UAV--node.
+%     * Phân phối PER: histogram của PER trên các gói trong nhiều lần chạy; ghi chú mean/median.
+
+% - (C) Phân tích nhạy cảm và ablation: (optional)
+%     * Sweep plots: đồ thị đường của $T_{\text{complete}}$ (và tỉ lệ timeout) theo các tham số: $K$, $\tau_{\text{coop}}$, $\tau_{\text{alert}}$, $R_b$, mật độ nút.
+%     * Bảng ablation: so sánh phương pháp đầy đủ với (i) không hợp tác, (ii) bỏ kiểm tra PER, (iii) tập ứng viên ngẫu nhiên; báo thay đổi tương đối % của $T_{\text{complete}}$.
+% - Thống kê báo cáo:
+%     * Sử dụng >=20 seed ngẫu nhiên cho mỗi kịch bản; tính 95% CI (bootstrap) cho các chỉ số chính.
+%     * Báo p-value với kiểm định phù hợp (ví dụ Wilcoxon signed-rank) và đánh dấu trên hình khi p<0.05.
 
 \section{Discussion}
 % Limitations and interpretation.
