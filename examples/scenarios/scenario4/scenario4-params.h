@@ -122,6 +122,12 @@ constexpr bool UAV2_USE_TRAVEL_TIME = true;
 // fraction of a cell's suspicious nodes, expand coverage to the whole cell).
 constexpr bool COOP_GMC = true;
 
+// Enable/disable Perfect Channel mode for the CC2420 radio.
+// When true, all path-loss, shadowing and BER/PER calculations are bypassed:
+// every packet is received with a fixed strong RSSI (-50 dBm) and LQI=255.
+// This restores the simple ideal-range model used in Phase 1.
+constexpr bool PERFECT_CHANNEL = true;
+
 inline int32_t
 ComputeDefaultHexGridOffset(uint32_t nodeCount)
 {

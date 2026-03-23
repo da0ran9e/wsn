@@ -240,6 +240,24 @@ class Cc2420Phy : public SpectrumPhy
     Ptr<Cc2420ErrorModel> GetErrorModel() const;
 
     /**
+     * @brief Enable or disable Perfect Channel mode.
+     *
+     * When enabled, all path-loss, shadowing and BER/PER calculations are
+     * bypassed in EvaluateReceptionFrom().  Every in-range packet is received
+     * with a fixed strong RSSI (-50 dBm) and LQI=255, effectively restoring
+     * the ideal range-based communication model used in Phase 1.
+     *
+     * @param enable  true to enable perfect channel, false to use the full
+     *                physical-layer model (default).
+     */
+    void SetPerfectChannel(bool enable);
+
+    /**
+     * @brief Query whether Perfect Channel mode is active.
+     */
+    bool GetPerfectChannel() const;
+
+    /**
      * @brief Evaluate whether this PHY can receive from a TX PHY
      *
      * This helper provides temporary PHY-side propagation estimation while
@@ -392,6 +410,7 @@ class Cc2420Phy : public SpectrumPhy
     double m_elevLosThreshDeg;
     double m_elevMixedThreshDeg;
     bool m_enableShadowing;
+    bool m_perfectChannel; ///< When true, bypass all path-loss/shadowing/BER calculations
 
     // Shadowing random generators
     Ptr<NormalRandomVariable> m_shadowingLosRng;

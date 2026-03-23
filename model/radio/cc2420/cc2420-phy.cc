@@ -114,6 +114,12 @@ Cc2420Phy::GetTypeId()
                       "Enable log-normal shadowing term",
                       BooleanValue(true),
                       MakeBooleanAccessor(&Cc2420Phy::m_enableShadowing),
+                      MakeBooleanChecker())
+        .AddAttribute("PerfectChannel",
+                      "When true, bypass all path-loss/shadowing/BER calculations and always "
+                      "receive with a fixed strong RSSI (-50 dBm) and LQI=255",
+                      BooleanValue(false),
+                      MakeBooleanAccessor(&Cc2420Phy::m_perfectChannel),
                       MakeBooleanChecker());
     return tid;
 }
@@ -134,6 +140,7 @@ Cc2420Phy::Cc2420Phy()
             m_elevLosThreshDeg(40.0),
             m_elevMixedThreshDeg(20.0),
             m_enableShadowing(true),
+            m_perfectChannel(false),
       m_currentState(PHY_SLEEP),
       m_pendingState(PHY_SLEEP),
       m_totalPowerDbm(-100.0),
@@ -343,6 +350,18 @@ Cc2420Phy::GetErrorModel() const
     return m_errorModel;
 }
 
+void
+Cc2420Phy::SetPerfectChannel(bool enable)
+{
+    m_perfectChannel = enable;
+}
+
+bool
+Cc2420Phy::GetPerfectChannel() const
+{
+    return m_perfectChannel;
+}
+
 bool
 Cc2420Phy::EvaluateReceptionFrom(Ptr<Cc2420Phy> txPhy,
                                   double& rssiDbm,
@@ -352,6 +371,12 @@ Cc2420Phy::EvaluateReceptionFrom(Ptr<Cc2420Phy> txPhy,
     // Default outputs for safety
     rssiDbm = m_noiseFloorDbm;
     lqi = 0;
+
+    // When PerfectChannel is enabled we still compute distance-based
+    // path-loss (so RSSI scales with range) but we bypass stochastic
+    // impairments: shadowing and BER/PER are disabled.  This preserves
+    // a simple range-based attenuation model while removing small-scale
+    // variability and packet corruption.
 
     if (!txPhy || !m_mobility || !txPhy->GetMobility())
     {
@@ -379,14 +404,17 @@ Cc2420Phy::EvaluateReceptionFrom(Ptr<Cc2420Phy> txPhy,
         EmitDebugTrace(oss.str(), nullptr);
     };
 
-    if (m_propagationLossModel)
+    if (!m_perfectChannel && m_propagationLossModel)
     {
+        // Normal mode: delegate to external propagation model
         rssiDbm = m_propagationLossModel->CalcRxPowerDbm(
             txPhy->GetTxPower(), txPhy->GetMobility(), m_mobility);
     }
     else
     {
-        // Fallback to previous internal model if module is not attached.
+        // Fallback/internal log-distance path-loss model.
+        // When PerfectChannel==true we use the same distance-based loss but
+        // explicitly disable shadowing (shadowingDb == 0).
         const Vector txPos = txPhy->GetMobility()->GetPosition();
         const Vector rxPos = m_mobility->GetPosition();
 
@@ -421,7 +449,7 @@ Cc2420Phy::EvaluateReceptionFrom(Ptr<Cc2420Phy> txPhy,
         }
 
         double shadowingDb = 0.0;
-        if (m_enableShadowing && shadowingRng)
+        if (!m_perfectChannel && m_enableShadowing && shadowingRng)
         {
             shadowingRng->SetAttribute("Variance", DoubleValue(sigmaDb * sigmaDb));
             shadowingDb = shadowingRng->GetValue();
@@ -456,7 +484,7 @@ Cc2420Phy::EvaluateReceptionFrom(Ptr<Cc2420Phy> txPhy,
     //
     // packetSizeBytes == 0 means the caller did not provide size; skip the check
     // to preserve backward compatibility.
-    if (m_errorModel && m_errorModel->IsEnabled() && packetSizeBytes > 0)
+    if (!m_perfectChannel && m_errorModel && m_errorModel->IsEnabled() && packetSizeBytes > 0)
     {
         const double ber = m_errorModel->GetBer(snrDb);
         const double per = m_errorModel->GetPer(ber, packetSizeBytes);

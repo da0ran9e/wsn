@@ -350,6 +350,7 @@ Scenario4Runner::InstallProtocolStack()
                 if (phy)
                 {
                     phy->SetPropagationLossModel(propagationModel);
+                    phy->SetPerfectChannel(params::PERFECT_CHANNEL);
                 }
 
                 dev->SetDebugPacketTraceCallback(
@@ -372,6 +373,7 @@ Scenario4Runner::InstallProtocolStack()
             if (dev && dev->GetPhy())
             {
                 dev->GetPhy()->SetPropagationLossModel(propagationModel);
+                dev->GetPhy()->SetPerfectChannel(params::PERFECT_CHANNEL);
                 dev->SetDebugPacketTraceCallback(
                     MakeBoundCallback(&HandleRadioDebugTrace, dev));
             }
@@ -382,6 +384,7 @@ Scenario4Runner::InstallProtocolStack()
             if (dev && dev->GetPhy())
             {
                 dev->GetPhy()->SetPropagationLossModel(propagationModel);
+                dev->GetPhy()->SetPerfectChannel(params::PERFECT_CHANNEL);
                 dev->SetDebugPacketTraceCallback(
                     MakeBoundCallback(&HandleRadioDebugTrace, dev));
             }

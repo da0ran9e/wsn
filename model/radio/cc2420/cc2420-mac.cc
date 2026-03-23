@@ -209,6 +209,7 @@ Cc2420Mac::McpsDataRequest(Ptr<Packet> packet, Mac16Address destAddr, bool reque
         };
 
         if (m_contactWindowModel &&
+            !(m_phy && m_phy->GetPerfectChannel()) &&
             !m_contactWindowModel->HasContactForPacket(m_phy, peer->m_phy, packet->GetSize()))
         {
             contactDropDsts.push_back(dstNodeId);

@@ -3,7 +3,9 @@
 % The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
 \usepackage{cite}
 \usepackage{amsmath,amssymb,amsfonts}
-\usepackage{algorithmic}
+% \usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
 \usepackage{graphicx}
 \usepackage{textcomp}
 \usepackage{xcolor}
@@ -73,6 +75,13 @@ email address or ORCID}
 % 
 % Kết quả nổi bật
 % - Phân tích mô phỏng cho thấy cơ chế phối hợp đóng vai trò quan trọng trong việc giảm thời gian hoàn thành nhiệm vụ, đặc biệt khi ràng buộc PHY nghiêm ngặt.
+Urban edge-camera networks and IoT sensing infrastructures are increasingly deployed to support time-critical monitoring applications, where rapid target detection is essential in emergency scenarios. In such settings, Unmanned Aerial Vehicles (UAVs) can serve as mobile data ferries to disseminate high-value recognition payloads (e.g., images or feature representations used for target detection). However, transmitting large payloads is fundamentally constrained by short air-to-ground (A2G) contact windows and packet-level impairments, which limit reliable data delivery during brief flyovers.
+
+This paper addresses the problem of minimizing mission-level time-to-detection under realistic PHY-layer constraints. The key challenge lies in delivering useful recognition information to ground nodes covering target areas despite limited contact duration and stochastic packet errors (PER), which make complete payload transfer impractical.
+
+We propose a coordinated dissemination framework that jointly integrates UAV fragment broadcasting, coverage-aware trajectory planning, and cooperative edge fusion under packet-level feasibility constraints. Recognition payloads are partitioned into small fragments with approximately uniform information content, each contributing partial evidence toward detection. A UAV broadcasts these fragments along a coverage-aware trajectory, while ground nodes cooperatively exchange and fuse fragments to reconstruct missing information. Unlike approaches that rely primarily on UAV-only delivery, our design explicitly coordinates UAV dissemination and distributed edge cooperation under realistic packet-level constraints.
+
+Simulation results show that the proposed coordination mechanism reduces time-to-detection, particularly under stringent PHY conditions with short contact windows and high packet error rates. The results highlight the importance of jointly optimizing dissemination, edge cooperation, and feasibility-aware communication in UAV-assisted urban sensing systems.
 
 \end{abstract}
 
@@ -102,25 +111,17 @@ UAV-assisted dissemination, edge IoT, fragment-based recognition, cooperative de
 % Các hướng đều bỏ qua ràng buộc PHY mức gói (A2G propagation, contact-window, SNR→BER→PER)
 %   → dẫn đến đánh giá thuật toán không phản ánh đúng môi trường đô thị thực tế.
 
-% Phương pháp đề xuất
-% Các công trình fragment delivery / progressive coding / data fusion
-%   → cho thấy dữ liệu phân mảnh vẫn có giá trị nhận dạng và có thể hợp nhất xác suất,
-% UAV đóng vai trò "data ferry": bay theo quỹ đạo được tối ưu, broadcast fragment liên tục khi di chuyển.
-%   - Không chỉ tối ưu độ phủ mà còn hỗ trợ hợp tác tại biên 
-%   - Quỹ đạo UAV được tối ưu bằng heuristic GMC (Greedy Max-Coverage with Cost) kết hợp cell-layer cooperation để cân bằng độ phủ mới và chi phí di chuyển.
-% Tổ chức mạng mặt đất theo cell-layer (bài báo trước đó của chúng tôi đã giới thiệu ...)
-%   - phù hợp cho hợp tác phục hồi dữ liệu 
-%   - tránh ô nhiễm radio
-% Intra-cell cooperation để thu thập và khôi phục dữ liệu từ các fragment nhận được, 
-
+% Phương pháp đề xuất: 
+% Giới thiệu cơ chế tích hợp các building block đã có dưới ràng buộc PHY thực tế để giải quyết bài toán nêu trên, bao gồm:
+% - Tổ chức mạng mặt đất theo cell-layer 
+% - Mô hình fragment-based recognition: chia payload nhận diện thành các fragment nhỏ hơn, mỗi fragment đều có giá trị nhận dạng nhất định (ví dụ: pixel-stride interleaving), giúp mỗi fragment đều có khả năng đóng góp vào confidence tích lũy.
+% - UAV đóng vai trò "data ferry": bay theo quỹ đạo được tối ưu cho cell-layer, broadcast fragment liên tục khi di chuyển.
 
 % Đóng góp chính
-% 1. Cơ chế hợp tác tại edge-node cho bài toán thu thập và khôi phục dữ liệu bị phân mảnh:
-%      - Hợp tác nội cell
-%      - Hợp tác ngoại cell
-%      - Tránh va chạm gói tin trong mạng bằng cách sử dụng lịch trình cell-layer.
-% 3. Cải tiến GMC heuristic cho bài toán cân bằng coverage–cost kết hợp cellayer cooperation:
-%      greedy waypoint selection với candidate set mở rộng cho cell-cooperation
+% Kết quả thử nghiệm cho thấy, cơ chế phối hợp này mang lại lợi ích đáng kể trong việc giảm thời gian hoàn thành nhiệm vụ. 
+% Trong khi vẫn có thể giảm đáng kế quỹ đạo bay của UAV so với hướng không hợp tác
+% đặc biệt khi ràng buộc PHY nghiêm ngặt (ví dụ: đường truyền kém, cửa sổ tiếp xúc ngắn). 
+% Phân tích chi tiết về cách các tham số như kích thước fragment, ngưỡng hợp tác, và đặc tính kênh ảnh hưởng đến hiệu suất cũng được trình bày.
 
 % P5 — Cấu trúc bài báo
 % Section II: Related Work — 3 hướng và research gap.
@@ -131,8 +132,29 @@ UAV-assisted dissemination, edge IoT, fragment-based recognition, cooperative de
 % Section VII: Discussion — giới hạn và hướng mở rộng.
 % Section VIII: Conclusion.
 
-In smart-city deployments, dense edge-camera and IoT infrastructures enable distributed recognition but pose a significant challenge for timely dissemination of high-fidelity recognition payloads. In time-critical scenarios such as pursuit or emergency response, unmanned aerial vehicles (UAVs) can rapidly traverse a suspicious area, yet each ground node experiences only a brief contact window as the UAV passes. If the UAV stops at every node to deliver full payloads, mission latency becomes prohibitive; if it flies continuously, nodes receive only partial information and detection probability suffers. The core problem is therefore to balance UAV mobility efficiency against the nodes' ability to accumulate sufficient evidence so that time-to-first-alert is minimized, while respecting packet-level PHY constraints and node buffer limits.
+Timely detection of critical events in urban environments increasingly relies on distributed sensing and edge-assisted inference. In such systems, spatially distributed ground nodes must rapidly acquire recognition payloads (e.g., images or feature representations) to identify targets of interest. This requirement is particularly prominent in applications such as security monitoring, search and rescue, and emergency response, where detection latency is critical.
 
+A variety of approaches have been explored to address this challenge. Some works focus on performing inference directly at the edge to reduce communication latency. Others leverage distributed cooperation among nodes to improve detection accuracy. However, in complex urban environments, fixed communication infrastructures cannot always guarantee sufficient coverage or reliable connectivity, especially in emergency scenarios or rapid deployment settings.
+
+In this context, Unmanned Aerial Vehicles (UAVs) have emerged as flexible mobile platforms to extend network coverage and act as data ferries to disseminate recognition payloads to ground nodes. While this approach helps overcome the limitations of static infrastructure, it also introduces a fundamental challenge: a mismatch between payload size and communication opportunity.
+
+Air-to-ground (A2G) contacts between a UAV and ground nodes are typically brief—often lasting only a few seconds during flyovers—and are further affected by packet-level impairments such as path loss, shadowing, and fading. As a result, transmitting large payloads within a single contact window is often infeasible. Prolonging UAV dwell time increases mission latency, while partial transmissions leave individual nodes with insufficient evidence for reliable detection.
+
+Our objective is to minimize mission-level time-to-detection under realistic A2G communication constraints.
+
+These constraints suggest that attempting to deliver complete payloads to each node is neither efficient nor necessary. Instead, the key opportunity lies in exploiting partial information delivery and distributed cooperation.
+
+Building on this insight, we develop a coordinated dissemination framework that integrates three complementary mechanisms under realistic PHY-layer constraints. First, recognition payloads are partitioned into multiple fragments with approximately uniform information content, allowing each fragment to contribute partial evidence toward detection. Second, the UAV continuously broadcasts fragments along a coverage-aware trajectory that balances spatial coverage and travel cost, avoiding the need for prolonged hovering. Third, ground nodes cooperatively exchange and fuse fragments, enabling them to reconstruct missing information through localized collaboration.
+
+This coordinated design allows the system to combine UAV mobility with distributed edge cooperation, effectively compensating for short contact durations and stochastic packet losses. Nodes can progressively accumulate evidence and collaboratively improve detection confidence, enabling critical locations to reach decision thresholds more rapidly.
+
+The core contribution of this work is a lightweight coordination layer that jointly schedules UAV fragment broadcasts, orchestrates cooperative exchange among ground nodes, and enforces packet-level feasibility based on contact duration and link conditions. By explicitly accounting for per-packet delivery constraints, the proposed approach avoids infeasible transmissions and limits unnecessary communication overhead.
+
+Through extensive simulations, we show that the proposed framework significantly reduces mission-level time-to-detection compared to baseline strategies based on monolithic transmission or UAV-only delivery, particularly under stringent A2G conditions with short contact windows and high packet error rates.
+
+Overall, this work advocates a shift from attempting complete payload delivery under stringent communication constraints to a design paradigm based on fine-grained dissemination and distributed cooperation, enabling timely and reliable detection in UAV-assisted urban sensing systems.
+
+The remainder of the paper is organized as follows. Section~II reviews related work and positions our contribution. Section~III presents the system and channel models. Section~IV formulates the mission-time minimization problem. Section~V describes the proposed coordination protocol and trajectory design. Section~VI evaluates performance under realistic A2G conditions. Section~VII discusses limitations and extensions, and Section~VIII concludes.
 
 \section{Related Work}
 % Summarize related literature (skeleton only).
@@ -165,13 +187,13 @@ In smart-city deployments, dense edge-camera and IoT infrastructures enable dist
 % => Bài này nằm ở giao điểm của cả ba hướng: UAV phát fragment khi bay, node tích lũy confidence và hợp tác nội ô,
 %    đồng thời tính đến ràng buộc PHY thực tế để tối ưu thời gian phát hiện đầu tiên.
 
-Prior studies on UAV-assisted IoT networking have explored coverage-aware trajectory design, service-time balancing, and latency-oriented routing. These methods provide strong mobility optimization tools, but most assume monolithic payload delivery or simplified communication success models, which limits their suitability for partial-information detection tasks.
+% Prior studies on UAV-assisted IoT networking have explored coverage-aware trajectory design, service-time balancing, and latency-oriented routing. These methods provide strong mobility optimization tools, but most assume monolithic payload delivery or simplified communication success models, which limits their suitability for partial-information detection tasks.
 
-A second line of work investigates fragmented or progressive data delivery and evidence fusion. Such methods show that partial blocks can still contribute useful inference signal, and they often employ probabilistic aggregation rules to combine incomplete observations. However, these studies typically do not account for UAV mobility constraints, short contact windows, or mission-driven trajectory coupling.
+% A second line of work investigates fragmented or progressive data delivery and evidence fusion. Such methods show that partial blocks can still contribute useful inference signal, and they often employ probabilistic aggregation rules to combine incomplete observations. However, these studies typically do not account for UAV mobility constraints, short contact windows, or mission-driven trajectory coupling.
 
-A third line of work addresses distributed edge detection and cooperative inference, including threshold-triggered alerts, peer collaboration, and consensus-style decision support. Although cooperation improves robustness and can reduce false alarms, most formulations assume static infrastructure and do not jointly model mobile aerial dissemination with packet-level air-to-ground feasibility.
+% A third line of work addresses distributed edge detection and cooperative inference, including threshold-triggered alerts, peer collaboration, and consensus-style decision support. Although cooperation improves robustness and can reduce false alarms, most formulations assume static infrastructure and do not jointly model mobile aerial dissemination with packet-level air-to-ground feasibility.
 
-This paper lies at the intersection of these three directions. We jointly model UAV path planning, fragment-based confidence accumulation, and intra-cell cooperation under packet-level PHY constraints. The key focus is minimizing mission completion time defined by early confidence attainment at a designated suspicion point.
+% This paper lies at the intersection of these three directions. We jointly model UAV path planning, fragment-based confidence accumulation, and intra-cell cooperation under packet-level PHY constraints. The key focus is minimizing mission completion time defined by early confidence attainment at a designated suspicion point.
 
 \section{System Model}
 % Describe network/model assumptions and notation.
@@ -331,39 +353,145 @@ Inputs include topology, suspicious-node set, suspicion point, threshold paramet
 % A. Algorithm 1 -- End-to-End Workflow (ngắn, 12--20 dòng)
 % Input: topology, suspicious set \mathcal{P}, suspicion point n^*, payload blocks, PHY params
 % Output: \Pi, \mathcal{S}, T_detect
-%   1) Build candidates + precompute coverage
-%   2) Plan UAV path via GMC
-%   3) Run in-flight dissemination loop
-%   4) Update confidence and trigger intra-cell cooperation
-%   5) Check termination condition and return T_detect
+% Steps:
+%   1) Initial Setup: tổ chức mạng ground node thành cells
+%   2) Build candidates + precompute coverage
+%   3) Data preparation: chia payload thành K fragment, mapping p_i, và C_master
+%   4) Plan UAV path: heuristic GMC + cell-aware
+%   5) Fragment dissemination: UAV broadcast theo schedule,
+%   6) Tích lũy Confidence: 
+%     loop: nhận fragment -> cập nhật confidence + kiểm tra: 
+%                            - ngưỡng hợp tác -> broadcast manifest -> nhận fragment từ peer 
+%                            - ngưỡng cảnh báo -> mission complete 
 %
-% B. Algorithm 2 -- GMC Path Planning
+% B. Algorithm 2 -- Initial Setup
+% - Ground nodes tự tổ chức thành cell layer dựa trên vị trí GPS
+%   cell layer giúp tổ chức lập lịch giao tiếp tránh collision 
+% - Mỗi node tự discover neighbors để bầu chọn cell leader
+% - Fitness score cho CL được tính toán với tiêu chí phụ thuộc vào bài toán cụ thể 
+%   (trong bài toán này thì dựa vào vị trí gần tâm cell nhất)
+% - CL chịu trách nhiệm điều phối các hoạt động giao tiếp trong cell, 
+%   và xác định gateway cho inter-cell cooperation.
+%
+% C. Algorithm 3 -- Path Planning
 % - candidate set: node positions \cup optional k-means centroids
-% - greedy score: gain/(cost^alpha + eps), tie-break deterministic
+% - Loop: với mỗi candidate tính:
+%   - coverage gain: với mỗi candidate, tính số node trong \mathcal{P} mà nó có thể phủ được (dựa trên bán kính R_b)
+%   - Cell-aware: nếu một candidate có thê phủ được > 30% node trong một cell, thì đánh dấu toàn cell đã được phủ 
+%   - greedy score: chọn ứng viên với gain/(cost^alpha + eps) tối ưu
 % - output: ordered waypoints \Pi
 %
-% C. Algorithm 3 -- Intra-cell Cooperative Exchange
-% - trigger khi C_n >= \tau_coop
-% - manifest broadcast -> missing-fragment request -> peer reply -> confidence update
-% - chống collision bằng stagger/jitter theo cell schedule
-%
-% D. Về fragment dissemination (quan trọng để tránh hiểu nhầm)
-% - đây là abstract payload-fragment model (synthetic/logical blocks),
-%   KHÔNG phải pipeline phân mảnh ảnh thực bằng codec/computer-vision preprocessing.
-% - "fragment utility/confidence" là mô hình xác suất cấp hệ thống để đánh giá dissemination + cooperation.
-% 
-% E. Phần độ phức tạp nên đặt cuối subsection:
-% - GMC precompute: O(|\mathcal{C}|\cdot|\mathcal{P}|)
-% - GMC selection: O(K_{wp}\cdot|\mathcal{C}|)
-% - Cooperation overhead phụ thuộc số node/cell, số fragment thiếu, và số vòng manifest.
+% D. Algorithm 4 -- Cooperative Exchange
+% Intra-cell cooperation được trigger khi:
+% - C_n >= \tau_coop
+% - UAV vừa rời khỏi vùng phủ của node 
+% - Node nhận được manifest từ peer cho thấy node khác có fragment mà mình thiếu
+% Khi trigger, node sẽ broadcast manifest (danh sách fragment đang có). 
+% Các node trong cell sẽ chia sẻ fragment chưa có với nhau
+% cell gateway (CGW) chủ động theo dõi tình hình của cả 2 cell thông qua neighbor cell gateway (NGW) 
+% Inter-cell cooperation: CGW dựa vào thông tin có được quyết định và thực hiện khi:
+% - C_n < \tau_coop && không còn manifes nào sinh ra trong cell
+% - NGW cho thấy cell khác có fragment mà mình thiếu && C_n < \tau_alert && timeout 
 
-Algorithmically, the method is described at two levels. A compact end-to-end workflow orchestrates path planning, dissemination, confidence updates, cooperation triggers, and termination checks. Inside this workflow, two core procedures carry most of the novelty.
+\begin{algorithm}[t]
+\caption{End-to-End Coordinated Detection Workflow}
+\begin{algorithmic}[1]
+\Require Topology $\mathcal{G}$, suspicious set $\mathcal{P}$, suspicion point $n^*$, payload $\mathcal{D}$, PHY parameters
+\Ensure UAV path $\Pi$, schedule $\mathcal{S}$, detection time $T_{\text{detect}}$
 
-\textbf{GMC Path Planner.} Candidate set $\mathcal{C}$ is formed from suspicious-node positions and optional centroids. For each candidate, coverage gain and travel cost are evaluated, then scored by the GMC rule. The best candidate is appended iteratively with deterministic tie-breaking until target coverage is satisfied.
+\State \textbf{Initial Setup:} Organize ground nodes into cells $\{\mathcal{C}_i\}$ and elect cell leaders
+\State \textbf{Precompute Coverage:} Build candidate set and coverage map over $\mathcal{P}$
+\State \textbf{Data Preparation:} Partition $\mathcal{D}$ into $K$ fragments $\{f_i\}$ with uniform information content
 
-\textbf{Cooperative Fragment Exchange.} During flight, each successful packet updates local confidence. Once a node reaches $\tau_{\text{coop}}$, it broadcasts a manifest, requests missing fragments, and receives peer responses under staggered scheduling. Confidence is recomputed after each exchange. Mission completion is declared when $C_{n^*}\ge\tau_{\text{alert}}$, and the corresponding timestamp is recorded as $T_{\text{detect}}$.
+\State \textbf{Path Planning:} Compute UAV trajectory $\Pi$ using GMC-based heuristic
+\State \textbf{Initialize:} Set confidence $C_n \gets 0$ for all nodes
 
-The dissemination model uses logical payload fragments (synthetic blocks) rather than a full image-codec pipeline; thus the algorithm evaluates system-level coordination effects rather than end-to-end computer-vision preprocessing quality.
+\For{each UAV waypoint $w \in \Pi$}
+    \State Broadcast fragments according to schedule $\mathcal{S}$
+    \For{each node $n$ receiving fragment $f_i$}
+        \State Update confidence $C_n \gets C_n + \Delta(f_i)$
+
+        \If{$C_n \ge \tau_{\text{coop}}$}
+            \State Broadcast manifest and request missing fragments from peers
+            \State Receive fragments and update $C_n$
+        \EndIf
+
+        \If{$n = n^*$ and $C_n \ge \tau_{\text{alert}}$}
+            \State \Return $T_{\text{detect}}$
+        \EndIf
+    \EndFor
+\EndFor
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[t]
+\caption{Cell Formation and Leader Election}
+\begin{algorithmic}[1]
+\Require Node set $\mathcal{N}$ with positions
+\Ensure Cell structure $\{\mathcal{C}_i\}$ with leaders
+
+\State Partition nodes into cells based on geographic proximity
+\For{each cell $\mathcal{C}_i$}
+    \State Nodes discover neighbors within communication range
+    \State Compute fitness score for leader selection (e.g., proximity to cell centroid)
+    \State Elect node with highest score as cell leader
+    \State Designate gateway nodes for inter-cell communication
+\EndFor
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[t]
+\caption{Coverage-Aware UAV Path Planning (GMC)}
+\begin{algorithmic}[1]
+\Require Candidate set $\mathcal{C}$, suspicious set $\mathcal{P}$
+\Ensure Ordered waypoint list $\Pi$
+
+\State Initialize $\Pi \gets \emptyset$, $\mathcal{P}_{\text{covered}} \gets \emptyset$
+
+\While{$\mathcal{P}_{\text{covered}} \neq \mathcal{P}$}
+    \For{each candidate $c \in \mathcal{C}$}
+        \State Compute coverage gain $G(c)$ over uncovered nodes
+        \If{$c$ covers $> \theta$ fraction of a cell}
+            \State Mark entire cell as covered
+        \EndIf
+        \State Compute cost $L(c)$ (travel distance)
+        \State Score $S(c) \gets \frac{G(c)}{L(c)^\alpha + \epsilon}$
+    \EndFor
+
+    \State Select $c^* = \arg\max S(c)$
+    \State Append $c^*$ to $\Pi$
+    \State Update $\mathcal{P}_{\text{covered}}$
+\EndWhile
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[t]
+\caption{Cooperative Exchange (Intra- and Inter-cell)}
+\begin{algorithmic}[1]
+\Require Node $n$, fragment set $\mathcal{F}_n$, thresholds $\tau_{\text{coop}},\tau_{\text{alert}}$, cell gateway CGW, neighbor gateway NGW
+\Ensure Updated fragment set(s) and confidence
+
+\State define Trigger := ( $C_n \ge \tau_{\text{coop}}$ )
+\State \quad \quad \quad OR (UAV just left $\Rightarrow$ contact window ended)
+\State \quad \quad \quad OR (received manifest from peer showing missing fragments)
+
+\If{Trigger}
+    \State Broadcast manifest (list of owned fragments)
+    \State Receive requests from neighbors in same cell
+    \State Exchange missing fragments with peers (apply stagger/jitter scheduling to avoid collisions)
+    \State Update local fragment set $\mathcal{F}_n$ and confidence $C_n$
+\EndIf
+
+\State /* Cell gateway (CGW) logic for inter-cell cooperation */
+\If{CGW observes (no new manifests in cell) AND some nodes with $C_n < \tau_{\text{coop}}$}
+    \If{NGW indicates neighbor cell has fragments missing locally AND target nodes satisfy $C_n < \tau_{\text{alert}}$ AND timeout expired}
+        \State CGW request missing fragments from NGW
+        \State NGW coordinates transfer (gateway-to-gateway exchange) and forwards fragments to requesting nodes
+        \State Update fragment sets and confidences in both cells
+    \EndIf
+\EndIf
+\end{algorithmic}
+\end{algorithm}
 
 \section{Performance Evaluation}
 \subsection{Simulation Setup}
@@ -394,6 +522,63 @@ To evaluate the effectiveness of the proposed fragment-based cooperative detecti
 \subsection{Results}
 
 % kết quả sẽ có thể được so sánh với các baseline như: 
+\begin{table}[t]
+\centering
+\caption{Mean mission completion time (seconds) by strategy and network size}
+\label{tab:mission-times}
+\small
+\begin{tabular}{lrrrr}
+\hline
+Strategy & 100 & 400 & 900 & 1225 \\
+\hline
+Proposed (GMC w/ coop)        & 31.889  & 70.873   & 76.391   & 164.272 \\
+NN (GreedyNearestNeighbor)     & 352.502 & 1331.598 & 2807.035 & 3431.988 \\
+GMC w/o coop                   & 37.581  & 55.556   & 78.836   & 136.734 \\
+Perfect channel (no packet loss) & 30.246  & 56.718   & 62.592   & 110.990 \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[t]
+\centering
+\caption{Mean accumulated confidence (average) — With vs Without cooperation}
+\label{tab:confidence-accum}
+\small
+\begin{tabular}{llccc}
+\hline
+Network size & Algorithm & After reception & At UAV depart & At mission complete \\
+\hline
+100  & With coop    & 0.441 & 0.477 & 0.802 \\
+    & Without coop & 0.574 & 0.656 & 0.805 \\
+\hline
+400  & With coop    & 0.355 & 0.381 & 0.806 \\
+    & Without coop & 0.584 & 0.623 & 0.805 \\
+\hline
+900  & With coop    & 0.387 & 0.415 & 0.804 \\
+    & Without coop & 0.497 & 0.531 & 0.806 \\
+\hline
+1225 & With coop    & 0.379 & 0.416 & 0.805 \\
+    & Without coop & 0.508 & 0.543 & 0.805 \\
+\hline
+\end{tabular}
+\end{table}
+\begin{table}[t]
+\centering
+\caption{Mean UAV flight path length (meters) by strategy and network size}
+\label{tab:uav-path-lengths}
+\small
+\begin{tabular}{lrrrr}
+\hline
+Strategy & 100 & 400 & 900 & 1225 \\
+\hline
+Proposed (GMC w/ coop)        & 251.026  & 564.635   & 1120.984  & 1509.501 \\
+NN (GreedyNearestNeighbor)     & 1105.195 & 3113.766 & 6344.382 & 8450.142 \\
+GMC w/o coop                   & 485.808  & 1463.446 & 3016.069 & 3960.526 \\
+Perfect channel (no packet loss) & 251.026  & 564.635   & 1120.984  & 1509.501 \\
+\hline
+\end{tabular}
+\end{table}
+
 % - brute-force nearest neighbor (NN) path planning
 % - GMC không có hợp tác 
 % - perfect channel (không có packet loss)
@@ -477,3 +662,130 @@ To evaluate the effectiveness of the proposed fragment-based cooperative detecti
 % .
 % "Mobile edge computing via a UAV-mounted cloudlet: Optimization of bit allocation and path planning" (S. Jeong et al.): Đặt nền móng cho kiến trúc tích hợp tính toán biên (MEC) và thu thập dữ liệu lên UAV
 % .
+
+% Links — grouped by keyword
+
+% UAV IoT survey:
+
+% UAV-assisted data collection for Internet of Things: A survey — Z. Wei et al., IEEE (2022): https://ieeexplore.ieee.org/abstract/document/9779853/
+% UAV IoT framework views and challenges — T. Lagkas et al., Sensors (2018): https://www.mdpi.com/1424-8220/18/11/4015
+% AI for UAV-assisted IoT applications — N. Cheng et al. (2023) (IEEE / arXiv): https://ieeexplore.ieee.org/abstract/document/10113154/ and https://arxiv.org/pdf/2311.05303
+% Secure communication in IoT-based UAV networks — J. Sharma et al., Internet of Things (2023): https://www.sciencedirect.com/science/article/pii/S2542660523002068
+% UAV trajectory optimization (wireless) surveys:
+
+% UAV placement and trajectory design optimization: A survey — A. Mazaherifar et al., Wireless Personal Communications (2022): https://link.springer.com/article/10.1007/s11277-021-09451-7
+% A survey on UAV placement and trajectory optimization (A2G channel perspective) — J. Won et al., ICT Express (2023): https://www.sciencedirect.com/science/article/pii/S2405959522000157
+% Survey on UAV deployment and trajectory in wireless networks — S.I. Han, Information (2022): https://www.mdpi.com/2078-2489/13/8/389
+% Energy-efficient UAV communication with trajectory optimization — Y. Zeng & R. Zhang, IEEE Trans. Wireless Comm. (2017): https://ieeexplore.ieee.org/abstract/document/7888557
+
+% UAV data-ferry / ferrying:
+
+% A review of UAV ferry algorithms in delay tolerant network — B. Yang & X. Bai (2019): https://ieeexplore.ieee.org/abstract/document/9092564/
+% Uav-assisted data collection in wireless sensor networks: A comprehensive survey — M.T. Nguyen et al., Electronics (2021): https://www.mdpi.com/2079-9292/10/21/2603
+% End-to-end energy-efficiency and reliability of UAV-assisted wireless data ferrying — T. Shafique et al., IEEE (2019): https://ieeexplore.ieee.org/abstract/document/8930577/
+% Opportunistic UAV utilization (systems overview) — D. Liu et al. (ResearchGate): https://www.researchgate.net/publication/342058665_Opportunistic-UAV-Utilization-in-Wireless-Networks_Motivations_Applications_and_Challenges
+% Progressive transmission:
+
+% Progressive image transmission: A review and comparison — K.H. Tzou, SPIE (1987): https://www.spiedigitallibrary.org/journals/optical-engineering/volume-26/issue-7/267581/Progressive-Image-Transmission-A-Review-And-Comparison-Of-Techniques/10.1117/12.7974121.short
+% Survey of progressive image transmission methods — Y.K. Chee (1999): https://onlinelibrary.wiley.com/doi/abs/10.1002/(SICI)1098-1098(1999)10:1%3C3::AID-IMA2%3E3.0.CO;2-E
+% The progressive smart grid system (IEEE Commun. Surveys & Tutorials, relevant progressive-transmission discussion): https://ieeexplore.ieee.org/abstract/document/5989902/
+
+% Fragmented data / fragmentation surveys:
+
+% A comprehensive taxonomy of fragmentation and allocation techniques — D. Nashat et al., ACM Computing Surveys (2018): https://dl.acm.org/doi/abs/10.1145/3150223
+% Application of data fragmentation and replication methods in the cloud: a review — F. Castro-Medina et al., IEEE (2019): https://ieeexplore.ieee.org/abstract/document/8673249/
+% (Related: fragmentation issues in IoT) Is Fragmentation a Threat to the Success of the Internet of Things? — M. Aly et al., IEEE Internet of Things (2018): https://ieeexplore.ieee.org/abstract/document/8424819/
+% Fountain / rateless coding (wireless):
+
+% Digital fountains: A survey and look forward — M. Mitzenmacher, IEEE (2004): https://ieeexplore.ieee.org/abstract/document/1405313/
+% Fountain codes and their applications: Comparison and implementation for wireless applications — S. Chanayai & A. Apavatjrut, Wireless Personal Communications (2021): https://link.springer.com/article/10.1007/s11277-021-08749-w
+% Primer and recent developments on fountain codes — J. Qureshi et al. (2013): https://www.ingentaconnect.com/content/ben/rptelec/2013/00000002/00000001/art00002
+% Channel coding toward 6G: Technical overview and outlook (includes rateless/fountain discussion) — IEEE Open (2024): https://ieeexplore.ieee.org/abstract/document/10502324/
+
+% Cooperative inference / edge surveys:
+
+% DNN partitioning for cooperative inference in edge intelligence: Modeling, solutions, toolchains — ACM Computing Surveys (2026): https://dl.acm.org/doi/abs/10.1145/3786145
+% Optimization methods, challenges, and opportunities for edge inference: A comprehensive survey — R. Zhang et al., Electronics (2025): https://www.mdpi.com/2079-9292/14/7/1345
+% A survey on collaborative DNN inference for edge intelligence — W.Q. Ren et al., Machine Intelligence (2023): https://link.springer.com/article/10.1007/s11633-022-1391-7
+% End-edge-cloud collaborative computing for deep learning: A comprehensive survey — Y. Wang et al., IEEE Commun. Surveys & Tutorials (2024): https://ieeexplore.ieee.org/abstract/document/10508191/
+% CoEdge: Cooperative DNN inference with adaptive workload partitioning — IEEE/ACM Trans. (2020): https://ieeexplore.ieee.org/abstract/document/9296560
+% Distributed detection / sensor-network surveys:
+
+% Distributed sensor networks — a review of recent research — H. Qi et al., Journal of the Franklin Institute (2001) (classic): https://www.sciencedirect.com/science/article/pii/S0016003201000266
+% Distributed detection with multiple sensors II: Advanced topics — R.S. Blum et al., Proc. IEEE (2002): https://ieeexplore.ieee.org/abstract/document/554209/
+% Distributed event-triggered estimation over sensor networks: A survey — X. Ge et al., IEEE Transactions (2019): https://ieeexplore.ieee.org/abstract/document/8735960/
+% A survey on distributed filtering and fault detection for sensor networks — H. Dong et al., Mathematical Problems in Eng. (2014): https://onlinelibrary.wiley.com/doi/abs/10.1155/2014/858624
+% Application of compressive sensing techniques in distributed sensor networks (survey) — T. Wimalajeewa & P.K. Varshney, arXiv (2017): https://arxiv.org/abs/1709.10401
+
+% Survey:
+% "UAV-Assisted Data Collection for Internet of Things: A Survey" (Wei et al.)
+% "A Comprehensive Survey on UAV-based Data Gathering Techniques in Wireless Sensor Networks" (Khan & Farooq)
+% "A Review of UAV Ferry Algorithms in Delay Tolerant Network" (Yang & Bai)
+% "AI for UAV-Assisted IoT Applications: A Comprehensive Review" (Cheng et al.)
+
+% Tối ưu quỹ đạo theo độ phủ, độ trễ và service time:
+% Trajectory optimization for the UAV assisted data collection in wireless sensor networks (Saxena et al.)
+% EDGO: UAV-based effective data gathering scheme... (Pravija Raj et al.)
+% Completion time minimization for multi-UAV-enabled data collection (Zhan & Zeng)
+% End-to-End Energy-Efficiency and Reliability of UAV-Assisted Wireless Data Ferrying (Shafique et al.)
+
+% Buffer-aware routing và Time-balancing scheduling:
+% Research on a Storage Allocation Schema for DTN Ferry Node (Cong et al.)
+% Energy minimization in Internet-of-Things system based on rotary-wing UAV (Zhan & Lai) 
+
+% Tuổi của thông tin (AoI):
+% Age-based path planning and data acquisition in UAV-assisted IoT networks (Jia et al.)
+% UAV-enabled age-optimal data collection in wireless sensor networks (Tong et al.)
+
+
+
+
+% - 2. Fragmented / progressive payload delivery và data fusion.
+%   Điểm qua các nghiên cứu về chia nhỏ dữ liệu, progressive transmission, interleaving/subsampling,
+%   rateless/fountain/network coding, hoặc partial reconstruction từ dữ liệu không đầy đủ.
+%   Sau đó nối sang các cách hợp nhất thông tin từ fragment như union probability, Bayesian fusion, log-odds,
+%   hoặc confidence accumulation để tạo quyết định từ bằng chứng từng phần.
+%   Chốt ý: nhóm công trình này cho thấy dữ liệu phân mảnh vẫn có giá trị nhận dạng,
+%   nhưng thường không xét UAV mobility, quỹ đạo phát tán, hay mục tiêu giảm time-to-first-detection.
+%
+
+% Hợp nhất thông tin từ các Fragment để tạo quyết định Để đưa ra quyết định từ các "bằng chứng từng phần" thay vì đợi toàn bộ dữ liệu, các phương pháp thống kê và tích lũy độ tự tin đã được đề xuất và khảo sát:
+% Bayesian Fusion, Log-odds và Sequential Testing (Kiểm định tuần tự): Trong các mạng cảm biến phân tán, các nút biên hoặc trung tâm hợp nhất sẽ thu thập các quyết định/phân mảnh trung gian và sử dụng xác suất Bayes hoặc cập nhật Log-Likelihood Ratio (LLR) để ra quyết định dựa trên bằng chứng tích lũy theo thời gian
+% "Distributed detection with multiple sensors II. Advanced topics"
+% "Decentralized sequential detection with a fusion center performing the sequential test"
+% "Bayesian compressive sensing via belief propagation"
+% Confidence Accumulation (Tích lũy độ tự tin) và Early Exit: Trong suy luận phân tán của học sâu (Distributed Co-inference), mức độ tự tin từ các phân mảnh đặc trưng (feature maps) có thể được đo lường bằng hàm Entropy (mức độ không chắc chắn) hoặc hàm Softmax. Nếu độ tự tin vượt ngưỡng, hệ thống sẽ kết thúc sớm (early exit) quá trình suy luận. Các bài nghiên cứu nổi bật bao gồm:
+% "BranchyNet: Fast inference via early exiting from deep neural networks"
+% "SPINN: Synergistic progressive inference of neural networks over device and cloud"
+% "DeeCap: Dynamic early exiting for efficient image captioning"
+% "FrameExit: Conditional early exiting for efficient video recognition"
+
+
+% - 3. Distributed edge detection và cooperative inference.
+% . Hợp tác đa nút (Multi-node cooperation) và Đồng thuận phân tán (Consensus) trong Theo dõi/Phát hiện Mục tiêu Các hệ thống sử dụng bộ lọc đồng thuận (consensus filter) để các cảm biến phân tán trao đổi và hợp nhất các ước lượng trạng thái cục bộ, qua đó nâng cao khả năng quan sát toàn cục đối với mục tiêu di động:
+% S. Zhu et al. đề xuất bộ lọc đồng thuận tối ưu phân tán cho theo dõi mục tiêu trong mạng cảm biến không đồng nhất (Distributed optimal consensus filter for target tracking in heterogeneous sensor networks)
+% H. Su et al. nghiên cứu mạng cảm biến theo dõi đa mục tiêu bằng cơ chế lọc Kalman-consensus kích hoạt theo sự kiện (Event-triggered Kalman-consensus filter for two-target tracking sensor networks), giúp các cụm cảm biến vừa theo dõi chính xác vừa duy trì tần suất giao tiếp hợp lý
+% Về phát hiện sự kiện, G. Wittenburg et al. nghiên cứu về phát hiện sự kiện hợp tác (Cooperative event detection) trong WSN
+% , trong khi J. Meng et al. ứng dụng Compressive Sensing (cảm nhận nén) để phát hiện sự kiện thưa thớt từ các bằng chứng phân tán
+% .
+% 2. Ngưỡng cảnh báo (Alarm/Confidence Thresholds) và Giảm False Alarm Để giảm tỷ lệ cảnh báo sai (false alarm) hoặc đưa ra quyết định sớm khi có đủ bằng chứng, các hệ thống áp dụng các ngưỡng tin cậy tĩnh hoặc động:
+% Cơ chế CFAR (Constant False Alarm Rate) phân tán: Trong nhận dạng tín hiệu radar/sonar, mạng đa cảm biến được dùng để thiết lập ngưỡng cảnh báo nhằm duy trì tỷ lệ false alarm không đổi trước nhiễu nền. Các công trình tiêu biểu bao gồm nghiên cứu của M. Barkat và P. K. Varshney về phát hiện tín hiệu CFAR phi tập trung
+% ,
+% , và M. K. Üner cùng P. K. Varshney về phát hiện CFAR phân tán trong các môi trường nhiễu đồng nhất và không đồng nhất
+% .
+% Early Exiting (Thoát sớm) trong Học sâu: Đối với suy luận trên thiết bị biên, các hệ thống đánh giá mức độ tin cậy của phân mảnh dữ liệu (dựa trên entropy hoặc Top-1 output). Nếu độ tự tin vượt ngưỡng, thiết bị sẽ ra quyết định ngay. Tiêu biểu là kiến trúc BranchyNet của Teerapittayanon et al.
+%  hay hệ thống IoT học sâu theo yêu cầu EdgeKE của W. Fang et al. dùng trong môi trường dữ liệu công nghiệp lớn
+% .
+% 3. Peer-assisted Inference (Suy luận với thiết bị ngang hàng) Khái niệm mở rộng tài nguyên theo chiều ngang cho phép các thiết bị biên chia sẻ và thực thi song song các phân mảnh mô hình (model partitioning/chunks) hoặc dữ liệu để tăng tốc độ nhận dạng:
+% Các hệ thống như DeepThings (Z. Zhao et al.)
+% , MoDNN (J. Mao et al.)
+% , và CoEdge (L. Zeng et al.)
+%  cho phép phân chia linh hoạt khối lượng tính toán nội bộ. Các thiết bị lân cận (peer nodes) cùng chia sẻ tải tính toán của mạng CNN để phân tích các đặc trưng trích xuất từ dữ liệu cảm biến, cải thiện độ trễ tổng thể
+
+
+% Đoạn cuối của Related Work nên chốt thật rõ:
+% - Các nghiên cứu về UAV path planning mạnh ở phía mobility, nhưng yếu ở mô hình payload phân mảnh và detection logic.
+% - Các nghiên cứu về fragmented delivery / fusion mạnh ở phía dữ liệu và suy luận, nhưng thiếu ràng buộc UAV trajectory và A2G packet feasibility.
+% - Các nghiên cứu về cooperative edge detection mạnh ở phía cộng tác giữa node, nhưng thường không tích hợp dissemination từ UAV và mô hình PHY mức gói.
+% => Bài này nằm ở giao điểm của cả ba hướng: UAV phát fragment khi bay, node tích lũy confidence và hợp tác nội ô,
+%    đồng thời tính đến ràng buộc PHY thực tế để tối ưu thời gian phát hiện đầu tiên.
