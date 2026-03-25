@@ -1,3 +1,6 @@
+// Default to light theme for the visualizer; can be toggled by removing this class
+document.body.classList.add('light');
+
 const viewport = document.getElementById('mapViewport');
 const content = document.getElementById('mapContent');
 const gridLayer = document.getElementById('gridLayer');
@@ -725,6 +728,20 @@ function renderSuspiciousNodeLayer(nodes, world, suspiciousSet, suspiciousPoint)
     pointLabel.setAttribute('class', 'suspicious-point-label');
     pointLabel.textContent = 'Suspicious Point';
     suspiciousNodeLayer.appendChild(pointLabel);
+
+    // If there is a ground node exactly at the suspicious point, highlight that node
+    const nodeAtPoint = nodes.find(
+      (n) => Math.abs(n.x - suspiciousPoint.x) < 1e-6 && Math.abs(n.y - suspiciousPoint.y) < 1e-6,
+    );
+    if (nodeAtPoint) {
+      const np = world.toMapPoint(nodeAtPoint.x, nodeAtPoint.y);
+      const highlight = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      highlight.setAttribute('cx', np.x);
+      highlight.setAttribute('cy', np.y);
+      highlight.setAttribute('r', NODE_RADIUS + 1);
+      highlight.setAttribute('class', 'suspicious-point-node');
+      suspiciousNodeLayer.appendChild(highlight);
+    }
   }
 
   for (const node of nodes) {
@@ -734,12 +751,7 @@ function renderSuspiciousNodeLayer(nodes, world, suspiciousSet, suspiciousPoint)
 
     const p = world.toMapPoint(node.x, node.y);
 
-    const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-    dot.setAttribute('cx', p.x);
-    dot.setAttribute('cy', p.y);
-    dot.setAttribute('r', NODE_RADIUS);
-    dot.setAttribute('class', 'suspicious-node-dot');
-    suspiciousNodeLayer.appendChild(dot);
+    // Do not create a special red dot for suspicious nodes; keep base node rendering
 
     const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
     label.setAttribute('x', p.x + 8);
@@ -758,6 +770,10 @@ function renderUavPathLayer(world, uavPaths) {
 
   for (let i = 0; i < uavPaths.length; i++) {
     const path = uavPaths[i];
+    // Temporarily hide the first UAV path in the list (index 0)
+    if (i === 0) {
+      continue;
+    }
     const colorIndex = i % 2; // 0: xanh lá, 1: xanh lam
     const points = path.waypoints.map((wp) => world.toMapPoint(wp.x, wp.y));
 

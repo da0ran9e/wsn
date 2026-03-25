@@ -5,8 +5,22 @@
   --text: #e7edf7;
   --muted: #9fb0cc;
   --accent: #4ea1ff;
+  --text-stroke: rgba(5, 10, 18, 0.85);
   --hex-stroke: rgba(112, 196, 255, 0.48);
   --hex-fill: rgba(78, 161, 255, 0.06);
+}
+
+/* Light theme overrides (apply by adding 'light' class to <body>) */
+body.light {
+  --bg: #f6f8fb;
+  --panel: #ffffff;
+  --line: #d7e2ee;
+  --text: #0b1220;
+  --muted: #6b7280;
+  --accent: #1e6fff;
+  --hex-stroke: rgba(78, 161, 255, 0.28);
+  --hex-fill: rgba(78, 161, 255, 0.04);
+  --text-stroke: rgba(255, 255, 255, 0.95);
 }
 
 * {
@@ -32,7 +46,7 @@ body {
 
 button {
   border: 1px solid var(--line);
-  background: #15213a;
+  background: var(--panel);
   color: var(--text);
   border-radius: 8px;
   padding: 8px 12px;
@@ -71,7 +85,7 @@ button:hover {
   border: 1px solid var(--line);
   border-radius: 12px;
   overflow: hidden;
-  background: radial-gradient(circle at 20% 20%, #101f3f, #0a1120);
+  background: radial-gradient(circle at 20% 20%, var(--panel), var(--bg));
   position: relative;
   cursor: grab;
 }
@@ -197,10 +211,10 @@ button:hover {
 }
 
 .node-label {
-  fill: #d7e5ff;
+  fill: var(--text);
   font-size: 10px;
   paint-order: stroke;
-  stroke: rgba(5, 10, 18, 0.85);
+  stroke: var(--text-stroke);
   stroke-width: 2;
 }
 
@@ -289,17 +303,19 @@ button:hover {
 }
 
 .suspicious-node-dot {
-  fill: rgba(255, 77, 77, 0.9);
-  stroke: rgba(255, 50, 50, 1);
-  stroke-width: 1.6;
+  /* Make transparent so nodes don't appear red; keep for backward compatibility */
+  fill: transparent;
+  stroke: none;
+  stroke-width: 0;
 }
 
 .suspicious-node-label {
-  fill: #ffd0d0;
+  fill: var(--text);
   font-size: 10px;
   paint-order: stroke;
-  stroke: rgba(40, 0, 0, 0.95);
-  stroke-width: 2;
+  stroke: var(--text-stroke);
+  stroke-width: 1;
+  font-weight: 400;
 }
 
 .suspicious-point-dot {
@@ -309,12 +325,19 @@ button:hover {
 }
 
 .suspicious-point-label {
-  fill: #ffb3b3;
+  fill: var(--text);
   font-size: 11px;
   font-weight: 600;
   paint-order: stroke;
   stroke: rgba(40, 0, 0, 0.95);
   stroke-width: 2;
+}
+
+/* Highlight the node that sits at the suspicious point */
+.suspicious-point-node {
+  fill: rgba(255, 77, 77, 0.9);
+  stroke: rgba(255, 50, 50, 1);
+  stroke-width: 1.6;
 }
 
 .uav-path {
@@ -334,6 +357,18 @@ button:hover {
 
 .uav-path-1 {
   stroke: rgba(76, 217, 100, 0.95); /* xanh lá */
+}
+
+/* Make UAV2 path more prominent */
+.uav-path-1 {
+  stroke-width: 5;
+  stroke-opacity: 1;
+}
+
+/* Slightly enlarge UAV2 waypoints */
+.uav-waypoint-1 {
+  transform-origin: center;
+  transform: scale(1.25);
 }
 
 .uav-waypoint {
@@ -424,7 +459,7 @@ button:hover {
 .timeline-panel {
   border: 1px solid var(--line);
   border-radius: 10px;
-  background: rgba(16, 24, 39, 0.92);
+  background: var(--panel);
   padding: 8px 10px;
   display: grid;
   gap: 8px;
@@ -454,7 +489,7 @@ button:hover {
   font-size: 13px;
   padding: 6px 8px;
   border-radius: 8px;
-  background: rgba(8, 14, 26, 0.65);
+  background: var(--panel);
   border: 1px solid rgba(108, 126, 158, 0.25);
 }
 
@@ -607,7 +642,7 @@ button:hover {
     font-size: 11px;
     font-weight: 700;
     paint-order: stroke;
-    stroke: rgba(6, 12, 25, 0.95);
+    stroke: var(--text-stroke);
     stroke-width: 2.5;
   }
 
