@@ -65,15 +65,15 @@ def save_csv(totals, out_path):
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
     with open(out_path, 'w') as f:
         f.write('metric,total_fromUAV,total_fromPeers,ratio\n')
-        for name, (u_key, p_key) in (
-            ('suspicious_recv', ('recv_uav', 'recv_peer')),
-            ('suspicious_uav_depart', ('depart_uav', 'depart_peer')),
-            ('suspicious_mission_complete', ('complete_uav', 'complete_peer')),
-        ):
-            u = totals.get(u_key, 0)
-            p = totals.get(p_key, 0)
-            ratio = (u / p) if p != 0 else float('inf')
-            f.write(f"{name},{u},{p},{ratio}\n")
+        for label, (u_key, p_key) in (
+                ("just received UAV fragment", ('recv_uav', 'recv_peer')),
+                ("after UAV departed", ('depart_uav', 'depart_peer')),
+                ("upon mission completion", ('complete_uav', 'complete_peer')),
+            ):
+                u = totals.get(u_key, 0)
+                p = totals.get(p_key, 0)
+                ratio = (u / p) if p != 0 else float('inf')
+                f.write(f"{label},{u},{p},{ratio}\n")
         # combined
         tu = totals.get('recv_uav', 0) + totals.get('depart_uav', 0) + totals.get('complete_uav', 0)
         tp = totals.get('recv_peer', 0) + totals.get('depart_peer', 0) + totals.get('complete_peer', 0)
@@ -92,15 +92,15 @@ def main():
         print('No _true_ report files found in', args.results_dir)
         return
     # print totals and ratios
-    for name, (u_key, p_key) in (
-        ('suspicious_recv', ('recv_uav', 'recv_peer')),
-        ('suspicious_uav_depart', ('depart_uav', 'depart_peer')),
-        ('suspicious_mission_complete', ('complete_uav', 'complete_peer')),
+    for label, (u_key, p_key) in (
+        ("just received UAV fragment", ('recv_uav', 'recv_peer')),
+        ("after UAV departed", ('depart_uav', 'depart_peer')),
+        ("upon mission completion", ('complete_uav', 'complete_peer')),
     ):
         u = totals.get(u_key, 0)
         p = totals.get(p_key, 0)
         ratio = (u / p) if p != 0 else float('inf')
-        print(f"{name}: total_fromUAV={u}, total_fromPeers={p}, ratio={ratio}")
+        print(f"{label}: total_fromUAV={u}, total_fromPeers={p}, ratio={ratio}")
     tu = totals.get('recv_uav', 0) + totals.get('depart_uav', 0) + totals.get('complete_uav', 0)
     tp = totals.get('recv_peer', 0) + totals.get('depart_peer', 0) + totals.get('complete_peer', 0)
     comb_ratio = (tu / tp) if tp != 0 else float('inf')

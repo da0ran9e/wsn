@@ -134,14 +134,14 @@ def save_csv_row(stats, size, out_csv):
 
 
 def plot_for_size(stats, size, out_png):
-    events = ['recv', 'depart', 'complete']
+    events = ['just received UAV fragment', 'after UAV departed', 'upon mission completion']
     peer_h = []
     uav_h = []
     means = []
     for ev, mean_key, u_key, p_key in (
-        ('recv', 'recv_conf_mean', 'recv_fromUAV', 'recv_fromPeers'),
-        ('depart', 'depart_conf_mean', 'depart_fromUAV', 'depart_fromPeers'),
-        ('complete', 'complete_conf_mean', 'complete_fromUAV', 'complete_fromPeers'),
+        ('just received UAV fragment', 'recv_conf_mean', 'recv_fromUAV', 'recv_fromPeers'),
+        ('after UAV departed', 'depart_conf_mean', 'depart_fromUAV', 'depart_fromPeers'),
+        ('upon mission completion', 'complete_conf_mean', 'complete_fromUAV', 'complete_fromPeers'),
     ):
         mean = stats[mean_key]
         u = stats[u_key]
@@ -167,7 +167,7 @@ def plot_for_size(stats, size, out_png):
     ax.bar(x, uav_h, width, bottom=peer_h, label='fromUAV', color='#a1d99b')
 
     ax.set_xticks(x)
-    ax.set_xticklabels(['recv', 'depart', 'complete'])
+    ax.set_xticklabels(['just received UAV fragment', 'after UAV departed', 'upon mission completion'])
     ax.set_xlabel('Event')
     ax.set_ylabel('confidence mean (stacked)')
     ax.set_title(f'Confidence means (N={size})')

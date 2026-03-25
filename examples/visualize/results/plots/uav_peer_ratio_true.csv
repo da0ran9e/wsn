@@ -1,0 +1,5 @@
+metric,total_fromUAV,total_fromPeers,ratio
+just received UAV fragment,1495,989,1.5116279069767442
+after UAV departed,1962,900,2.18
+upon mission completion,1964,3738,0.5254146602461209
+combined,5421,5627,0.9633907943842189
