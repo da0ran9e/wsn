@@ -29,9 +29,9 @@
 
 \maketitle
 \begin{abstract}
-Urban edge-camera and IoT sensing networks are widely deployed for time-critical monitoring, where rapid target detection is critical in emergency scenarios. In these environments, Unmanned Aerial Vehicles (UAVs) serve as mobile data ferries to disseminate high-value recognition payloads to distributed ground nodes. However, large payloads are severely constrained by short air-to-ground (A2G) contact windows and packet-level impairments such as path loss, shadowing, and stochastic packet errors (PER).
+Urban edge-camera and IoT sensing networks increasingly support time-critical monitoring, where rapid target detection is essential in emergency scenarios. In these environments, Unmanned Aerial Vehicles (UAVs) serve as mobile data ferries to disseminate high-value recognition payloads to distributed ground nodes. However, large payloads are severely constrained by short air-to-ground (A2G) contact windows and packet-level impairments such as path loss, shadowing, and stochastic packet errors (PER).
 
-This paper addresses the problem of minimizing mission-level time-to-detection under realistic PHY-layer constraints. We propose a coordinated dissemination framework that partitions recognition payloads into small fragments of comparable information content. A UAV continuously broadcasts these fragments along a coverage-aware trajectory, while ground nodes cooperatively exchange and fuse missing fragments through localized collaboration. Unlike conventional UAV-only delivery, our design explicitly coordinates fragment broadcasting with edge cooperation under packet-level feasibility.
+This paper addresses the problem of minimizing mission-level time-to-detection under realistic PHY-layer constraints. We propose a coordinated dissemination framework that partitions recognition payloads into small fragments of comparable information content. A UAV continuously broadcasts these fragments (rather than the full payload) along a coverage-aware trajectory, while ground nodes cooperatively exchange and fuse missing evidence through localized collaboration. Unlike conventional UAV-only delivery, our design explicitly coordinates fragment broadcasting with edge cooperation under packet-level feasibility.
 
 Simulation results show that the proposed framework significantly reduces time-to-detection compared to monolithic transmission and UAV-only baselines, particularly under stringent A2G conditions with short contact windows and high packet error rates. The results highlight the value of jointly optimizing fine-grained dissemination, edge cooperation, and PHY-aware communication in UAV-assisted urban sensing systems.
 
@@ -48,28 +48,26 @@ UAV-assisted dissemination, edge cooperation, fragment-based recognition, low-la
 \end{IEEEkeywords}
 \section{Introduction}
 
-In recent years, UAV-assisted IoT applications have developed rapidly and become an important solution in many real-world domains. UAVs serve as flexible mobile platforms that support environmental monitoring, industrial data collection, smart agriculture, and urban intelligent systems. Thanks to their high-altitude flight and wide coverage capability, UAVs enable connectivity with spatially distributed IoT sensor nodes over large areas without relying entirely on fixed infrastructure.
+UAV-assisted IoT systems have emerged as a practical solution in many real-world domains. UAVs serve as flexible mobile platforms that support environmental monitoring, industrial data collection, smart agriculture, and urban intelligent systems. Thanks to their high-altitude flight and wide coverage capability, UAVs enable connectivity with spatially distributed IoT sensor nodes over large areas without relying entirely on fixed infrastructure.
 
-The target detection task is a fundamental problem in UAV-assisted IoT systems, particularly in time-sensitive monitoring scenarios. We consider a sensing region populated by a set of ground nodes $\mathcal{N}$, where a subset of nodes $\mathcal{P} \subseteq \mathcal{N}$ is identified as candidate locations associated with a potential event of interest. Among them, a single unknown node $n^*$ is the one that must accumulate sufficient evidence to trigger detection.
+The target detection task is a fundamental problem in UAV-assisted IoT systems, particularly in time-sensitive monitoring scenarios. We consider a sensing region populated by a set of ground nodes $\mathcal{N}$, where a subset of nodes $\mathcal{P} \subseteq \mathcal{N}$ is identified as candidate nodes associated with a potential event of interest. Among them, a single unknown node $n^*$ is the designated detection node that must accumulate sufficient evidence to trigger detection.
 
 The UAV disseminates recognition data to ground nodes during flight, while nodes can further exchange received information through local cooperation. Each node incrementally builds a confidence score as it collects useful data. The objective is to enable the unknown node $n^*$ to reach a detection threshold as early as possible, under limited air-to-ground contact time and unreliable wireless links.
 
-Traditional methods typically adopt a straightforward approach: the UAV flies close to each node and transmits the entire payload in a single session. However, this strategy requires the UAV to fly slowly or hover for extended periods to guarantee complete data delivery, resulting in significantly prolonged mission completion time. Moreover, realistic physical-layer (PHY) constraints must be considered, such as short air-to-ground contact windows, path loss, shadowing, and stochastic packet errors (PER). These factors not only increase the UAV’s energy consumption but also substantially reduce overall system efficiency. Therefore, a faster and more effective approach is needed.
+Traditional methods typically adopt a straightforward approach: the UAV flies close to each node and transmits the entire payload in a single session. However, this strategy requires the UAV to fly slowly or hover for extended periods to guarantee complete data delivery, which significantly increases mission duration and delays detection. Moreover, realistic physical-layer (PHY) constraints must be considered, such as short air-to-ground contact windows, path loss, shadowing, and stochastic packet errors (PER). These factors not only increase the UAV’s energy consumption but also substantially reduce overall system efficiency. Therefore, a faster and more effective approach is needed.
 
-We propose a new comprehensive coordinated approach. Instead of transmitting a large monolithic payload, the UAV disseminates only a small number of fragments, each carrying comparable recognition value. These fragments are broadcast continuously while the UAV is in motion, combined with an efficient trajectory strategy that maximizes coverage of the target area without unnecessary overlaps. At the same time, the ground IoT nodes collaborate closely through edge fusion and selective fragment exchange. This enables the suspicion node to accumulate sufficient detection evidence much earlier without requiring the UAV to deliver the complete payload to every individual node.
+We propose a coordinated approach in which the UAV broadcasts compact fragments continuously along a coverage-aware path, while ground nodes perform selective edge cooperation to share missing fragments. This design helps the designated detection node accumulate evidence earlier without requiring full payload delivery to every node.
 
-This approach is built upon a clear understanding of the air-to-ground (A2G) channel and realistic PHY constraints. Specifically, the system accounts for UAV-node distance, distance-dependent path loss, shadowing, and fading effects when deciding the timing and manner of fragment transmission, ensuring feasibility at the packet level under harsh urban channel conditions.
+The core ideas include payload fragmentation, cell-based localized cooperation, selective fragment broadcasting along an optimized trajectory, and edge exchange of missing fragments. These components are integrated in one coordination framework to reduce detection time while keeping UAV flight cost low.
 
-The core ideas of the proposed solution include payload fragmentation, organization of nodes into cell layers to support localized cooperation, selective fragment broadcasting along an optimized trajectory, and an edge cooperation mechanism that allows nodes to efficiently exchange missing fragments. These components are tightly integrated within a single coordination framework, significantly reducing target detection time while keeping the UAV’s flight path cost low.
+To the best of our knowledge, no prior work has jointly considered recognition payload fragmentation, coverage-aware UAV trajectory planning, and edge cooperation under realistic packet-level PHY constraints.
 
-To the best of our knowledge, the solution proposed in this paper is the first work that simultaneously integrates three key elements: recognition payload fragmentation, coverage-aware UAV trajectory planning, and edge cooperation under realistic packet-level PHY constraints.
-
-The remainder of the paper is organized as follows. Section~II reviews related work and identifies the research gap. Section~III describes the system model. Section~IV formulates the mission-time minimization problem. Section~V presents the proposed coordination protocol in detail. Section~VI evaluates performance through extensive simulations. Section~VII discusses limitations and future extensions, and Section~VIII concludes the paper.
+The remainder of the paper is organized as follows. Section~II reviews related work and positions our contribution. Section~III describes the system model. Section~IV formulates the mission-time minimization problem. Section~V presents the proposed coordination protocol in detail. Section~VI evaluates performance through extensive simulations. Section~VII discusses limitations and future extensions, and Section~VIII concludes the paper.
 
 \section{Related Work}
 
 \noindent\textbf{UAV-Assisted Dissemination and AoI-Aware Scheduling}
-Recent studies have widely employed UAVs as mobile platforms (data ferries) or aerial base stations to support data collection and dissemination in IoT networks \cite{wei2022uav,nguyen2021uav}. These works primarily focus on optimizing UAV trajectories to improve coverage, Age-of-Information (AoI), or mission completion time \cite{liu2018age,abd2020deep}. However, most approaches assume monolithic payloads and idealized channel models (binary in-range), overlooking realistic physical-layer constraints such as short contact windows and stochastic packet error rates (PER) in urban air-to-ground (A2G) environments. Consequently, these solutions are often unsuitable for transmitting high-quality recognition payloads under harsh channel conditions.
+Recent studies have widely employed UAVs as mobile platforms (data ferries) or aerial base stations to support data collection and dissemination in IoT networks \cite{wei2022uav,nguyen2021uav}. These works primarily focus on optimizing UAV trajectories to improve coverage, Age-of-Information (AoI), or detection latency \cite{liu2018age,abd2020deep}. However, most approaches assume monolithic payloads and idealized channel models (binary in-range), overlooking realistic physical-layer constraints such as short contact windows and stochastic packet error rates (PER) in urban air-to-ground (A2G) environments. Consequently, these solutions are often unsuitable for transmitting high-quality recognition payloads under harsh channel conditions.
 
 \noindent\textbf{Distributed Edge Detection and Cooperative Inference}
 In a parallel line of research, distributed edge inference and cooperative detection aim to enhance detection accuracy through local information exchange and consensus mechanisms \cite{blum2002distributed,ren2023survey}. Recent works have also explored early-exit techniques and confidence-threshold mechanisms to reduce decision latency \cite{teerapittayanon2016branchynet}. While these approaches are effective in environments with stable infrastructure, they typically assume negligible communication overhead and continuous connectivity. In the context of UAV flyovers with extremely short contact durations, these assumptions no longer hold, rendering edge cooperation inefficient or infeasible without proper coordination with the UAV dissemination process.
@@ -94,7 +92,7 @@ Each node can receive fragments from the UAV, exchange information with neighbor
 \noindent\textbf{UAV Mobility and Coverage Model.}
 The UAV flies at a fixed altitude \(h\) and follows a continuous waypoint sequence \(\Pi = \{c_1, c_2, \dots, c_M\}\) at constant speed \(v\) without hovering. Fragments are broadcast \emph{continuously} along the entire trajectory while the UAV is in motion. Coverage at any time \(t\) is determined by the instantaneous position of the UAV and a broadcast radius \(R_b\) derived from the A2G link budget.
 
-Let \(\mathrm{CS}(t) \subseteq \mathcal{P}\) denote the set of suspicious nodes covered by the UAV at time \(t\). The trajectory is planned over a candidate set of locations (e.g., node positions or cell centroids) to maximize coverage efficiency while respecting mobility constraints.
+Let \(\mathrm{CS}(t) \subseteq \mathcal{P}\) denote the set of candidate nodes covered by the UAV at time \(t\). The trajectory is planned over a candidate set of locations (e.g., node positions or cell centroids) to maximize coverage efficiency while respecting mobility constraints.
 
 The instantaneous Euclidean distance between the UAV and node \(n\) at time \(t\) is
 \begin{equation}
@@ -104,7 +102,7 @@ d_n(t) = \sqrt{(x_{\mathrm{uav}}(t) - x_n)^2 + (y_{\mathrm{uav}}(t) - y_n)^2 + h
 \noindent\textbf{Data Dissemination and Cooperation Model.}
 A recognition payload is partitioned into \(K\) fragments. The UAV continuously broadcasts these fragments during flight. Let \(\mathcal{F}_n(t)\) denote the set of fragments successfully received by node \(n\) up to time \(t\).
 
-Ground nodes engage in cooperative exchange (both intra-cell and inter-cell via designated gateways) to share received fragments and accelerate confidence accumulation at the suspicion point. The detailed triggering conditions and exchange protocols are specified in the coordination algorithms presented in Section~V.
+Ground nodes engage in cooperative exchange (both intra-cell and inter-cell via designated gateways) to share received fragments and accelerate confidence accumulation at the designated detection node. The detailed triggering conditions and exchange protocols are specified in the coordination algorithms presented in Section~V.
 
 \noindent\textbf{Fragment and Detection Model.}
 Each fragment \(i\) provides an independent evidence contribution \(p_i \in (0,1)\). 
@@ -133,7 +131,7 @@ where \(L\) is the packet size in bytes \cite{alhourani2014modeling}. A packet i
 Let \(t_{\mathrm{tx}} = 8L / R\) denote the transmission time of one packet, where \(R\) is the data rate. Because the UAV broadcasts continuously while moving, a \emph{contact window} between the UAV and node \(n\) is defined as the maximal continuous time interval during which \(P_{\mathrm{rx}}(t) \ge P_{\mathrm{sens}}\). All fragment deliveries and cooperative exchanges must complete within these valid contact windows. Scheduling decisions therefore incorporate both instantaneous channel feasibility and per-node buffer constraints.
 
 \subsection{Problem Formulation}
-Let \(T_{\mathrm{detect}}\) be the earliest time at which the suspicion point \(n^*\) reaches the alert threshold:
+Let \(T_{\mathrm{detect}}\) be the earliest time at which the designated detection node \(n^*\) reaches the alert threshold:
 \begin{equation}
 T_{\mathrm{detect}} = \inf \{ t \mid C_{n^*}(t) \ge \tau_{\mathrm{alert}} \}.
 \end{equation}
@@ -146,20 +144,20 @@ where \(\Pi\) is the UAV waypoint sequence and \(\mathcal{S}\) is the joint sche
 \section{Proposed Approach}
 
 \noindent\textbf{Overview.}
-The proposed coordinated dissemination framework integrates three tightly coupled modules that operate in a closed loop: (i) coverage-aware UAV trajectory planning, (ii) continuous fragment broadcasting, and (iii) distributed edge cooperation. The base station (BS) first constructs a globally near-optimal UAV path using a greedy maximum-coverage (GMC) heuristic. While the UAV flies along this path, it continuously broadcasts recognition fragments. Ground nodes update their local confidence scores upon successful reception and trigger cooperative exchanges when necessary to accelerate evidence accumulation at the suspicion point \(n^*\).
+The proposed coordinated dissemination framework integrates three tightly coupled modules that operate in a closed loop: (i) coverage-aware UAV trajectory planning, (ii) continuous fragment broadcasting, and (iii) distributed edge cooperation. The base station (BS) first constructs a globally near-optimal UAV path using a greedy maximum-coverage (GMC) heuristic. While the UAV flies along this path, it continuously broadcasts recognition fragments. Ground nodes update their local confidence scores upon successful reception and trigger cooperative exchanges when necessary to accelerate evidence accumulation at the designated detection node \(n^*\).
 
-The framework takes as input the network topology, suspicious-node set \(\mathcal{P}\), threshold parameters \(\tau_{\text{coop}}\) and \(\tau_{\text{alert}}\), and PHY settings. It outputs the UAV waypoint sequence \(\Pi\), the transmission schedule \(\mathcal{S}\), and the mission completion time \(T_{\text{detect}}\). A heuristic design is adopted because the joint optimization of trajectory, scheduling, and random packet outcomes is computationally intractable for real-time missions.
+The framework takes as input the network topology, candidate-node set \(\mathcal{P}\), threshold parameters \(\tau_{\text{coop}}\) and \(\tau_{\text{alert}}\), and PHY settings. It outputs the UAV waypoint sequence \(\Pi\), the transmission schedule \(\mathcal{S}\), and the detection time \(T_{\text{detect}}\). A heuristic design is adopted because the joint optimization of trajectory, scheduling, and random packet outcomes is computationally intractable for real-time missions.
 
 \noindent\textbf{Cell Formation and Local Coordination Structure.}
 
 To support efficient localized cooperation under limited communication range, ground nodes are organized into geographic cells. This cell structure reduces coordination overhead, limits contention, and enables scalable fragment exchange within bounded neighborhoods.
 
-Fig.~\ref{fig:cell_and_tree} illustrates the resulting cell-based topology, where each cell operates as a local coordination domain with a designated leader and gateway nodes for inter-cell communication.
+Fig.~\ref{fig:cell_and_tree} illustrates the cell partitioning, leader election outcome, and gateway-to-gateway inter-cell forwarding links used by the coordination protocol.
 
 The cell formation and leader election procedure is summarized in Algorithm~\ref{alg:cell}. Nodes are grouped based on spatial proximity, and a lightweight distributed selection mechanism is used to assign coordination roles within each cell.
 
 \noindent\textbf{UAV Trajectory Planning (GMC).}
-To achieve efficient spatial coverage with minimal flight distance, we employ a greedy maximum-coverage (GMC) heuristic. Candidate waypoints are selected from node positions and cell centroids. The algorithm iteratively chooses the waypoint that provides the highest coverage gain per unit travel cost while considering cell-level coverage (if a waypoint covers more than a threshold fraction \(\alpha\) of a cell, the entire cell is marked as covered). The resulting trajectory \(\Pi\) balances coverage efficiency and travel cost.
+To achieve efficient spatial coverage with minimal flight distance, we employ a greedy maximum-coverage (GMC) heuristic. Candidate waypoints are selected from node positions and cell centroids. The algorithm iteratively chooses the waypoint that provides the highest coverage gain per unit travel cost while considering cell-level coverage (if a waypoint covers more than a threshold fraction \(\beta\) of a cell, the entire cell is marked as covered). The resulting trajectory \(\Pi\) balances coverage efficiency and travel cost.
 
 The pseudocode of the GMC planner is given in Algorithm~\ref{alg:gmc}.
 
@@ -175,7 +173,7 @@ The complete cooperative exchange logic is detailed in Algorithm~\ref{alg:coop}.
 \caption{End-to-End Coordinated Detection Workflow}
 \label{alg:workflow}
 \begin{algorithmic}[1]
-\Require Topology $\mathcal{G}$, suspicious set $\mathcal{P}$, suspicion point $n^*$, payload $\mathcal{D}$, PHY parameters
+\Require Topology $\mathcal{G}$, candidate-node set $\mathcal{P}$, payload $\mathcal{D}$, PHY parameters; ground-truth detection node $n^*$ (for evaluation)
 \Ensure UAV path $\Pi$, schedule $\mathcal{S}$, detection time $T_{\text{detect}}$
 
 \State \textbf{Initial Setup:} Organize ground nodes into cells $\{\mathcal{C}_i\}$ and elect cell leaders
@@ -187,15 +185,15 @@ The complete cooperative exchange logic is detailed in Algorithm~\ref{alg:coop}.
 
 \For{each UAV waypoint $w \in \Pi$}
     \State Broadcast fragments according to schedule $\mathcal{S}$
-    \For{each node $n$ receiving fragment $f_i$}
-        \State Update confidence $C_n \gets C_n + \Delta(f_i)$
+    \For{each node $n$ receiving new fragment $f_i$ with evidence $p_i$}
+        \State Update confidence $C_n \gets 1-(1-C_n)(1-p_i)$
 
         \If{$C_n \ge \tau_{\text{coop}}$}
             \State Broadcast manifest and request missing fragments from peers
             \State Receive fragments and update $C_n$
         \EndIf
 
-        \If{$n = n^*$ and $C_n \ge \tau_{\text{alert}}$}
+        \If{$n = n^*$ and $C_n \ge \tau_{\text{alert}}$ \Comment{evaluation stopping condition}}
             \State \Return $T_{\text{detect}}$
         \EndIf
     \EndFor
@@ -206,7 +204,7 @@ The complete cooperative exchange logic is detailed in Algorithm~\ref{alg:coop}.
 \begin{figure}
 \centering
 \includegraphics[width=0.85\linewidth]{figures/Beehivedatascheduling-GWsViz.png}
-\caption{Cell coordination and routing.}
+\caption{Cell partitioning, leader election, and gateway-based inter-cell forwarding structure.}
 \label{fig:cell_and_tree}
 \end{figure}
 
@@ -231,7 +229,7 @@ The complete cooperative exchange logic is detailed in Algorithm~\ref{alg:coop}.
 \caption{Coverage-Aware UAV Path Planning (GMC)}
 \label{alg:gmc}
 \begin{algorithmic}[1]
-\Require Candidate set $\mathcal{C}$, suspicious set $\mathcal{P}$
+\Require Candidate set $\mathcal{C}$, candidate-node set $\mathcal{P}$
 \Ensure Ordered waypoint list $\Pi$
 
 \State Initialize $\Pi \gets \emptyset$, $\mathcal{P}_{\text{covered}} \gets \emptyset$
@@ -239,7 +237,7 @@ The complete cooperative exchange logic is detailed in Algorithm~\ref{alg:coop}.
 \While{$\mathcal{P}_{\text{covered}} \neq \mathcal{P}$}
     \For{each candidate $c \in \mathcal{C}$}
         \State Compute coverage gain $G(c)$ over uncovered nodes
-        \If{$c$ covers $> \alpha$ fraction of a cell}
+        \If{$c$ covers $> \beta$ fraction of a cell}
             \State Mark entire cell as covered
         \EndIf
         \State Compute cost $L(c)$ (travel distance)
@@ -256,7 +254,7 @@ The complete cooperative exchange logic is detailed in Algorithm~\ref{alg:coop}.
 \caption{Cooperative Exchange (Intra- and Inter-cell)}
 \label{alg:coop}
 \begin{algorithmic}[1]
-\Require Node $n$, fragment set $\mathcal{F}_n$, thresholds $\tau_{\text{coop}},\tau_{\text{alert}}$, CGW, NGW
+\Require Node $n$, fragment set $\mathcal{F}_n$, thresholds $\tau_{\text{coop}},\tau_{\text{alert}}$, cell gateway (CGW), neighbor-cell gateway (NGW)
 \Ensure Updated fragment sets and confidence
 
 \State Trigger := ( $C_n \ge \tau_{\text{coop}}$ ) 
@@ -268,8 +266,8 @@ The complete cooperative exchange logic is detailed in Algorithm~\ref{alg:coop}.
     \State Update $\mathcal{F}_n$ and $C_n$
 \EndIf
 
-\If{CGW detects stagnation (no new manifests) AND $\exists n: C_n < \tau_{\text{coop}}$}
-    \If{NGW has missing fragments AND target nodes satisfy $C_n < \tau_{\text{alert}}$ (after timeout)}
+\If{cell gateway (CGW) detects stagnation (no new manifests) AND $\exists n: C_n < \tau_{\text{coop}}$}
+    \If{neighbor-cell gateway (NGW) has missing fragments AND target nodes satisfy $C_n < \tau_{\text{alert}}$ (after timeout)}
         \State Request and forward fragments via gateway-to-gateway coordination
         \State Update fragment sets and confidences across cells
     \EndIf
@@ -282,7 +280,7 @@ The complete cooperative exchange logic is detailed in Algorithm~\ref{alg:coop}.
 % - đóng góp mới.
 %
 % A. Algorithm 1 -- End-to-End Workflow (ngắn, 12--20 dòng)
-% Input: topology, suspicious set \mathcal{P}, suspicion point n^*, payload blocks, PHY params
+% Input: topology, candidate-node set \mathcal{P}, designated detection node n^*, payload blocks, PHY params
 % Output: \Pi, \mathcal{S}, T_detect
 % Steps:
 %   1) Initial Setup: tổ chức mạng ground node thành cells
@@ -342,9 +340,9 @@ seeds; reported metrics are aggregated over completed runs.
 Parameter & Symbol & Value \\
 \hline
 \multicolumn{3}{l}{\textit{Topology}} \\
-Network sizes & \(\mathcal{N}\) & 100, 400, 900, 1225 \\
+Network sizes & \(N\) & 100, 400, 900, 1225 \\
 Grid spacing & $s$ & 20~m \\
-Suspicious fraction & \(\mathcal{P}\) & 30\% of nodes \\
+Candidate-node fraction & \(\rho\) & 30\% of nodes \\
 Cell radius & $R_{\text{cell}}$ & 80~m \\
 \hline
 \multicolumn{3}{l}{\textit{UAV}} \\
@@ -368,6 +366,7 @@ Evidence range per fragment & $p_i$ & $[0.1,\,0.9]$ \\
 Master confidence target & $C_{\text{master}}$ & 0.90 \\
 \hline
 \multicolumn{3}{l}{\textit{Thresholds}} \\
+Cell coverage threshold & $\beta$ & 0.30 \\
 Cooperation threshold & $\tau_{\text{coop}}$ & 0.30 \\
 Alert threshold & $\tau_{\text{alert}}$ & 0.75 \\
 Cooperation stagger & --- & 20~ms/hop\\
@@ -378,10 +377,9 @@ Cooperation stagger & --- & 20~ms/hop\\
 \subsection{Metrics}
 To evaluate the effectiveness of the proposed fragment-based cooperative detection and GMC planning, we employ the following metrics:
 \begin{itemize}
-    \item \textbf{Mission Completion Time ($T_{\text{complete}}$)}: The primary metric, defined as the time interval from UAV flight initialization until the designated suspicion point reaches the alert threshold $\tau_{\text{alert}}$.
+    \item \textbf{Detection Time ($T_{\text{detect}}$)}: The primary metric, defined as the time interval from UAV flight initialization until the designated detection node reaches the alert threshold $\tau_{\text{alert}}$.
     \item \textbf{UAV Path Length}: The cumulative distance traveled by the UAV along its waypoint sequence until the mission is completed.
     \item \textbf{Cooperation Gain}: The ratio of fragments received through intra-cell cooperative exchange versus those received directly from UAV broadcasts. This measures the effectiveness of the cell layer in compensating for link failures.
-    \item \textbf{Packet Delivery Ratio (PDR)}: The fraction of successfully received fragment packets over the total number of packets broadcast by the UAV, illustrating the impact of mobility-aware PHY constraints.
 \end{itemize}
 
 \subsection{Results}
@@ -389,7 +387,7 @@ To evaluate the effectiveness of the proposed fragment-based cooperative detecti
 \begin{figure}
     \centering
     \includegraphics[width=1\linewidth]{figures/uav2_completion.png}
-    \caption{Mission completion time (\(T_{\text{complete}}\)) versus network size for different strategies.}
+    \caption{Detection time (\(T_{\text{detect}}\)) versus network size for different strategies.}
     \label{fig:uav2-completion}
 \end{figure}
 
@@ -417,7 +415,7 @@ The perfect-channel variant is used as an upper bound to isolate packet-level im
 
 Regarding UAV trajectory, Fig.~\ref{fig:uav-path-three} shows that coverage-aware (GMC-based) planning produces shorter and more structured paths than NN. The proposed cell-aware variant further reduces travel distance while maintaining effective coverage, improving overall movement efficiency.
 
-The benefit of edge cooperation is illustrated in Fig.~\ref{fig:conf-events-stacked}. The suspicion point can accumulate useful information from neighboring nodes even before direct UAV contact, and a substantial portion of the final confidence comes from shared fragments. This highlights the role of cooperation in amplifying information, especially in larger networks.
+The benefit of edge cooperation is illustrated in Fig.~\ref{fig:conf-events-stacked}. The designated detection node can accumulate useful information from neighboring nodes even before direct UAV contact, and a substantial portion of the final confidence comes from shared fragments. This highlights the role of cooperation in amplifying information, especially in larger networks.
 
 From a system perspective, the results indicate a shift in design strategy: instead of attempting full payload delivery over short and unreliable A2G links, continuous fragment dissemination combined with local cooperation enables steady information accumulation over time.
 
@@ -427,11 +425,9 @@ Overall, the results support the central premise of this work: jointly coordinat
 
 \section{Conclusion}
 
-This paper studied the problem of minimizing time-to-detection in UAV-assisted urban IoT systems under realistic packet-level constraints. We proposed a coordinated framework that jointly integrates payload fragmentation, coverage-aware UAV trajectory planning, and edge cooperation. By enabling continuous fragment dissemination and local exchange among nodes, the system accelerates confidence accumulation at the true detection point without requiring full payload delivery.
+This paper addressed low-latency detection in UAV-assisted urban IoT under packet-level A2G constraints. We proposed a coordinated framework that combines fragment-based dissemination, coverage-aware trajectory planning, and cell-based edge cooperation. Across network scales, the results show improved detection-time behavior over nearest-neighbor delivery, together with more structured UAV mobility and clear cooperation contributions in event-level confidence accumulation.
 
-Built upon a realistic A2G channel model with path loss, shadowing, fading, and packet errors, the proposed design is suitable for harsh urban environments with limited contact time. Simulation results demonstrate that the framework significantly reduces detection latency and UAV travel cost compared to conventional approaches, while highlighting the importance of cooperation in mitigating unreliable links.
-
-Overall, the results show that jointly optimizing dissemination, mobility, and cooperation is key to achieving low-latency detection. Future work includes adaptive trajectory design, optimized cooperation control, multi-UAV extensions, and integration with real edge-AI models.
+Future work will focus on adaptive online coordination policies that jointly tune trajectory and cooperation decisions under time-varying channel conditions.
 
 
 %\section*{Acknowledgment}
