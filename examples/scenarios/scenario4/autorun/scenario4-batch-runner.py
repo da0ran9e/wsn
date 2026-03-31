@@ -711,7 +711,7 @@ def main() -> int:
     )
     parser.add_argument("--repo-root", default=".", help="Path to ns-3 repo root")
     parser.add_argument("--rounds", type=int, default=100, help="Number of rounds to run")
-    parser.add_argument("--start-seed", type=int, default=60, help="Starting random seed")
+    parser.add_argument("--start-seed", type=int, default=1, help="Starting random seed")
     parser.add_argument("--start-run-id", type=int, default=1, help="Starting runId")
     parser.add_argument(
         "--sim-time",

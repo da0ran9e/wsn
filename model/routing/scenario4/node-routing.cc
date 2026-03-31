@@ -24,6 +24,7 @@
 #include <cmath>
 #include <iomanip>
 #include <limits>
+#include <unordered_set>
 
 namespace ns3 {
 
@@ -115,6 +116,166 @@ SchedulePeriodicUav2CompletionCheck(double intervalSec, double endTimeSec)
 
     Simulator::Schedule(Seconds(intervalSec),
                         &SchedulePeriodicUav2CompletionCheck,
+                        intervalSec,
+                        endTimeSec);
+}
+
+void
+TryMarkUav1CompletionFromHoveringTrace(const char* source)
+{
+    if (g_uav1MissionCompleted)
+    {
+        return;
+    }
+
+    const uint32_t suspiciousSeedNodeId = GetSuspiciousSeedNodeId();
+    if (suspiciousSeedNodeId == std::numeric_limits<uint32_t>::max())
+    {
+        return;
+    }
+
+    const auto& hoveringTrace = ::ns3::wsn::scenario4::params::g_uav1HoveringNodeIds;
+    const bool foundSuspiciousPoint =
+        std::find(hoveringTrace.begin(), hoveringTrace.end(), suspiciousSeedNodeId) != hoveringTrace.end();
+    if (!foundSuspiciousPoint)
+    {
+        return;
+    }
+
+    g_uav1MissionCompleted = true;
+    g_uav1MissionCompletedTime = Simulator::Now().GetSeconds();
+
+    NS_LOG_WARN("[UAV1-MISSION] Completed from hovering trace"
+                << " | source=" << source
+                << " | suspiciousSeedNodeId=" << suspiciousSeedNodeId
+                << " | traceSize=" << hoveringTrace.size()
+                << " | t=" << g_uav1MissionCompletedTime << "s");
+
+    if (ns3::wsn::scenario4::params::g_resultFileStream)
+    {
+        *ns3::wsn::scenario4::params::g_resultFileStream
+            << "\n[EVENT] " << g_uav1MissionCompletedTime
+            << " | event=UAV1MissionComplete"
+            << " | reason=SuspiciousPointInHoveringTrace"
+            << " | source=" << source
+            << " | suspiciousSeedNodeId=" << suspiciousSeedNodeId
+            << std::endl;
+    }
+
+    if (g_uav1MissionCompleted && g_uav2MissionCompleted)
+    {
+        constexpr double kEarlyStopDelay = 1.0;
+        NS_LOG_WARN("[EARLY-STOP] Both UAV missions complete, stopping simulation in "
+                    << kEarlyStopDelay << "s");
+        Simulator::Stop(Seconds(kEarlyStopDelay));
+    }
+}
+
+void
+ExpandUav1HoveringNodeIdsOnce(const char* source)
+{
+    if (g_uav1MissionCompleted)
+    {
+        return;
+    }
+
+    const auto snapshot = ::ns3::wsn::scenario4::params::g_uav1HoveringNodeIds;
+    if (snapshot.empty())
+    {
+        return;
+    }
+
+    std::unordered_set<uint32_t> currentIds(snapshot.begin(), snapshot.end());
+    std::vector<uint32_t> additions;
+    additions.reserve(snapshot.size());
+
+    for (uint32_t nodeId : snapshot)
+    {
+        auto it = g_groundNetworkPerNode.find(nodeId);
+        if (it == g_groundNetworkPerNode.end() || it->second.neighbors.empty())
+        {
+            continue;
+        }
+
+        const auto& neighbors = it->second.neighbors;
+        uint32_t selectedNeighbor = *neighbors.begin();
+        bool foundUnseenNeighbor = false;
+
+        for (uint32_t neighborId : neighbors)
+        {
+            if (!currentIds.count(neighborId))
+            {
+                selectedNeighbor = neighborId;
+                foundUnseenNeighbor = true;
+                break;
+            }
+        }
+
+        additions.push_back(selectedNeighbor);
+        if (foundUnseenNeighbor)
+        {
+            currentIds.insert(selectedNeighbor);
+        }
+    }
+
+    if (additions.empty())
+    {
+        return;
+    }
+
+    auto& hoveringTrace = ::ns3::wsn::scenario4::params::g_uav1HoveringNodeIds;
+    hoveringTrace.insert(hoveringTrace.end(), additions.begin(), additions.end());
+
+    NS_LOG_INFO("[UAV1-HOVER-EXPAND] source=" << source
+                << " | baseSize=" << snapshot.size()
+                << " | added=" << additions.size()
+                << " | totalSize=" << hoveringTrace.size()
+                << " | t=" << Simulator::Now().GetSeconds() << "s");
+
+    if (ns3::wsn::scenario4::params::g_resultFileStream)
+    {
+        *ns3::wsn::scenario4::params::g_resultFileStream
+            << "\n[EVENT] " << Simulator::Now().GetSeconds()
+            << " | event=UAV1HoverExpand"
+            << " | source=" << source
+            << " | baseSize=" << snapshot.size()
+            << " | added=" << additions.size()
+            << " | totalSize=" << hoveringTrace.size()
+            << std::endl;
+    }
+
+    TryMarkUav1CompletionFromHoveringTrace(source);
+}
+
+void
+SchedulePeriodicUav1HoverExpansion(double intervalSec, double endTimeSec)
+{
+    if (g_uav1MissionCompleted || intervalSec <= 0.0)
+    {
+        return;
+    }
+
+    const double nowSec = Simulator::Now().GetSeconds();
+    if (endTimeSec > 0.0 && nowSec > endTimeSec)
+    {
+        return;
+    }
+
+    ExpandUav1HoveringNodeIdsOnce("PeriodicExpand");
+
+    if (g_uav1MissionCompleted)
+    {
+        return;
+    }
+
+    const double nextSec = nowSec + intervalSec;
+    if (endTimeSec > 0.0 && nextSec > endTimeSec)
+    {
+        return;
+    }
+
+    Simulator::Schedule(Seconds(intervalSec),
+                        &SchedulePeriodicUav1HoverExpansion,
                         intervalSec,
                         endTimeSec);
 }
@@ -266,6 +427,12 @@ void TickBaseStationControl()
 void InitializeUavFlight()
 {
     NS_LOG_FUNCTION_NOARGS();
+
+    g_uav1MissionCompleted = false;
+    g_uav1MissionCompletedTime = -1.0;
+
+    // Reset runtime trace for UAV1 hovered node IDs.
+    ::ns3::wsn::scenario4::params::g_uav1HoveringNodeIds.clear();
     
     const auto& uavPaths = GetUavFlightPaths();
     
@@ -278,20 +445,6 @@ void InitializeUavFlight()
     // UAV1 is defined as the first UAV in the planned path map.
     const uint32_t uav1NodeId = uavPaths.begin()->first;
 
-    // Suspicious point node position (seed node selected by BS).
-    Vector suspiciousPointPos{0.0, 0.0, 0.0};
-    bool hasSuspiciousPointPos = false;
-    const uint32_t suspiciousSeedNodeId = GetSuspiciousSeedNodeId();
-    if (suspiciousSeedNodeId != std::numeric_limits<uint32_t>::max())
-    {
-        auto itState = g_groundNetworkPerNode.find(suspiciousSeedNodeId);
-        if (itState != g_groundNetworkPerNode.end())
-        {
-            suspiciousPointPos = itState->second.position;
-            hasSuspiciousPointPos = true;
-        }
-    }
-
     // Fallback checker:
     // periodically evaluate seed-node confidence to avoid missing UAV2 completion
     // when threshold crossing happens via non-direct reception paths.
@@ -303,6 +456,17 @@ void InitializeUavFlight()
                         &SchedulePeriodicUav2CompletionCheck,
                         kUav2CompletionCheckIntervalSec,
                         checkEndTimeSec);
+
+    // UAV1 hovering-trace expansion:
+    // repeat every 2.7 * UAV1 hovering time.
+    const double uav1HoverExpandIntervalSec = 2.7 * ::ns3::wsn::scenario4::params::UAV1_HOVER_TIME;
+    if (uav1HoverExpandIntervalSec > 0.0)
+    {
+        Simulator::Schedule(Seconds(uav1HoverExpandIntervalSec),
+                            &SchedulePeriodicUav1HoverExpansion,
+                            uav1HoverExpandIntervalSec,
+                            checkEndTimeSec);
+    }
     
     NS_LOG_INFO("[UAV-FLIGHT] Initializing flight for " << uavPaths.size() << " UAVs");
 
@@ -355,8 +519,7 @@ void InitializeUavFlight()
                 }
 
                 const bool isUav1 = (uavNodeId == uav1NodeId);
-                const bool hasPreviousWaypoint = (i > 0);
-                const Waypoint prevWp = hasPreviousWaypoint ? path.waypoints[i - 1] : wp;
+                const uint32_t hoverNodeId = wp.hoverNodeId;
                 const uint32_t cycleNum = repeatIdx + 1;
 
                 if (waypointMobility)
@@ -371,10 +534,8 @@ void InitializeUavFlight()
                                      i,
                                      cycleNum,
                                      isUav1,
-                                     hasPreviousWaypoint,
-                                     prevWp,
-                                     hasSuspiciousPointPos,
-                                     suspiciousPointPos]() {
+                                     hoverNodeId
+                                     ]() {
                     Ptr<Node> node = NodeList::GetNode(uavNodeId);
                     if (!node) return;
                     
@@ -396,44 +557,16 @@ void InitializeUavFlight()
                             << " | event=UAVWaypointArrival"
                             << " | nodeId=" << uavNodeId
                             << " | cycle=" << cycleNum
+                            << " | hoverNodeId=" << hoverNodeId
                             << " | pos=(" << actualPos.x << "," << actualPos.y << "," << actualPos.z << ")"
                             << std::endl;
                     }
 
-                    // UAV1 mission completion: considered done right after leaving suspicious point.
-                    // Only relevant for UAV1 single-pass path.
-                    if (!g_uav1MissionCompleted && isUav1 && hasPreviousWaypoint && hasSuspiciousPointPos)
+                    // Global trace: record UAV1 hovered node id at each waypoint arrival.
+                    if (isUav1 && hoverNodeId != std::numeric_limits<uint32_t>::max())
                     {
-                        constexpr double kPosEps = 1.0;
-                        const bool prevIsSuspiciousPoint =
-                            (std::abs(prevWp.position.x - suspiciousPointPos.x) <= kPosEps) &&
-                            (std::abs(prevWp.position.y - suspiciousPointPos.y) <= kPosEps);
-
-                        if (prevIsSuspiciousPoint)
-                        {
-                            g_uav1MissionCompleted = true;
-                            g_uav1MissionCompletedTime = Simulator::Now().GetSeconds();
-
-                            NS_LOG_WARN("[UAV1-MISSION] Completed after leaving suspicious point"
-                                        << " | t=" << g_uav1MissionCompletedTime << "s");
-
-                            if (ns3::wsn::scenario4::params::g_resultFileStream)
-                            {
-                                *ns3::wsn::scenario4::params::g_resultFileStream
-                                    << "\n[EVENT] " << g_uav1MissionCompletedTime
-                                    << " | event=UAV1MissionComplete"
-                                    << " | reason=LeftSuspiciousPoint"
-                                    << std::endl;
-                            }
-
-                            if (g_uav1MissionCompleted && g_uav2MissionCompleted)
-                            {
-                                constexpr double kEarlyStopDelay = 1.0;
-                                NS_LOG_WARN("[EARLY-STOP] Both UAV missions complete, stopping simulation in "
-                                            << kEarlyStopDelay << "s");
-                                Simulator::Stop(Seconds(kEarlyStopDelay));
-                            }
-                        }
+                        ::ns3::wsn::scenario4::params::g_uav1HoveringNodeIds.push_back(hoverNodeId);
+                        TryMarkUav1CompletionFromHoveringTrace("WaypointArrival");
                     }
                 });
             }

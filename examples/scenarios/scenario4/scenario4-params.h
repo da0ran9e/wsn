@@ -32,8 +32,8 @@ extern std::map<int32_t, std::map<int32_t, std::vector<uint32_t>>> g_cellGateway
 // ===== SCENARIO PARAMETERS =====
 
 // Grid parameters
-constexpr uint32_t DEFAULT_GRID_SIZE = 20;
-constexpr double DEFAULT_SPACING = 20.0;
+constexpr uint32_t DEFAULT_GRID_SIZE = 10;
+constexpr double DEFAULT_SPACING = 45.0;
 
 // Base station location (far from network to avoid interference)
 constexpr double BS_POSITION_X = -100.0;
@@ -100,7 +100,7 @@ constexpr double BS_INIT_UAV_PATROL_ALTITUDE = DEFAULT_UAV_ALTITUDE;
 // UAV1 (Greedy Nearest Neighbor): hover time is computed dynamically from
 // master-file transmission time in base-station-node.cc.
 constexpr double UAV1_SPEED = 20.0;  // m/s - faster flight speed
-constexpr double UAV1_HOVER_TIME = 2.0;  // seconds (fallback/default)
+constexpr double UAV1_HOVER_TIME = 3.0;  // seconds (fallback/default)
 
 // UAV2 (Greedy Set Cover): Slower speed + no hover time
 // UAV2 broadcasts while flying (no hover).
@@ -164,6 +164,9 @@ constexpr uint32_t BS_INIT_FRAGMENT_GENERATION_COUNT = DEFAULT_NUM_FRAGMENTS;
 // Example4.cc will open/close this stream
 // Other files can write directly: if (g_resultFileStream) *g_resultFileStream << "text";
 extern std::ofstream* g_resultFileStream;
+
+// Global runtime trace: UAV1 hovered node IDs in waypoint order.
+extern std::vector<uint32_t> g_uav1HoveringNodeIds;
 
 } // namespace params
 } // namespace scenario4

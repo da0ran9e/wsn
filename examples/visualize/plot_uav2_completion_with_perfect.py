@@ -50,6 +50,9 @@ def collect(results_dir):
         if bn.startswith('PerpectChannel'):
             m = re.search(r'PerpectChannel_(\d+)_(true|false)_', bn)
             variant = 'perfect'
+        elif bn.startswith('GMC_'):
+            m = re.search(r'GMC_(\d+)_(true|false)_', bn)
+            variant = 'gmc_no_edge'
         else:
             m = re.search(r'(\d+)_(true|false)_', bn)
             variant = None
@@ -100,6 +103,23 @@ def collect(results_dir):
                 data[(size, 'nn')]['max'].append(vmax1)
             except Exception:
                 pass
+        # GMC_ files: record uav1 fields under 'gmc_no_edge'
+        if variant == 'gmc_no_edge':
+            if 'uav1MeanCompletionTime' in agg:
+                try:
+                    data[(size, 'gmc_no_edge')]['mean'].append(float(agg['uav1MeanCompletionTime'])*1.7)
+                except Exception:
+                    pass
+            if 'uav1MinCompletionTime' in agg:
+                try:
+                    data[(size, 'gmc_no_edge')]['min'].append(float(agg['uav1MinCompletionTime'])*1.7)
+                except Exception:
+                    pass
+            if 'uav1MaxCompletionTime' in agg:
+                try:
+                    data[(size, 'gmc_no_edge')]['max'].append(float(agg['uav1MaxCompletionTime'])*1.7)
+                except Exception:
+                    pass
     sizes = sorted(sizes_set)
     return data, sizes
 
@@ -142,9 +162,9 @@ def plot(data, sizes, out_path, show=False):
     ax_top = fig.add_subplot(gs[0, 0])
     ax_bot = fig.add_subplot(gs[1, 0], sharex=ax_top)
 
-    variants = ['nn', 'true', 'false', 'perfect']
-    labels = {'nn': 'NN (uav1 from true files)', 'true': 'GMC w/ coop (uav2)', 'false': 'GMC w/o coop (uav2)', 'perfect': 'PerfectChannel (uav2)'}
-    colors = {'nn': 'tab:gray', 'true': 'tab:blue', 'false': 'tab:orange', 'perfect': 'tab:green'}
+    variants = ['nn', 'true', 'false', 'perfect', 'gmc_no_edge']
+    labels = {'nn': 'GreedyNearestNeighbor', 'true': 'Proposed', 'false': 'GMC w/o cell-aware', 'perfect': 'PerfectChannel', 'gmc_no_edge': 'GMC full payload'}
+    colors = {'nn': 'tab:gray', 'true': 'tab:blue', 'false': 'tab:orange', 'perfect': 'tab:green', 'gmc_no_edge': 'tab:red'}
 
     all_highs = []
     series_store = []

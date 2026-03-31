@@ -20,6 +20,9 @@ namespace params
 // Other files can write directly: if (g_resultFileStream) *g_resultFileStream << "content";
 std::ofstream* g_resultFileStream = nullptr;
 
+// Global runtime trace for UAV1 hovering node IDs.
+std::vector<uint32_t> g_uav1HoveringNodeIds;
+
 } // namespace params
 } // namespace scenario4
 } // namespace wsn

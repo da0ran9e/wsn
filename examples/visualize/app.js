@@ -44,8 +44,8 @@ const WORLD_PADDING_M = 80;
 const HEX_GRID_OFFSET_BASE = 10000;
 const HEX_GRID_OFFSET_MULTIPLIER = 100;
 const HEX_GRID_OFFSET_EXTRA = 1000;
-const NODE_RADIUS = 10;
-const UAV_EVENT_SCALE = 3;
+const NODE_RADIUS = 20;
+const UAV_EVENT_SCALE = 6;
 
 const state = {
   scale: 1,
@@ -770,7 +770,7 @@ function renderUavPathLayer(world, uavPaths) {
 
   for (let i = 0; i < uavPaths.length; i++) {
     const path = uavPaths[i];
-    // Temporarily hide the first UAV path in the list (index 0)
+    // Temporarily hide the first UAV path (UAV1)
     if (i === 0) {
       continue;
     }
@@ -786,7 +786,7 @@ function renderUavPathLayer(world, uavPaths) {
       const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
       dot.setAttribute('cx', p.x);
       dot.setAttribute('cy', p.y);
-      dot.setAttribute('r', 3.5);
+      dot.setAttribute('r', 7);
       dot.setAttribute('class', `uav-waypoint uav-waypoint-${colorIndex}`);
       uavPathLayer.appendChild(dot);
     }

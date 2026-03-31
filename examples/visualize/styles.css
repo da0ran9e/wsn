@@ -206,8 +206,8 @@ button:hover {
 
 .node-dot {
   fill: transparent;
-  stroke: rgba(255, 199, 94, 0.98);
-  stroke-width: 2;
+  stroke: rgba(0, 0, 0, 0.98);
+  stroke-width: 4;
 }
 
 .node-label {
@@ -342,7 +342,7 @@ button:hover {
 
 .uav-path {
   fill: none;
-  stroke-width: 3;
+  stroke-width: 6;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
@@ -361,18 +361,18 @@ button:hover {
 
 /* Make UAV2 path more prominent */
 .uav-path-1 {
-  stroke-width: 5;
+  stroke-width: 10;
   stroke-opacity: 1;
 }
 
 /* Slightly enlarge UAV2 waypoints */
 .uav-waypoint-1 {
   transform-origin: center;
-  transform: scale(1.25);
+  transform: scale(2.5);
 }
 
 .uav-waypoint {
-  stroke-width: 1.5;
+  stroke-width: 3.0;
 }
 
 .uav-waypoint-0 {

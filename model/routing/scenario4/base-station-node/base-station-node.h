@@ -14,6 +14,7 @@
 #include <set>
 #include <vector>
 #include <functional>
+#include <limits>
 
 namespace ns3 {
 namespace wsn {
@@ -48,6 +49,9 @@ struct Waypoint
 {
     Vector position;
     double arrivalTime;
+    // Optional: node ID associated with the waypoint hovering target.
+    // UINT32_MAX means unspecified (e.g., centroid waypoint).
+    uint32_t hoverNodeId = std::numeric_limits<uint32_t>::max();
 };
 
 /**

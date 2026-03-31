@@ -1052,68 +1052,292 @@ PlanUavFlightPathsForBsInit()
     const double uav2Speed = ::ns3::wsn::scenario4::params::UAV2_SPEED;
     const double uav2HoverTime = ::ns3::wsn::scenario4::params::UAV2_HOVER_TIME;
 
-    // ===== UAV 1: Greedy Nearest Neighbor (visit every node) =====
+    // ===== UAV 1: Greedy Max-Coverage with Cost (same GMC logic as UAV2, but no coop expansion) =====
     const uint32_t uav1NodeId = uavNodeIds[0];
     Ptr<Node> uav1Node = NodeList::GetNode(uav1NodeId);
     Ptr<MobilityModel> uav1Mobility = uav1Node->GetObject<MobilityModel>();
     const Vector uav1StartPos = uav1Mobility->GetPosition();
 
     UavFlightPath path1;
-    std::set<uint32_t> visitedNodes;
-    Vector currentPos = uav1StartPos;
-    double currentTime = 0.0;
+    Vector currentPos1 = uav1StartPos;
+    double currentTime1 = 0.0;
+    const bool uav1GmcCoop = false;
     
-    NS_LOG_INFO("[BS-UAV-PATH] UAV1: Planning path using Greedy Nearest Neighbor"
+    NS_LOG_INFO("[BS-UAV-PATH] UAV1: Planning path using Greedy Max-Coverage (GMCCoop=false)"
                 << " | suspiciousNodes=" << suspiciousNodePositions.size()
                 << " | masterFileBytes=" << masterFileBytes
                 << " | radioBitrate=" << ::ns3::wsn::scenario4::params::RADIO_BITRATE_BPS << "bps"
                 << " | computedHoverTxTime=" << std::fixed << std::setprecision(3) << uav1HoverTime << "s"
                 << " | startPos=(" << std::fixed << std::setprecision(1) 
                 << uav1StartPos.x << "," << uav1StartPos.y << "," << uav1StartPos.z << ")");
-    
-    // Visit all suspicious nodes using nearest neighbor heuristic
-    while (visitedNodes.size() < suspiciousNodePositions.size())
+
+    std::vector<Vector> suspiciousPoints1;
+    std::vector<int32_t> suspiciousPointCellIds1;
+    std::vector<uint32_t> suspiciousNodeIds1;
+    suspiciousPoints1.reserve(suspiciousNodePositions.size());
+    suspiciousPointCellIds1.reserve(suspiciousNodePositions.size());
+    suspiciousNodeIds1.reserve(suspiciousNodePositions.size());
+    for (const auto& [nodeId, pos] : suspiciousNodePositions)
     {
-        // Find nearest unvisited node
-        double minDistance = std::numeric_limits<double>::max();
-        uint32_t nearestNodeId = std::numeric_limits<uint32_t>::max();
-        Vector nearestPos;
-        
-        for (const auto& [nodeId, pos] : suspiciousNodePositions)
+        suspiciousPoints1.push_back(pos);
+        suspiciousNodeIds1.push_back(nodeId);
+        auto stateIt = g_groundNetworkPerNode.find(nodeId);
+        suspiciousPointCellIds1.push_back(
+            stateIt != g_groundNetworkPerNode.end() ? stateIt->second.cellId : -1);
+    }
+
+    std::vector<Vector> candidates1 = suspiciousPoints1;
+    if (::ns3::wsn::scenario4::params::UAV2_USE_NEW_ALGO &&
+        ::ns3::wsn::scenario4::params::UAV2_USE_CENTROIDS &&
+        !suspiciousPoints1.empty())
+    {
+        const uint32_t n = static_cast<uint32_t>(suspiciousPoints1.size());
+        const uint32_t defaultK = std::max<uint32_t>(1, std::min<uint32_t>(
+            ::ns3::wsn::scenario4::params::UAV2_NUM_CENTROIDS_MAX,
+            n / 4));
+        const uint32_t k = std::min<uint32_t>(defaultK, n);
+
+        if (k > 0)
         {
-            if (visitedNodes.count(nodeId) > 0)
-                continue;
-            
-            double dist = helper::CalculateDistance(currentPos.x, currentPos.y, pos.x, pos.y);
-            if (dist < minDistance)
+            std::vector<Vector> centers;
+            centers.reserve(k);
+            for (uint32_t i = 0; i < k; ++i)
             {
-                minDistance = dist;
-                nearestNodeId = nodeId;
-                nearestPos = pos;
+                const uint32_t idx = (i * n) / k;
+                centers.push_back(suspiciousPoints1[idx]);
+            }
+
+            std::vector<uint32_t> assignment(n, 0);
+            const uint32_t maxIter = ::ns3::wsn::scenario4::params::UAV2_KMEANS_MAX_ITER;
+            for (uint32_t iter = 0; iter < maxIter; ++iter)
+            {
+                for (uint32_t p = 0; p < n; ++p)
+                {
+                    double bestD2 = std::numeric_limits<double>::max();
+                    uint32_t bestC = 0;
+                    for (uint32_t c = 0; c < k; ++c)
+                    {
+                        const double dx = suspiciousPoints1[p].x - centers[c].x;
+                        const double dy = suspiciousPoints1[p].y - centers[c].y;
+                        const double d2 = dx * dx + dy * dy;
+                        if (d2 < bestD2)
+                        {
+                            bestD2 = d2;
+                            bestC = c;
+                        }
+                    }
+                    assignment[p] = bestC;
+                }
+
+                std::vector<double> sumX(k, 0.0);
+                std::vector<double> sumY(k, 0.0);
+                std::vector<uint32_t> count(k, 0);
+                for (uint32_t p = 0; p < n; ++p)
+                {
+                    const uint32_t c = assignment[p];
+                    sumX[c] += suspiciousPoints1[p].x;
+                    sumY[c] += suspiciousPoints1[p].y;
+                    count[c]++;
+                }
+
+                double maxShift = 0.0;
+                for (uint32_t c = 0; c < k; ++c)
+                {
+                    if (count[c] == 0)
+                    {
+                        continue;
+                    }
+                    const Vector newCenter(sumX[c] / count[c], sumY[c] / count[c], altitude);
+                    const double shift = helper::CalculateDistance(
+                        centers[c].x, centers[c].y, newCenter.x, newCenter.y);
+                    maxShift = std::max(maxShift, shift);
+                    centers[c] = newCenter;
+                }
+
+                if (maxShift < 1e-3)
+                {
+                    break;
+                }
+            }
+
+            candidates1.insert(candidates1.end(), centers.begin(), centers.end());
+        }
+    }
+
+    constexpr double kCellCoverageExpansionThreshold1 = 0.30;
+    std::map<int32_t, std::vector<uint32_t>> cellToSuspiciousIndices1;
+    for (uint32_t ni = 0; ni < suspiciousPoints1.size(); ++ni)
+    {
+        const int32_t cid = suspiciousPointCellIds1[ni];
+        if (cid >= 0)
+        {
+            cellToSuspiciousIndices1[cid].push_back(ni);
+        }
+    }
+
+    std::vector<std::vector<uint32_t>> coverageSets1(candidates1.size());
+    for (uint32_t ci = 0; ci < candidates1.size(); ++ci)
+    {
+        std::set<uint32_t> directlyCovered;
+        for (uint32_t ni = 0; ni < suspiciousPoints1.size(); ++ni)
+        {
+            const double dist = helper::CalculateDistance(
+                candidates1[ci].x, candidates1[ci].y, suspiciousPoints1[ni].x, suspiciousPoints1[ni].y);
+            if (dist <= broadcastRadius)
+            {
+                directlyCovered.insert(ni);
             }
         }
-        
-        if (nearestNodeId == std::numeric_limits<uint32_t>::max())
-            break;
-        
-        currentTime += minDistance / uav1Speed;
-        
-        Waypoint wp;
-        wp.position = Vector(nearestPos.x, nearestPos.y, altitude);
-        wp.arrivalTime = currentTime;
-        path1.waypoints.push_back(wp);
-        
-        currentTime += uav1HoverTime;
-        visitedNodes.insert(nearestNodeId);
-        currentPos = nearestPos;
-        
-        NS_LOG_DEBUG("[BS-UAV-PATH] UAV1 Waypoint " << path1.waypoints.size() 
-                     << " | node=" << nearestNodeId
-                     << " | pos=(" << nearestPos.x << "," << nearestPos.y << ")"
-                     << " | dist=" << minDistance << "m");
+
+        std::set<uint32_t> expandedSet = directlyCovered;
+        if (uav1GmcCoop)
+        {
+            std::map<int32_t, uint32_t> directHitPerCell;
+            for (uint32_t ni : directlyCovered)
+            {
+                const int32_t cid = suspiciousPointCellIds1[ni];
+                if (cid >= 0)
+                {
+                    directHitPerCell[cid]++;
+                }
+            }
+            for (const auto& [cid, hitCount] : directHitPerCell)
+            {
+                auto cellIt = cellToSuspiciousIndices1.find(cid);
+                if (cellIt == cellToSuspiciousIndices1.end())
+                {
+                    continue;
+                }
+                const double cellSize = static_cast<double>(cellIt->second.size());
+                if (cellSize > 0.0 &&
+                    static_cast<double>(hitCount) / cellSize > kCellCoverageExpansionThreshold1)
+                {
+                    for (uint32_t ni : cellIt->second)
+                    {
+                        expandedSet.insert(ni);
+                    }
+                }
+            }
+        }
+
+        coverageSets1[ci].assign(expandedSet.begin(), expandedSet.end());
     }
-    
-    path1.totalTime = currentTime;
+
+    std::vector<bool> covered1(suspiciousPoints1.size(), false);
+    uint32_t coveredCount1 = 0;
+    while (coveredCount1 < suspiciousPoints1.size())
+    {
+        int bestCandidate = -1;
+        uint32_t bestGain = 0;
+        double bestScore = -1.0;
+        double bestTravelDistance = std::numeric_limits<double>::max();
+
+        for (uint32_t ci = 0; ci < candidates1.size(); ++ci)
+        {
+            uint32_t gain = 0;
+            for (uint32_t idx : coverageSets1[ci])
+            {
+                if (!covered1[idx])
+                {
+                    gain++;
+                }
+            }
+
+            if (gain == 0)
+            {
+                continue;
+            }
+
+            const double travelDistance = helper::CalculateDistance(
+                currentPos1.x, currentPos1.y, candidates1[ci].x, candidates1[ci].y);
+            const double travelTime = travelDistance / std::max(0.001, uav1Speed);
+            const double costRaw = ::ns3::wsn::scenario4::params::UAV2_USE_TRAVEL_TIME
+                                       ? travelTime
+                                       : travelDistance;
+            const double alpha = std::max(0.0, ::ns3::wsn::scenario4::params::UAV2_ALPHA);
+            const double denom = std::pow(std::max(0.0, costRaw), alpha) +
+                                 ::ns3::wsn::scenario4::params::UAV2_SCORE_EPS;
+            const double score = static_cast<double>(gain) / denom;
+
+            const bool betterScore = (score > bestScore + 1e-12);
+            const bool tieScore = std::abs(score - bestScore) <= 1e-12;
+            const bool betterGainOnTie = tieScore && (gain > bestGain);
+            const bool betterCostOnTie = tieScore && (gain == bestGain) &&
+                                         (travelDistance < bestTravelDistance);
+
+            if (bestCandidate < 0 || betterScore || betterGainOnTie || betterCostOnTie)
+            {
+                bestCandidate = static_cast<int>(ci);
+                bestGain = gain;
+                bestScore = score;
+                bestTravelDistance = travelDistance;
+            }
+        }
+
+        if (bestCandidate < 0 || bestGain == 0)
+        {
+            NS_LOG_WARN("[BS-UAV-PATH] UAV1: No more nodes can be covered, but "
+                        << (suspiciousPoints1.size() - coveredCount1)
+                        << " nodes remain uncovered");
+            break;
+        }
+
+        const Vector bestPos = candidates1[bestCandidate];
+        const double travelTime = bestTravelDistance / std::max(0.001, uav1Speed);
+        currentTime1 += travelTime;
+
+        uint32_t hoverNodeId = std::numeric_limits<uint32_t>::max();
+        if (static_cast<uint32_t>(bestCandidate) < suspiciousNodeIds1.size())
+        {
+            hoverNodeId = suspiciousNodeIds1[bestCandidate];
+        }
+        else
+        {
+            double bestNodeDist = std::numeric_limits<double>::max();
+            for (uint32_t ni = 0; ni < suspiciousPoints1.size(); ++ni)
+            {
+                const double d = helper::CalculateDistance(
+                    bestPos.x, bestPos.y, suspiciousPoints1[ni].x, suspiciousPoints1[ni].y);
+                if (d < bestNodeDist)
+                {
+                    bestNodeDist = d;
+                    hoverNodeId = suspiciousNodeIds1[ni];
+                }
+            }
+        }
+
+        Waypoint wp1;
+        wp1.position = Vector(bestPos.x, bestPos.y, altitude);
+        wp1.arrivalTime = currentTime1;
+        wp1.hoverNodeId = hoverNodeId;
+        path1.waypoints.push_back(wp1);
+
+        // Keep UAV1 hover-at-waypoint behavior.
+        currentTime1 += uav1HoverTime;
+
+        uint32_t actualCovered = 0;
+        for (uint32_t idx : coverageSets1[bestCandidate])
+        {
+            if (!covered1[idx])
+            {
+                covered1[idx] = true;
+                coveredCount1++;
+                actualCovered++;
+            }
+        }
+
+        currentPos1 = bestPos;
+
+        NS_LOG_DEBUG("[BS-UAV-PATH] UAV1 Waypoint " << path1.waypoints.size()
+                     << " | hoverNodeId=" << hoverNodeId
+                     << " | pos=(" << bestPos.x << "," << bestPos.y << ")"
+                     << " | covered=" << actualCovered << " new nodes"
+                     << " | totalCovered=" << coveredCount1 << "/" << suspiciousPoints1.size()
+                     << " | dist=" << bestTravelDistance << "m"
+                     << " | score=" << bestScore);
+    }
+
+    path1.totalTime = currentTime1;
     SetUavFlightPath(uav1NodeId, path1);
     
     // Calculate total path distance for UAV1
@@ -1131,7 +1355,8 @@ PlanUavFlightPathsForBsInit()
                 << " | totalDistance=" << totalDistance1 << "m"
                 << " | flightSpeed=" << uav1Speed << "m/s"
                 << " | hoverTime=" << uav1HoverTime << "s/waypoint"
-                << " | avgSpeed=" << (totalDistance1 / (path1.totalTime - path1.waypoints.size() * uav1HoverTime)) << "m/s");
+                << " | avgSpeed=" << (totalDistance1 / (path1.totalTime - path1.waypoints.size() * uav1HoverTime)) << "m/s"
+                << " | GMCCoop=" << (uav1GmcCoop ? "true" : "false"));
 
     double avgDenom1 = path1.totalTime - path1.waypoints.size() * uav1HoverTime;
     if (avgDenom1 <= 0.0)
@@ -1462,12 +1687,13 @@ PlanUavFlightPathsForBsInit()
     {
         *ns3::wsn::scenario4::params::g_resultFileStream
             << "[UAV-PATH] " << uav1NodeId
-            << " strategy=GreedyNearestNeighbor"
+            << " strategy=GreedyMaxCoverageCostNoCoop"
             << " totalDistance=" << std::fixed << std::setprecision(1) << totalDistance1 << "m"
             << " totalTime=" << path1.totalTime << "s"
             << " flightSpeed=" << uav1Speed << "m/s"
             << " hoverTime=" << uav1HoverTime << "s"
             << " avgSpeed=" << (totalDistance1 / avgDenom1) << "m/s"
+            << " GMCCoop=" << (uav1GmcCoop ? "true" : "false")
             << " waypoints:";
         for (const auto& wp : path1.waypoints)
         {

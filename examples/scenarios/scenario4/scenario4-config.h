@@ -37,7 +37,7 @@ struct Scenario4RunConfig
     uint32_t numUavs = params::DEFAULT_NUM_UAVS;
     
     // Reproducibility
-    uint32_t seed = 130;
+    uint32_t seed = 10;
     uint32_t runId = 1;
 
     // Base station position
