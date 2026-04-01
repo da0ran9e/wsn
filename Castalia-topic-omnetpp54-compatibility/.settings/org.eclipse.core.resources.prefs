@@ -1,0 +1,5 @@
+eclipse.preferences.version=1
+encoding//src/node/communication/routing/cellularRouting/CellularRouting.cc=UTF-8
+encoding//src/node/communication/routing/gstebRouting/GSTEBRouting.cc=UTF-8
+encoding//src/node/communication/routing/gstebRouting/GSTEBRouting.h=UTF-8
+encoding//src/node/communication/routing/ssCellularRouting/SSCellulerRouting.cc=UTF-8
