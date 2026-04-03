@@ -39,3 +39,6 @@
 
 # debug information files
 *.dwo
+docs/paper/.DS_Store
+.DS_Store
+.DS_Store
