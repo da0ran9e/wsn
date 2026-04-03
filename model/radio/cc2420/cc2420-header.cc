@@ -61,28 +61,42 @@ Cc2420Header::GetSerializedSize() const
 void
 Cc2420Header::Serialize(Buffer::Iterator start) const
 {
-    // TODO: Implement serialization
-    // Write frame control
-    // Write sequence number
-    // Write PAN IDs
-    // Write addresses
+    start.WriteHtolsbU16(m_frameControl);
+    start.WriteU8(m_sequenceNumber);
+    start.WriteHtolsbU16(m_destinationPanId);
+
+    uint8_t addrBuf[2];
+    m_destinationAddress.CopyTo(addrBuf);
+    start.Write(addrBuf, 2);
+
+    start.WriteHtolsbU16(m_sourcePanId);
+
+    m_sourceAddress.CopyTo(addrBuf);
+    start.Write(addrBuf, 2);
 }
 
 uint32_t
 Cc2420Header::Deserialize(Buffer::Iterator start)
 {
-    // TODO: Implement deserialization
-    // Read frame control
-    // Read sequence number
-    // Read PAN IDs
-    // Read addresses
+    m_frameControl = start.ReadLsbtohU16();
+    m_sequenceNumber = start.ReadU8();
+    m_destinationPanId = start.ReadLsbtohU16();
+
+    uint8_t addrBuf[2];
+    start.Read(addrBuf, 2);
+    m_destinationAddress.CopyFrom(addrBuf);
+
+    m_sourcePanId = start.ReadLsbtohU16();
+
+    start.Read(addrBuf, 2);
+    m_sourceAddress.CopyFrom(addrBuf);
+
     return GetSerializedSize();
 }
 
 void
 Cc2420Header::Print(std::ostream& os) const
 {
-    // TODO: Implement print
     os << "Cc2420Header(FCF=" << std::hex << m_frameControl << std::dec
        << " DSN=" << (uint16_t)m_sequenceNumber
        << " DestAddr=" << m_destinationAddress
@@ -265,5 +279,5 @@ Cc2420Header::GetSourceAddress() const
     return m_sourceAddress;
 }
 
-} // namespace cc2420
+} // namespace wsn
 } // namespace ns3

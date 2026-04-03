@@ -7,7 +7,6 @@
 
 namespace ns3 {
 namespace wsn {
-namespace propagation {
 
 class Cc2420SpectrumPropagationLossModel : public SpectrumPropagationLossModel
 {
@@ -99,6 +98,5 @@ private:
   mutable Ptr<NormalRandomVariable> m_fastFadingGroundRng;
 };
 
-} // namespace propagation
 } // namespace wsn
 } // namespace ns3

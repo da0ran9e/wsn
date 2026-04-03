@@ -162,7 +162,7 @@ Cc2420Phy::Cc2420Phy()
         m_shadowingMixedRng->SetAttribute("Variance", DoubleValue(m_shadowingSigmaMixedDb * m_shadowingSigmaMixedDb));
         m_shadowingNlosRng->SetAttribute("Variance", DoubleValue(m_shadowingSigmaNlosDb * m_shadowingSigmaNlosDb));
 
-        m_propagationLossModel = CreateObject<propagation::Cc2420SpectrumPropagationLossModel>();
+        m_propagationLossModel = CreateObject<Cc2420SpectrumPropagationLossModel>();
 
         // Create a default error model (enabled by default)
         m_errorModel = CreateObject<Cc2420ErrorModel>();
@@ -211,8 +211,17 @@ void
 Cc2420Phy::StartRx(Ptr<SpectrumSignalParameters> params)
 {
     NS_LOG_FUNCTION(this << params);
-    EmitDebugTrace("StartRx", nullptr);
-    // TODO: Implement RX signal processing
+
+    if (!params)
+    {
+        return;
+    }
+
+    // Handle the signal start immediately
+    ProcessSignalStart(params);
+
+    // Schedule signal end when the duration expires
+    Simulator::Schedule(params->duration, &Cc2420Phy::ProcessSignalEnd, this);
 }
 
 Ptr<NetDevice>
@@ -236,7 +245,8 @@ Cc2420Phy::GetRxSpectrumModel() const
 void
 Cc2420Phy::AddRxAntenna(Ptr<AntennaModel> a)
 {
-    // TODO: Handle multiple RX antennas if needed
+    // CC2420 has a single integrated antenna; additional antennas are not supported
+    NS_LOG_WARN("Cc2420Phy::AddRxAntenna: CC2420 uses single antenna, ignoring");
 }
 
 // =============================================================================
@@ -248,14 +258,37 @@ Cc2420Phy::TransmitPacket(Ptr<Packet> packet, Time duration)
 {
     NS_LOG_FUNCTION(this << packet << duration);
     EmitDebugTrace("TransmitPacket", packet);
-    // TODO: Implement TX
+
+    if (m_currentState == PHY_TX)
+    {
+        NS_LOG_WARN("TransmitPacket called while already TX");
+        return;
+    }
+
+    DoStateChange(PHY_TX);
+
+    m_txCompleteEvent = Simulator::Schedule(duration,
+                                            &Cc2420Phy::TxComplete, this);
 }
 
 bool
 Cc2420Phy::SetState(PhyState newState)
 {
     NS_LOG_FUNCTION(this << GetStateName(newState));
-    // TODO: Implement state validation and transition
+
+    // Validate transition: TX/RX can only be interrupted via SWITCHING
+    if (m_currentState == PHY_TX && newState != PHY_SWITCHING && newState != PHY_IDLE)
+    {
+        NS_LOG_WARN("Invalid state transition: TX → " << GetStateName(newState));
+        return false;
+    }
+    if (m_currentState == PHY_RX && newState != PHY_SWITCHING && newState != PHY_IDLE)
+    {
+        NS_LOG_WARN("Invalid state transition: RX → " << GetStateName(newState));
+        return false;
+    }
+
+    DoStateChange(newState);
     return true;
 }
 
@@ -291,14 +324,24 @@ bool
 Cc2420Phy::PerformCCA()
 {
     NS_LOG_FUNCTION(this);
-    // TODO: Implement CCA logic
-    return true;
+
+    // Channel is busy if total received power is above CCA threshold
+    const bool channelClear = (m_totalPowerDbm < m_ccaThresholdDbm);
+    NS_LOG_DEBUG("CCA: totalPower=" << m_totalPowerDbm
+                 << " dBm, threshold=" << m_ccaThresholdDbm
+                 << " dBm → " << (channelClear ? "CLEAR" : "BUSY"));
+
+    if (!m_plmeCcaConfirmCallback.IsNull())
+    {
+        m_plmeCcaConfirmCallback(channelClear ? 0 : 1);
+    }
+
+    return channelClear;
 }
 
 double
 Cc2420Phy::GetRSSI() const
 {
-    // TODO: Calculate RSSI from received signals
     return m_totalPowerDbm;
 }
 
@@ -327,12 +370,12 @@ Cc2420Phy::GetRxSensitivity() const
 }
 
 void
-Cc2420Phy::SetPropagationLossModel(Ptr<propagation::Cc2420SpectrumPropagationLossModel> model)
+Cc2420Phy::SetPropagationLossModel(Ptr<Cc2420SpectrumPropagationLossModel> model)
 {
     m_propagationLossModel = model;
 }
 
-Ptr<propagation::Cc2420SpectrumPropagationLossModel>
+Ptr<Cc2420SpectrumPropagationLossModel>
 Cc2420Phy::GetPropagationLossModel() const
 {
     return m_propagationLossModel;
@@ -549,22 +592,86 @@ Cc2420Phy::SetDebugPacketTraceCallback(DebugPacketTraceCallback callback)
 void
 Cc2420Phy::DoStateChange(PhyState newState)
 {
-    NS_LOG_FUNCTION(this << GetStateName(newState));
-    // TODO: Implement state change logic
+    NS_LOG_FUNCTION(this << GetStateName(m_currentState) << "->" << GetStateName(newState));
+
+    PhyState oldState = m_currentState;
+    m_previousState = oldState;
+    m_currentState = newState;
+    m_stateStartTime = Simulator::Now();
+
+    if (!m_stateChangeCallback.IsNull())
+    {
+        m_stateChangeCallback(oldState, newState);
+    }
+
+    NS_LOG_DEBUG("[PHY] state: " << GetStateName(oldState)
+                 << " → " << GetStateName(newState)
+                 << " @ " << Simulator::Now().GetSeconds() << "s");
 }
 
 void
 Cc2420Phy::TxComplete()
 {
     NS_LOG_FUNCTION(this);
-    // TODO: Handle TX completion
+    EmitDebugTrace("TxComplete", nullptr);
+
+    DoStateChange(PHY_IDLE);
+
+    if (!m_pdDataConfirmCallback.IsNull())
+    {
+        m_pdDataConfirmCallback(0); // 0 = success
+    }
 }
 
 void
 Cc2420Phy::RxComplete()
 {
     NS_LOG_FUNCTION(this);
-    // TODO: Handle RX completion
+    EmitDebugTrace("RxComplete", nullptr);
+
+    // Find the primary received signal (highest power)
+    if (m_receivedSignals.empty())
+    {
+        DoStateChange(PHY_IDLE);
+        return;
+    }
+
+    auto bestIt = m_receivedSignals.begin();
+    for (auto it = m_receivedSignals.begin(); it != m_receivedSignals.end(); ++it)
+    {
+        if (it->powerDbm > bestIt->powerDbm)
+        {
+            bestIt = it;
+        }
+    }
+
+    const ReceivedSignal& sig = *bestIt;
+
+    if (IsPacketDestroyed(sig))
+    {
+        NS_LOG_DEBUG("[PHY] RxComplete: packet destroyed by interference");
+        DoStateChange(PHY_IDLE);
+        return;
+    }
+
+    if (sig.powerDbm < m_rxSensitivityDbm)
+    {
+        NS_LOG_DEBUG("[PHY] RxComplete: signal below sensitivity");
+        DoStateChange(PHY_IDLE);
+        return;
+    }
+
+    const double snrDb = sig.powerDbm - m_noiseFloorDbm;
+    const double snrClamped = std::max(0.0, std::min(30.0, snrDb));
+    const uint8_t lqi = static_cast<uint8_t>(std::round((snrClamped / 30.0) * 255.0));
+
+    DoStateChange(PHY_IDLE);
+
+    // Forward to MAC via callback — packet reference not tracked in skeleton
+    if (!m_pdDataIndicationCallback.IsNull())
+    {
+        m_pdDataIndicationCallback(nullptr, sig.powerDbm, lqi);
+    }
 }
 
 void
@@ -572,7 +679,43 @@ Cc2420Phy::ProcessSignalStart(Ptr<SpectrumSignalParameters> params)
 {
     NS_LOG_FUNCTION(this << params);
     EmitDebugTrace("ProcessSignalStart", nullptr);
-    // TODO: Implement signal start processing
+
+    if (!params)
+    {
+        return;
+    }
+
+    // Compute received power from spectrum values
+    double rxPowerW = 0.0;
+    if (params->psd)
+    {
+        for (auto it = params->psd->ConstBandsBegin(); it != params->psd->ConstBandsEnd(); ++it)
+        {
+            const std::size_t idx = it - params->psd->ConstBandsBegin();
+            rxPowerW += (*(params->psd))[idx] * (it->fh - it->fl);
+        }
+    }
+
+    // Convert to dBm
+    const double rxPowerDbm = (rxPowerW > 0.0)
+        ? (10.0 * std::log10(rxPowerW * 1000.0))
+        : m_noiseFloorDbm;
+
+    ReceivedSignal sig;
+    sig.sourceNodeId = 0;
+    sig.powerDbm = rxPowerDbm;
+    sig.currentInterference = 0.0;
+    sig.maxInterference = 0.0;
+    sig.bitErrors = 0;
+    sig.startTime = Simulator::Now();
+
+    m_receivedSignals.push_back(sig);
+    UpdateInterference();
+
+    if (m_currentState == PHY_IDLE && rxPowerDbm >= m_rxSensitivityDbm)
+    {
+        DoStateChange(PHY_RX);
+    }
 }
 
 void
@@ -580,14 +723,51 @@ Cc2420Phy::ProcessSignalEnd()
 {
     NS_LOG_FUNCTION(this);
     EmitDebugTrace("ProcessSignalEnd", nullptr);
-    // TODO: Implement signal end processing
+
+    if (!m_receivedSignals.empty())
+    {
+        m_receivedSignals.erase(m_receivedSignals.begin());
+    }
+    UpdateInterference();
+
+    if (m_currentState == PHY_RX && m_receivedSignals.empty())
+    {
+        RxComplete();
+    }
 }
 
 void
 Cc2420Phy::UpdateInterference()
 {
     NS_LOG_FUNCTION(this);
-    // TODO: Update interference levels
+
+    if (m_receivedSignals.empty())
+    {
+        m_totalPowerDbm = m_noiseFloorDbm;
+        return;
+    }
+
+    // Sum all received power linearly then convert back to dBm
+    double totalPowerW = 0.0;
+    for (const auto& sig : m_receivedSignals)
+    {
+        totalPowerW += std::pow(10.0, (sig.powerDbm - 30.0) / 10.0); // dBm → W
+    }
+
+    m_totalPowerDbm = (totalPowerW > 0.0)
+        ? (10.0 * std::log10(totalPowerW) + 30.0)  // W → dBm
+        : m_noiseFloorDbm;
+
+    // Update interference for each signal: interference = total - own signal
+    for (auto& sig : m_receivedSignals)
+    {
+        const double ownPowerW = std::pow(10.0, (sig.powerDbm - 30.0) / 10.0);
+        const double intfPowerW = std::max(0.0, totalPowerW - ownPowerW);
+        sig.currentInterference = (intfPowerW > 0.0)
+            ? (10.0 * std::log10(intfPowerW) + 30.0)
+            : (m_noiseFloorDbm - 40.0);
+        sig.maxInterference = std::max(sig.maxInterference, sig.currentInterference);
+    }
 }
 
 double
@@ -616,5 +796,5 @@ Cc2420Phy::EmitDebugTrace(const std::string& eventName, Ptr<const Packet> packet
     }
 }
 
-} // namespace cc2420
+} // namespace wsn
 } // namespace ns3

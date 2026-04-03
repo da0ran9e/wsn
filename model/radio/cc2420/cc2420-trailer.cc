@@ -57,24 +57,21 @@ Cc2420Trailer::GetSerializedSize() const
 void
 Cc2420Trailer::Serialize(Buffer::Iterator start) const
 {
-    // TODO: Implement serialization
-    // Write FCS (2 bytes)
-    // Write LQI (1 byte)
+    start.WriteHtolsbU16(m_fcs);
+    start.WriteU8(m_lqi);
 }
 
 uint32_t
 Cc2420Trailer::Deserialize(Buffer::Iterator start)
 {
-    // TODO: Implement deserialization
-    // Read FCS (2 bytes)
-    // Read LQI (1 byte)
+    m_fcs = start.ReadLsbtohU16();
+    m_lqi = start.ReadU8();
     return GetSerializedSize();
 }
 
 void
 Cc2420Trailer::Print(std::ostream& os) const
 {
-    // TODO: Implement print
     os << "Cc2420Trailer(FCS=" << std::hex << m_fcs << std::dec
        << " LQI=" << (uint16_t)m_lqi << ")";
 }
@@ -111,5 +108,5 @@ Cc2420Trailer::GetLinkQualityIndicator() const
     return m_lqi;
 }
 
-} // namespace cc2420
+} // namespace wsn
 } // namespace ns3

@@ -169,7 +169,7 @@ Cc2420Mac::McpsDataRequest(Ptr<Packet> packet, Mac16Address destAddr, bool reque
 
         Ptr<MobilityModel> txMob = m_phy->GetMobility();
         Ptr<MobilityModel> rxMob = peer->m_phy->GetMobility();
-        Ptr<propagation::Cc2420SpectrumPropagationLossModel> propagation =
+        Ptr<Cc2420SpectrumPropagationLossModel> propagation =
             peer->m_phy->GetPropagationLossModel();
         if (!txMob || !rxMob || !propagation)
         {
@@ -326,54 +326,155 @@ void
 Cc2420Mac::CcaConfirmCallback(int result)
 {
     NS_LOG_FUNCTION(this << result);
-    // TODO: Handle CCA result
+    // Called asynchronously by PHY after PerformCCA() when CCA runs in non-blocking mode.
+    // In the current design PerformCCA() is synchronous, so this callback is a fallback
+    // for future spectrum-based CCA integration.
+    if (m_macState == MAC_CCA)
+    {
+        HandleCCAResult(result);
+    }
 }
 
 void
 Cc2420Mac::TxConfirmCallback(int status)
 {
     NS_LOG_FUNCTION(this << status);
-    // TODO: Handle TX completion
+    // Called by PHY when a TransmitPacket duration expires (TxComplete → PdDataConfirmCallback).
+    // AttemptTransmission already schedules its own completion; this handles the PHY-driven path.
+    if (m_macState == MAC_SENDING)
+    {
+        if (status == 0) // success
+        {
+            m_txCount++;
+            EmitDebugTrace("TxConfirm:Success", m_currentPacket);
+        }
+        else
+        {
+            m_txFailureCount++;
+            EmitDebugTrace("TxConfirm:Failure", m_currentPacket);
+        }
+        ClearCurrentPacket();
+        if (!m_mcpsDataConfirmCallback.IsNull())
+        {
+            m_mcpsDataConfirmCallback(status);
+        }
+    }
 }
 
 // =============================================================================
-// CSMA-CA Algorithm
+// CSMA-CA Algorithm (Unslotted IEEE 802.15.4)
 // =============================================================================
 
 void
 Cc2420Mac::StartCSMACA()
 {
     NS_LOG_FUNCTION(this);
-    // TODO: Initialize CSMA-CA parameters
-    // NB = 0, BE = macMinBE, CW = 1
+
+    m_NB = 0;
+    m_BE = m_config.macMinBE;
+    m_CW = 1;
+    m_macState = MAC_CSMA_BACKOFF;
+
+    m_backoffEvent = Simulator::Schedule(CalculateBackoffDelay(),
+                                         &Cc2420Mac::BackoffExpired, this);
 }
 
 void
 Cc2420Mac::BackoffExpired()
 {
     NS_LOG_FUNCTION(this);
-    // TODO: Handle backoff expiration
+    DoCCA();
 }
 
 void
 Cc2420Mac::DoCCA()
 {
     NS_LOG_FUNCTION(this);
-    // TODO: Request CCA from PHY
+    m_macState = MAC_CCA;
+
+    if (m_phy)
+    {
+        // CCA result is returned synchronously (or via callback)
+        const bool clear = m_phy->PerformCCA();
+        HandleCCAResult(clear ? 0 : 1);
+    }
+    else
+    {
+        // No PHY: assume clear
+        HandleCCAResult(0);
+    }
 }
 
 void
 Cc2420Mac::HandleCCAResult(int result)
 {
     NS_LOG_FUNCTION(this << result);
-    // TODO: Process CCA result
+
+    const bool channelClear = (result == 0);
+
+    if (channelClear)
+    {
+        // Channel clear: transmit immediately
+        AttemptTransmission();
+    }
+    else
+    {
+        // Channel busy: back off and retry
+        m_NB++;
+        m_BE = std::min(static_cast<uint8_t>(m_BE + 1), m_config.macMaxBE);
+
+        if (m_NB > m_config.macMaxCSMABackoffs)
+        {
+            NS_LOG_DEBUG("CSMA-CA: exceeded max backoffs, drop packet");
+            m_txFailureCount++;
+            if (!m_mcpsDataConfirmCallback.IsNull())
+            {
+                m_mcpsDataConfirmCallback(1); // failure
+            }
+            ClearCurrentPacket();
+            return;
+        }
+
+        m_macState = MAC_CSMA_BACKOFF;
+        m_backoffEvent = Simulator::Schedule(CalculateBackoffDelay(),
+                                             &Cc2420Mac::BackoffExpired, this);
+    }
 }
 
 void
 Cc2420Mac::AttemptTransmission()
 {
     NS_LOG_FUNCTION(this);
-    // TODO: Send current packet
+
+    if (!m_currentPacket)
+    {
+        NS_LOG_WARN("AttemptTransmission: no current packet");
+        return;
+    }
+
+    m_macState = MAC_SENDING;
+    EmitDebugTrace("AttemptTransmission", m_currentPacket);
+
+    // Calculate transmission duration: (size * 8 bits) / 250 kbps
+    const uint32_t totalBytes = m_currentPacket->GetSize();
+    const double dataRateBps = 250000.0;
+    const Time txDuration = Seconds(static_cast<double>(totalBytes * 8u) / dataRateBps);
+
+    if (m_phy)
+    {
+        m_phy->TransmitPacket(m_currentPacket, txDuration);
+    }
+
+    // Confirm TX success after air time
+    m_txEvent = Simulator::Schedule(txDuration, [this]() {
+        m_txCount++;
+        EmitDebugTrace("TxDone", m_currentPacket);
+        ClearCurrentPacket();
+        if (!m_mcpsDataConfirmCallback.IsNull())
+        {
+            m_mcpsDataConfirmCallback(0); // success
+        }
+    });
 }
 
 // =============================================================================
@@ -405,17 +506,34 @@ Cc2420Mac::SetDebugPacketTraceCallback(DebugPacketTraceCallback callback)
 Time
 Cc2420Mac::CalculateBackoffDelay()
 {
-    // Unslotted CSMA-CA: random(0, 2^BE - 1) unit backoff periods
-    // Unit backoff period = 20 symbols = 320 microseconds (for 2.4 GHz)
-    // TODO: Implement random backoff calculation
-    return MilliSeconds(1);
+    // Unslotted CSMA-CA: random(0, 2^BE - 1) × aUnitBackoffPeriod
+    // aUnitBackoffPeriod = 20 symbols = 320 µs at 250 kbps / 4 bits-per-symbol
+    const uint32_t maxBackoff = (1u << m_BE) - 1u;
+    Ptr<UniformRandomVariable> rng = CreateObject<UniformRandomVariable>();
+    const uint32_t backoffUnits = static_cast<uint32_t>(rng->GetInteger(0, maxBackoff));
+    return MicroSeconds(backoffUnits * 320);
 }
 
 void
 Cc2420Mac::HandleAckPacket(Ptr<Packet> packet)
 {
     NS_LOG_FUNCTION(this << packet);
-    // TODO: Implement ACK handling
+
+    if (m_macState != MAC_ACK_PENDING)
+    {
+        return;
+    }
+
+    m_ackWaitEvent.Cancel();
+    EmitDebugTrace("AckReceived", packet);
+    m_txCount++;
+
+    ClearCurrentPacket();
+
+    if (!m_mcpsDataConfirmCallback.IsNull())
+    {
+        m_mcpsDataConfirmCallback(0); // success
+    }
 }
 
 void
@@ -435,5 +553,5 @@ Cc2420Mac::EmitDebugTrace(const std::string& eventName, Ptr<const Packet> packet
     }
 }
 
-} // namespace cc2420
+} // namespace wsn
 } // namespace ns3

@@ -297,7 +297,8 @@ void
 Cc2420NetDevice::TxCompleteFromMac(int status)
 {
     NS_LOG_FUNCTION(this << status);
-    // TODO: Handle TX completion if needed
+    NS_LOG_DEBUG("TxComplete from MAC: status=" << status);
+    // Upper-layer TX notifications go here when routing layer hooks are added
 }
 
 void

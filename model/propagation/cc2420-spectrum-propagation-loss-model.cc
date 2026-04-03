@@ -12,14 +12,13 @@
 
 namespace ns3 {
 namespace wsn {
-namespace propagation {
 
 NS_LOG_COMPONENT_DEFINE("Cc2420SpectrumPropagationLossModel");
 
 TypeId
 Cc2420SpectrumPropagationLossModel::GetTypeId()
 {
-  static TypeId tid = TypeId("ns3::wsn::propagation::Cc2420SpectrumPropagationLossModel")
+  static TypeId tid = TypeId("ns3::wsn::Cc2420SpectrumPropagationLossModel")
                             .SetParent<SpectrumPropagationLossModel>()
                             .SetGroupName("Cc2420")
                             .AddConstructor<Cc2420SpectrumPropagationLossModel>()
@@ -487,6 +486,5 @@ Cc2420SpectrumPropagationLossModel::DoAssignStreams(int64_t stream)
   return 9;
 }
 
-} // namespace propagation
 } // namespace wsn
 } // namespace ns3

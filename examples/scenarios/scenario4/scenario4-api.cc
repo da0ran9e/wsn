@@ -335,8 +335,8 @@ Scenario4Runner::InstallProtocolStack()
     {
         NetDeviceContainer uavDevices = cc2420.Install(m_uavNodes);
 
-        Ptr<propagation::Cc2420SpectrumPropagationLossModel> propagationModel =
-            CreateObject<propagation::Cc2420SpectrumPropagationLossModel>();
+        Ptr<Cc2420SpectrumPropagationLossModel> propagationModel =
+            CreateObject<Cc2420SpectrumPropagationLossModel>();
 
         auto bindPropagation = [&propagationModel](const NetDeviceContainer& devices) {
             for (uint32_t i = 0; i < devices.GetN(); ++i)
@@ -364,8 +364,8 @@ Scenario4Runner::InstallProtocolStack()
     }
     else
     {
-        Ptr<propagation::Cc2420SpectrumPropagationLossModel> propagationModel =
-            CreateObject<propagation::Cc2420SpectrumPropagationLossModel>();
+        Ptr<Cc2420SpectrumPropagationLossModel> propagationModel =
+            CreateObject<Cc2420SpectrumPropagationLossModel>();
 
         for (uint32_t i = 0; i < groundDevices.GetN(); ++i)
         {

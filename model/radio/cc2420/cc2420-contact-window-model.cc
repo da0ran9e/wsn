@@ -127,7 +127,7 @@ Cc2420ContactWindowModel::HasContactForPacket(Ptr<const Cc2420Phy> txPhy,
 
     Ptr<const MobilityModel> txMob = txPhy->GetMobility();
     Ptr<const MobilityModel> rxMob = rxPhy->GetMobility();
-    Ptr<propagation::Cc2420SpectrumPropagationLossModel> propagation = rxPhy->GetPropagationLossModel();
+    Ptr<Cc2420SpectrumPropagationLossModel> propagation = rxPhy->GetPropagationLossModel();
     if (!txMob || !rxMob || !propagation)
     {
         return true;

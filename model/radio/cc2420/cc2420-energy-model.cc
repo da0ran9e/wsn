@@ -148,7 +148,9 @@ void
 Cc2420EnergyModel::ChangeState(int newState)
 {
     NS_LOG_FUNCTION(this << newState);
-    // TODO: Implement device state change handling
+
+    PhyState phyState = static_cast<PhyState>(newState);
+    HandlePhyStateChange(m_currentState, phyState);
 }
 
 void
@@ -247,5 +249,5 @@ Cc2420EnergyModel::EmitDebugTrace(const std::string& eventName, Ptr<const Packet
     }
 }
 
-} // namespace cc2420
+} // namespace wsn
 } // namespace ns3

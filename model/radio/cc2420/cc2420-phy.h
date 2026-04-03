@@ -36,10 +36,8 @@ class NetDevice;
 
 namespace wsn
 {
-namespace propagation
-{
+
 class Cc2420SpectrumPropagationLossModel;
-}
 
 /**
  * @ingroup cc2420
@@ -219,12 +217,12 @@ class Cc2420Phy : public SpectrumPhy
     /**
      * Set propagation interaction model used by PHY fast-path reception evaluation.
      */
-    void SetPropagationLossModel(Ptr<propagation::Cc2420SpectrumPropagationLossModel> model);
+    void SetPropagationLossModel(Ptr<Cc2420SpectrumPropagationLossModel> model);
 
     /**
      * Get current propagation interaction model used by PHY.
      */
-    Ptr<propagation::Cc2420SpectrumPropagationLossModel> GetPropagationLossModel() const;
+    Ptr<Cc2420SpectrumPropagationLossModel> GetPropagationLossModel() const;
 
     /**
      * @brief Attach a BER/PER error model.
@@ -418,7 +416,7 @@ class Cc2420Phy : public SpectrumPhy
     Ptr<NormalRandomVariable> m_shadowingNlosRng;
 
     // External propagation interaction model (separated module)
-    Ptr<propagation::Cc2420SpectrumPropagationLossModel> m_propagationLossModel;
+    Ptr<Cc2420SpectrumPropagationLossModel> m_propagationLossModel;
 
     // BER / PER error model — applied after path-loss check
     Ptr<Cc2420ErrorModel> m_errorModel;
