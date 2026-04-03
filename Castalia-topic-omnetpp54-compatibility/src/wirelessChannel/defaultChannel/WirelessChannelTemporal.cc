@@ -109,7 +109,7 @@ channelTemporalModel::channelTemporalModel(const char *file, cRNG *rng)
 						/ signalVariationResolution) + 1;
 				param_count++;
 			} else if (strncmp(ct, CORR_TIME, strlen(CORR_TIME)) == 0) {
-				t.setDelimiter(",");
+				t.setDelimiterChars(",");
 				std::vector < std::string > v = t.asVector();
 				numOfCorrelationTimes = v.size();
 				if (numOfCorrelationTimes == 0) {

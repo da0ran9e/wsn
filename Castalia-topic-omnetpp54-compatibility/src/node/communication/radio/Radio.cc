@@ -228,8 +228,8 @@ void Radio::handleMessage(cMessage * msg)
 				if (endingSignal->bitErrors <= maxErrorsAllowed(endingSignal->encoding)) {
 					// decapsulate the packet and add the RSSI and LQI fields
 					MacPacket *macPkt = check_and_cast<MacPacket*>(wcMsg->decapsulate());
-					macPkt->getMacRadioInfoExchange().RSSI = readRSSI();
-					macPkt->getMacRadioInfoExchange().LQI = endingSignal->power_dBm - endingSignal->maxInterference;
+					macPkt->getMacRadioInfoExchangeForUpdate().RSSI = readRSSI();
+					macPkt->getMacRadioInfoExchangeForUpdate().LQI = endingSignal->power_dBm - endingSignal->maxInterference;
 					sendDelayed(macPkt, PROCESSING_DELAY, "toMacModule");
 					// collect stats
 					if (endingSignal->maxInterference == RXmode->noiseFloor) {

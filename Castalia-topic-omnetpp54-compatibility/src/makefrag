@@ -1,4 +1,4 @@
 #
-# Use the older message compiler. New compiler was introduced in OMNeT++ 5.3
+# OMNeT++ 6.x: --msg4 is no longer supported, use default msg6 mode
 #
-MSGC:=$(MSGC) --msg4
+# MSGC:=$(MSGC) --msg4

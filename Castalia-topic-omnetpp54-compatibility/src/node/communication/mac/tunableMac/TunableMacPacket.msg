@@ -10,18 +10,18 @@
 //*                                                                          *  
 //****************************************************************************/
 
-cplusplus {{
-#include "node/communication/mac/MacPacket_m.h"
-}}
+import node.communication.mac.MacPacket;
 
-class MacPacket;
-
-enum TunableMacFrameTypeDef {
-	DATA_FRAME = 1;
-	BEACON_FRAME = 2;
-}
+// Sửa đổi 1: Thêm các loại frame mới và dùng tên enum nhất quán
+enum TunableMacFrameType {
+    DATA_FRAME = 0;
+    BEACON_FRAME = 1;   // Giữ lại để không gây lỗi, dù không còn được sử dụng tích cực
+    RTS_FRAME = 2;      // Thêm mới
+    CTS_FRAME = 3;      // Thêm mới
+    ACK_FRAME = 4;      // Thêm mới
+}; // Sửa đổi 2: Thêm dấu chấm phẩy (;) để kết thúc khai báo enum
 
 packet TunableMacPacket extends MacPacket {
-	int frameType enum (TunableMacFrameTypeDef);
+    int frameType @enum(TunableMacFrameType); // Sửa đổi 3: Dùng cú pháp @enum và thêm dấu chấm phẩy (;)
 }
 

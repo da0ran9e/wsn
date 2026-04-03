@@ -10,11 +10,7 @@
 //*                                                                          *  
 //****************************************************************************/
 
-cplusplus {{
-#include "node/communication/routing/RoutingPacket_m.h"
-}}
-
-class RoutingPacket;
+import node.communication.routing.RoutingPacket;
 
 enum multipathRingsRoutingPacketDef {
 	MPRINGS_DATA_PACKET = 1;

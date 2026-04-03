@@ -10,11 +10,7 @@
 //*                                                                                     *
 //***************************************************************************************
 
-cplusplus {{
-#include "node/application/ApplicationPacket_m.h"
-}}
-
-class ApplicationPacket;
+import node.application.ApplicationPacket;
 
 struct ValueReportData {
 	unsigned short nodeID;	//the ID of the Node

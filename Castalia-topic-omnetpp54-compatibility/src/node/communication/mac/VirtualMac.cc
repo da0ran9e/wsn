@@ -191,11 +191,11 @@ cPacket *VirtualMac::decapsulatePacket(cPacket * pkt)
 {
 	MacPacket *macPkt = check_and_cast <MacPacket*>(pkt);
 	RoutingPacket *netPkt = check_and_cast <RoutingPacket*>(macPkt->decapsulate());
-	netPkt->getNetMacInfoExchange().RSSI = macPkt->getMacRadioInfoExchange().RSSI;
-	netPkt->getNetMacInfoExchange().LQI = macPkt->getMacRadioInfoExchange().LQI;
+	netPkt->getNetMacInfoExchangeForUpdate().RSSI = macPkt->getMacRadioInfoExchange().RSSI;
+	netPkt->getNetMacInfoExchangeForUpdate().LQI = macPkt->getMacRadioInfoExchange().LQI;
 	// The lastHop field has valid information only if the specific MAC protocol
 	// updates the generic'source' field in the MacPacket.
-	netPkt->getNetMacInfoExchange().lastHop = macPkt->getSource();
+	netPkt->getNetMacInfoExchangeForUpdate().lastHop = macPkt->getSource();
 	return netPkt;
 }
 

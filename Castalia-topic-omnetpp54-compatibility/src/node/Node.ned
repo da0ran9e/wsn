@@ -45,8 +45,8 @@ module Node {
 	ResourceManager: node.resourceManager.ResourceManager;
 	SensorManager: node.sensorManager.SensorManager {
 	 gates:
-		fromNodeContainerModule[sizeof(toPhysicalProcess)];
-		toNodeContainerModule[sizeof(toPhysicalProcess)];
+		fromNodeContainerModule[sizeof(parent.toPhysicalProcess)];
+		toNodeContainerModule[sizeof(parent.toPhysicalProcess)];
 	} 
 	Communication: node.communication.CommunicationModule;
 	Application: <ApplicationName> like node.application.iApplication;

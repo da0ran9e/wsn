@@ -34,22 +34,22 @@ network SN {
 	wirelessChannel: <wirelessChannelName>
 				like wirelessChannel.iWirelessChannel {
 	 gates:
-		toNode[numNodes];
-		fromNode[numNodes];
-	} 
+		toNode[parent.numNodes];
+		fromNode[parent.numNodes];
+	}
 
 
-	physicalProcess[numPhysicalProcesses]: <physicalProcessName> 
+	physicalProcess[numPhysicalProcesses]: <physicalProcessName>
 				like physicalProcess.iPhysicalProcess {
 	 gates:
-		toNode[numNodes];
-		fromNode[numNodes];
+		toNode[parent.numNodes];
+		fromNode[parent.numNodes];
 	}
 
 	node[numNodes]:node.Node {
 	 gates:
-		toPhysicalProcess[numPhysicalProcesses];
-		fromPhysicalProcess[numPhysicalProcesses];
+		toPhysicalProcess[parent.numPhysicalProcesses];
+		fromPhysicalProcess[parent.numPhysicalProcesses];
 	}
 
  connections:

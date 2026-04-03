@@ -10,9 +10,9 @@
 //*                                                                          *  
 //****************************************************************************/
 
-cplusplus {{
-#include "node/communication/mac/MacPacket_m.h"
+import node.communication.mac.MacPacket;
 
+cplusplus {{
 #define BASELINEBAN_HEADER_SIZE 7
 #define BASELINEBAN_BEACON_SIZE 17 + 7
 #define BASELINEBAN_CONNECTION_REQUEST_SIZE 28 + 7
@@ -20,10 +20,7 @@ cplusplus {{
 
 #define BROADCAST_NID 255
 #define UNCONNECTED_BROADCAST_NID 0
-
 }}
-
-class MacPacket;
 
 enum SecurityLevel_type {
     NOT_SECURED	= 1;

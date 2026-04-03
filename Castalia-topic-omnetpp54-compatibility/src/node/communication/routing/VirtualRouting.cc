@@ -52,7 +52,7 @@ void VirtualRouting::toMacLayer(cMessage * msg)
 void VirtualRouting::toMacLayer(cPacket * pkt, int destination)
 {
 	RoutingPacket *netPacket = check_and_cast <RoutingPacket*>(pkt);
-	netPacket->getNetMacInfoExchange().nextHop = destination;
+	netPacket->getNetMacInfoExchangeForUpdate().nextHop = destination;
 	send(netPacket, "toMacModule");
 }
 
@@ -78,9 +78,9 @@ cPacket* VirtualRouting::decapsulatePacket(cPacket * pkt)
 	RoutingPacket *netPkt = check_and_cast <RoutingPacket*>(pkt);
 	ApplicationPacket *appPkt = check_and_cast <ApplicationPacket*>(netPkt->decapsulate());
 
-	appPkt->getAppNetInfoExchange().RSSI = netPkt->getNetMacInfoExchange().RSSI;
-	appPkt->getAppNetInfoExchange().LQI = netPkt->getNetMacInfoExchange().LQI;
-	appPkt->getAppNetInfoExchange().source = netPkt->getSource();
+	appPkt->getAppNetInfoExchangeForUpdate().RSSI = netPkt->getNetMacInfoExchange().RSSI;
+	appPkt->getAppNetInfoExchangeForUpdate().LQI = netPkt->getNetMacInfoExchange().LQI;
+	appPkt->getAppNetInfoExchangeForUpdate().source = netPkt->getSource();
 	return appPkt;
 }
 

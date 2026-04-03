@@ -1,8 +1,4 @@
-cplusplus {{
-#include "node/communication/routing/RoutingPacket_m.h"
-}}
-
-class RoutingPacket;
+import node.communication.routing.RoutingPacket;
 
 enum SSCellularRoutingPacketType {
     HELLO_PACKET = 0;         
